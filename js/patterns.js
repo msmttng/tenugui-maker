@@ -19,6 +19,18 @@ window.TenuguiPatterns = {
     const tCtx = tile.getContext('2d');
 
     switch (patternId) {
+      case 'haneda-naka':
+      case 'haneda-naka-h': {
+        // 羽田仲 角字繋ぎ（ズレ完全修正済みの216u噛み合わせ格子）
+        const w = Math.round(160 * s);
+        const h = Math.round(160 * s);
+        tile.width = w;
+        tile.height = h;
+        const ang = patternId === 'haneda-naka' ? -30.15 : 0;
+        this.drawHanedaNakaDirect(tCtx, colorHex, s * 0.45, 0, 0, w, h, ang);
+        break;
+      }
+
       case 'daisho-arare': {
         // 大小あられ（江戸小紋三役：大きな粒と極小の粒を粋なリズムで散らす文様）
         const size = Math.round(92 * s);
@@ -909,5 +921,84 @@ window.TenuguiPatterns = {
     tc.fillRect(step, step + 1, 1, step);
 
     return ctx.createPattern(t, 'repeat');
+  },
+
+  /**
+   * 江戸角字「羽田仲」入れ子連続文様を直接ベクター精度で領域内に描画（継ぎ目ゼロ・ズレ完全修正版）
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {string} colorHex
+   * @param {number} scaleRatio (1.0 = 標準サイズ)
+   * @param {number} rx 描画領域X
+   * @param {number} ry 描画領域Y
+   * @param {number} rw 描画領域W
+   * @param {number} rh 描画領域H
+   * @param {number} angleDeg 回転角度 (-30.15 または 0)
+   */
+  drawHanedaNakaDirect(ctx, colorHex, scaleRatio, rx, ry, rw, rh, angleDeg = -30.15) {
+    const H_ROW = 216;
+    const DX_ROW = 216;
+    const PX = 681;
+    const RECTS = [
+      // 1. 「田」と左隣「羽」を貫く上辺横棒
+      [-216, 0, 447, 15],
+      // 2. 「田」下辺横棒・左縦棒・中縦棒・右縦棒・中央浮き横棒
+      [0, 216, 231, 15],
+      [0, 0, 15, 231],
+      [108, 0, 15, 231],
+      [216, 0, 15, 231],
+      [43.5, 108, 144, 15],
+      // 3. 「仲」の「亻」（にんべん）— 田の右壁(231)に隙間なく直結
+      [231, 78, 61, 15],
+      [277, 0, 15, 93],
+      [256, 78, 15, 153],
+      // 4. 「仲」の「中」
+      [321, 18, 144, 15],
+      [321, 169, 144, 15],
+      [321, 18, 15, 166],
+      [450, 18, 15, 166],
+      [385.5, 0, 15, 231],
+      // 5. 「羽」（田の左側 x: -216..0 の領域、線幅15均一・左右高さ完全揃い）
+      [-129, 0, 15, 216],
+      [-216, 59, 58, 15],
+      [-216, 150, 58, 15],
+      [-86, 59, 58, 15],
+      [-86, 150, 58, 15]
+    ];
+
+    const uScale = 0.25 * Math.max(0.2, scaleRatio);
+    const rad = (angleDeg * Math.PI) / 180;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(rx, ry, rw, rh);
+    ctx.clip();
+
+    const cx = rx + rw / 2;
+    const cy = ry + rh / 2;
+    ctx.translate(cx, cy);
+    ctx.rotate(rad);
+    ctx.scale(uScale, uScale);
+    ctx.fillStyle = colorHex;
+
+    const diag = Math.hypot(rw, rh) / uScale;
+    const rowMin = Math.floor(-diag / H_ROW) - 2;
+    const rowMax = Math.ceil(diag / H_ROW) + 2;
+
+    for (let r = rowMin; r <= rowMax; r++) {
+      const y0 = r * H_ROW;
+      const xShift = r * DX_ROW;
+      const kMin = Math.floor((-diag - xShift) / PX) - 1;
+      const kMax = Math.ceil((diag - xShift) / PX) + 1;
+
+      for (let k = kMin; k <= kMax; k++) {
+        const x0 = xShift + k * PX;
+        for (let i = 0; i < RECTS.length; i++) {
+          const rc = RECTS[i];
+          ctx.fillRect(x0 + rc[0] - 0.15, y0 + rc[1] - 0.15, rc[2] + 0.3, rc[3] + 0.3);
+        }
+      }
+    }
+
+    ctx.restore();
   }
 };

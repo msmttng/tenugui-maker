@@ -72,8 +72,8 @@
     renderStampGrids();
     bindEvents();
 
-    // 初期テンプレート（⑥ 江戸小紋「大小あられ」手ぬぐい）をロード
-    const defaultTpl = window.TenuguiData.templates.find(t => t.id === 'edo-komon-arare') || window.TenuguiData.templates[1];
+    // 初期テンプレート（⑦ 羽田仲 江戸角字（全面総柄・ズレ完全修正版））をロード
+    const defaultTpl = window.TenuguiData.templates.find(t => t.id === 'haneda-naka-allover') || window.TenuguiData.templates[0];
     applyTemplate(defaultTpl);
     fitCanvasToViewport();
 
@@ -215,6 +215,14 @@
       cloned.id = generateId();
       cloned.x = Math.round(dim.bleedPx + dim.trimW_px * (raw.xRatio ?? 0.5));
       cloned.y = Math.round(dim.bleedPx + dim.trimH_px * (raw.yRatio ?? 0.5));
+      if (cloned.type === 'image') {
+        if (cloned.dataUrl === 'NAKAHANEDA_EMBLEM') {
+          cloned.dataUrl = window.TenuguiData.nakahanedaEmblemDataUrl;
+        }
+        if (cloned.dataUrl) {
+          loadImageToCache(cloned);
+        }
+      }
       return cloned;
     });
 
@@ -625,57 +633,82 @@
 
     // 2. 伝統和柄パターン描画
     if (state.patternId && state.patternId !== 'none') {
-      const pat = window.TenuguiPatterns.createPattern(
-        targetCtx,
-        state.patternId,
-        state.patternColor,
-        state.patternScale / 100
-      );
-      if (pat) {
+      const isDirectHaneda = state.patternId === 'haneda-naka' || state.patternId === 'haneda-naka-h';
+      const pat = isDirectHaneda
+        ? null
+        : window.TenuguiPatterns.createPattern(
+            targetCtx,
+            state.patternId,
+            state.patternColor,
+            state.patternScale / 100
+          );
+
+      const fillPatternRect = (rx, ry, rw, rh) => {
+        if (isDirectHaneda) {
+          const ang = state.patternId === 'haneda-naka' ? -30.15 : 0;
+          window.TenuguiPatterns.drawHanedaNakaDirect(
+            targetCtx,
+            state.patternColor,
+            state.patternScale / 100,
+            rx,
+            ry,
+            rw,
+            rh,
+            ang
+          );
+        } else if (pat) {
+          targetCtx.fillStyle = pat;
+          targetCtx.fillRect(rx, ry, rw, rh);
+        }
+      };
+
+      if (isDirectHaneda || pat) {
         targetCtx.save();
         targetCtx.globalAlpha = (state.patternOpacity ?? 100) / 100;
-        targetCtx.fillStyle = pat;
 
         const area = state.patternArea || 'full';
         if (area === 'full') {
-          targetCtx.fillRect(0, 0, W, H);
+          fillPatternRect(0, 0, W, H);
         } else if (area === 'ends') {
           if (state.orientation === 'horizontal') {
             const endW = bPx + trimW * 0.20;
-            targetCtx.fillRect(0, 0, endW, H);
-            targetCtx.fillRect(W - endW, 0, endW, H);
+            fillPatternRect(0, 0, endW, H);
+            fillPatternRect(W - endW, 0, endW, H);
           } else {
             const endH = bPx + trimH * 0.20;
-            targetCtx.fillRect(0, 0, W, endH);
-            targetCtx.fillRect(0, H - endH, W, endH);
+            fillPatternRect(0, 0, W, endH);
+            fillPatternRect(0, H - endH, W, endH);
           }
         } else if (area === 'left') {
           if (state.orientation === 'horizontal') {
-            targetCtx.fillRect(0, 0, bPx + trimW * 0.24, H);
+            fillPatternRect(0, 0, bPx + trimW * 0.24, H);
           } else {
-            targetCtx.fillRect(0, 0, W, bPx + trimH * 0.24);
+            fillPatternRect(0, 0, W, bPx + trimH * 0.24);
           }
         } else if (area === 'right') {
           if (state.orientation === 'horizontal') {
             const endW = bPx + trimW * 0.24;
-            targetCtx.fillRect(W - endW, 0, endW, H);
+            fillPatternRect(W - endW, 0, endW, H);
           } else {
             const endH = bPx + trimH * 0.24;
-            targetCtx.fillRect(0, H - endH, W, endH);
+            fillPatternRect(0, H - endH, W, endH);
           }
         } else if (area === 'border') {
           const frameThick = Math.min(trimW, trimH) * 0.16 + bPx;
+          targetCtx.save();
           targetCtx.beginPath();
           targetCtx.rect(0, 0, W, H);
           targetCtx.rect(frameThick, frameThick, W - frameThick * 2, H - frameThick * 2);
-          targetCtx.fill('evenodd');
+          targetCtx.clip('evenodd');
+          fillPatternRect(0, 0, W, H);
+          targetCtx.restore();
         } else if (area === 'band-h') {
           if (state.orientation === 'horizontal') {
             const bandH = trimH * 0.34;
-            targetCtx.fillRect(0, (H - bandH) / 2, W, bandH);
+            fillPatternRect(0, (H - bandH) / 2, W, bandH);
           } else {
             const bandW = trimW * 0.34;
-            targetCtx.fillRect((W - bandW) / 2, 0, bandW, H);
+            fillPatternRect((W - bandW) / 2, 0, bandW, H);
           }
         }
         targetCtx.restore();
