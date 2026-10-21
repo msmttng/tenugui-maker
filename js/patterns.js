@@ -19,6 +19,54 @@ window.TenuguiPatterns = {
     const tCtx = tile.getContext('2d');
 
     switch (patternId) {
+      case 'daisho-arare': {
+        // 大小あられ（江戸小紋三役：大きな粒と極小の粒を粋なリズムで散らす文様）
+        const size = Math.round(92 * s);
+        tile.width = size;
+        tile.height = size;
+        tCtx.fillStyle = colorHex;
+
+        // 大あられ（主粒）・中あられ・小あられ（微細粒）のシームレス配置座標 [xRatio, yRatio, radiusRatio]
+        const dots = [
+          // 大あられ (4粒・互い違い配置)
+          [0.18, 0.20, 0.088],
+          [0.68, 0.14, 0.082],
+          [0.42, 0.62, 0.090],
+          [0.86, 0.72, 0.084],
+          // 中あられ (5粒)
+          [0.44, 0.24, 0.052],
+          [0.14, 0.56, 0.050],
+          [0.72, 0.44, 0.054],
+          [0.22, 0.86, 0.052],
+          [0.58, 0.88, 0.048],
+          // 小あられ (細かい霰粒・隙間を埋める粋な点描)
+          [0.06, 0.08, 0.025], [0.33, 0.07, 0.024], [0.52, 0.06, 0.026], [0.88, 0.06, 0.025],
+          [0.05, 0.36, 0.026], [0.31, 0.36, 0.025], [0.57, 0.37, 0.024], [0.86, 0.32, 0.026], [0.95, 0.48, 0.024],
+          [0.28, 0.49, 0.025], [0.56, 0.51, 0.026], [0.85, 0.53, 0.024],
+          [0.06, 0.74, 0.025], [0.26, 0.70, 0.024], [0.62, 0.72, 0.026],
+          [0.08, 0.93, 0.024], [0.39, 0.82, 0.025], [0.43, 0.95, 0.024], [0.74, 0.92, 0.026], [0.94, 0.91, 0.025]
+        ];
+
+        // タイル境界をまたぐ粒も欠けないよう周囲ラップ描画
+        dots.forEach(([rx, ry, rr]) => {
+          const cx = rx * size;
+          const cy = ry * size;
+          const r = Math.max(0.9, rr * size);
+          for (let ox of [-size, 0, size]) {
+            for (let oy of [-size, 0, size]) {
+              const px = cx + ox;
+              const py = cy + oy;
+              if (px + r >= 0 && px - r <= size && py + r >= 0 && py - r <= size) {
+                tCtx.beginPath();
+                tCtx.arc(px, py, r, 0, Math.PI * 2);
+                tCtx.fill();
+              }
+            }
+          }
+        });
+        break;
+      }
+
       case 'mameshibori': {
         // 豆絞り（少しゆらぎのある染め水玉）
         const size = Math.round(52 * s);

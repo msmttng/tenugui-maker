@@ -72,8 +72,9 @@
     renderStampGrids();
     bindEvents();
 
-    // 初期テンプレート（② 周年記念・両端青海波＋中央富士ロゴ）をロード
-    applyTemplate(window.TenuguiData.templates[1]);
+    // 初期テンプレート（⑥ 江戸小紋「大小あられ」手ぬぐい）をロード
+    const defaultTpl = window.TenuguiData.templates.find(t => t.id === 'edo-komon-arare') || window.TenuguiData.templates[1];
+    applyTemplate(defaultTpl);
     fitCanvasToViewport();
 
     // Webフォント読み込み完了後に再描画

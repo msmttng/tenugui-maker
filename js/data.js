@@ -50,6 +50,7 @@ window.TenuguiData = {
   // 伝統和柄パターン一覧
   patterns: [
     { id: 'none', name: '無地 (柄なし)' },
+    { id: 'daisho-arare', name: '大小あられ (江戸小紋)' },
     { id: 'mameshibori', name: '豆絞り (水玉)' },
     { id: 'seigaiha', name: '青海波 (波文様)' },
     { id: 'asanoha', name: '麻の葉' },
@@ -412,6 +413,58 @@ window.TenuguiData = {
             xRatio: 0.72,
             yRatio: 0.86,
             scale: 100,
+            rotation: 0,
+            opacity: 100,
+            repeatMode: 'none',
+            repeatGap: 180
+          }
+        ]
+      }
+    },
+    {
+      id: 'edo-komon-arare',
+      name: '⑥ 江戸小紋「大小あられ」粋な白抜き手ぬぐい',
+      desc: '伝統の江戸小紋三役「大小あられ」を全面に染め、千社札で屋号を入れた格調高い一枚',
+      previewBg: '#165E83',
+      previewFg: '#FFFFFF',
+      previewLabel: '大小あられ',
+      state: {
+        orientation: 'horizontal',
+        bgColor: '#165E83',
+        patternId: 'daisho-arare',
+        patternColor: '#FFFFFF',
+        patternScale: 100,
+        patternOpacity: 95,
+        patternArea: 'full',
+        items: [
+          {
+            type: 'text',
+            text: '粋な江戸小紋',
+            isVertical: true,
+            fontFamily: "'Yuji Syuku', serif",
+            fontSize: 105,
+            letterSpacing: 8,
+            color: '#165E83',
+            outlineEnabled: false,
+            outlineColor: '#FFFFFF',
+            outlineWidth: 6,
+            boxStyle: 'senjafuda',
+            xRatio: 0.82,
+            yRatio: 0.50,
+            scale: 100,
+            rotation: 0,
+            opacity: 100,
+            repeatMode: 'none',
+            repeatGap: 180
+          },
+          {
+            type: 'rakkan',
+            text: '江戸染',
+            rakkanStyle: 'square-haku',
+            color: '#C93A40',
+            xRatio: 0.88,
+            yRatio: 0.82,
+            scale: 90,
             rotation: 0,
             opacity: 100,
             repeatMode: 'none',
