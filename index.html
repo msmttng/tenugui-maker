@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>手ぬぐい工房 (Tenugui Studio) - オリジナル手ぬぐいデザイン＆入稿データ作成</title>
+  <!-- Google Fonts (和風・毛筆・明朝・角ゴシック・丸ゴシック) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Hina+Mincho&family=Kaisei+Decol:wght@700&family=Klee+One:wght@600&family=M+PLUS+Rounded+1c:wght@700&family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@400;700;900&family=Reggae+One&family=Shippori+Mincho+B1:wght@700;800&family=Yuji+Syuku&family=Zen+Antique+Soft&family=Zen+Kaku+Gothic+New:wght@700;900&family=Zen+Maru+Gothic:wght@700;900&family=Zen+Old+Mincho:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- トップヘッダー -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-seal">手拭</div>
+      <div class="brand-text">
+        <h1>手ぬぐい工房 <span class="badge">PRO</span></h1>
+        <p>オリジナル手ぬぐいデザイン・入稿データ作成ソフト</p>
+      </div>
+    </div>
+
+    <!-- 中央コントロール：サイズ・向き・ガイド表示 -->
+    <div class="header-controls">
+      <div class="control-group">
+        <label>サイズ規格</label>
+        <select id="sizePresetSelect" title="手ぬぐいのサイズを選択">
+          <option value="900x350" selected>標準手ぬぐい (900 × 350 mm)</option>
+          <option value="900x340">岡生地標準 (900 × 340 mm)</option>
+          <option value="900x330">総理(文)生地標準 (900 × 330 mm)</option>
+          <option value="1000x350">長尺手ぬぐい・剣道用 (1000 × 350 mm)</option>
+          <option value="custom">カスタムサイズ...</option>
+        </select>
+      </div>
+
+      <div id="customSizeInputs" class="control-group hidden">
+        <input type="number" id="customLongMm" value="900" min="200" max="2000" step="10" title="長辺(mm)" />
+        <span>×</span>
+        <input type="number" id="customShortMm" value="350" min="200" max="1000" step="10" title="短辺(mm)" />
+        <span>mm</span>
+      </div>
+
+      <div class="control-group">
+        <label>向き</label>
+        <div class="segmented-btn">
+          <button type="button" id="orientHorizontalBtn" class="active" title="横長配置">横向き</button>
+          <button type="button" id="orientVerticalBtn" title="縦長配置（掛け軸・のれん風）">縦向き</button>
+        </div>
+      </div>
+
+      <div class="control-group toggles">
+        <label class="checkbox-pill" title="断裁ズレ対策の塗り足し領域(+10mm)と内側安全枠(-15mm)を表示">
+          <input type="checkbox" id="togglePrintGuides" checked />
+          <span>入稿ガイド枠</span>
+        </label>
+        <label class="checkbox-pill" title="岡生地・文生地の織り目と切りっぱなし端の質感を重ねて表示">
+          <input type="checkbox" id="toggleFabricTexture" checked />
+          <span>布地質感</span>
+        </label>
+        <label class="checkbox-pill" title="4つ折り・8つ折りした時の見え方ラインを表示">
+          <input type="checkbox" id="toggleFoldLines" />
+          <span>折り目確認</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- 右側アクション：元に戻す・保存・書き出し -->
+    <div class="header-actions">
+      <button type="button" id="undoBtn" class="icon-btn" title="元に戻す (Ctrl+Z)" disabled>↶ 戻す</button>
+      <button type="button" id="redoBtn" class="icon-btn" title="やり直す (Ctrl+Y)" disabled>↷ やり直し</button>
+      <div class="divider-v"></div>
+      <button type="button" id="foldSimBtn" class="secondary-btn" title="畳んだ時の見え方や頭に巻いたイメージを確認">🧣 畳み・着用プレビュー</button>
+      <button type="button" id="projectSaveBtn" class="secondary-btn" title="編集中のプロジェクトをファイルに保存">💾 保存/読込</button>
+      <button type="button" id="exportModalBtn" class="primary-btn">🖨️ 入稿・画像出力</button>
+    </div>
+  </header>
+
+  <!-- メインワークスペース -->
+  <div class="workspace">
+    <!-- 左サイドバー：カテゴリタブ + ツールパネル -->
+    <aside class="left-sidebar">
+      <nav class="tool-tabs">
+        <button type="button" class="tab-btn active" data-tab="tab-templates">
+          <span class="tab-icon">✨</span>
+          <span class="tab-label">雛形</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab-fabric">
+          <span class="tab-icon">🎨</span>
+          <span class="tab-label">地色・和柄</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab-logo">
+          <span class="tab-icon">🖼️</span>
+          <span class="tab-label">ロゴ・画像</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab-text">
+          <span class="tab-icon">🖌️</span>
+          <span class="tab-label">文字・名入れ</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab-stamps">
+          <span class="tab-icon">💮</span>
+          <span class="tab-label">落款・家紋・枠</span>
+        </button>
+      </nav>
+
+      <div class="tool-panel-container">
+        <!-- 1. テンプレート（雛形）タブ -->
+        <section id="tab-templates" class="tool-panel active">
+          <div class="panel-header">
+            <h2>デザイン雛形（テンプレート）</h2>
+            <p>クリックするとベース配置を読み込みます。後から自由に文字やロゴを変更できます。</p>
+          </div>
+          <div id="templateGrid" class="template-grid"></div>
+        </section>
+
+        <!-- 2. 地色・伝統色・和柄タブ -->
+        <section id="tab-fabric" class="tool-panel">
+          <div class="panel-header">
+            <h2>布地の色（地色）と和柄パターン</h2>
+            <p>日本の伝統色と、手ぬぐい定番の和文様を組み合わせられます。</p>
+          </div>
+
+          <div class="form-section">
+            <label class="section-title">地色（ベースカラー）</label>
+            <div class="color-picker-row">
+              <input type="color" id="bgColorInput" value="#f8f4e6" />
+              <input type="text" id="bgColorHex" value="#F8F4E6" class="hex-input" />
+              <span id="bgColorName" class="color-jp-name">生成り (きなり)</span>
+            </div>
+            <div class="color-category-filter">
+              <button type="button" class="chip active" data-cat="all">すべて</button>
+              <button type="button" class="chip" data-cat="white">白・生成</button>
+              <button type="button" class="chip" data-cat="blue">藍・青</button>
+              <button type="button" class="chip" data-cat="red">茜・赤・紫</button>
+              <button type="button" class="chip" data-cat="green">緑・黄・茶</button>
+              <button type="button" class="chip" data-cat="dark">墨・黒</button>
+            </div>
+            <div id="bgTraditionalPalette" class="swatch-grid"></div>
+          </div>
+
+          <div class="form-section">
+            <label class="section-title">背景の伝統和柄（地紋パターン）</label>
+            <div id="patternGrid" class="pattern-grid"></div>
+
+            <div id="patternOptionsBox" class="sub-options">
+              <div class="field-row">
+                <label>柄の色</label>
+                <div class="color-picker-row compact">
+                  <input type="color" id="patternColorInput" value="#165e83" />
+                  <input type="text" id="patternColorHex" value="#165E83" class="hex-input" />
+                </div>
+              </div>
+              <div id="patternTraditionalPalette" class="swatch-grid mini"></div>
+
+              <div class="field-row">
+                <label>柄の大きさ <span id="patternScaleVal">100%</span></label>
+                <input type="range" id="patternScaleInput" min="30" max="300" value="100" />
+              </div>
+              <div class="field-row">
+                <label>柄の濃さ（透明度） <span id="patternOpacityVal">100%</span></label>
+                <input type="range" id="patternOpacityInput" min="5" max="100" value="100" />
+              </div>
+              <div class="field-row">
+                <label>柄の配置範囲</label>
+                <select id="patternAreaSelect">
+                  <option value="full">全面（総柄）</option>
+                  <option value="ends">両端のみ（端飾り・20%ずつ）</option>
+                  <option value="left">左端（または上端）のみ</option>
+                  <option value="right">右端（または下端）のみ</option>
+                  <option value="border">外周枠のみ（額縁柄）</option>
+                  <option value="band-h">中央帯（一本帯）</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <label class="section-title">生地の種類シミュレーション</label>
+            <select id="fabricWeaveSelect">
+              <option value="oka" selected>岡生地（30番手・目が細かく繊細な柄向け）</option>
+              <option value="bun">総理 / 文生地（20番手・ざっくりした風合い）</option>
+              <option value="none">フラット（入稿確認用・質感なし）</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- 3. ロゴ・画像タブ -->
+        <section id="tab-logo" class="tool-panel">
+          <div class="panel-header">
+            <h2>ロゴ・イラストの追加</h2>
+            <p>お手持ちのロゴ画像（PNG / JPG / SVG）を読み込みます。白い背景の自動透過や、手ぬぐいらしい単色染め変換もワンクリックで行えます。</p>
+          </div>
+
+          <div class="upload-dropzone" id="logoDropzone">
+            <input type="file" id="logoFileInput" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden />
+            <div class="dropzone-icon">📁</div>
+            <div class="dropzone-title">ロゴ・画像ファイルを選択</div>
+            <div class="dropzone-sub">またはここへドラッグ＆ドロップ (PNG / JPG / SVG)</div>
+            <button type="button" class="primary-btn small" id="logoSelectBtn">ファイルを選ぶ</button>
+          </div>
+
+          <div class="form-section">
+            <label class="section-title">サンプルシンボル・ロゴを追加</label>
+            <p class="hint">すぐ試せる和風シンボルマークです。クリックで配置されます。</p>
+            <div id="sampleLogoGrid" class="stamp-grid"></div>
+          </div>
+
+          <div class="info-card">
+            <h4>💡 手ぬぐいロゴ作成のポイント</h4>
+            <ul>
+              <li>写真やJPGロゴの<strong>白い背景</strong>は、右パネルの「白背景を透明化」スイッチで綺麗に抜けます。</li>
+              <li>「単色染め（シルエット化）」をONにすると、どんな画像も藍色や白抜き1色の本染め風に仕上がります。</li>
+              <li>同じロゴを全体に並べたい時は、右パネルの「リピート配置（散らし柄）」が使えます。</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- 4. 文字・名入れタブ -->
+        <section id="tab-text" class="tool-panel">
+          <div class="panel-header">
+            <h2>文字・名入れの追加</h2>
+            <p>縦書き・横書きや、毛筆・江戸文字・明朝体など手ぬぐいに映える書体を追加できます。</p>
+          </div>
+
+          <div class="quick-add-buttons">
+            <button type="button" id="addVerticalTextBtn" class="action-card-btn">
+              <span class="big-icon">縦</span>
+              <div>
+                <strong>縦書きテキストを追加</strong>
+                <small>名入れ・スローガン・神社仏閣・剣道面タオル向け</small>
+              </div>
+            </button>
+            <button type="button" id="addHorizontalTextBtn" class="action-card-btn">
+              <span class="big-icon">横</span>
+              <div>
+                <strong>横書きテキストを追加</strong>
+                <small>ショップ名・欧文ロゴ・記念品タイトル向け</small>
+              </div>
+            </button>
+          </div>
+
+          <div class="form-section">
+            <label class="section-title">よく使われる定型フレーズ（クリックで追加）</label>
+            <div class="phrase-chips">
+              <button type="button" class="phrase-btn" data-text="祭" data-vert="true" data-size="180">祭（大文字）</button>
+              <button type="button" class="phrase-btn" data-text="感謝" data-vert="true" data-size="140">感謝</button>
+              <button type="button" class="phrase-btn" data-text="商売繁盛" data-vert="true" data-size="110">商売繁盛</button>
+              <button type="button" class="phrase-btn" data-text="一期一会" data-vert="true" data-size="110">一期一会</button>
+              <button type="button" class="phrase-btn" data-text="平常心" data-vert="true" data-size="120">平常心</button>
+              <button type="button" class="phrase-btn" data-text="百折不撓" data-vert="true" data-size="110">百折不撓</button>
+              <button type="button" class="phrase-btn" data-text="千客万来" data-vert="true" data-size="110">千客万来</button>
+              <button type="button" class="phrase-btn" data-text="謹賀新年" data-vert="true" data-size="110">謹賀新年</button>
+              <button type="button" class="phrase-btn" data-text="必勝" data-vert="true" data-size="150">必勝</button>
+              <button type="button" class="phrase-btn" data-text="贈" data-vert="true" data-size="90">贈（熨斗風）</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. 落款・家紋・飾り枠タブ -->
+        <section id="tab-stamps" class="tool-panel">
+          <div class="panel-header">
+            <h2>落款（ハンコ）・家紋・飾り枠</h2>
+            <p>手ぬぐいの隅に入れると一気に本格感が出る朱印・落款や、伝統家紋・飾り枠を追加できます。</p>
+          </div>
+
+          <div class="form-section">
+            <label class="section-title">オリジナル落款（朱印スタンプ）を作成</label>
+            <div class="rakkan-builder">
+              <div class="field-row">
+                <label>印の文字（1〜4文字推奨）</label>
+                <input type="text" id="rakkanTextInput" value="手拭工房" maxlength="6" />
+              </div>
+              <div class="field-row">
+                <label>形状・彫り方</label>
+                <select id="rakkanStyleSelect">
+                  <option value="square-shu">角印・朱文（白地に赤文字）</option>
+                  <option value="square-haku">角印・白文（赤地に白抜き文字）</option>
+                  <option value="round-shu">丸印・朱文（赤枠に赤文字）</option>
+                  <option value="round-haku">丸印・白文（赤丸に白抜き文字）</option>
+                  <option value="gourd-haku">ひょうたん印（白抜き）</option>
+                </select>
+              </div>
+              <button type="button" id="addRakkanBtn" class="primary-btn full-width">💮 この落款をキャンバスに追加</button>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <label class="section-title">日本の伝統家紋・縁起スタンプ</label>
+            <div id="kamonGrid" class="stamp-grid"></div>
+          </div>
+
+          <div class="form-section">
+            <label class="section-title">飾り枠・帯・縁起ライン</label>
+            <div id="frameGrid" class="stamp-grid"></div>
+          </div>
+        </section>
+      </div>
+    </aside>
+
+    <!-- 中央キャンバスエリア -->
+    <main class="canvas-stage-area" id="canvasStageArea">
+      <!-- キャンバス上部ステータスバー -->
+      <div class="stage-toolbar">
+        <div class="stage-info">
+          <span id="specDimensionBadge" class="spec-badge">実寸: 900 × 350 mm (塗り足し込: 920 × 370 mm)</span>
+          <span id="usedColorsBadge" class="spec-badge colors-badge" title="現在デザインに使われている色数（本染め・シルクスクリーン印刷の版数目安）">使用色数: 2色</span>
+        </div>
+        <div class="zoom-controls">
+          <button type="button" id="zoomOutBtn" title="縮小">−</button>
+          <span id="zoomLevelText">100%</span>
+          <button type="button" id="zoomInBtn" title="拡大">＋</button>
+          <button type="button" id="zoomFitBtn" title="画面に合わせる">全体表示</button>
+        </div>
+      </div>
+
+      <!-- キャンバス本体ラッパー -->
+      <div class="canvas-viewport" id="canvasViewport">
+        <div class="canvas-wrapper" id="canvasWrapper">
+          <canvas id="tenuguiCanvas"></canvas>
+        </div>
+      </div>
+
+      <!-- 下部ガイド凡例 -->
+      <div class="stage-legend">
+        <span class="legend-item"><i class="line-sample bleed"></i> 外枠：塗り足し線 (+10mm) ※背景柄はここまで伸ばす</span>
+        <span class="legend-item"><i class="line-sample trim"></i> 実線：仕上がり断裁線 (900×350mm)</span>
+        <span class="legend-item"><i class="line-sample safe"></i> 内枠：安全領域 (-15mm) ※切れてはいけないロゴ・文字はこの内側へ</span>
+      </div>
+    </main>
+
+    <!-- 右サイドバー：選択中アイテムのプロパティ編集 ＆ レイヤー一覧 -->
+    <aside class="right-sidebar">
+      <!-- 選択中要素のインスペクター -->
+      <div class="inspector-panel" id="inspectorPanel">
+        <div class="panel-header compact">
+          <h3 id="inspectorTitle">要素のプロパティ</h3>
+        </div>
+
+        <!-- 未選択時の表示 -->
+        <div id="noSelectionMessage" class="empty-inspector">
+          <p>キャンバス上の<strong>ロゴ・文字・スタンプ</strong>をクリックすると、ここで色・サイズ・書体・背景透過などを細かく調整できます。</p>
+          <div class="shortcut-tips">
+            <div><kbd>Delete</kbd> 選択要素を削除</div>
+            <div><kbd>Ctrl</kbd>+<kbd>D</kbd> 複製</div>
+            <div><kbd>矢印キー</kbd> 1mm移動</div>
+          </div>
+        </div>
+
+        <!-- 共通トランスフォーム・整列コントロール -->
+        <div id="commonInspector" class="inspector-body hidden">
+          <!-- 整列ボタン -->
+          <div class="form-group">
+            <label>手ぬぐい上の位置揃え</label>
+            <div class="align-btn-grid">
+              <button type="button" data-align="left" title="左端（安全枠内）に寄せる">⇤ 左</button>
+              <button type="button" data-align="center-h" title="左右中央に揃える">⇹ 左右中央</button>
+              <button type="button" data-align="right" title="右端（安全枠内）に寄せる">右 ⇥</button>
+              <button type="button" data-align="top" title="上端（安全枠内）に寄せる">⇡ 上</button>
+              <button type="button" data-align="center-v" title="上下中央に揃える">⇳ 上下中央</button>
+              <button type="button" data-align="bottom" title="下端（安全枠内）に寄せる">下 ⇣</button>
+            </div>
+          </div>
+
+          <!-- テキスト専用コントロール -->
+          <div id="textInspectorGroup" class="inspector-specific hidden">
+            <div class="form-group">
+              <label>テキスト内容</label>
+              <textarea id="propTextContent" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label>書体（フォント）</label>
+              <select id="propFontFamily">
+                <optgroup label="毛筆・江戸文字・手書き風">
+                  <option value="'Yuji Syuku', serif">佑字 粛（本格毛筆・楷書風）</option>
+                  <option value="'Reggae One', sans-serif">レゲエ One（力強い江戸勘亭流・祭り風）</option>
+                  <option value="'Dela Gothic One', sans-serif">デラゴシック（極太・千社札・番付風）</option>
+                  <option value="'Klee One', cursive">クレー One（丁寧な手書き・行書風）</option>
+                </optgroup>
+                <optgroup label="明朝体・古典和風">
+                  <option value="'Shippori Mincho B1', serif">しっぽり明朝（上品な伝統明朝）</option>
+                  <option value="'Zen Old Mincho', serif">Zen オールド明朝（格調高い老舗風）</option>
+                  <option value="'Zen Antique Soft', serif">Zen アンチック（レトロ活版・大正ロマン）</option>
+                  <option value="'Hina Mincho', serif">ひな明朝（やわらかい和モダン）</option>
+                  <option value="'Kaisei Decol', serif">解星デコール（華やか・モダン明朝）</option>
+                </optgroup>
+                <optgroup label="ゴシック体・モダンロゴ向け">
+                  <option value="'Zen Kaku Gothic New', sans-serif">Zen 角ゴシック（すっきり現代風）</option>
+                  <option value="'Zen Maru Gothic', sans-serif">Zen 丸ゴシック（親しみやすい丸文字）</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="form-group two-col">
+              <div>
+                <label>文字の向き</label>
+                <div class="segmented-btn">
+                  <button type="button" id="propTextVertBtn">縦書き</button>
+                  <button type="button" id="propTextHorizBtn">横書き</button>
+                </div>
+              </div>
+              <div>
+                <label>文字サイズ <span id="propFontSizeVal">80</span></label>
+                <input type="range" id="propFontSize" min="14" max="320" value="80" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>字間（文字の間隔） <span id="propLetterSpacingVal">0</span></label>
+              <input type="range" id="propLetterSpacing" min="-10" max="60" value="0" />
+            </div>
+            <div class="form-group">
+              <label>袋文字（白フチ・縁取り）</label>
+              <div class="field-row">
+                <input type="checkbox" id="propTextOutlineToggle" />
+                <span>フチをつける</span>
+                <input type="color" id="propTextOutlineColor" value="#ffffff" />
+                <input type="range" id="propTextOutlineWidth" min="1" max="30" value="8" style="width:80px;" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>白抜き枠・千社札フレーム</label>
+              <select id="propTextBoxStyle">
+                <option value="none">枠なし</option>
+                <option value="white-pad">白座布団（背景柄を隠して読みやすくする）</option>
+                <option value="senjafuda">千社札枠（二重黒枠＋白地）</option>
+                <option value="circle-crest">丸抜き座布団（丸紋風）</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- ロゴ・画像専用コントロール -->
+          <div id="logoInspectorGroup" class="inspector-specific hidden">
+            <div class="form-group highlight-box">
+              <label class="checkbox-row">
+                <input type="checkbox" id="propLogoRemoveBg" />
+                <strong>白い背景を自動で透明化する</strong>
+              </label>
+              <div id="propLogoThresholdRow" class="field-row hidden">
+                <label>白抜き感度 <span id="propLogoThresholdVal">235</span></label>
+                <input type="range" id="propLogoThreshold" min="150" max="254" value="235" />
+              </div>
+            </div>
+
+            <div class="form-group highlight-box">
+              <label class="checkbox-row">
+                <input type="checkbox" id="propLogoMonochrome" />
+                <strong>単色染め（シルエット化）</strong>
+              </label>
+              <p class="tiny-hint">本染め手ぬぐいのように、ロゴを1色の染め色（または白抜き）に変換します。</p>
+            </div>
+          </div>
+
+          <!-- 色変更コントロール（文字・スタンプ・単色化ロゴ共通） -->
+          <div id="colorInspectorGroup" class="form-group">
+            <label>染め色（カラー）</label>
+            <div class="color-picker-row">
+              <input type="color" id="propItemColor" value="#165e83" />
+              <input type="text" id="propItemColorHex" value="#165E83" class="hex-input" />
+              <button type="button" id="propSetShironukiBtn" class="tiny-btn" title="生地の地色と同じ色にして「白抜き染め」にします">白抜きにする</button>
+            </div>
+            <div id="itemTraditionalPalette" class="swatch-grid mini"></div>
+          </div>
+
+          <!-- 大きさ・回転・不透明度 -->
+          <div class="form-group">
+            <label>大きさ（スケール） <span id="propScaleVal">100%</span></label>
+            <input type="range" id="propScale" min="10" max="400" value="100" />
+          </div>
+          <div class="form-group">
+            <label>回転角度 <span id="propRotationVal">0°</span></label>
+            <div class="field-row">
+              <input type="range" id="propRotation" min="-180" max="180" value="0" />
+              <button type="button" id="propRotResetBtn" class="tiny-btn">0°</button>
+              <button type="button" id="propRot90Btn" class="tiny-btn">+90°</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>不透明度 <span id="propOpacityVal">100%</span></label>
+            <input type="range" id="propOpacity" min="10" max="100" value="100" />
+          </div>
+
+          <!-- リピート（散らし柄・連続配置）モード -->
+          <div class="form-group highlight-box">
+            <label>リピート配置（ロゴや紋を全面に並べる）</label>
+            <select id="propRepeatMode">
+              <option value="none">単体配置（1つだけ）</option>
+              <option value="grid">格子並び（縦横に整列して反復）</option>
+              <option value="brick">互い違い並び（市松・散らし配置）</option>
+              <option value="row">横一列に並べる（帯状）</option>
+            </select>
+            <div id="propRepeatGapRow" class="field-row hidden">
+              <label>間隔 <span id="propRepeatGapVal">180px</span></label>
+              <input type="range" id="propRepeatGap" min="60" max="500" value="180" />
+            </div>
+          </div>
+
+          <!-- アクションボタン -->
+          <div class="inspector-actions">
+            <button type="button" id="propDuplicateBtn" class="secondary-btn">📋 複製する</button>
+            <button type="button" id="propDeleteBtn" class="danger-btn">🗑️ 削除</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- レイヤー（重ね順）パネル -->
+      <div class="layers-panel">
+        <div class="panel-header compact">
+          <h3>レイヤー（重ね順）</h3>
+          <span class="tiny-hint">上が前面に表示されます</span>
+        </div>
+        <ul id="layerList" class="layer-list"></ul>
+      </div>
+    </aside>
+  </div>
+
+  <!-- モーダル1：畳み方・着用シミュレーション -->
+  <div id="foldSimModal" class="modal-backdrop hidden">
+    <div class="modal-content wide">
+      <div class="modal-header">
+        <h2>🧣 仕上がり・畳み方シミュレーション</h2>
+        <button type="button" class="modal-close" data-close="foldSimModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-lead">手ぬぐいは畳んで贈答用（熨斗・帯巻き）にしたり、首に掛けたりした時に<strong>端（剣先）や四つ折り面</strong>のロゴがよく見えます。実際の見え方を確認しましょう。</p>
+        <div class="sim-grid">
+          <div class="sim-card">
+            <h4>① 四つ折り・八つ折り（たたんだ状態 / 端の名入れ確認）</h4>
+            <div class="sim-canvas-box">
+              <canvas id="simFoldedCanvas" width="380" height="260"></canvas>
+            </div>
+            <p class="tiny-hint">贈答・販売時に一番上になる面です。右端または左端にロゴや名入れがあると綺麗に収まります。</p>
+          </div>
+          <div class="sim-card">
+            <h4>② 熨斗（のし）・帯巻きパッケージ状態</h4>
+            <div class="sim-canvas-box">
+              <canvas id="simNoshiCanvas" width="380" height="260"></canvas>
+            </div>
+            <p class="tiny-hint">記念品・粗品として白帯を巻いた時のイメージです。</p>
+          </div>
+          <div class="sim-card">
+            <h4>③ 掛け軸・タペストリー飾り状態</h4>
+            <div class="sim-canvas-box">
+              <canvas id="simHangingCanvas" width="380" height="260"></canvas>
+            </div>
+            <p class="tiny-hint">壁や暖簾として掛けた時の全体のバランスです。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- モーダル2：プロジェクト保存 / 読込 -->
+  <div id="projectModal" class="modal-backdrop hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>💾 デザインデータの保存・読み込み</h2>
+        <button type="button" class="modal-close" data-close="projectModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="export-option-card">
+          <h4>ファイルに保存（バックアップ）</h4>
+          <p>現在の手ぬぐいデザイン（配置したロゴ・文字・色設定すべて）を <code>.tenugui.json</code> ファイルとしてパソコンに保存します。いつでも続きから編集できます。</p>
+          <button type="button" id="downloadProjectJsonBtn" class="primary-btn">📥 プロジェクトファイルを保存 (.json)</button>
+        </div>
+        <div class="export-option-card">
+          <h4>保存したファイルを読み込む</h4>
+          <p>以前保存した <code>.tenugui.json</code> ファイルを読み込んで復元します。</p>
+          <input type="file" id="uploadProjectJsonInput" accept=".json" hidden />
+          <button type="button" id="triggerLoadJsonBtn" class="secondary-btn">📂 ファイルを選択して読み込む</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- モーダル3：入稿データ・高解像度画像出力 -->
+  <div id="exportModal" class="modal-backdrop hidden">
+    <div class="modal-content wide">
+      <div class="modal-header">
+        <h2>🖨️ 入稿データ・画像書き出し</h2>
+        <button type="button" class="modal-close" data-close="exportModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <!-- 入稿前チェックリスト -->
+        <div class="preflight-box" id="preflightBox">
+          <h4>✅ 入稿データ自動チェック（プリフライト）</h4>
+          <ul id="preflightList" class="preflight-list"></ul>
+        </div>
+
+        <div class="export-grid">
+          <div class="export-option-card featured">
+            <div class="card-badge">プリント業者入稿に最適</div>
+            <h4>① 入稿用・高解像度 PNG（塗り足し +10mm 付）</h4>
+            <p>オリジナル手ぬぐい印刷業者の入稿規格に対応した高解像度データ（塗り足し領域込・ガイド線なし・布地テクスチャなし）を出力します。</p>
+            <div class="field-row">
+              <label>出力解像度:</label>
+              <select id="exportDpiSelect">
+                <option value="200">高解像度 200 dpi (推奨・約 7244×2913 px)</option>
+                <option value="300">超高解像度 300 dpi (本印刷用・約 10866×4370 px)</option>
+                <option value="150">標準 150 dpi (軽量入稿用・約 5433×2185 px)</option>
+              </select>
+            </div>
+            <label class="checkbox-row" style="margin:8px 0;">
+              <input type="checkbox" id="exportIncludeTrimMarks" />
+              <span>トンボ（断裁トリムマーク）を四隅に描画する</span>
+            </label>
+            <button type="button" id="exportPrintPngBtn" class="primary-btn full-width">📥 入稿用 高解像度PNGをダウンロード</button>
+          </div>
+
+          <div class="export-option-card">
+            <h4>② 仕上がりイメージ確認用 PNG（実寸枠・質感つき）</h4>
+            <p>布地の織り目感を含めた仕上がりサイズ（塗り足し部分をカットした状態）の画像です。お客様や仲間への確認用・SNS共有用に最適です。</p>
+            <button type="button" id="exportPreviewPngBtn" class="secondary-btn full-width">📸 完成イメージPNGをダウンロード</button>
+          </div>
+
+          <div class="export-option-card">
+            <h4>③ ベクター SVG ファイル出力</h4>
+            <p>Illustrator等で再編集したり、シルクスクリーン・本染め（注染）業者へ渡せるスケーラブルなSVGデータを出力します。</p>
+            <button type="button" id="exportSvgBtn" class="secondary-btn full-width">📐 SVGベクターデータをダウンロード</button>
+          </div>
+
+          <div class="export-option-card">
+            <h4>④ 発注仕様書・原寸確認シート（印刷 / PDF保存）</h4>
+            <p>デザイン全体図・使用している伝統色コード（HEX/RGB）・サイズ規格・色数をまとめた仕様書を開きます（ブラウザの「PDFに保存」またはプリンター印刷に対応）。</p>
+            <button type="button" id="exportSpecSheetBtn" class="secondary-btn full-width">📄 発注仕様書（PDF/印刷）を開く</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- スクリプト群 -->
+  <script src="js/data.js"></script>
+  <script src="js/patterns.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
