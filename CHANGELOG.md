@@ -1,5 +1,10 @@
 # Changelog (手ぬぐい工房 - Tenugui Studio)
 
+## [1.0.1] - 2026-10-21
+
+### Fixed
+- `手ぬぐい工房を開く.bat` 内の日本語文字列（UTF-8）と括弧により `cmd.exe` が構文エラーで停止していた問題を修正（ASCIIコマンドによる `cd /d "%~dp0"` + `start "" "index.html"` に変更）。
+
 ## [1.0.0] - 2026-10-21
 
 ### Added
