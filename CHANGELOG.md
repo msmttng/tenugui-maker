@@ -1,5 +1,10 @@
 # Changelog (手ぬぐい工房 - Tenugui Studio)
 
+## [1.0.2] - 2026-10-21
+
+### Fixed
+- `手ぬぐい工房を開く.bat` の改行コードを CRLF に統一し、Windows の `.html` 関連付け設定に依存せず Google Chrome（または Microsoft Edge）の専用アプリウィンドウモード（`--app`）で直接起動するよう修正。
+
 ## [1.0.1] - 2026-10-21
 
 ### Fixed
