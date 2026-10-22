@@ -1,5 +1,21 @@
 # Changelog (手ぬぐい工房 - Tenugui Studio)
 
+## [1.3.0] - 2026-10-22
+
+### Added
+- **「大小あられ配置 (`daishou_arare_kit`)」システムとの完全マージ＆パラメトリック機能拡張**
+  - アップロードされた `daishou_arare_kit` (`arare_app.html` / `app_template.html` / `build_app.py`) に「仲羽田（江戸角字・6箇所ズレ完全修正版）」と「丸紋『仲はねだ』（法線オフセット付きベクター輪郭）」を統合した [arare_app.html](file:///C:/Users/masam/.gemini/antigravity/scratch/tenugui-maker/arare_app.html)（および `daishou_arare_kit/` 一式）を追加。
+  - **仲羽田（江戸角字）の自在なパラメトリック変更機能**を実装：
+    - 文字の色・地色（背景色）の自由変更、伝統色パレット、ワンクリック入れ替え（白抜き⇄色刷り反転）、地色表示/書き出しON/OFF。
+    - 文字サイズ（基準mm）・全体倍率（25%〜300%）・繰り返し密度（40%〜250%）。
+    - **線の太さ・細さ（20%極細〜220%極太）**：角やT字の噛み合わせが一切破綻しない数理パラメトリック構造。
+    - 文字内の抜け幅（スリット幅 35%〜180%）、文字の横間隔（−15%〜+100%）、段の縦間隔（0%〜+80%）、傾き角度（−90°〜+90°）、横・縦の位置ずらし（−100〜+100mm）。
+  - **丸紋「仲はねだ」のベクター化＆パラメーター変更**：
+    - 丸紋の文字・枠色、中抜き背景色、サイズ（直径15〜240mm）、線の太さ（法線オフセット −80%〜+120%）、配置位置（X/Y%）を自由に変更可能。
+  - **Illustrator 入稿対応の書き出し機能**：
+    - クリップボードへの実寸mm SVGコピー（Illustratorへ直接ペースト可能）、SVG保存、Illustrator 8形式 `.ai` 保存（CMYK・`Background_Navy` / `Arare_Dots` / `HanedaNaka_Kakuji` / `Nakahaneda_Crest` レイヤー分け・Sutherland-Hodgman 矩形クリッピング済）、`.jsx` スクリプト保存、300dpi 高解像度PNG保存を搭載。
+  - 『手ぬぐい工房』本体（`index.html` / `js/patterns.js` / `js/app.js`）にも仲羽田の密度・細さ・抜け幅・横間隔・縦間隔・角度スライダーと、`arare_app.html` へのワンクリック起動ボタンを追加。
+
 ## [1.2.0] - 2026-10-21
 
 ### Added

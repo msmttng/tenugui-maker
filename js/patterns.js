@@ -934,38 +934,71 @@ window.TenuguiPatterns = {
    * @param {number} rh 描画領域H
    * @param {number} angleDeg 回転角度 (-30.15 または 0)
    */
-  drawHanedaNakaDirect(ctx, colorHex, scaleRatio, rx, ry, rw, rh, angleDeg = -30.15) {
-    const H_ROW = 216;
-    const DX_ROW = 216;
-    const PX = 681;
+  drawHanedaNakaDirect(ctx, colorHex, scaleRatio, rx, ry, rw, rh, angleDeg = -30.15, params = {}) {
+    const weightPct = params.weightPct ?? 100;
+    const densityPct = params.densityPct ?? 100;
+    const innerGapPct = params.innerGapPct ?? 100;
+    const colGapPct = params.colGapPct ?? 0;
+    const rowGapPct = params.rowGapPct ?? 0;
+
+    const Base = 216;
+    const t = 15 * (weightPct / 100);
+    const colAdd = colGapPct * 2.16;
+    const rowAdd = rowGapPct * 2.16;
+    const gapRatio = innerGapPct / 100;
+
+    const H_ROW = Base + rowAdd;
+    const DX_ROW = Base + colAdd * 0.5;
+    const PX = 681 + colAdd * 1.5;
+
+    const g_ta = Math.max(4, 28.5 * gapRatio - (t - 15) * 0.25);
+    const nin_shift = colAdd * 0.25;
+    const x_ta_r = Base + t;
+    const cx_nin1 = 284.5 + nin_shift;
+    const cx_nin2 = 263.5 + nin_shift;
+    const cy_nin = 85.5;
+
+    const chu_shift = colAdd * 0.75;
+    const x_chu_l = 321 + chu_shift;
+    const w_chu = 144 + colAdd * 0.25;
+    const x_chu_r = x_chu_l + w_chu;
+    const cx_chu = x_chu_l + w_chu / 2;
+    const y_chu_t = Math.max(4, 18 * gapRatio);
+    const h_chu = Math.max(3 * t, 166 - (y_chu_t - 18));
+
+    const x_ha_l = -Base - colAdd * 0.5;
+    const cx_ha = -121.5 - colAdd * 0.25;
+    const g_ha_l = Math.max(4, 29.5 * gapRatio);
+    const w_wing_l = Math.max(t, (cx_ha - t / 2) - x_ha_l - g_ha_l);
+
+    const right_space = 0 - (cx_ha + t / 2);
+    const g_ha_r = Math.max(4, 28 * gapRatio);
+    const w_wing_r = Math.max(t, right_space - 2 * g_ha_r);
+    const x_wing_r = (cx_ha + t / 2) + (right_space - w_wing_r) / 2;
+
     const RECTS = [
-      // 1. 「田」と左隣「羽」を貫く上辺横棒
-      [-216, 0, 447, 15],
-      // 2. 「田」下辺横棒・左縦棒・中縦棒・右縦棒・中央浮き横棒
-      [0, 216, 231, 15],
-      [0, 0, 15, 231],
-      [108, 0, 15, 231],
-      [216, 0, 15, 231],
-      [43.5, 108, 144, 15],
-      // 3. 「仲」の「亻」（にんべん）— 田の右壁(231)に隙間なく直結
-      [231, 78, 61, 15],
-      [277, 0, 15, 93],
-      [256, 78, 15, 153],
-      // 4. 「仲」の「中」
-      [321, 18, 144, 15],
-      [321, 169, 144, 15],
-      [321, 18, 15, 166],
-      [450, 18, 15, 166],
-      [385.5, 0, 15, 231],
-      // 5. 「羽」（田の左側 x: -216..0 の領域、線幅15均一・左右高さ完全揃い）
-      [-129, 0, 15, 216],
-      [-216, 59, 58, 15],
-      [-216, 150, 58, 15],
-      [-86, 59, 58, 15],
-      [-86, 150, 58, 15]
+      [x_ha_l, 0, (Base + t) - x_ha_l, t],
+      [0, Base, Base + t, t],
+      [0, 0, t, Base + t],
+      [Base / 2, 0, t, Base + t],
+      [Base, 0, t, Base + t],
+      [t + g_ta, Base / 2, Math.max(t, Base - t - 2 * g_ta), t],
+      [x_ta_r, cy_nin - t / 2, (cx_nin1 + t / 2) - x_ta_r, t],
+      [cx_nin1 - t / 2, 0, t, cy_nin + t / 2],
+      [cx_nin2 - t / 2, cy_nin - t / 2, t, H_ROW + t - (cy_nin - t / 2)],
+      [x_chu_l, y_chu_t, w_chu, t],
+      [x_chu_l, y_chu_t + h_chu - t, w_chu, t],
+      [x_chu_l, y_chu_t, t, h_chu],
+      [x_chu_r - t, y_chu_t, t, h_chu],
+      [cx_chu - t / 2, 0, t, H_ROW + t],
+      [cx_ha - t / 2, 0, t, H_ROW],
+      [x_ha_l, 66.5 - t / 2, w_wing_l, t],
+      [x_ha_l, 157.5 - t / 2, w_wing_l, t],
+      [x_wing_r, 66.5 - t / 2, w_wing_r, t],
+      [x_wing_r, 157.5 - t / 2, w_wing_r, t]
     ];
 
-    const uScale = 0.25 * Math.max(0.2, scaleRatio);
+    const uScale = (0.25 * Math.max(0.2, scaleRatio)) / (densityPct / 100);
     const rad = (angleDeg * Math.PI) / 180;
 
     ctx.save();

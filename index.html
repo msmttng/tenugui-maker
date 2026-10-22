@@ -70,6 +70,7 @@
       <button type="button" id="undoBtn" class="icon-btn" title="元に戻す (Ctrl+Z)" disabled>↶ 戻す</button>
       <button type="button" id="redoBtn" class="icon-btn" title="やり直す (Ctrl+Y)" disabled>↷ やり直し</button>
       <div class="divider-v"></div>
+      <a href="arare_app.html" class="secondary-btn" style="text-decoration:none;display:inline-flex;align-items:center;" title="仲羽田（角字）＆大小あられ配置・Illustrator(.ai/SVG)専用スタジオを開く">📐 仲羽田・あられ専用スタジオ (.ai出力)</a>
       <button type="button" id="foldSimBtn" class="secondary-btn" title="畳んだ時の見え方や頭に巻いたイメージを確認">🧣 畳み・着用プレビュー</button>
       <button type="button" id="projectSaveBtn" class="secondary-btn" title="編集中のプロジェクトをファイルに保存">💾 保存/読込</button>
       <button type="button" id="exportModalBtn" class="primary-btn">🖨️ 入稿・画像出力</button>
@@ -144,18 +145,48 @@
 
             <div id="patternOptionsBox" class="sub-options">
               <div class="field-row">
-                <label>柄の色</label>
+                <label>柄（文字）の色</label>
                 <div class="color-picker-row compact">
                   <input type="color" id="patternColorInput" value="#165e83" />
                   <input type="text" id="patternColorHex" value="#165E83" class="hex-input" />
+                  <button type="button" id="swapBgPatternBtn" class="tiny-btn" title="地色と柄（仲羽田の文字色）を入れ替えます">地色と入替 ⇄</button>
                 </div>
               </div>
               <div id="patternTraditionalPalette" class="swatch-grid mini"></div>
 
               <div class="field-row">
-                <label>柄の大きさ <span id="patternScaleVal">100%</span></label>
-                <input type="range" id="patternScaleInput" min="30" max="300" value="100" />
+                <label>柄の大きさ（サイズ） <span id="patternScaleVal">100%</span></label>
+                <input type="range" id="patternScaleInput" min="25" max="300" value="100" />
               </div>
+
+              <!-- 仲羽田（江戸角字）専用：密度・細さ・間隔・角度パラメーター -->
+              <div id="hanedaParamBox" style="border-top:1px dashed #cbd5e1; margin-top:8px; padding-top:8px;">
+                <div class="field-row">
+                  <label>繰り返し密度 <span id="kakuDensityVal">100%</span></label>
+                  <input type="range" id="kakuDensityInput" min="40" max="250" value="100" />
+                </div>
+                <div class="field-row">
+                  <label>線の太さ（細さ） <span id="kakuWeightVal">100%</span></label>
+                  <input type="range" id="kakuWeightInput" min="20" max="220" value="100" />
+                </div>
+                <div class="field-row">
+                  <label>文字内の抜け幅 <span id="kakuInnerGapVal">100%</span></label>
+                  <input type="range" id="kakuInnerGapInput" min="35" max="180" value="100" />
+                </div>
+                <div class="field-row">
+                  <label>文字の横間隔 <span id="kakuColGapVal">0%</span></label>
+                  <input type="range" id="kakuColGapInput" min="-15" max="100" value="0" />
+                </div>
+                <div class="field-row">
+                  <label>段の縦間隔 <span id="kakuRowGapVal">0%</span></label>
+                  <input type="range" id="kakuRowGapInput" min="0" max="80" value="0" />
+                </div>
+                <div class="field-row">
+                  <label>傾き角度 <span id="kakuAngleVal">-30.15°</span></label>
+                  <input type="range" id="kakuAngleInput" min="-90" max="90" step="0.05" value="-30.15" />
+                </div>
+              </div>
+
               <div class="field-row">
                 <label>柄の濃さ（透明度） <span id="patternOpacityVal">100%</span></label>
                 <input type="range" id="patternOpacityInput" min="5" max="100" value="100" />

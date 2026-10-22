@@ -1,0 +1,1042 @@
+<title>仲羽田（江戸角字）＆ 大小あられ 手ぬぐい配置・入稿データ作成</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* 左に操作盤、右に反物（手ぬぐい）の実寸比プレビュー。羽田納戸・藍染を主色とした和モダンUI */
+:root{
+  --bg:#eef0f4; --panel:#ffffff; --fg:#1b2133; --muted:#5d6577; --line:#d6dae3;
+  --ai:#046e7e; --ai-soft:#e0f2f4; --warn:#a4570a;
+  --f-disp:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151d; --panel:#1a1f2b; --fg:#e6e9f0; --muted:#9aa2b4; --line:#2d3444;
+  --ai:#38bdf8; --ai-soft:#1e2f3d; --warn:#e3a35c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151d; --panel:#1a1f2b; --fg:#e6e9f0; --muted:#9aa2b4; --line:#2d3444;
+  --ai:#38bdf8; --ai-soft:#1e2f3d; --warn:#e3a35c; color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:13.5px;line-height:1.5}
+.wrap{display:grid;grid-template-columns:380px minmax(0,1fr);gap:18px;height:100%;box-sizing:border-box;
+  padding-block:14px;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow-y:auto;display:flex;flex-direction:column;min-width:0}
+header{padding:16px 18px 12px;border-bottom:1px solid var(--line)}
+h1{font-family:var(--f-disp);font-weight:600;font-size:20px;margin:0;letter-spacing:.05em;text-wrap:balance}
+header p{margin:4px 0 0;color:var(--muted);font-size:12px}
+section{padding:13px 18px;border-bottom:1px solid var(--line);display:grid;gap:9px}
+h2{font-size:11.5px;letter-spacing:.12em;color:var(--muted);margin:0;font-weight:700;display:flex;align-items:center;justify-content:space-between}
+h2 .badge{font-size:10.5px;background:var(--ai-soft);color:var(--ai);padding:1px 7px;border-radius:99px;letter-spacing:0}
+.row{display:grid;grid-template-columns:102px minmax(0,1fr) 68px;align-items:center;gap:8px}
+.row label{font-size:12.5px}
+.row output{font-variant-numeric:tabular-nums;text-align:right;font-size:12.5px;color:var(--fg);font-weight:500}
+input[type=range]{width:100%;accent-color:var(--ai);cursor:pointer}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field{display:grid;gap:3px}
+.field span{font-size:11.5px;color:var(--muted)}
+input[type=number],select{width:100%;box-sizing:border-box;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:999px;padding:4px 11px;font:inherit;font-size:12px;cursor:pointer;transition:all .12s}
+.chip[aria-pressed=true]{background:var(--ai);border-color:var(--ai);color:#ffffff;font-weight:500}
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.mode-tabs .chip{text-align:center;padding:6px 6px;border-radius:7px;font-weight:500}
+input[type=color]{width:34px;height:28px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer}
+.cgroup{display:grid;gap:6px;padding:8px 10px;background:var(--bg);border-radius:8px;border:1px solid var(--line)}
+.chead{display:grid;grid-template-columns:minmax(0,1fr) 34px 82px;gap:8px;align-items:center}
+.clabel{font-size:12.5px;font-weight:600}
+.hex{width:100%;box-sizing:border-box;padding:4px 7px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg);font:inherit;font-size:12.5px;font-variant-numeric:tabular-nums;text-transform:uppercase}
+.hex[aria-invalid=true]{border-color:var(--warn)}
+.sw{display:flex;flex-wrap:wrap;gap:5px}
+.sw button{width:23px;height:23px;border-radius:50%;border:1px solid rgba(0,0,0,.2);padding:0;cursor:pointer;position:relative}
+.sw button[aria-pressed=true]{outline:2px solid var(--ai);outline-offset:2px}
+.crow2{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chk{display:flex;gap:6px;align-items:center;font-size:12.5px;cursor:pointer}
+.btn{font:inherit;font-weight:600;border-radius:7px;padding:8px 11px;cursor:pointer;border:1px solid var(--ai);background:var(--ai);color:#ffffff;font-size:12.5px}
+.btn.ghost{background:transparent;color:var(--ai)}
+.btn:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.actions .wide{grid-column:1/-1}
+.note{font-size:11.5px;color:var(--muted);margin:0;line-height:1.45}
+.msg{font-size:12px;min-height:1.3em;margin:0;font-weight:500}
+.msg.warn{color:var(--warn)}
+.stage{display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px;min-width:0;min-height:0}
+.stats{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;font-size:12.5px;color:var(--muted);background:var(--panel);padding:8px 14px;border-radius:8px;border:1px solid var(--line)}
+.stats b{color:var(--fg);font-weight:700;font-variant-numeric:tabular-nums;font-size:14px}
+.canvasbox{min-height:0;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:6px}
+canvas{display:block;max-width:100%;max-height:100%;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,40,.18)}
+.subbox{display:grid;gap:8px;padding:9px 10px;background:var(--bg);border-radius:8px;border:1px solid var(--line)}
+@media (max-width:820px){
+  html,body{height:auto}
+  .wrap{grid-template-columns:1fr;height:auto}
+  .stage{order:-1}
+  .canvasbox{height:64vh}
+}
+</style>
+
+<div class="wrap">
+  <aside class="panel">
+    <header>
+      <h1>仲羽田（角字）＆ 大小あられ</h1>
+      <p>文字の色・背景色・サイズ・密度・線の細さを自在に調整し、Illustrator用（SVG / .ai / .jsx / PNG）に書き出します。</p>
+    </header>
+
+    <!-- 1. 柄モード切替 -->
+    <section aria-labelledby="h-mode">
+      <h2 id="h-mode"><span>文様モード</span><span class="badge">6箇所のズレ完全修正済</span></h2>
+      <div class="mode-tabs" id="modeTabs">
+        <button class="chip" data-mode="haneda" aria-pressed="true">仲羽田（角字）</button>
+        <button class="chip" data-mode="arare" aria-pressed="false">大小あられ</button>
+        <button class="chip" data-mode="both" aria-pressed="false">角字＋あられ</button>
+      </div>
+    </section>
+
+    <!-- 2. 布の大きさ -->
+    <section aria-labelledby="h-size">
+      <h2 id="h-size"><span>布の大きさ</span><button class="chip" id="flipOrient" style="padding:2px 8px;font-size:11px">縦横入替 ⇄</button></h2>
+      <div class="chips" id="presets">
+        <button class="chip" data-w="350" data-h="900" aria-pressed="true">縦 35×90</button>
+        <button class="chip" data-w="900" data-h="350" aria-pressed="false">横 90×35</button>
+        <button class="chip" data-w="330" data-h="900" aria-pressed="false">33×90</button>
+        <button class="chip" data-w="350" data-h="1000" aria-pressed="false">面手ぬぐい 35×100</button>
+        <button class="chip" data-w="350" data-h="450" aria-pressed="false">ハーフ 35×45</button>
+        <button class="chip" data-w="450" data-h="450" aria-pressed="false">ハンカチ 45×45</button>
+      </div>
+      <div class="pair">
+        <label class="field"><span>幅 mm</span><input type="number" id="W" min="50" max="2000" step="1" value="350"></label>
+        <label class="field"><span>丈 mm</span><input type="number" id="H" min="50" max="3000" step="1" value="900"></label>
+      </div>
+    </section>
+
+    <!-- 3. 色（地色・仲羽田の文字色・あられ色） -->
+    <section aria-labelledby="h-color">
+      <h2 id="h-color">色（背景色・仲羽田の文字色）</h2>
+      <div class="cgroup">
+        <div class="chead"><span class="clabel">地色（背景の色）</span>
+          <input type="color" id="bgColor" value="#046e7e" aria-label="地色を選ぶ">
+          <input type="text" id="bgHex" class="hex" maxlength="7" spellcheck="false" aria-label="地色のカラーコード"></div>
+        <div class="sw" id="bgSw"></div>
+      </div>
+      <div class="cgroup" id="kakuColorGroup">
+        <div class="chead"><span class="clabel">仲羽田の文字色</span>
+          <input type="color" id="kakuColor" value="#ffffff" aria-label="仲羽田の文字色を選ぶ">
+          <input type="text" id="kakuHex" class="hex" maxlength="7" spellcheck="false" aria-label="仲羽田の文字色カラーコード"></div>
+        <div class="sw" id="kakuSw"></div>
+      </div>
+      <div class="cgroup" id="dotColorGroup" hidden>
+        <div class="chead"><span class="clabel">あられ（粒）の色</span>
+          <input type="color" id="dotColor" value="#ffffff" aria-label="粒の色を選ぶ">
+          <input type="text" id="dotHex" class="hex" maxlength="7" spellcheck="false" aria-label="粒のカラーコード"></div>
+        <div class="sw" id="dotSw"></div>
+      </div>
+      <div class="crow2">
+        <button class="chip" id="swap">地色と文字（柄）を入れ替え</button>
+        <label class="chk"><input type="checkbox" id="showBg" checked>地色を表示・書き出し</label>
+      </div>
+      <p class="note" id="cmyk-note"></p>
+    </section>
+
+    <!-- 4. 仲羽田（江戸角字）のサイズ・密度・細さ・角度調整 -->
+    <section id="sec-haneda" aria-labelledby="h-haneda">
+      <h2 id="h-haneda"><span>仲羽田のサイズ・密度・細さ</span><span class="badge" id="kaku-mm-badge">線幅 3.3mm</span></h2>
+      <div class="row"><label for="kakuSize">文字サイズ(基準)</label><input type="range" id="kakuSize" min="12" max="150" step="0.5" value="48"><output for="kakuSize" id="kakuSize-o"></output></div>
+      <div class="row"><label for="kakuScale">全体倍率</label><input type="range" id="kakuScale" min="25" max="300" step="1" value="100"><output for="kakuScale" id="kakuScale-o"></output></div>
+      <div class="row"><label for="kakuDensity">繰り返し密度</label><input type="range" id="kakuDensity" min="40" max="250" step="1" value="100"><output for="kakuDensity" id="kakuDensity-o"></output></div>
+      <div class="row"><label for="kakuWeight">線の太さ（細さ）</label><input type="range" id="kakuWeight" min="20" max="220" step="1" value="100"><output for="kakuWeight" id="kakuWeight-o"></output></div>
+      <div class="row"><label for="kakuInnerGap">文字内の抜け幅</label><input type="range" id="kakuInnerGap" min="35" max="180" step="1" value="100"><output for="kakuInnerGap" id="kakuInnerGap-o"></output></div>
+      <div class="row"><label for="kakuColGap">文字の横間隔</label><input type="range" id="kakuColGap" min="-15" max="100" step="1" value="0"><output for="kakuColGap" id="kakuColGap-o"></output></div>
+      <div class="row"><label for="kakuRowGap">段の縦間隔</label><input type="range" id="kakuRowGap" min="0" max="80" step="1" value="0"><output for="kakuRowGap" id="kakuRowGap-o"></output></div>
+      <p class="note">線を極細（20%）〜極太（220%）に変えても角の噛み合わせが一切ズレないパラメトリック構造です。</p>
+
+      <div class="row"><label for="kakuAngle">傾き角度</label><input type="range" id="kakuAngle" min="-90" max="90" step="0.05" value="-30.15"><output for="kakuAngle" id="kakuAngle-o"></output></div>
+      <div class="chips" id="anglePresets">
+        <button class="chip" data-ang="-30.15">元柄 −30.15°</button>
+        <button class="chip" data-ang="0">水平 0°</button>
+        <button class="chip" data-ang="-45">斜め −45°</button>
+        <button class="chip" data-ang="30.15">逆斜め +30.15°</button>
+        <button class="chip" data-ang="90">垂直 90°</button>
+      </div>
+      <div class="row"><label for="kakuOffX">横の位置ずらし</label><input type="range" id="kakuOffX" min="-100" max="100" step="1" value="0"><output for="kakuOffX" id="kakuOffX-o"></output></div>
+      <div class="row"><label for="kakuOffY">縦の位置ずらし</label><input type="range" id="kakuOffY" min="-100" max="100" step="1" value="0"><output for="kakuOffY" id="kakuOffY-o"></output></div>
+    </section>
+
+    <!-- 5. 丸紋「仲はねだ」＆ 下部帯（オプション） -->
+    <section id="sec-crest" aria-labelledby="h-crest">
+      <h2 id="h-crest">丸紋「仲はねだ」・下部帯（任意）</h2>
+      <div class="crow2">
+        <label class="chk"><input type="checkbox" id="showCrest">丸紋「仲はねだ」を入れる</label>
+        <label class="chk"><input type="checkbox" id="showBand">下部に無地帯を入れる</label>
+      </div>
+      <div class="subbox" id="crestBox" hidden>
+        <div class="row"><label for="crestSize">丸紋サイズ(直径)</label><input type="range" id="crestSize" min="15" max="240" step="1" value="62"><output for="crestSize" id="crestSize-o"></output></div>
+        <div class="row"><label for="crestWeight">丸紋の線の太さ</label><input type="range" id="crestWeight" min="-80" max="120" step="5" value="0"><output for="crestWeight" id="crestWeight-o"></output></div>
+        <div class="row"><label for="crestX">丸紋の横位置</label><input type="range" id="crestX" min="5" max="95" step="0.5" value="50"><output for="crestX" id="crestX-o"></output></div>
+        <div class="row"><label for="crestY">丸紋の縦位置</label><input type="range" id="crestY" min="5" max="95" step="0.5" value="80"><output for="crestY" id="crestY-o"></output></div>
+        <div class="chead"><span class="clabel">丸紋の文字・枠色</span>
+          <input type="color" id="crestFg" value="#877028">
+          <input type="text" id="crestFgHex" class="hex" maxlength="7" value="#877028"></div>
+        <div class="chead"><span class="clabel">丸紋の中抜き背景</span>
+          <input type="color" id="crestBg" value="#ffffff">
+          <input type="text" id="crestBgHex" class="hex" maxlength="7" value="#FFFFFF"></div>
+      </div>
+      <div class="subbox" id="bandBox" hidden>
+        <div class="row"><label for="bandH">下部帯の高さ</label><input type="range" id="bandH" min="10" max="300" step="1" value="52"><output for="bandH" id="bandH-o"></output></div>
+      </div>
+    </section>
+
+    <!-- 6. 大小あられ調整セクション -->
+    <section id="sec-arare" aria-labelledby="h-dist" hidden>
+      <h2 id="h-dist">大小あられ：数と散らばり・大きさ</h2>
+      <div class="row"><label for="count">粒の数</label><input type="range" id="count" min="50" max="4000" step="10" value="1220"><output for="count" id="count-o"></output></div>
+      <div class="row"><label for="gap">最小すき間</label><input type="range" id="gap" min="0" max="15" step="0.1" value="2.5"><output for="gap" id="gap-o"></output></div>
+      <div class="row"><label for="spread">ばらつき</label><input type="range" id="spread" min="0" max="100" step="1" value="15"><output for="spread" id="spread-o"></output></div>
+      <div class="row"><label for="grad">上下の濃淡</label><input type="range" id="grad" min="-100" max="100" step="1" value="0"><output for="grad" id="grad-o"></output></div>
+      <div class="row"><label for="dmin">小粒（直径）</label><input type="range" id="dmin" min="0.5" max="30" step="0.1" value="3.5"><output for="dmin" id="dmin-o"></output></div>
+      <div class="row"><label for="dmax">大粒（直径）</label><input type="range" id="dmax" min="0.5" max="40" step="0.1" value="11"><output for="dmax" id="dmax-o"></output></div>
+      <div class="row"><label for="bigratio">大粒の割合</label><input type="range" id="bigratio" min="0" max="100" step="1" value="32"><output for="bigratio" id="bigratio-o"></output></div>
+      <div class="row"><label for="scale">あられ全体倍率</label><input type="range" id="scale" min="25" max="300" step="1" value="100"><output for="scale" id="scale-o"></output></div>
+      <div class="chips" id="shape">
+        <button class="chip" data-v="orig" aria-pressed="true">元柄の形（160種）</button>
+        <button class="chip" data-v="circle" aria-pressed="false">正円</button>
+      </div>
+    </section>
+
+    <!-- 7. 端の扱い（裁ち落とし / 内側余白） -->
+    <section aria-labelledby="h-edge">
+      <h2 id="h-edge">布の端の扱い</h2>
+      <div class="chips" id="edge">
+        <button class="chip" data-v="bleed" aria-pressed="true">端ではみ出す（全面・裁ち落とし）</button>
+        <button class="chip" data-v="inside" aria-pressed="false">内側に収める（額縁余白）</button>
+      </div>
+      <div class="row" id="margin-row" hidden><label for="margin">外周余白</label><input type="range" id="margin" min="0" max="60" step="0.5" value="10"><output for="margin" id="margin-o"></output></div>
+    </section>
+
+    <!-- 8. 配置と書き出し -->
+    <section aria-labelledby="h-out">
+      <h2 id="h-out">配置と書き出し（Illustrator / 印刷入稿）</h2>
+      <div class="actions">
+        <button class="btn ghost" id="reroll">位置を並べ直す</button>
+        <button class="btn ghost" id="reset">初期設定に戻す</button>
+        <button class="btn wide" id="copySvg">SVGをコピー（Illustratorに貼り付け）</button>
+        <button class="btn" id="saveSvg" hidden>SVGで保存</button>
+        <button class="btn" id="saveAi" hidden>.ai を保存</button>
+        <button class="btn ghost" id="saveJsx">.jsx (AIスクリプト)</button>
+        <button class="btn ghost" id="savePng">300dpi PNG保存</button>
+      </div>
+      <p class="msg" id="msg" role="status"></p>
+      <p class="note">「SVGをコピー」はIllustratorの新規ドキュメントで「編集 → ペースト」するとmm実寸ベクターで貼り付きます。.ai は「HanedaNaka_Kakuji」「Arare_Dots」「Nakahaneda_Crest」「Background_Navy」のレイヤー分け済みCMYKデータです。</p>
+    </section>
+  </aside>
+
+  <main class="stage">
+    <div class="stats" aria-live="polite">
+      <span>布 <b id="s-size">35×90</b> cm</span>
+      <span id="stat-kaku-wrap">仲羽田 <b id="s-kaku-pitch">48.0</b> mmピッチ（線幅 <b id="s-kaku-stroke">3.3</b> mm / <b id="s-kaku-cells">0</b> 組）</span>
+      <span id="stat-arare-wrap" hidden>あられ <b id="s-count">0</b> 粒（直径 <b id="s-d">–</b> mm）</span>
+      <span>柄の面積比 <b id="s-cov">0</b>%</span>
+    </div>
+    <div class="canvasbox" id="box"><canvas id="cv" aria-label="手ぬぐいデザインのプレビュー"></canvas></div>
+  </main>
+</div>
+
+<script>
+/*__LIB__*/
+/*__EMBLEM__*/
+(function(){
+const $=id=>document.getElementById(id);
+const DEF={
+  mode:'haneda', // 'haneda' | 'arare' | 'both'
+  W:350, H:900,
+  bgColor:'#046e7e', kakuColor:'#ffffff', dotColor:'#ffffff', showBg:true,
+  // 仲羽田（江戸角字）パラメーター
+  kakuSize:48, kakuScale:100, kakuDensity:100, kakuWeight:100,
+  kakuInnerGap:100, kakuColGap:0, kakuRowGap:0,
+  kakuAngle:-30.15, kakuOffX:0, kakuOffY:0,
+  // 丸紋「仲はねだ」＆下部帯パラメーター
+  showCrest:false, crestSize:62, crestWeight:0, crestX:50, crestY:80,
+  crestFg:'#877028', crestBg:'#ffffff',
+  showBand:false, bandH:52,
+  // 大小あられパラメーター
+  count:1220, gap:2.5, spread:15, grad:0, dmin:3.5, dmax:11, bigratio:32, scale:100, shape:'orig',
+  // 共通
+  edge:'bleed', margin:10, seed:1
+};
+let S=Object.assign({},DEF);
+try{const s=JSON.parse(localStorage.getItem('haneda-arare-settings')||'null'); if(s) S=Object.assign({},DEF,s);}catch(e){}
+function persist(){try{localStorage.setItem('haneda-arare-settings',JSON.stringify(S));}catch(e){}}
+
+/* ---- 1. 大小あられ形状ライブラリ (16点スプライン) ---- */
+const SHAPES=LIB.map(a=>{const p=[];for(let i=0;i<a.length;i+=2)p.push([a[i]/100,a[i+1]/100]);
+  let m=0;for(const q of p)m=Math.max(m,Math.hypot(q[0],q[1]));return {p,maxr:m};});
+const CIRCLE=(()=>{const p=[];for(let i=0;i<16;i++){const t=i/16*Math.PI*2;p.push([Math.cos(t),Math.sin(t)]);}return {p,maxr:1};})();
+
+/* ---- 2. 丸紋「仲はねだ」ベクター輪郭 (法線ベクトル付きで太さ・細さ変更に対応) ---- */
+const EMBLEM_LOOPS=(typeof EMBLEM!=='undefined'&&EMBLEM.loops?EMBLEM.loops:[]).map(arr=>{
+  const pts=[];
+  for(let i=0;i<arr.length;i+=2) pts.push([arr[i]/1000, arr[i+1]/1000]);
+  const n=pts.length, norms=[];
+  for(let i=0;i<n;i++){
+    const p0=pts[(i-1+n)%n], p2=pts[(i+1)%n];
+    const dx=p2[0]-p0[0], dy=p2[1]-p0[1], len=Math.hypot(dx,dy)||1;
+    // 時計回りループに対する外向き単位法線 (dy, -dx)
+    norms.push([dy/len, -dx/len]);
+  }
+  return {pts, norms};
+});
+
+function getCrestBeziersMm(){
+  if(!S.showCrest) return null;
+  const cx = S.W * (S.crestX / 100);
+  const cy = S.H * (S.crestY / 100);
+  const rad = S.crestSize / 2;
+  // 太さオフセット（正規化空間での法線移動量: -80..+120 -> -0.012..+0.018）
+  const delta = (S.crestWeight / 100) * 0.015;
+  const loops = EMBLEM_LOOPS.map(({pts, norms})=>{
+    const a = pts.map(([px, py], i)=>[
+      cx + (px + norms[i][0]*delta) * rad,
+      cy + (py + norms[i][1]*delta) * rad
+    ]);
+    return {a, b: beziers(a)};
+  });
+  return {cx, cy, rad, bgRad: rad * 0.865, loops};
+}
+
+/* ---- 3. 仲羽田（江戸角字）パラメトリック生成＆ポリゴンクリッピング ---- */
+// 線を極細〜極太、密度を疎〜密に変えても一切の隙間・段差が出ない数理格子セル定義
+function buildKakuCellRects(t, colAdd, rowAdd, gapRatio){
+  const Base = 216;
+  const H_ROW = Base + rowAdd;
+  const DX_ROW = Base + colAdd * 0.5;
+  const PX = 681 + colAdd * 1.5;
+
+  // 「田」の中央浮き横棒の左右スリット幅
+  const g_ta = Math.max(4, 28.5 * gapRatio - (t - 15) * 0.25);
+  const w_ta_mid = Math.max(t, Base - t - 2 * g_ta);
+
+  // 「仲」のにんべん (田の右壁 Base+t に隙間ゼロで直結)
+  const nin_shift = colAdd * 0.25;
+  const x_ta_r = Base + t;
+  const cx_nin1 = 284.5 + nin_shift;
+  const cx_nin2 = 263.5 + nin_shift;
+  const cy_nin = 85.5;
+
+  // 「仲」の「中」
+  const chu_shift = colAdd * 0.75;
+  const x_chu_l = 321 + chu_shift;
+  const w_chu = 144 + colAdd * 0.25;
+  const x_chu_r = x_chu_l + w_chu;
+  const cx_chu = x_chu_l + w_chu / 2;
+  const y_chu_t = Math.max(4, 18 * gapRatio);
+  const h_chu = Math.max(3 * t, 166 - (y_chu_t - 18));
+
+  // 「羽」（田の左側 -Base - colAdd*0.5 .. 0 の領域）
+  const x_ha_l = -Base - colAdd * 0.5;
+  const cx_ha = -121.5 - colAdd * 0.25;
+  const g_ha_l = Math.max(4, 29.5 * gapRatio);
+  const w_wing_l = Math.max(t, (cx_ha - t / 2) - x_ha_l - g_ha_l);
+
+  const right_space = 0 - (cx_ha + t / 2);
+  const g_ha_r = Math.max(4, 28 * gapRatio);
+  const w_wing_r = Math.max(t, right_space - 2 * g_ha_r);
+  const x_wing_r = (cx_ha + t / 2) + (right_space - w_wing_r) / 2;
+
+  // 互いに重ならない（オーバーラップを排除した）クリーンな矩形リスト [x, y, w, h]
+  const rects = [
+    // 1. 「羽」〜「田」を貫く上辺横棒
+    [x_ha_l, 0, (Base + t) - x_ha_l, t],
+    // 2. 「田」の左・中・右の縦棒（上辺tから下辺Baseまで）
+    [0, t, t, Base - t],
+    [Base / 2, t, t, Base - t],
+    [Base, t, t, Base - t],
+    // 3. 「田」の中央浮き横棒（左右に分けて中央縦棒との重なりも排除）
+    [t + g_ta, Base / 2, Math.max(1, Base / 2 - (t + g_ta)), t],
+    [Base / 2 + t, Base / 2, Math.max(1, (Base - g_ta) - (Base / 2 + t)), t],
+    // 4. 「仲」の「亻」（にんべん）
+    [x_ta_r, cy_nin - t / 2, (cx_nin1 + t / 2) - x_ta_r, t],
+    [cx_nin1 - t / 2, 0, t, cy_nin - t / 2],
+    [cx_nin2 - t / 2, cy_nin + t / 2, t, (H_ROW) - (cy_nin + t / 2)],
+    // 5. 「仲」の「中」
+    [x_chu_l, y_chu_t, w_chu, t],
+    [x_chu_l, y_chu_t + h_chu - t, w_chu, t],
+    [x_chu_l, y_chu_t + t, t, Math.max(1, h_chu - 2 * t)],
+    [x_chu_r - t, y_chu_t + t, t, Math.max(1, h_chu - 2 * t)],
+    [cx_chu - t / 2, 0, t, H_ROW],
+    // 6. 「羽」の中央縦棒と左右の羽根横棒4本
+    [cx_ha - t / 2, t, t, H_ROW - t],
+    [x_ha_l, 66.5 - t / 2, w_wing_l, t],
+    [x_ha_l, 157.5 - t / 2, w_wing_l, t],
+    [x_wing_r, 66.5 - t / 2, w_wing_r, t],
+    [x_wing_r, 157.5 - t / 2, w_wing_r, t]
+  ];
+  // 段間隔(rowAdd)を空けた場合のみ「田」の下辺を独立描画
+  if(rowAdd > 0.5){
+    rects.push([0, Base, Base + t, t]);
+  }
+  return {H_ROW, DX_ROW, PX, rects};
+}
+
+// Sutherland-Hodgman 2D矩形クリッピング（回転した角字ポリゴンを布領域 [xmin,ymin,xmax,ymax] で正確に切り落とす）
+function clipPolyRect(poly, xmin, ymin, xmax, ymax){
+  let pts = poly;
+  // Left: x >= xmin
+  let out = [];
+  for(let i=0, n=pts.length; i<n; i++){
+    const a=pts[i], b=pts[(i+1)%n], ina=a[0]>=xmin, inb=b[0]>=xmin;
+    if(ina && inb) out.push(b);
+    else if(ina && !inb) out.push([xmin, a[1]+(b[1]-a[1])*(xmin-a[0])/(b[0]-a[0])]);
+    else if(!ina && inb){ out.push([xmin, a[1]+(b[1]-a[1])*(xmin-a[0])/(b[0]-a[0])]); out.push(b); }
+  }
+  pts = out; if(pts.length < 3) return null;
+  // Right: x <= xmax
+  out = [];
+  for(let i=0, n=pts.length; i<n; i++){
+    const a=pts[i], b=pts[(i+1)%n], ina=a[0]<=xmax, inb=b[0]<=xmax;
+    if(ina && inb) out.push(b);
+    else if(ina && !inb) out.push([xmax, a[1]+(b[1]-a[1])*(xmax-a[0])/(b[0]-a[0])]);
+    else if(!ina && inb){ out.push([xmax, a[1]+(b[1]-a[1])*(xmax-a[0])/(b[0]-a[0])]); out.push(b); }
+  }
+  pts = out; if(pts.length < 3) return null;
+  // Top: y >= ymin
+  out = [];
+  for(let i=0, n=pts.length; i<n; i++){
+    const a=pts[i], b=pts[(i+1)%n], ina=a[1]>=ymin, inb=b[1]>=ymin;
+    if(ina && inb) out.push(b);
+    else if(ina && !inb) out.push([a[0]+(b[0]-a[0])*(ymin-a[1])/(b[1]-a[1]), ymin]);
+    else if(!ina && inb){ out.push([a[0]+(b[0]-a[0])*(ymin-a[1])/(b[1]-a[1]), ymin]); out.push(b); }
+  }
+  pts = out; if(pts.length < 3) return null;
+  // Bottom: y <= ymax
+  out = [];
+  for(let i=0, n=pts.length; i<n; i++){
+    const a=pts[i], b=pts[(i+1)%n], ina=a[1]<=ymax, inb=b[1]<=ymax;
+    if(ina && inb) out.push(b);
+    else if(ina && !inb) out.push([a[0]+(b[0]-a[0])*(ymax-a[1])/(b[1]-a[1]), ymax]);
+    else if(!ina && inb){ out.push([a[0]+(b[0]-a[0])*(ymax-a[1])/(b[1]-a[1]), ymax]); out.push(b); }
+  }
+  return out.length >= 3 ? out : null;
+}
+
+function polyArea(pts){
+  let a=0;
+  for(let i=0,n=pts.length;i<n;i++){
+    const p=pts[i], q=pts[(i+1)%n];
+    a += p[0]*q[1] - q[0]*p[1];
+  }
+  return Math.abs(a)*0.5;
+}
+
+let KAKU_POLYS = []; // 布領域でクリッピング済みの角字ポリゴン配列（mm座標）
+let KAKU_META = {pitchMm: 48, strokeMm: 3.3, cellCount: 0, areaMm2: 0};
+
+function layoutKaku(){
+  if(S.mode === 'arare'){
+    KAKU_POLYS = [];
+    KAKU_META = {pitchMm: 0, strokeMm: 0, cellCount: 0, areaMm2: 0};
+    return;
+  }
+  const W = S.W, H = S.H;
+  const inside = S.edge === 'inside';
+  const mg = inside ? S.margin : 0;
+  const xmin = mg, ymin = mg, xmax = W - mg, ymax = H - mg;
+  if(S.showBand){
+    ymax = Math.min(ymax, H - S.bandH);
+  }
+  if(xmax <= xmin || ymax <= ymin){
+    KAKU_POLYS = [];
+    return;
+  }
+
+  // 実効1段高さ (mm): 基準サイズ × 全体倍率 ÷ 繰り返し密度
+  const effRowMm = S.kakuSize * (S.kakuScale / 100) / (S.kakuDensity / 100);
+  const t = 15 * (S.kakuWeight / 100);
+  const colAdd = S.kakuColGap * 2.16;
+  const rowAdd = S.kakuRowGap * 2.16;
+  const gapRatio = S.kakuInnerGap / 100;
+
+  const {H_ROW, DX_ROW, PX, rects} = buildKakuCellRects(t, colAdd, rowAdd, gapRatio);
+  const uToMm = effRowMm / H_ROW;
+  const strokeMm = t * uToMm;
+
+  const rad = (S.kakuAngle * Math.PI) / 180;
+  const cos = Math.cos(rad), sin = Math.sin(rad);
+  const cx = W / 2 + S.kakuOffX;
+  const cy = H / 2 + S.kakuOffY;
+
+  const diagU = Math.hypot(W, H) / uToMm + PX;
+  const rMin = Math.floor(-diagU / H_ROW) - 2;
+  const rMax = Math.ceil(diagU / H_ROW) + 2;
+
+  const polys = [];
+  let totalArea = 0;
+  let activeCells = 0;
+
+  for(let r = rMin; r <= rMax; r++){
+    const y0 = r * H_ROW;
+    const xShift = r * DX_ROW;
+    const kMin = Math.floor((-diagU - xShift) / PX) - 1;
+    const kMax = Math.ceil((diagU - xShift) / PX) + 1;
+    for(let k = kMin; k <= kMax; k++){
+      const x0 = xShift + k * PX;
+      let cellHit = false;
+      for(let i = 0; i < rects.length; i++){
+        const rc = rects[i];
+        // シームの微小隙間を防ぐため接続端を 0.08u オーバーラップ
+        const rx0 = (x0 + rc[0] - 0.08) * uToMm;
+        const ry0 = (y0 + rc[1] - 0.08) * uToMm;
+        const rx1 = (x0 + rc[0] + rc[2] + 0.08) * uToMm;
+        const ry1 = (y0 + rc[1] + rc[3] + 0.08) * uToMm;
+
+        const quad = [
+          [cx + rx0*cos - ry0*sin, cy + rx0*sin + ry0*cos],
+          [cx + rx1*cos - ry0*sin, cy + rx1*sin + ry0*cos],
+          [cx + rx1*cos - ry1*sin, cy + rx1*sin + ry1*cos],
+          [cx + rx0*cos - ry1*sin, cy + rx0*sin + ry1*cos]
+        ];
+        const clipped = clipPolyRect(quad, xmin, ymin, xmax, ymax);
+        if(clipped){
+          polys.push(clipped);
+          totalArea += polyArea(clipped);
+          cellHit = true;
+        }
+      }
+      if(cellHit) activeCells++;
+    }
+  }
+  KAKU_POLYS = polys;
+  KAKU_META = {pitchMm: effRowMm, strokeMm, cellCount: activeCells, areaMm2: totalArea};
+}
+
+/* ---- 4. 大小あられ配置アルゴリズム (seeded RNG + value noise + best-candidate) ---- */
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function makeNoise(rnd,cell){const g=new Map();const v=(i,j)=>{const k=i+','+j;if(!g.has(k))g.set(k,rnd());return g.get(k);};
+  const sm=t=>t*t*(3-2*t);
+  return (x,y)=>{let tot=0,amp=1,norm=0,c=cell;for(let o=0;o<3;o++){const X=x/c,Y=y/c,i=Math.floor(X),j=Math.floor(Y),fx=sm(X-i),fy=sm(Y-j);
+    const a=v(i+o*97,j),b=v(i+1+o*97,j),cc=v(i+o*97,j+1),d=v(i+1+o*97,j+1);
+    tot+=amp*((a*(1-fx)+b*fx)*(1-fy)+(cc*(1-fx)+d*fx)*fy);norm+=amp;amp*=.5;c/=2;}return tot/norm;};}
+
+let DOTS=[];
+function layoutArare(){
+  if(S.mode === 'haneda'){
+    DOTS=[];
+    return;
+  }
+  const rnd=mulberry(S.seed*7919+13);
+  const W=S.W, H=S.showBand ? Math.max(50, S.H - S.bandH) : S.H, k=S.scale/100;
+  let dmin=Math.min(S.dmin,S.dmax)*k, dmax=Math.max(S.dmin,S.dmax)*k;
+  const mid=(dmin+dmax)/2, N=S.count;
+  const lib=S.shape==='circle'?[CIRCLE]:SHAPES;
+  const items=[];
+  for(let i=0;i<N;i++){
+    const big=rnd()*100<S.bigratio;
+    const u=rnd();
+    const d=big?mid+(dmax-mid)*Math.sqrt(u):dmin+(mid-dmin)*u;
+    const sh=lib[Math.floor(rnd()*lib.length)];
+    items.push({d,sh,rot:rnd()*Math.PI*2,flip:rnd()<.5,cr:d/2*sh.maxr});
+  }
+  items.sort((a,b)=>b.d-a.d);
+  const gap=S.gap, maxCr=items.length?items[0].cr:1;
+  const spacing=Math.sqrt(W*H/Math.max(N,1));
+  const cell=Math.max(maxCr*2+gap,spacing*.8);
+  const gw=Math.ceil(W/cell)+3, gh=Math.ceil(H/cell)+3, grid=new Array(gw*gh);
+  const gi=(x,y)=>(Math.floor(x/cell)+1)+(Math.floor(y/cell)+1)*gw;
+  const sp=S.spread/100, noise=makeNoise(rnd,Math.max(40,spacing*5)), g=S.grad/100;
+  const K=Math.max(1,Math.round(1+18*(1-sp)*(1-sp)));
+  const inside=S.edge==='inside', mg=inside?S.margin:0;
+  const dens=(x,y)=>{let f=1+g*(2*y/H-1)*.95; if(sp>0){const n=noise(x,y);f*=Math.pow(Math.max(0,(n-.25)/.75),1+sp*3)*sp+(1-sp);} return Math.max(0.0001,f);};
+  const out=[];
+  for(const it of items){
+    const lo=inside?mg+it.cr:-it.cr*.6, hiW=inside?W-mg-it.cr:W+it.cr*.6, hiH=inside?H-mg-it.cr:H+it.cr*.6;
+    if(hiW<=lo||hiH<=lo) continue;
+    let best=null,bestScore=-Infinity,tries=0,found=0;
+    while(found<K&&tries<K*40){
+      tries++;
+      const x=lo+rnd()*(hiW-lo),y=lo+rnd()*(hiH-lo);
+      if(sp>0||g!==0){ if(rnd()>dens(x,y)/(1+Math.abs(g))) continue; }
+      const cx=Math.floor(x/cell)+1,cy=Math.floor(y/cell)+1;let near=Infinity,ok=true;
+      for(let j=cy-2;j<=cy+2&&ok;j++){if(j<0||j>=gh)continue;for(let i=cx-2;i<=cx+2;i++){if(i<0||i>=gw)continue;const b=grid[i+j*gw];if(!b)continue;
+        for(const o of b){const e=Math.hypot(o.x-x,o.y-y)-o.cr-it.cr;if(e<gap){ok=false;break;}if(e<near)near=e;}if(!ok)break;}}
+      if(!ok)continue;
+      found++;
+      const sc=near+rnd()*0.001;
+      if(sc>bestScore){bestScore=sc;best={x,y};}
+    }
+    if(!best)continue;
+    const o={x:best.x,y:best.y,d:it.d,cr:it.cr,sh:it.sh,rot:it.rot,flip:it.flip};
+    const id=gi(o.x,o.y);(grid[id]||(grid[id]=[])).push(o);out.push(o);
+  }
+  DOTS=out;
+}
+
+function layout(){
+  layoutKaku();
+  layoutArare();
+}
+
+/* ---- geometry: anchors in mm, then Catmull-Rom beziers ---- */
+function anchors(o){const r=o.d/2,c=Math.cos(o.rot),s=Math.sin(o.rot);
+  return o.sh.p.map(([px,py])=>{const X=(o.flip?-px:px)*r,Y=py*r;return [o.x+X*c-Y*s,o.y+X*s+Y*c];});}
+function beziers(a){const n=a.length,seg=[];for(let i=0;i<n;i++){const p0=a[(i-1+n)%n],p1=a[i],p2=a[(i+1)%n],p3=a[(i+2)%n];
+  seg.push([p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6,p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6,p2[0],p2[1]]);}return seg;}
+
+/* ---- 5. キャンバス描画 ---- */
+const cv=$('cv'),box=$('box');
+function draw(){
+  const bw=box.clientWidth||600, bh=box.clientHeight||640;
+  const s=Math.min(bw/S.W, bh/S.H), dpr=window.devicePixelRatio||1;
+  cv.style.width=Math.floor(S.W*s)+'px'; cv.style.height=Math.floor(S.H*s)+'px';
+  cv.width=Math.floor(S.W*s*dpr); cv.height=Math.floor(S.H*s*dpr);
+  const x=cv.getContext('2d'); x.setTransform(s*dpr,0,0,s*dpr,0,0);
+
+  // 1. 地色（または透過チェッカーボード）
+  if(S.showBg){
+    x.fillStyle=S.bgColor;
+    x.fillRect(0,0,S.W,S.H);
+  }else{
+    const t=8;
+    for(let j=0;j<S.H/t;j++)for(let i=0;i<S.W/t;i++){
+      x.fillStyle=(i+j)%2?'#c9ccd4':'#e4e6eb';
+      x.fillRect(i*t,j*t,t,t);
+    }
+  }
+
+  // 2. 大小あられ描画
+  if(DOTS.length > 0){
+    x.fillStyle=S.dotColor;
+    x.beginPath();
+    for(const o of DOTS){
+      const a=anchors(o), b=beziers(a);
+      x.moveTo(a[0][0],a[0][1]);
+      for(const q of b) x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]);
+      x.closePath();
+    }
+    x.fill();
+  }
+
+  // 3. 仲羽田（江戸角字）描画
+  if(KAKU_POLYS.length > 0){
+    x.fillStyle=S.kakuColor;
+    x.beginPath();
+    for(const poly of KAKU_POLYS){
+      x.moveTo(poly[0][0], poly[0][1]);
+      for(let i=1; i<poly.length; i++) x.lineTo(poly[i][0], poly[i][1]);
+      x.closePath();
+    }
+    x.fill();
+  }
+
+  // 4. 丸紋「仲はねだ」ベクター描画
+  const crest = getCrestBeziersMm();
+  if(crest){
+    // 中抜き円背景
+    x.fillStyle = S.crestBg;
+    x.beginPath();
+    x.arc(crest.cx, crest.cy, crest.bgRad, 0, Math.PI*2);
+    x.fill();
+    // 丸紋の枠と「仲はねだ」文字（even-odd塗り）
+    x.fillStyle = S.crestFg;
+    x.beginPath();
+    for(const lp of crest.loops){
+      x.moveTo(lp.a[0][0], lp.a[0][1]);
+      for(const q of lp.b) x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]);
+      x.closePath();
+    }
+    x.fill('evenodd');
+  }
+
+  // 5. 10cm スケールバー
+  const ink=S.showBg?'rgba(255,255,255,.78)':'rgba(20,25,40,.85)';
+  x.strokeStyle=ink; x.lineWidth=0.9;
+  x.beginPath();
+  x.moveTo(10,S.H-10); x.lineTo(110,S.H-10);
+  x.moveTo(10,S.H-13); x.lineTo(10,S.H-7);
+  x.moveTo(110,S.H-13); x.lineTo(110,S.H-7);
+  x.stroke();
+  x.fillStyle=ink; x.font='8.5px sans-serif'; x.fillText('10 cm',48,S.H-14);
+
+  // 6. 統計・ステータス更新
+  $('s-size').textContent=(S.W/10)+'×'+(S.H/10);
+  $('stat-kaku-wrap').hidden = (S.mode === 'arare');
+  $('stat-arare-wrap').hidden = (S.mode === 'haneda');
+
+  if(S.mode !== 'arare'){
+    $('s-kaku-pitch').textContent = KAKU_META.pitchMm.toFixed(1);
+    $('s-kaku-stroke').textContent = KAKU_META.strokeMm.toFixed(2);
+    $('s-kaku-cells').textContent = KAKU_META.cellCount.toLocaleString();
+    $('kaku-mm-badge').textContent = '線幅 ' + KAKU_META.strokeMm.toFixed(2) + 'mm';
+  }
+
+  let dotArea=0, dmn=Infinity, dmx=0;
+  for(const o of DOTS){dotArea+=Math.PI*o.d*o.d/4; dmn=Math.min(dmn,o.d); dmx=Math.max(dmx,o.d);}
+  if(S.mode !== 'haneda'){
+    $('s-count').textContent=DOTS.length.toLocaleString();
+    $('s-d').textContent=DOTS.length?dmn.toFixed(1)+'〜'+dmx.toFixed(1):'–';
+  }
+
+  const totalInkArea = (S.mode === 'arare' ? dotArea : (S.mode === 'haneda' ? KAKU_META.areaMm2 : Math.min(S.W*S.H, KAKU_META.areaMm2 + dotArea)));
+  $('s-cov').textContent = (totalInkArea / (S.W * S.H) * 100).toFixed(1);
+
+  const m=$('msg');
+  if(S.mode !== 'haneda' && DOTS.length < S.count){
+    m.textContent='指定の '+S.count+' 粒のうち '+DOTS.length+' 粒を配置しました（すき間・粒サイズにより上限）。';
+    m.className='msg warn';
+  }else if(m.className.includes('warn')){
+    m.textContent=''; m.className='msg';
+  }
+}
+
+/* ---- 6. 書き出し: SVG (Illustrator レイヤー対応) ---- */
+const f2=v=>(Math.round(v*100)/100).toString();
+function svgText(){
+  const W=S.W, H=S.H;
+  let s='<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'mm" height="'+H+'mm" viewBox="0 0 '+W+' '+H+'">\n';
+  if(S.showBg){
+    s+='<g id="Background_Navy"><rect width="'+W+'" height="'+H+'" fill="'+S.bgColor+'"/></g>\n';
+  }
+  if(DOTS.length > 0){
+    s+='<g id="Arare_Dots" fill="'+S.dotColor+'">\n';
+    for(const o of DOTS){
+      const a=anchors(o), b=beziers(a);
+      let d='M'+f2(a[0][0])+','+f2(a[0][1]);
+      for(const q of b) d+='C'+f2(q[0])+','+f2(q[1])+' '+f2(q[2])+','+f2(q[3])+' '+f2(q[4])+','+f2(q[5]);
+      s+='<path d="'+d+'Z"/>\n';
+    }
+    s+='</g>\n';
+  }
+  if(KAKU_POLYS.length > 0){
+    s+='<g id="HanedaNaka_Kakuji" fill="'+S.kakuColor+'">\n';
+    for(const poly of KAKU_POLYS){
+      let d='M'+f2(poly[0][0])+','+f2(poly[0][1]);
+      for(let i=1;i<poly.length;i++) d+='L'+f2(poly[i][0])+','+f2(poly[i][1]);
+      s+='<path d="'+d+'Z"/>\n';
+    }
+    s+='</g>\n';
+  }
+  const crest = getCrestBeziersMm();
+  if(crest){
+    s+='<g id="Nakahaneda_Crest">\n';
+    s+='  <circle cx="'+f2(crest.cx)+'" cy="'+f2(crest.cy)+'" r="'+f2(crest.bgRad)+'" fill="'+S.crestBg+'"/>\n';
+    let cd='';
+    for(const lp of crest.loops){
+      cd+='M'+f2(lp.a[0][0])+','+f2(lp.a[0][1]);
+      for(const q of lp.b) cd+='C'+f2(q[0])+','+f2(q[1])+' '+f2(q[2])+','+f2(q[3])+' '+f2(q[4])+','+f2(q[5]);
+      cd+='Z ';
+    }
+    s+='  <path d="'+cd.trim()+'" fill="'+S.crestFg+'" fill-rule="evenodd"/>\n';
+    s+='</g>\n';
+  }
+  return s+'</svg>\n';
+}
+
+/* ---- 7. 書き出し: Illustrator 8 (.ai) 複数レイヤー・CMYK ---- */
+function hexCmyk(h){
+  h = (h||'#000000').replace('#','');
+  const r=parseInt(h.slice(0,2),16)/255, g=parseInt(h.slice(2,4),16)/255, b=parseInt(h.slice(4,6),16)/255;
+  const k=1-Math.max(r,g,b);
+  if(k>=1) return [0,0,0,1];
+  return [(1-r-k)/(1-k),(1-g-k)/(1-k),(1-b-k)/(1-k),k].map(v=>Math.round(v*1000)/1000);
+}
+
+function aiText(){
+  const MM=72/25.4, W=S.W, H=S.H, Wp=W*MM, Hp=H*MM;
+  const P=(x,y)=>(x*MM).toFixed(3)+' '+((H-y)*MM).toFixed(3);
+  const L=[]; const nl='\r\n';
+  let numLayers = (S.showBg?1:0) + (DOTS.length>0?1:0) + (KAKU_POLYS.length>0?1:0) + (S.showCrest?1:0);
+  L.push('%!PS-Adobe-3.0 ','%%Creator: Adobe Illustrator(R) 8.0','%%AI8_CreatorVersion: 8.0','%%For: (tenugui) ()','%%Title: (tenugui.ai)',
+    '%%BoundingBox: 0 0 '+Math.ceil(Wp)+' '+Math.ceil(Hp),'%%HiResBoundingBox: 0 0 '+Wp.toFixed(4)+' '+Hp.toFixed(4),
+    '%%DocumentProcessColors: Cyan Magenta Yellow Black','%AI5_FileFormat 4.0','%AI3_ColorUsage: Color','%AI7_ImageSettings: 0',
+    '%%CMYKProcessColor: 1 1 1 1 ([Registration])','%AI3_TemplateBox: '+(Wp/2).toFixed(3)+' '+(Hp/2).toFixed(3)+' '+(Wp/2).toFixed(3)+' '+(Hp/2).toFixed(3),
+    '%AI3_TileBox: 0 0 '+Wp.toFixed(3)+' '+Hp.toFixed(3),'%AI3_DocumentPreview: None','%AI5_ArtSize: '+Wp.toFixed(4)+' '+Hp.toFixed(4),
+    '%AI5_RulerUnits: 1','%AI5_ArtFlags: 0 0 0 1 0 0 1 0 0','%AI5_TargetResolution: 800','%AI5_NumLayers: '+Math.max(1,numLayers),
+    '%AI5_OpenViewLayers: 77','%%PageOrigin:0 0','%%AI3_PaperRect:0 '+Hp.toFixed(3)+' '+Wp.toFixed(3)+' 0','%%AI3_Margin:0 '+Hp.toFixed(3)+' '+Wp.toFixed(3)+' 0',
+    '%%EndComments','%%BeginProlog','%%EndProlog','%%BeginSetup','%%EndSetup');
+
+  // Layer 1: Background
+  if(S.showBg){
+    const c=hexCmyk(S.bgColor);
+    L.push('%AI5_BeginLayer','1 1 1 1 0 0 0 79 128 255 Lb','(Background_Navy) Ln','0 A','0 O',c.join(' ')+' k','0 R','0 i 0 J 0 j 1 w 4 M []0 d',
+      P(0,0)+' m',P(W,0)+' L',P(W,H)+' L',P(0,H)+' L',P(0,0)+' L','f','LB','%AI5_EndLayer--');
+  }
+  // Layer 2: Arare Dots
+  if(DOTS.length > 0){
+    const d=hexCmyk(S.dotColor);
+    L.push('%AI5_BeginLayer','1 1 1 1 0 0 1 255 79 79 Lb','(Arare_Dots) Ln','0 A','0 O',d.join(' ')+' k','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
+    for(const o of DOTS){
+      const a=anchors(o), b=beziers(a);
+      L.push(P(a[0][0],a[0][1])+' m');
+      for(const q of b) L.push(P(q[0],q[1])+' '+P(q[2],q[3])+' '+P(q[4],q[5])+' c');
+      L.push('f');
+    }
+    L.push('LB','%AI5_EndLayer--');
+  }
+  // Layer 3: HanedaNaka Kakuji
+  if(KAKU_POLYS.length > 0){
+    const kc=hexCmyk(S.kakuColor);
+    L.push('%AI5_BeginLayer','1 1 1 1 0 0 2 79 200 120 Lb','(HanedaNaka_Kakuji) Ln','0 A','0 O',kc.join(' ')+' k','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
+    for(const poly of KAKU_POLYS){
+      L.push(P(poly[0][0],poly[0][1])+' m');
+      for(let i=1;i<poly.length;i++) L.push(P(poly[i][0],poly[i][1])+' L');
+      L.push(P(poly[0][0],poly[0][1])+' L','f');
+    }
+    L.push('LB','%AI5_EndLayer--');
+  }
+  // Layer 4: Nakahaneda Crest
+  const crest = getCrestBeziersMm();
+  if(crest){
+    const cbg=hexCmyk(S.crestBg), cfg=hexCmyk(S.crestFg);
+    L.push('%AI5_BeginLayer','1 1 1 1 0 0 3 220 180 40 Lb','(Nakahaneda_Crest) Ln','0 A','0 O');
+    // Background circle (16-seg bezier)
+    L.push(cbg.join(' ')+' k');
+    const ca = CIRCLE.p.map(([px,py])=>[crest.cx+px*crest.bgRad, crest.cy+py*crest.bgRad]);
+    const cb = beziers(ca);
+    L.push(P(ca[0][0],ca[0][1])+' m');
+    for(const q of cb) L.push(P(q[0],q[1])+' '+P(q[2],q[3])+' '+P(q[4],q[5])+' c');
+    L.push('f');
+    // Compound path (*u ... *U) for crest loops
+    L.push(cfg.join(' ')+' k','*u');
+    for(const lp of crest.loops){
+      L.push(P(lp.a[0][0],lp.a[0][1])+' m');
+      for(const q of lp.b) L.push(P(q[0],q[1])+' '+P(q[2],q[3])+' '+P(q[4],q[5])+' c');
+      L.push('f');
+    }
+    L.push('*U','LB','%AI5_EndLayer--');
+  }
+
+  L.push('%%PageTrailer','gsave annotatepage grestore showpage','%%Trailer','%%EOF');
+  return L.join(nl)+nl;
+}
+
+/* ---- 8. 書き出し: Illustrator用 .jsx スクリプト ---- */
+function jsxText(){
+  const W=S.W, H=S.H;
+  const bgC=hexCmyk(S.bgColor).map(v=>Math.round(v*100));
+  const kakuC=hexCmyk(S.kakuColor).map(v=>Math.round(v*100));
+  const polysData = KAKU_POLYS.map(poly=>poly.map(p=>[Math.round(p[0]*100)/100, Math.round(p[1]*100)/100]));
+  return `// 仲羽田・大小あられ 手ぬぐい ${W}x${H}mm — Illustrator用スクリプト（UTF-8）
+// 使い方：Illustrator → ファイル → スクリプト → その他のスクリプト… でこのファイルを選ぶ
+#target illustrator
+(function(){
+var MM = 72/25.4, W = ${W}, H = ${H};
+var POLYS = ${JSON.stringify(polysData)};
+app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
+var doc = app.documents.add(DocumentColorSpace.CMYK, W*MM, H*MM);
+var ab = doc.artboards[0].artboardRect, L = ab[0], T = ab[1];
+function P(x, y){ return [L + x*MM, T - y*MM]; }
+function cmyk(c,m,y,k){ var o = new CMYKColor(); o.cyan=c; o.magenta=m; o.yellow=y; o.black=k; return o; }
+${S.showBg ? `var bg = doc.layers[0]; bg.name = "地色";
+var r = bg.pathItems.rectangle(T, L, W*MM, H*MM); r.filled = true; r.fillColor = cmyk(${bgC.join(',')}); r.stroked = false;` : ''}
+if (POLYS.length > 0) {
+  var lay = doc.layers.add(); lay.name = "仲羽田_角字";
+  var fg = cmyk(${kakuC.join(',')});
+  for (var i = 0; i < POLYS.length; i++) {
+    var poly = POLYS[i], pts = [];
+    for (var j = 0; j < poly.length; j++) pts.push(P(poly[j][0], poly[j][1]));
+    var p = lay.pathItems.add(); p.setEntirePath(pts);
+    p.closed = true; p.filled = true; p.fillColor = fg; p.stroked = false;
+  }
+}
+app.userInteractionLevel = UserInteractionLevel.DISPLAYALERTS;
+alert("完了：仲羽田・手ぬぐいデータ (" + POLYS.length + " パス)");
+})();
+`;
+}
+
+/* ---- 9. 書き出し: 300dpi 高解像度PNG ---- */
+function saveHighResPng(){
+  const dpi = 300;
+  const pw = Math.round(S.W / 25.4 * dpi);
+  const ph = Math.round(S.H / 25.4 * dpi);
+  const off = document.createElement('canvas');
+  off.width = pw; off.height = ph;
+  const s = pw / S.W;
+  const x = off.getContext('2d');
+  x.setTransform(s,0,0,s,0,0);
+  if(S.showBg){ x.fillStyle=S.bgColor; x.fillRect(0,0,S.W,S.H); }
+  if(DOTS.length > 0){
+    x.fillStyle=S.dotColor; x.beginPath();
+    for(const o of DOTS){const a=anchors(o),b=beziers(a);x.moveTo(a[0][0],a[0][1]);for(const q of b)x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]);x.closePath();}
+    x.fill();
+  }
+  if(KAKU_POLYS.length > 0){
+    x.fillStyle=S.kakuColor; x.beginPath();
+    for(const poly of KAKU_POLYS){x.moveTo(poly[0][0],poly[0][1]);for(let i=1;i<poly.length;i++)x.lineTo(poly[i][0],poly[i][1]);x.closePath();}
+    x.fill();
+  }
+  const crest = getCrestBeziersMm();
+  if(crest){
+    x.fillStyle=S.crestBg; x.beginPath(); x.arc(crest.cx,crest.cy,crest.bgRad,0,Math.PI*2); x.fill();
+    x.fillStyle=S.crestFg; x.beginPath();
+    for(const lp of crest.loops){x.moveTo(lp.a[0][0],lp.a[0][1]);for(const q of lp.b)x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]);x.closePath();}
+    x.fill('evenodd');
+  }
+  off.toBlob(blob=>{
+    if(blob) save(baseName()+'_300dpi.png', blob, baseName()+'_300dpi.png');
+  }, 'image/png');
+}
+
+/* ---- minimal store-only zip ---- */
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+function crc32(u){let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRC[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+function zip(name,data){
+  const enc=new TextEncoder(),nm=enc.encode(name),crc=crc32(data),sz=data.length;
+  const lh=new DataView(new ArrayBuffer(30));lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint32(14,crc,true);lh.setUint32(18,sz,true);lh.setUint32(22,sz,true);lh.setUint16(26,nm.length,true);
+  const ch=new DataView(new ArrayBuffer(46));ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint32(16,crc,true);ch.setUint32(20,sz,true);ch.setUint32(24,sz,true);ch.setUint16(28,nm.length,true);ch.setUint32(42,0,true);
+  const cdOff=30+nm.length+sz,cdSize=46+nm.length;
+  const end=new DataView(new ArrayBuffer(22));end.setUint32(0,0x06054b50,true);end.setUint16(8,1,true);end.setUint16(10,1,true);end.setUint32(12,cdSize,true);end.setUint32(16,cdOff,true);
+  return new Blob([lh,nm,data,ch,nm,end],{type:'application/zip'});
+}
+const baseName=()=>'tenugui_'+S.mode+'_'+S.W+'x'+S.H;
+
+/* ---- UI wiring ---- */
+const ranges={
+  kakuSize:v=>v+' mm', kakuScale:v=>v+'%', kakuDensity:v=>v+'%', kakuWeight:v=>v+'%',
+  kakuInnerGap:v=>v+'%', kakuColGap:v=>(v>0?'+':'')+v+'%', kakuRowGap:v=>(v>0?'+':'')+v+'%',
+  kakuAngle:v=>v+'°', kakuOffX:v=>(v>0?'+':'')+v+' mm', kakuOffY:v=>(v>0?'+':'')+v+' mm',
+  crestSize:v=>v+' mm', crestWeight:v=>(v>0?'+':'')+v+'%', crestX:v=>v+'%', crestY:v=>v+'%', bandH:v=>v+' mm',
+  count:v=>v+' 粒', gap:v=>v+' mm', spread:v=>v+'', grad:v=>(v>0?'+':'')+v,
+  margin:v=>v+' mm', dmin:v=>v+' mm', dmax:v=>v+' mm', bigratio:v=>v+'%', scale:v=>v+'%'
+};
+
+function syncUI(){
+  for(const k in ranges){if($(k)){$(k).value=S[k]; $(k+'-o').textContent=ranges[k](S[k]);}}
+  $('W').value=S.W; $('H').value=S.H;
+  $('bgColor').value=S.bgColor; $('kakuColor').value=S.kakuColor; $('dotColor').value=S.dotColor;
+  $('crestFg').value=S.crestFg; $('crestBg').value=S.crestBg;
+  $('showBg').checked=S.showBg;
+  $('showCrest').checked=S.showCrest; $('crestBox').hidden=!S.showCrest;
+  $('showBand').checked=S.showBand; $('bandBox').hidden=!S.showBand;
+
+  // モード別表示切替
+  for(const b of document.querySelectorAll('#modeTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.mode===S.mode)+'');
+  $('sec-haneda').hidden = (S.mode === 'arare');
+  $('kakuColorGroup').hidden = (S.mode === 'arare');
+  $('sec-arare').hidden = (S.mode === 'haneda');
+  $('dotColorGroup').hidden = (S.mode === 'haneda');
+
+  for(const [hex,key] of [['bgHex','bgColor'],['kakuHex','kakuColor'],['dotHex','dotColor'],['crestFgHex','crestFg'],['crestBgHex','crestBg']]){
+    if($(hex) && document.activeElement!==$(hex)){$(hex).value=S[key].toUpperCase();$(hex).setAttribute('aria-invalid','false');}
+  }
+  if(typeof markSw==='function') markSw();
+  for(const b of document.querySelectorAll('#presets .chip')) b.setAttribute('aria-pressed',(+b.dataset.w===S.W&&+b.dataset.h===S.H)+'');
+  for(const b of document.querySelectorAll('#edge .chip')) b.setAttribute('aria-pressed',(b.dataset.v===S.edge)+'');
+  for(const b of document.querySelectorAll('#shape .chip')) b.setAttribute('aria-pressed',(b.dataset.v===S.shape)+'');
+  for(const b of document.querySelectorAll('#anglePresets .chip')) b.setAttribute('aria-pressed',(Math.abs(parseFloat(b.dataset.ang)-S.kakuAngle)<0.05)+'');
+  $('margin-row').hidden=S.edge!=='inside';
+}
+
+let timer=null;
+function update(relayout){
+  persist(); syncUI();
+  if(relayout){
+    clearTimeout(timer);
+    timer=setTimeout(()=>{layout();draw();}, 35);
+  }else draw();
+}
+
+for(const k in ranges){
+  if($(k)) $(k).addEventListener('input',e=>{
+    S[k]=parseFloat(e.target.value);
+    const needsLayout = !['crestSize','crestWeight','crestX','crestY'].includes(k);
+    update(needsLayout);
+  });
+}
+for(const k of ['W','H'])$(k).addEventListener('change',e=>{const v=Math.round(parseFloat(e.target.value));if(v>=50){S[k]=Math.min(v,k==='W'?2000:3000);update(true);}else syncUI();});
+$('flipOrient').addEventListener('click',()=>{const tmp=S.W; S.W=S.H; S.H=tmp; update(true);});
+document.querySelectorAll('#modeTabs .chip').forEach(b=>b.addEventListener('click',()=>{S.mode=b.dataset.mode; update(true);}));
+document.querySelectorAll('#presets .chip').forEach(b=>b.addEventListener('click',()=>{S.W=+b.dataset.w;S.H=+b.dataset.h;update(true);}));
+document.querySelectorAll('#edge .chip').forEach(b=>b.addEventListener('click',()=>{S.edge=b.dataset.v;update(true);}));
+document.querySelectorAll('#shape .chip').forEach(b=>b.addEventListener('click',()=>{S.shape=b.dataset.v;update(true);}));
+document.querySelectorAll('#anglePresets .chip').forEach(b=>b.addEventListener('click',()=>{S.kakuAngle=parseFloat(b.dataset.ang);update(true);}));
+
+$('showCrest').addEventListener('change',e=>{S.showCrest=e.target.checked; update(false);});
+$('showBand').addEventListener('change',e=>{S.showBand=e.target.checked; update(true);});
+
+/* ---- colors: traditional palettes, hex entry, swap ---- */
+const BG_PAL=[
+  ['羽田納戸（元柄）','#046e7e'],['藍（あられ元柄）','#183574'],['紺','#223a70'],['濃藍','#0f2350'],
+  ['鉄紺','#17184b'],['縹','#2a83a2'],['浅葱','#00a3af'],['墨','#262626'],
+  ['茜','#b7282e'],['臙脂','#9e3d3f'],['柿渋','#9f563a'],['鶯','#6c6a2d'],
+  ['羽田金','#877028'],['生成り','#f3ecd8'],['白','#ffffff']
+];
+const FG_PAL=[
+  ['白','#ffffff'],['生成り','#f3ecd8'],['羽田金','#877028'],['山吹','#f8b500'],
+  ['金茶','#c89932'],['水色','#bce2e8'],['桜','#f6bfbc'],['羽田納戸','#046e7e'],
+  ['藍','#183574'],['紺','#223a70'],['茜','#b7282e'],['墨','#262626']
+];
+function buildSw(boxId,pal,key){
+  const b=$(boxId); if(!b) return;
+  for(const [n,h] of pal){
+    const btn=document.createElement('button'); btn.type='button'; btn.style.background=h; btn.title=n+' '+h.toUpperCase();
+    btn.setAttribute('aria-label',n); btn.dataset.hex=h.toLowerCase();
+    btn.addEventListener('click',()=>{S[key]=h; if(key==='kakuColor'&&S.mode==='haneda') S.dotColor=h; update(false);});
+    b.appendChild(btn);
+  }
+}
+buildSw('bgSw',BG_PAL,'bgColor');
+buildSw('kakuSw',FG_PAL,'kakuColor');
+buildSw('dotSw',FG_PAL,'dotColor');
+
+function normHex(v){v=(v||'').trim();if(v[0]!=='#')v='#'+v;if(/^#[0-9a-f]{3}$/i.test(v))v='#'+v[1]+v[1]+v[2]+v[2]+v[3]+v[3];return /^#[0-9a-f]{6}$/i.test(v)?v.toLowerCase():null;}
+for(const [pick,hex,key] of [['bgColor','bgHex','bgColor'],['kakuColor','kakuHex','kakuColor'],['dotColor','dotHex','dotColor'],['crestFg','crestFgHex','crestFg'],['crestBg','crestBgHex','crestBg']]){
+  $(pick).addEventListener('input',e=>{S[key]=e.target.value;update(false);});
+  $(hex).addEventListener('input',e=>{const h=normHex(e.target.value);e.target.setAttribute('aria-invalid',h?'false':'true');if(h){S[key]=h;persist();$(pick).value=h;markSw();draw();}});
+  $(hex).addEventListener('change',()=>syncUI());
+}
+$('swap').addEventListener('click',()=>{
+  if(S.mode === 'arare'){
+    const t=S.bgColor; S.bgColor=S.dotColor; S.dotColor=t;
+  }else{
+    const t=S.bgColor; S.bgColor=S.kakuColor; S.kakuColor=t;
+    if(S.mode === 'both') S.dotColor=S.kakuColor;
+  }
+  update(false);
+});
+function markSw(){
+  for(const b of $('bgSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===S.bgColor.toLowerCase())+'');
+  for(const b of $('kakuSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===S.kakuColor.toLowerCase())+'');
+  for(const b of $('dotSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===S.dotColor.toLowerCase())+'');
+  const c=hexCmyk(S.bgColor).map(v=>Math.round(v*100));
+  const fgHex = S.mode==='arare' ? S.dotColor : S.kakuColor;
+  const d=hexCmyk(fgHex).map(v=>Math.round(v*100));
+  $('cmyk-note').textContent='.ai書き出し時のCMYK（目安）　地色 C'+c[0]+' M'+c[1]+' Y'+c[2]+' K'+c[3]+' ／ 文字・柄 C'+d[0]+' M'+d[1]+' Y'+d[2]+' K'+d[3];
+}
+$('showBg').addEventListener('change',e=>{S.showBg=e.target.checked;update(false);});
+$('reroll').addEventListener('click',()=>{
+  S.seed=Math.floor(Math.random()*1e6)+2;
+  if(S.mode !== 'arare'){
+    S.kakuOffX = Math.round((Math.random()*120)-60);
+    S.kakuOffY = Math.round((Math.random()*120)-60);
+  }
+  update(true);
+});
+$('reset').addEventListener('click',()=>{S=Object.assign({},DEF,{mode:S.mode,W:S.W,H:S.H});update(true);});
+
+function say(t,warn){const m=$('msg');m.textContent=t;m.className='msg'+(warn?' warn':'');}
+$('copySvg').addEventListener('click',()=>{
+  const t=svgText();
+  navigator.clipboard.writeText(t).then(()=>say('SVGをコピーしました。Illustratorで「編集 → ペースト」してください。'),
+    ()=>say('この画面ではコピーできませんでした。「SVGで保存」を使ってください。',true));
+});
+
+let downloads=null;const inClaude=!!(window.claude&&window.claude.use);
+(async()=>{
+  if(inClaude){try{downloads=await window.claude.use('downloads');}catch(e){downloads=null;}}
+  if(downloads||!inClaude){$('saveSvg').hidden=false;$('saveAi').hidden=false;}})();
+function plainDownload(filename,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);}
+async function save(filename,data,label){
+  if(!downloads){plainDownload(filename,data);say(label+' をダウンロードしました。');return;}
+  try{await downloads.save({filename,data});say(label+' を保存しました。');}
+  catch(e){const c=e&&e.code;
+    if(c==='declined')say('保存をキャンセルしました。');
+    else if(c==='rate_limited')say('保存の確認画面が開いています。少し待ってからもう一度押してください。',true);
+    else say('この画面では保存できません。「SVGをコピー」を使ってください。',true);}
+}
+$('saveSvg').addEventListener('click',()=>save(baseName()+'.svg',new Blob([svgText()],{type:'image/svg+xml'}),baseName()+'.svg'));
+$('saveAi').addEventListener('click',()=>{const ai=new TextEncoder().encode(aiText());
+  if(downloads) save(baseName()+'_ai.zip',zip(baseName()+'.ai',ai),baseName()+'.ai（zip）');
+  else save(baseName()+'.ai',new Blob([ai],{type:'application/postscript'}),baseName()+'.ai');});
+$('saveJsx').addEventListener('click',()=>save(baseName()+'.jsx',new Blob(['\uFEFF'+jsxText()],{type:'text/javascript;charset=utf-8'}),baseName()+'.jsx'));
+$('savePng').addEventListener('click',()=>saveHighResPng());
+if(!inClaude){$('saveAi').textContent='.ai を保存';}
+window.addEventListener('resize',()=>draw());
+syncUI();layout();draw();
+})();
+</script>

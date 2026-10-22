@@ -22,6 +22,12 @@
     patternScale: 90,
     patternOpacity: 85,
     patternArea: 'ends',
+    kakuDensity: 100,
+    kakuWeight: 100,
+    kakuInnerGap: 100,
+    kakuColGap: 0,
+    kakuRowGap: 0,
+    kakuAngle: -30.15,
     fabricWeave: 'oka',
     showGuides: true,
     showTexture: true,
@@ -645,7 +651,7 @@
 
       const fillPatternRect = (rx, ry, rw, rh) => {
         if (isDirectHaneda) {
-          const ang = state.patternId === 'haneda-naka' ? -30.15 : 0;
+          const ang = state.patternId === 'haneda-naka-h' ? 0 : (state.kakuAngle ?? -30.15);
           window.TenuguiPatterns.drawHanedaNakaDirect(
             targetCtx,
             state.patternColor,
@@ -654,7 +660,14 @@
             ry,
             rw,
             rh,
-            ang
+            ang,
+            {
+              weightPct: state.kakuWeight ?? 100,
+              densityPct: state.kakuDensity ?? 100,
+              innerGapPct: state.kakuInnerGap ?? 100,
+              colGapPct: state.kakuColGap ?? 0,
+              rowGapPct: state.kakuRowGap ?? 0
+            }
           );
         } else if (pat) {
           targetCtx.fillStyle = pat;
@@ -1285,6 +1298,24 @@
     document.getElementById('patternOpacityVal').textContent = `${state.patternOpacity}%`;
     document.getElementById('patternAreaSelect').value = state.patternArea;
 
+    const hanedaBox = document.getElementById('hanedaParamBox');
+    if (hanedaBox) {
+      const isHaneda = state.patternId === 'haneda-naka' || state.patternId === 'haneda-naka-h';
+      hanedaBox.classList.toggle('hidden', !isHaneda);
+      document.getElementById('kakuDensityInput').value = state.kakuDensity ?? 100;
+      document.getElementById('kakuDensityVal').textContent = `${state.kakuDensity ?? 100}%`;
+      document.getElementById('kakuWeightInput').value = state.kakuWeight ?? 100;
+      document.getElementById('kakuWeightVal').textContent = `${state.kakuWeight ?? 100}%`;
+      document.getElementById('kakuInnerGapInput').value = state.kakuInnerGap ?? 100;
+      document.getElementById('kakuInnerGapVal').textContent = `${state.kakuInnerGap ?? 100}%`;
+      document.getElementById('kakuColGapInput').value = state.kakuColGap ?? 0;
+      document.getElementById('kakuColGapVal').textContent = `${state.kakuColGap ?? 0}%`;
+      document.getElementById('kakuRowGapInput').value = state.kakuRowGap ?? 0;
+      document.getElementById('kakuRowGapVal').textContent = `${state.kakuRowGap ?? 0}%`;
+      document.getElementById('kakuAngleInput').value = state.kakuAngle ?? -30.15;
+      document.getElementById('kakuAngleVal').textContent = `${state.kakuAngle ?? -30.15}°`;
+    }
+
     // 選択アイテムインスペクター更新
     const sel = state.items.find(it => it.id === state.selectedId);
     const noSelMsg = document.getElementById('noSelectionMessage');
@@ -1897,6 +1928,36 @@
       renderCanvas();
     });
     document.getElementById('patternScaleInput').addEventListener('change', () => pushHistory());
+
+    const swapBgPatBtn = document.getElementById('swapBgPatternBtn');
+    if (swapBgPatBtn) {
+      swapBgPatBtn.addEventListener('click', () => {
+        const tmp = state.bgColor;
+        setBgColor(state.patternColor);
+        state.patternColor = tmp;
+        document.getElementById('patternColorInput').value = state.patternColor;
+        document.getElementById('patternColorHex').value = state.patternColor;
+        renderCanvas();
+        pushHistory();
+      });
+    }
+
+    const bindKakuRange = (inputId, valId, key, unit) => {
+      const el = document.getElementById(inputId);
+      if (!el) return;
+      el.addEventListener('input', e => {
+        state[key] = Number(e.target.value);
+        document.getElementById(valId).textContent = `${state[key]}${unit}`;
+        renderCanvas();
+      });
+      el.addEventListener('change', () => pushHistory());
+    };
+    bindKakuRange('kakuDensityInput', 'kakuDensityVal', 'kakuDensity', '%');
+    bindKakuRange('kakuWeightInput', 'kakuWeightVal', 'kakuWeight', '%');
+    bindKakuRange('kakuInnerGapInput', 'kakuInnerGapVal', 'kakuInnerGap', '%');
+    bindKakuRange('kakuColGapInput', 'kakuColGapVal', 'kakuColGap', '%');
+    bindKakuRange('kakuRowGapInput', 'kakuRowGapVal', 'kakuRowGap', '%');
+    bindKakuRange('kakuAngleInput', 'kakuAngleVal', 'kakuAngle', '°');
 
     document.getElementById('patternOpacityInput').addEventListener('input', e => {
       state.patternOpacity = Number(e.target.value);
