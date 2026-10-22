@@ -94,13 +94,28 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
       <p>文字の色・背景色・サイズ・密度・線の細さを自在に調整し、Illustrator用（SVG / .ai / .jsx / PNG）に書き出します。</p>
     </header>
 
-    <!-- 1. 柄モード切替 -->
+    <!-- 1. 柄モード切替 ＆ レイヤー前後順 -->
     <section aria-labelledby="h-mode">
-      <h2 id="h-mode"><span>文様モード</span><a href="index.html" style="font-size:11px;color:var(--ai);text-decoration:none;font-weight:600">🖌️ 手ぬぐい工房(名入れ版)へ →</a></h2>
+      <h2 id="h-mode"><span>文様モード・レイヤー重ね順</span><a href="index.html" style="font-size:11px;color:var(--ai);text-decoration:none;font-weight:600">🖌️ 手ぬぐい工房(名入れ版)へ →</a></h2>
       <div class="mode-tabs" id="modeTabs">
         <button class="chip" data-mode="haneda" aria-pressed="true">仲羽田（角字）</button>
         <button class="chip" data-mode="arare" aria-pressed="false">大小あられ</button>
         <button class="chip" data-mode="both" aria-pressed="false">角字＋あられ</button>
+      </div>
+      <div class="cgroup" id="layerOrderBox" style="margin-top:2px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <span class="clabel" style="font-size:12px">レイヤーの前後（上下の重ね順）</span>
+          <button type="button" class="mini-btn" id="flipLayerOrderBtn" title="仲羽田と大小あられの前後を入れ替えます">前後入替 ⇅</button>
+        </div>
+        <div class="pair" id="layerOrderTabs">
+          <button type="button" class="chip" data-order="kakuFront" aria-pressed="true" style="padding:6px 6px;border-radius:7px;font-size:11.5px;text-align:center">▲ <b>仲羽田</b>が前<br><span style="font-size:10px;opacity:.85">（大小あられが後ろ）</span></button>
+          <button type="button" class="chip" data-order="arareFront" aria-pressed="false" style="padding:6px 6px;border-radius:7px;font-size:11.5px;text-align:center">▲ <b>大小あられ</b>が前<br><span style="font-size:10px;opacity:.85">（仲羽田が後ろ）</span></button>
+        </div>
+        <div class="row" style="grid-template-columns:108px minmax(0,1fr) 56px" title="前のレイヤーの周りに地色のフチ（型抜き余白）を付けて、同色同士でも前後関係をくっきり見せます">
+          <label for="knockoutMm" style="font-size:11.5px">前面のフチ抜き幅</label>
+          <input type="range" id="knockoutMm" min="0" max="8" step="0.2" value="0">
+          <output for="knockoutMm" id="knockoutMm-o" style="font-size:11.5px">0 mm</output>
+        </div>
       </div>
       <div class="chips" id="quickStyles" style="margin-top:2px">
         <button class="chip" data-style="std">① 元柄標準</button>
@@ -303,6 +318,8 @@ const EMBLEM={"loops":[[-51,-857,-26,-858,-1,-858,24,-858,48,-856,73,-854,98,-85
 const $=id=>document.getElementById(id);
 const DEF={
   mode:'haneda', // 'haneda' | 'arare' | 'both'
+  layerOrder:'kakuFront', // 'kakuFront' (仲羽田が前) | 'arareFront' (大小あられが前)
+  knockoutMm:0, // 前面レイヤーのフチ抜き（地色縁取り）幅 mm
   W:350, H:900,
   bgColor:'#046e7e', kakuColor:'#ffffff', dotColor:'#ffffff', showBg:true,
   // 仲羽田（江戸角字）パラメーター
@@ -661,8 +678,26 @@ function draw(){
     }
   }
 
-  // 2. 大小あられ描画
-  if(DOTS.length > 0){
+  // 2 & 3. 大小あられ / 仲羽田（江戸角字）を S.layerOrder の前後順で描画
+  const ko = (S.mode === 'both' && S.knockoutMm > 0) ? S.knockoutMm : 0;
+  const drawArareLayer = (isFront) => {
+    if(DOTS.length === 0) return;
+    if(isFront && ko > 0){
+      x.save();
+      x.strokeStyle = S.bgColor;
+      x.lineWidth = ko * 2;
+      x.lineJoin = 'round';
+      x.lineCap = 'round';
+      x.beginPath();
+      for(const o of DOTS){
+        const a=anchors(o), b=beziers(a);
+        x.moveTo(a[0][0],a[0][1]);
+        for(const q of b) x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]);
+        x.closePath();
+      }
+      x.stroke();
+      x.restore();
+    }
     x.fillStyle=S.dotColor;
     x.beginPath();
     for(const o of DOTS){
@@ -672,10 +707,25 @@ function draw(){
       x.closePath();
     }
     x.fill();
-  }
+  };
 
-  // 3. 仲羽田（江戸角字）描画
-  if(KAKU_POLYS.length > 0){
+  const drawKakuLayer = (isFront) => {
+    if(KAKU_POLYS.length === 0) return;
+    if(isFront && ko > 0){
+      x.save();
+      x.strokeStyle = S.bgColor;
+      x.lineWidth = ko * 2;
+      x.lineJoin = 'round';
+      x.lineCap = 'round';
+      x.beginPath();
+      for(const poly of KAKU_POLYS){
+        x.moveTo(poly[0][0], poly[0][1]);
+        for(let i=1; i<poly.length; i++) x.lineTo(poly[i][0], poly[i][1]);
+        x.closePath();
+      }
+      x.stroke();
+      x.restore();
+    }
     x.fillStyle=S.kakuColor;
     x.beginPath();
     for(const poly of KAKU_POLYS){
@@ -684,6 +734,14 @@ function draw(){
       x.closePath();
     }
     x.fill();
+  };
+
+  if(S.layerOrder === 'arareFront'){
+    drawKakuLayer(false);
+    drawArareLayer(true);
+  }else{
+    drawArareLayer(false);
+    drawKakuLayer(true);
   }
 
   // 4. 丸紋「仲はねだ」ベクター描画
@@ -750,28 +808,59 @@ function draw(){
 const f2=v=>(Math.round(v*100)/100).toString();
 function svgText(){
   const W=S.W, H=S.H;
+  const ko=(S.mode==='both' && S.knockoutMm>0) ? S.knockoutMm : 0;
   let s='<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'mm" height="'+H+'mm" viewBox="0 0 '+W+' '+H+'">\n';
   if(S.showBg){
     s+='<g id="Background_Navy"><rect width="'+W+'" height="'+H+'" fill="'+S.bgColor+'"/></g>\n';
   }
-  if(DOTS.length > 0){
-    s+='<g id="Arare_Dots" fill="'+S.dotColor+'">\n';
+  const buildArareSvg=(isFront)=>{
+    if(DOTS.length===0) return '';
+    let g='';
+    if(isFront && ko>0){
+      g+='<g id="Arare_Knockout" fill="none" stroke="'+S.bgColor+'" stroke-width="'+f2(ko*2)+'" stroke-linejoin="round" stroke-linecap="round">\n';
+      for(const o of DOTS){
+        const a=anchors(o), b=beziers(a);
+        let d='M'+f2(a[0][0])+','+f2(a[0][1]);
+        for(const q of b) d+='C'+f2(q[0])+','+f2(q[1])+' '+f2(q[2])+','+f2(q[3])+' '+f2(q[4])+','+f2(q[5]);
+        g+='<path d="'+d+'Z"/>\n';
+      }
+      g+='</g>\n';
+    }
+    g+='<g id="Arare_Dots" fill="'+S.dotColor+'">\n';
     for(const o of DOTS){
       const a=anchors(o), b=beziers(a);
       let d='M'+f2(a[0][0])+','+f2(a[0][1]);
       for(const q of b) d+='C'+f2(q[0])+','+f2(q[1])+' '+f2(q[2])+','+f2(q[3])+' '+f2(q[4])+','+f2(q[5]);
-      s+='<path d="'+d+'Z"/>\n';
+      g+='<path d="'+d+'Z"/>\n';
     }
-    s+='</g>\n';
-  }
-  if(KAKU_POLYS.length > 0){
-    s+='<g id="HanedaNaka_Kakuji" fill="'+S.kakuColor+'">\n';
+    g+='</g>\n';
+    return g;
+  };
+  const buildKakuSvg=(isFront)=>{
+    if(KAKU_POLYS.length===0) return '';
+    let g='';
+    if(isFront && ko>0){
+      g+='<g id="HanedaNaka_Knockout" fill="none" stroke="'+S.bgColor+'" stroke-width="'+f2(ko*2)+'" stroke-linejoin="round" stroke-linecap="round">\n';
+      for(const poly of KAKU_POLYS){
+        let d='M'+f2(poly[0][0])+','+f2(poly[0][1]);
+        for(let i=1;i<poly.length;i++) d+='L'+f2(poly[i][0])+','+f2(poly[i][1]);
+        g+='<path d="'+d+'Z"/>\n';
+      }
+      g+='</g>\n';
+    }
+    g+='<g id="HanedaNaka_Kakuji" fill="'+S.kakuColor+'">\n';
     for(const poly of KAKU_POLYS){
       let d='M'+f2(poly[0][0])+','+f2(poly[0][1]);
       for(let i=1;i<poly.length;i++) d+='L'+f2(poly[i][0])+','+f2(poly[i][1]);
-      s+='<path d="'+d+'Z"/>\n';
+      g+='<path d="'+d+'Z"/>\n';
     }
-    s+='</g>\n';
+    g+='</g>\n';
+    return g;
+  };
+  if(S.layerOrder === 'arareFront'){
+    s += buildKakuSvg(false) + buildArareSvg(true);
+  }else{
+    s += buildArareSvg(false) + buildKakuSvg(true);
   }
   const crest = getCrestBeziersMm();
   if(crest){
@@ -818,10 +907,23 @@ function aiText(){
     L.push('%AI5_BeginLayer','1 1 1 1 0 0 0 79 128 255 Lb','(Background_Navy) Ln','0 A','0 O',c.join(' ')+' k','0 R','0 i 0 J 0 j 1 w 4 M []0 d',
       P(0,0)+' m',P(W,0)+' L',P(W,H)+' L',P(0,H)+' L',P(0,0)+' L','f','LB','%AI5_EndLayer--');
   }
-  // Layer 2: Arare Dots
-  if(DOTS.length > 0){
+  // Layer 2 & 3: Arare Dots / HanedaNaka Kakuji (S.layerOrder に従い前後順で出力)
+  const koPt = (S.mode==='both' && S.knockoutMm>0) ? (S.knockoutMm * 2 * MM) : 0;
+  const bgCmyk = hexCmyk(S.bgColor).join(' ');
+  const writeArareLayer = (isFront) => {
+    if(DOTS.length === 0) return;
     const d=hexCmyk(S.dotColor);
-    L.push('%AI5_BeginLayer','1 1 1 1 0 0 1 255 79 79 Lb','(Arare_Dots) Ln','0 A','0 O',d.join(' ')+' k','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
+    L.push('%AI5_BeginLayer','1 1 1 1 0 0 1 255 79 79 Lb','(Arare_Dots) Ln','0 A','0 O');
+    if(isFront && koPt > 0){
+      L.push(bgCmyk+' K','0 i 1 J 1 j '+koPt.toFixed(3)+' w 4 M []0 d');
+      for(const o of DOTS){
+        const a=anchors(o), b=beziers(a);
+        L.push(P(a[0][0],a[0][1])+' m');
+        for(const q of b) L.push(P(q[0],q[1])+' '+P(q[2],q[3])+' '+P(q[4],q[5])+' c');
+        L.push('s');
+      }
+    }
+    L.push(d.join(' ')+' k','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
     for(const o of DOTS){
       const a=anchors(o), b=beziers(a);
       L.push(P(a[0][0],a[0][1])+' m');
@@ -829,17 +931,33 @@ function aiText(){
       L.push('f');
     }
     L.push('LB','%AI5_EndLayer--');
-  }
-  // Layer 3: HanedaNaka Kakuji
-  if(KAKU_POLYS.length > 0){
+  };
+  const writeKakuLayer = (isFront) => {
+    if(KAKU_POLYS.length === 0) return;
     const kc=hexCmyk(S.kakuColor);
-    L.push('%AI5_BeginLayer','1 1 1 1 0 0 2 79 200 120 Lb','(HanedaNaka_Kakuji) Ln','0 A','0 O',kc.join(' ')+' k','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
+    L.push('%AI5_BeginLayer','1 1 1 1 0 0 2 79 200 120 Lb','(HanedaNaka_Kakuji) Ln','0 A','0 O');
+    if(isFront && koPt > 0){
+      L.push(bgCmyk+' K','0 i 1 J 1 j '+koPt.toFixed(3)+' w 4 M []0 d');
+      for(const poly of KAKU_POLYS){
+        L.push(P(poly[0][0],poly[0][1])+' m');
+        for(let i=1;i<poly.length;i++) L.push(P(poly[i][0],poly[i][1])+' L');
+        L.push(P(poly[0][0],poly[0][1])+' L','s');
+      }
+    }
+    L.push(kc.join(' ')+' k','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
     for(const poly of KAKU_POLYS){
       L.push(P(poly[0][0],poly[0][1])+' m');
       for(let i=1;i<poly.length;i++) L.push(P(poly[i][0],poly[i][1])+' L');
       L.push(P(poly[0][0],poly[0][1])+' L','f');
     }
     L.push('LB','%AI5_EndLayer--');
+  };
+  if(S.layerOrder === 'arareFront'){
+    writeKakuLayer(false);
+    writeArareLayer(true);
+  }else{
+    writeArareLayer(false);
+    writeKakuLayer(true);
   }
   // Layer 4: Nakahaneda Crest
   const crest = getCrestBeziersMm();
@@ -872,22 +990,49 @@ function jsxText(){
   const W=S.W, H=S.H;
   const bgC=hexCmyk(S.bgColor).map(v=>Math.round(v*100));
   const kakuC=hexCmyk(S.kakuColor).map(v=>Math.round(v*100));
+  const dotC=hexCmyk(S.dotColor).map(v=>Math.round(v*100));
   const polysData = KAKU_POLYS.map(poly=>poly.map(p=>[Math.round(p[0]*100)/100, Math.round(p[1]*100)/100]));
+  const dotsData = DOTS.map(o=>{
+    const a=anchors(o), b=beziers(a);
+    return {a:a.map(p=>[Math.round(p[0]*100)/100,Math.round(p[1]*100)/100]), b:b.map(q=>q.map(v=>Math.round(v*100)/100))};
+  });
   return `// 仲羽田・大小あられ 手ぬぐい ${W}x${H}mm — Illustrator用スクリプト（UTF-8）
 // 使い方：Illustrator → ファイル → スクリプト → その他のスクリプト… でこのファイルを選ぶ
 #target illustrator
 (function(){
 var MM = 72/25.4, W = ${W}, H = ${H};
+var ORDER = "${S.layerOrder || 'kakuFront'}";
 var POLYS = ${JSON.stringify(polysData)};
+var DOTS = ${JSON.stringify(dotsData)};
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
 var doc = app.documents.add(DocumentColorSpace.CMYK, W*MM, H*MM);
 var ab = doc.artboards[0].artboardRect, L = ab[0], T = ab[1];
 function P(x, y){ return [L + x*MM, T - y*MM]; }
 function cmyk(c,m,y,k){ var o = new CMYKColor(); o.cyan=c; o.magenta=m; o.yellow=y; o.black=k; return o; }
-${S.showBg ? `var bg = doc.layers[0]; bg.name = "地色";
+${S.showBg ? `var bg = doc.layers[0]; bg.name = "Background_Navy";
 var r = bg.pathItems.rectangle(T, L, W*MM, H*MM); r.filled = true; r.fillColor = cmyk(${bgC.join(',')}); r.stroked = false;` : ''}
-if (POLYS.length > 0) {
-  var lay = doc.layers.add(); lay.name = "仲羽田_角字";
+function addArareLayer(){
+  if (DOTS.length === 0) return;
+  var lay = doc.layers.add(); lay.name = "Arare_Dots";
+  var fg = cmyk(${dotC.join(',')});
+  for (var i = 0; i < DOTS.length; i++) {
+    var d = DOTS[i], p = lay.pathItems.add();
+    p.filled = true; p.fillColor = fg; p.stroked = false;
+    var n = d.a.length;
+    for (var j = 0; j < n; j++) {
+      var pt = p.pathPoints.add();
+      pt.anchor = P(d.a[j][0], d.a[j][1]);
+      var prevB = d.b[(j - 1 + n) % n], curB = d.b[j];
+      pt.leftDirection = P(prevB[2], prevB[3]);
+      pt.rightDirection = P(curB[0], curB[1]);
+      pt.pointType = PointType.SMOOTH;
+    }
+    p.closed = true;
+  }
+}
+function addKakuLayer(){
+  if (POLYS.length === 0) return;
+  var lay = doc.layers.add(); lay.name = "HanedaNaka_Kakuji";
   var fg = cmyk(${kakuC.join(',')});
   for (var i = 0; i < POLYS.length; i++) {
     var poly = POLYS[i], pts = [];
@@ -896,8 +1041,15 @@ if (POLYS.length > 0) {
     p.closed = true; p.filled = true; p.fillColor = fg; p.stroked = false;
   }
 }
+if (ORDER === "arareFront") {
+  addKakuLayer();
+  addArareLayer();
+} else {
+  addArareLayer();
+  addKakuLayer();
+}
 app.userInteractionLevel = UserInteractionLevel.DISPLAYALERTS;
-alert("完了：仲羽田・手ぬぐいデータ (" + POLYS.length + " パス)");
+alert("完了：手ぬぐいデータ (仲羽田 " + POLYS.length + " パス / あられ " + DOTS.length + " 粒)");
 })();
 `;
 }
@@ -913,15 +1065,33 @@ function saveHighResPng(){
   const x = off.getContext('2d');
   x.setTransform(s,0,0,s,0,0);
   if(S.showBg){ x.fillStyle=S.bgColor; x.fillRect(0,0,S.W,S.H); }
-  if(DOTS.length > 0){
+  const ko = (S.mode === 'both' && S.knockoutMm > 0) ? S.knockoutMm : 0;
+  const drawArarePng = (isFront) => {
+    if(DOTS.length === 0) return;
+    if(isFront && ko > 0){
+      x.save(); x.strokeStyle=S.bgColor; x.lineWidth=ko*2; x.lineJoin='round'; x.lineCap='round'; x.beginPath();
+      for(const o of DOTS){const a=anchors(o),b=beziers(a);x.moveTo(a[0][0],a[0][1]);for(const q of b)x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]);x.closePath();}
+      x.stroke(); x.restore();
+    }
     x.fillStyle=S.dotColor; x.beginPath();
     for(const o of DOTS){const a=anchors(o),b=beziers(a);x.moveTo(a[0][0],a[0][1]);for(const q of b)x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]);x.closePath();}
     x.fill();
-  }
-  if(KAKU_POLYS.length > 0){
+  };
+  const drawKakuPng = (isFront) => {
+    if(KAKU_POLYS.length === 0) return;
+    if(isFront && ko > 0){
+      x.save(); x.strokeStyle=S.bgColor; x.lineWidth=ko*2; x.lineJoin='round'; x.lineCap='round'; x.beginPath();
+      for(const poly of KAKU_POLYS){x.moveTo(poly[0][0],poly[0][1]);for(let i=1;i<poly.length;i++)x.lineTo(poly[i][0],poly[i][1]);x.closePath();}
+      x.stroke(); x.restore();
+    }
     x.fillStyle=S.kakuColor; x.beginPath();
     for(const poly of KAKU_POLYS){x.moveTo(poly[0][0],poly[0][1]);for(let i=1;i<poly.length;i++)x.lineTo(poly[i][0],poly[i][1]);x.closePath();}
     x.fill();
+  };
+  if(S.layerOrder === 'arareFront'){
+    drawKakuPng(false); drawArarePng(true);
+  }else{
+    drawArarePng(false); drawKakuPng(true);
   }
   const crest = getCrestBeziersMm();
   if(crest){
@@ -1170,6 +1340,7 @@ renderPresetList();
 
 /* ---- UI wiring ---- */
 const ranges={
+  knockoutMm:v=>v+' mm',
   kakuSize:v=>v+' mm', kakuScale:v=>v+'%', kakuDensity:v=>v+'%', kakuWeight:v=>v+'%',
   kakuInnerGap:v=>v+'%', kakuColGap:v=>(v>0?'+':'')+v+'%', kakuRowGap:v=>(v>0?'+':'')+v+'%',
   kakuAngle:v=>v+'°', kakuOffX:v=>(v>0?'+':'')+v+' mm', kakuOffY:v=>(v>0?'+':'')+v+' mm',
@@ -1190,6 +1361,7 @@ function syncUI(){
 
   // モード別表示切替
   for(const b of document.querySelectorAll('#modeTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.mode===S.mode)+'');
+  for(const b of document.querySelectorAll('#layerOrderTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.order===(S.layerOrder||'kakuFront'))+'');
   $('sec-haneda').hidden = (S.mode === 'arare');
   $('kakuColorGroup').hidden = (S.mode === 'arare');
   $('sec-arare').hidden = (S.mode === 'haneda');
@@ -1218,7 +1390,8 @@ function update(relayout){
 for(const k in ranges){
   if($(k)) $(k).addEventListener('input',e=>{
     S[k]=parseFloat(e.target.value);
-    const needsLayout = !['crestSize','crestAngle','crestWeight','crestX','crestY'].includes(k);
+    if(k==='knockoutMm' && S.mode!=='both') S.mode='both';
+    const needsLayout = !['knockoutMm','crestSize','crestAngle','crestWeight','crestX','crestY'].includes(k);
     update(needsLayout);
   });
 }
@@ -1234,6 +1407,20 @@ if($('kakuAngleNum')){
 for(const k of ['W','H'])$(k).addEventListener('change',e=>{const v=Math.round(parseFloat(e.target.value));if(v>=50){S[k]=Math.min(v,k==='W'?2000:3000);update(true);}else syncUI();});
 $('flipOrient').addEventListener('click',()=>{const tmp=S.W; S.W=S.H; S.H=tmp; update(true);});
 document.querySelectorAll('#modeTabs .chip').forEach(b=>b.addEventListener('click',()=>{S.mode=b.dataset.mode; update(true);}));
+document.querySelectorAll('#layerOrderTabs .chip').forEach(b=>b.addEventListener('click',()=>{
+  S.layerOrder=b.dataset.order;
+  const switched=(S.mode!=='both');
+  if(switched) S.mode='both';
+  update(switched);
+}));
+if($('flipLayerOrderBtn')){
+  $('flipLayerOrderBtn').addEventListener('click',()=>{
+    S.layerOrder=(S.layerOrder==='arareFront')?'kakuFront':'arareFront';
+    const switched=(S.mode!=='both');
+    if(switched) S.mode='both';
+    update(switched);
+  });
+}
 document.querySelectorAll('#presets .chip').forEach(b=>b.addEventListener('click',()=>{S.W=+b.dataset.w;S.H=+b.dataset.h;update(true);}));
 document.querySelectorAll('#edge .chip').forEach(b=>b.addEventListener('click',()=>{S.edge=b.dataset.v;update(true);}));
 document.querySelectorAll('#shape .chip').forEach(b=>b.addEventListener('click',()=>{S.shape=b.dataset.v;update(true);}));
