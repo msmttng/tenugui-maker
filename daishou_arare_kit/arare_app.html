@@ -74,6 +74,19 @@ input[type=color]{width:34px;height:28px;border:1px solid var(--line);border-rad
 .canvasbox{min-height:0;display:flex;justify-content:center;align-items:center;overflow:auto;padding:12px;background:rgba(0,0,0,.03);border-radius:10px;border:1px solid var(--line)}
 canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,40,.18);transition:width .12s,height .12s}
 .subbox{display:grid;gap:8px;padding:9px 10px;background:var(--bg);border-radius:8px;border:1px solid var(--line)}
+.save-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
+.save-input{width:100%;box-sizing:border-box;padding:6px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-size:12.5px}
+.preset-list{display:grid;gap:5px;max-height:190px;overflow-y:auto;padding-right:2px}
+.preset-item{display:grid;grid-template-columns:24px minmax(0,1fr) auto;align-items:center;gap:7px;padding:6px 8px;background:var(--bg);border:1px solid var(--line);border-radius:7px;font-size:12px}
+.preset-item.active{border-color:var(--ai);background:var(--ai-soft)}
+.preset-swatch{width:22px;height:22px;border-radius:5px;border:1px solid rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px}
+.preset-info{min-width:0;cursor:pointer}
+.preset-title{font-weight:600;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.preset-meta{font-size:10.5px;color:var(--muted);display:block}
+.preset-btns{display:flex;gap:4px}
+.mini-btn{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:5px;padding:3px 7px;font:inherit;font-size:11px;cursor:pointer}
+.mini-btn:hover{border-color:var(--ai);color:var(--ai)}
+.mini-btn.del:hover{border-color:#dc2626;color:#dc2626}
 @media (max-width:820px){
   html,body{height:auto}
   .wrap{grid-template-columns:1fr;height:auto}
@@ -104,6 +117,23 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         <button class="chip" data-style="horiz">④ 水平並び</button>
         <button class="chip" data-style="crest">⑤ 丸紋＋下部帯</button>
       </div>
+    </section>
+
+    <!-- 1-B. 名前を付けて保存・マイデザイン一覧 -->
+    <section aria-labelledby="h-save">
+      <h2 id="h-save"><span>💾 名前を付けて保存・呼び出し</span><span class="badge" id="savedCountBadge">0件</span></h2>
+      <div class="save-bar">
+        <input type="text" id="presetName" class="save-input" placeholder="保存名（例：羽田納戸・細線案1）" maxlength="40">
+        <button type="button" class="btn" id="savePresetBtn" style="padding:6px 11px;white-space:nowrap">＋ 保存</button>
+      </div>
+      <div id="savedList" class="preset-list"></div>
+      <div class="crow2" style="justify-content:space-between;padding-top:2px">
+        <button type="button" class="chip" id="exportJsonBtn" title="現在の設定値と保存リストをファイル(.json)としてパソコンに保存">📥 設定をファイル保存(.json)</button>
+        <button type="button" class="chip" id="importJsonBtn" title="保存した設定ファイル(.json)を読み込む">📂 設定ファイル読込</button>
+        <button type="button" class="chip" id="copyUrlBtn" title="現在の設定値を埋め込んだ共有URLをコピー">🔗 設定URLコピー</button>
+        <input type="file" id="importJsonInput" accept=".json,application/json" hidden>
+      </div>
+      <p class="msg" id="saveMsg" role="status" style="min-height:0"></p>
     </section>
 
     <!-- 2. 布の大きさ -->
@@ -151,9 +181,29 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
       <p class="note" id="cmyk-note"></p>
     </section>
 
-    <!-- 4. 仲羽田（江戸角字）のサイズ・密度・細さ・角度調整 -->
+    <!-- 4. 仲羽田（江戸角字）の角度・サイズ・密度・細さ調整 -->
     <section id="sec-haneda" aria-labelledby="h-haneda">
-      <h2 id="h-haneda"><span>仲羽田のサイズ・密度・細さ</span><span class="badge" id="kaku-mm-badge">線幅 3.3mm</span></h2>
+      <h2 id="h-haneda"><span>仲羽田の角度・サイズ・密度・細さ</span><span class="badge" id="kaku-mm-badge">線幅 3.3mm</span></h2>
+      <div class="cgroup">
+        <div class="row" style="grid-template-columns:86px minmax(0,1fr) 72px">
+          <label for="kakuAngle" style="font-weight:700">傾き角度(°)</label>
+          <input type="range" id="kakuAngle" min="-180" max="180" step="0.05" value="-30.15">
+          <input type="number" id="kakuAngleNum" min="-180" max="180" step="0.1" value="-30.15" style="padding:3px 6px;font-size:12.5px">
+        </div>
+        <div class="chips" id="anglePresets">
+          <button type="button" class="chip" data-ang="-30.15">元柄 −30.15°</button>
+          <button type="button" class="chip" data-ang="0">水平 0°</button>
+          <button type="button" class="chip" data-ang="-45">−45°</button>
+          <button type="button" class="chip" data-ang="30.15">+30.15°</button>
+          <button type="button" class="chip" data-ang="45">+45°</button>
+          <button type="button" class="chip" data-ang="90">垂直 90°</button>
+          <button type="button" class="chip" data-step="-5">−5°</button>
+          <button type="button" class="chip" data-step="-1">−1°</button>
+          <button type="button" class="chip" data-step="1">+1°</button>
+          <button type="button" class="chip" data-step="5">+5°</button>
+        </div>
+        <output for="kakuAngle" id="kakuAngle-o" hidden></output>
+      </div>
       <div class="row"><label for="kakuSize">文字サイズ(基準)</label><input type="range" id="kakuSize" min="12" max="150" step="0.5" value="48"><output for="kakuSize" id="kakuSize-o"></output></div>
       <div class="row"><label for="kakuScale">全体倍率</label><input type="range" id="kakuScale" min="25" max="300" step="1" value="100"><output for="kakuScale" id="kakuScale-o"></output></div>
       <div class="row"><label for="kakuDensity">繰り返し密度</label><input type="range" id="kakuDensity" min="40" max="250" step="1" value="100"><output for="kakuDensity" id="kakuDensity-o"></output></div>
@@ -162,15 +212,6 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
       <div class="row"><label for="kakuColGap">文字の横間隔</label><input type="range" id="kakuColGap" min="-15" max="100" step="1" value="0"><output for="kakuColGap" id="kakuColGap-o"></output></div>
       <div class="row"><label for="kakuRowGap">段の縦間隔</label><input type="range" id="kakuRowGap" min="0" max="80" step="1" value="0"><output for="kakuRowGap" id="kakuRowGap-o"></output></div>
       <p class="note">線を極細（20%）〜極太（220%）に変えても角の噛み合わせが一切ズレないパラメトリック構造です。</p>
-
-      <div class="row"><label for="kakuAngle">傾き角度</label><input type="range" id="kakuAngle" min="-90" max="90" step="0.05" value="-30.15"><output for="kakuAngle" id="kakuAngle-o"></output></div>
-      <div class="chips" id="anglePresets">
-        <button class="chip" data-ang="-30.15">元柄 −30.15°</button>
-        <button class="chip" data-ang="0">水平 0°</button>
-        <button class="chip" data-ang="-45">斜め −45°</button>
-        <button class="chip" data-ang="30.15">逆斜め +30.15°</button>
-        <button class="chip" data-ang="90">垂直 90°</button>
-      </div>
       <div class="row"><label for="kakuOffX">横の位置ずらし</label><input type="range" id="kakuOffX" min="-100" max="100" step="1" value="0"><output for="kakuOffX" id="kakuOffX-o"></output></div>
       <div class="row"><label for="kakuOffY">縦の位置ずらし</label><input type="range" id="kakuOffY" min="-100" max="100" step="1" value="0"><output for="kakuOffY" id="kakuOffY-o"></output></div>
     </section>
@@ -184,6 +225,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
       </div>
       <div class="subbox" id="crestBox" hidden>
         <div class="row"><label for="crestSize">丸紋サイズ(直径)</label><input type="range" id="crestSize" min="15" max="240" step="1" value="62"><output for="crestSize" id="crestSize-o"></output></div>
+        <div class="row"><label for="crestAngle">丸紋の回転角度</label><input type="range" id="crestAngle" min="-180" max="180" step="1" value="0"><output for="crestAngle" id="crestAngle-o"></output></div>
         <div class="row"><label for="crestWeight">丸紋の線の太さ</label><input type="range" id="crestWeight" min="-80" max="120" step="5" value="0"><output for="crestWeight" id="crestWeight-o"></output></div>
         <div class="row"><label for="crestX">丸紋の横位置</label><input type="range" id="crestX" min="5" max="95" step="0.5" value="50"><output for="crestX" id="crestX-o"></output></div>
         <div class="row"><label for="crestY">丸紋の縦位置</label><input type="range" id="crestY" min="5" max="95" step="0.5" value="80"><output for="crestY" id="crestY-o"></output></div>
@@ -276,7 +318,7 @@ const DEF={
   kakuInnerGap:100, kakuColGap:0, kakuRowGap:0,
   kakuAngle:-30.15, kakuOffX:0, kakuOffY:0,
   // 丸紋「仲はねだ」＆下部帯パラメーター
-  showCrest:false, crestSize:62, crestWeight:0, crestX:50, crestY:80,
+  showCrest:false, crestSize:62, crestAngle:0, crestWeight:0, crestX:50, crestY:80,
   crestFg:'#877028', crestBg:'#ffffff',
   showBand:false, bandH:52,
   // 大小あられパラメーター
@@ -312,13 +354,16 @@ function getCrestBeziersMm(){
   const cx = S.W * (S.crestX / 100);
   const cy = S.H * (S.crestY / 100);
   const rad = S.crestSize / 2;
+  const ang = ((S.crestAngle || 0) * Math.PI) / 180;
+  const cos = Math.cos(ang), sin = Math.sin(ang);
   // 太さオフセット（正規化空間での法線移動量: -80..+120 -> -0.012..+0.018）
   const delta = (S.crestWeight / 100) * 0.015;
   const loops = EMBLEM_LOOPS.map(({pts, norms})=>{
-    const a = pts.map(([px, py], i)=>[
-      cx + (px + norms[i][0]*delta) * rad,
-      cy + (py + norms[i][1]*delta) * rad
-    ]);
+    const a = pts.map(([px, py], i)=>{
+      const ux = (px + norms[i][0]*delta) * rad;
+      const uy = (py + norms[i][1]*delta) * rad;
+      return [cx + ux*cos - uy*sin, cy + ux*sin + uy*cos];
+    });
     return {a, b: beziers(a)};
   });
   return {cx, cy, rad, bgRad: rad * 0.865, loops};
@@ -909,20 +954,241 @@ function zip(name,data){
   const end=new DataView(new ArrayBuffer(22));end.setUint32(0,0x06054b50,true);end.setUint16(8,1,true);end.setUint16(10,1,true);end.setUint32(12,cdSize,true);end.setUint32(16,cdOff,true);
   return new Blob([lh,nm,data,ch,nm,end],{type:'application/zip'});
 }
-const baseName=()=>'tenugui_'+S.mode+'_'+S.W+'x'+S.H;
+const baseName=()=>{
+  const raw=($('presetName')&&$('presetName').value.trim())||'';
+  const safe=raw.replace(/[\\/:*?"<>|\s]+/g,'_');
+  return (safe ? safe+'_' : 'tenugui_'+S.mode+'_')+S.W+'x'+S.H;
+};
+
+/* ---- 名前を付けて保存（マイデザイン管理 ＆ JSON入出力 ＆ URL共有） ---- */
+const PRESET_KEY='haneda-arare-presets-v1';
+let PRESETS=[];
+let activePresetId=null;
+try{
+  const raw=JSON.parse(localStorage.getItem(PRESET_KEY)||'null');
+  if(Array.isArray(raw)) PRESETS=raw;
+}catch(e){}
+
+function savePresetsToStorage(){
+  try{localStorage.setItem(PRESET_KEY,JSON.stringify(PRESETS));}catch(e){}
+}
+
+function saySave(t,warn){
+  const m=$('saveMsg'); if(!m) return;
+  m.textContent=t; m.className='msg'+(warn?' warn':'');
+  setTimeout(()=>{if(m.textContent===t) m.textContent='';}, 4000);
+}
+
+function formatShortDate(ts){
+  const d=new Date(ts||Date.now());
+  const mm=String(d.getMonth()+1).padStart(2,'0');
+  const dd=String(d.getDate()).padStart(2,'0');
+  const hh=String(d.getHours()).padStart(2,'0');
+  const mi=String(d.getMinutes()).padStart(2,'0');
+  return `${mm}/${dd} ${hh}:${mi}`;
+}
+
+function renderPresetList(){
+  const list=$('savedList'), badge=$('savedCountBadge');
+  if(!list) return;
+  badge.textContent=PRESETS.length+'件';
+  list.innerHTML='';
+  if(PRESETS.length===0){
+    const empty=document.createElement('div');
+    empty.className='note';
+    empty.textContent='まだ保存されたデザインはありません。上の欄に名前を入れて「＋ 保存」を押すとここに一覧保存されます。';
+    list.appendChild(empty);
+    return;
+  }
+  PRESETS.forEach(item=>{
+    const row=document.createElement('div');
+    row.className='preset-item'+(item.id===activePresetId?' active':'');
+    const st=item.settings||DEF;
+    const fg=st.mode==='arare'?st.dotColor:st.kakuColor;
+    const modeLabel=st.mode==='arare'?'あられ':(st.mode==='both'?'角字+あられ':'仲羽田');
+    const sw=document.createElement('div');
+    sw.className='preset-swatch';
+    sw.style.background=st.bgColor||'#046e7e';
+    sw.style.color=fg||'#ffffff';
+    sw.textContent=st.mode==='arare'?'霰':'仲';
+
+    const info=document.createElement('div');
+    info.className='preset-info';
+    info.title='クリックでこの設定を読み込みます';
+    const title=document.createElement('span');
+    title.className='preset-title';
+    title.textContent=item.name;
+    const meta=document.createElement('span');
+    meta.className='preset-meta';
+    meta.textContent=`${modeLabel} ${(st.W||350)/10}×${(st.H||900)/10}cm | 太さ${st.kakuWeight||100}% 密度${st.kakuDensity||100}% (${formatShortDate(item.savedAt)})`;
+    info.appendChild(title);
+    info.appendChild(meta);
+
+    const loadFn=()=>{
+      activePresetId=item.id;
+      $('presetName').value=item.name;
+      S=Object.assign({},DEF,JSON.parse(JSON.stringify(item.settings)));
+      update(true);
+      renderPresetList();
+      saySave(`「${item.name}」を読み込みました。`);
+    };
+    info.addEventListener('click',loadFn);
+    sw.addEventListener('click',loadFn);
+
+    const btns=document.createElement('div');
+    btns.className='preset-btns';
+
+    const loadBtn=document.createElement('button');
+    loadBtn.type='button'; loadBtn.className='mini-btn'; loadBtn.textContent='読込';
+    loadBtn.addEventListener('click',loadFn);
+
+    const upBtn=document.createElement('button');
+    upBtn.type='button'; upBtn.className='mini-btn'; upBtn.textContent='上書';
+    upBtn.title='現在の設定値でこの保存データを上書き更新します';
+    upBtn.addEventListener('click',()=>{
+      item.settings=JSON.parse(JSON.stringify(S));
+      item.savedAt=Date.now();
+      if($('presetName').value.trim()) item.name=$('presetName').value.trim();
+      activePresetId=item.id;
+      savePresetsToStorage();
+      renderPresetList();
+      saySave(`「${item.name}」を上書き保存しました。`);
+    });
+
+    const delBtn=document.createElement('button');
+    delBtn.type='button'; delBtn.className='mini-btn del'; delBtn.textContent='×';
+    delBtn.title='この保存データを削除';
+    delBtn.addEventListener('click',()=>{
+      PRESETS=PRESETS.filter(p=>p.id!==item.id);
+      if(activePresetId===item.id) activePresetId=null;
+      savePresetsToStorage();
+      renderPresetList();
+      saySave(`「${item.name}」を削除しました。`);
+    });
+
+    btns.appendChild(loadBtn);
+    btns.appendChild(upBtn);
+    btns.appendChild(delBtn);
+
+    row.appendChild(sw);
+    row.appendChild(info);
+    row.appendChild(btns);
+    list.appendChild(row);
+  });
+}
+
+$('savePresetBtn').addEventListener('click',()=>{
+  let name=$('presetName').value.trim();
+  if(!name){
+    const modeJp=S.mode==='arare'?'大小あられ':(S.mode==='both'?'仲羽田とあられ':'仲羽田');
+    name=`${modeJp}_${S.W/10}x${S.H/10}cm_太${S.kakuWeight}_密${S.kakuDensity}`;
+    $('presetName').value=name;
+  }
+  const newItem={
+    id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),
+    name,
+    savedAt:Date.now(),
+    settings:JSON.parse(JSON.stringify(S))
+  };
+  PRESETS.unshift(newItem);
+  activePresetId=newItem.id;
+  savePresetsToStorage();
+  renderPresetList();
+  saySave(`「${name}」をサイト内に保存しました！`);
+});
+
+$('presetName').addEventListener('keydown',e=>{
+  if(e.key==='Enter'){ e.preventDefault(); $('savePresetBtn').click(); }
+});
+
+// JSON設定ファイルとして名前を付けて保存
+$('exportJsonBtn').addEventListener('click',()=>{
+  const name=$('presetName').value.trim()||`手ぬぐい設定_${S.mode}_${S.W}x${S.H}`;
+  const payload={
+    app:'haneda-arare-studio',
+    version:1,
+    name,
+    savedAt:new Date().toISOString(),
+    currentSettings:S,
+    savedPresets:PRESETS
+  };
+  const safe=name.replace(/[\\/:*?"<>|\s]+/g,'_');
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'});
+  save(safe+'.json',blob,safe+'.json');
+  saySave(`「${safe}.json」をダウンロード保存しました。`);
+});
+
+// JSON設定ファイル読み込み
+$('importJsonBtn').addEventListener('click',()=>$('importJsonInput').click());
+$('importJsonInput').addEventListener('change',e=>{
+  const f=e.target.files&&e.target.files[0];
+  if(!f) return;
+  const r=new FileReader();
+  r.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      if(data.currentSettings){
+        S=Object.assign({},DEF,data.currentSettings);
+      }else if(data.W && data.H){
+        S=Object.assign({},DEF,data);
+      }
+      if(data.name) $('presetName').value=data.name;
+      else $('presetName').value=f.name.replace(/\.json$/i,'');
+      if(Array.isArray(data.savedPresets)){
+        const existingIds=new Set(PRESETS.map(p=>p.id));
+        data.savedPresets.forEach(p=>{if(p&&p.id&&!existingIds.has(p.id)) PRESETS.push(p);});
+        savePresetsToStorage();
+      }
+      update(true);
+      renderPresetList();
+      saySave(`設定ファイル「${f.name}」を読み込みました！`);
+    }catch(err){
+      saySave('設定ファイルの形式が正しくありません。',true);
+    }
+    e.target.value='';
+  };
+  r.readAsText(f);
+});
+
+// 設定付きURLをコピー（どこでも同じ設定を再現）
+$('copyUrlBtn').addEventListener('click',()=>{
+  const obj=Object.assign({},S,{_name:$('presetName').value.trim()||''});
+  const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
+  const url=location.origin+location.pathname+'#cfg='+encoded;
+  history.replaceState(null,'','#cfg='+encoded);
+  navigator.clipboard.writeText(url).then(
+    ()=>saySave('現在の設定を埋め込んだURLをコピーしました！ブックマークや共有に使えます。'),
+    ()=>saySave('URL欄に現在の設定を反映しました。そのままブックマークしてください。')
+  );
+});
+
+// URLハッシュ (#cfg=...) からの自動復元
+try{
+  if(location.hash && location.hash.startsWith('#cfg=')){
+    const raw=decodeURIComponent(escape(atob(location.hash.slice(5))));
+    const parsed=JSON.parse(raw);
+    if(parsed && typeof parsed==='object'){
+      if(parsed._name) $('presetName').value=parsed._name;
+      delete parsed._name;
+      S=Object.assign({},DEF,parsed);
+    }
+  }
+}catch(e){}
+renderPresetList();
 
 /* ---- UI wiring ---- */
 const ranges={
   kakuSize:v=>v+' mm', kakuScale:v=>v+'%', kakuDensity:v=>v+'%', kakuWeight:v=>v+'%',
   kakuInnerGap:v=>v+'%', kakuColGap:v=>(v>0?'+':'')+v+'%', kakuRowGap:v=>(v>0?'+':'')+v+'%',
   kakuAngle:v=>v+'°', kakuOffX:v=>(v>0?'+':'')+v+' mm', kakuOffY:v=>(v>0?'+':'')+v+' mm',
-  crestSize:v=>v+' mm', crestWeight:v=>(v>0?'+':'')+v+'%', crestX:v=>v+'%', crestY:v=>v+'%', bandH:v=>v+' mm',
+  crestSize:v=>v+' mm', crestAngle:v=>(v>0?'+':'')+v+'°', crestWeight:v=>(v>0?'+':'')+v+'%', crestX:v=>v+'%', crestY:v=>v+'%', bandH:v=>v+' mm',
   count:v=>v+' 粒', gap:v=>v+' mm', spread:v=>v+'', grad:v=>(v>0?'+':'')+v,
   margin:v=>v+' mm', dmin:v=>v+' mm', dmax:v=>v+' mm', bigratio:v=>v+'%', scale:v=>v+'%'
 };
 
 function syncUI(){
   for(const k in ranges){if($(k)){$(k).value=S[k]; $(k+'-o').textContent=ranges[k](S[k]);}}
+  if($('kakuAngleNum') && document.activeElement!==$('kakuAngleNum')) $('kakuAngleNum').value=S.kakuAngle;
   $('W').value=S.W; $('H').value=S.H;
   $('bgColor').value=S.bgColor; $('kakuColor').value=S.kakuColor; $('dotColor').value=S.dotColor;
   $('crestFg').value=S.crestFg; $('crestBg').value=S.crestBg;
@@ -960,8 +1226,17 @@ function update(relayout){
 for(const k in ranges){
   if($(k)) $(k).addEventListener('input',e=>{
     S[k]=parseFloat(e.target.value);
-    const needsLayout = !['crestSize','crestWeight','crestX','crestY'].includes(k);
+    const needsLayout = !['crestSize','crestAngle','crestWeight','crestX','crestY'].includes(k);
     update(needsLayout);
+  });
+}
+if($('kakuAngleNum')){
+  $('kakuAngleNum').addEventListener('input',e=>{
+    const v=parseFloat(e.target.value);
+    if(!isNaN(v)){
+      S.kakuAngle=Math.max(-180,Math.min(180,Math.round(v*100)/100));
+      update(true);
+    }
   });
 }
 for(const k of ['W','H'])$(k).addEventListener('change',e=>{const v=Math.round(parseFloat(e.target.value));if(v>=50){S[k]=Math.min(v,k==='W'?2000:3000);update(true);}else syncUI();});
@@ -970,7 +1245,17 @@ document.querySelectorAll('#modeTabs .chip').forEach(b=>b.addEventListener('clic
 document.querySelectorAll('#presets .chip').forEach(b=>b.addEventListener('click',()=>{S.W=+b.dataset.w;S.H=+b.dataset.h;update(true);}));
 document.querySelectorAll('#edge .chip').forEach(b=>b.addEventListener('click',()=>{S.edge=b.dataset.v;update(true);}));
 document.querySelectorAll('#shape .chip').forEach(b=>b.addEventListener('click',()=>{S.shape=b.dataset.v;update(true);}));
-document.querySelectorAll('#anglePresets .chip').forEach(b=>b.addEventListener('click',()=>{S.kakuAngle=parseFloat(b.dataset.ang);update(true);}));
+document.querySelectorAll('#anglePresets .chip').forEach(b=>b.addEventListener('click',()=>{
+  if(b.dataset.ang!==undefined){
+    S.kakuAngle=parseFloat(b.dataset.ang);
+  }else if(b.dataset.step!==undefined){
+    let next=Math.round((S.kakuAngle+parseFloat(b.dataset.step))*100)/100;
+    if(next>180) next-=360;
+    if(next<-180) next+=360;
+    S.kakuAngle=next;
+  }
+  update(true);
+}));
 document.querySelectorAll('#zoomChips .chip').forEach(b=>b.addEventListener('click',()=>{
   ZOOM=parseFloat(b.dataset.zoom)||1;
   document.querySelectorAll('#zoomChips .chip').forEach(c=>c.setAttribute('aria-pressed',(c===b)+''));
