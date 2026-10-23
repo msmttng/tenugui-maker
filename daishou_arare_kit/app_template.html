@@ -63,8 +63,14 @@ input[type=color]{width:34px;height:28px;border:1px solid var(--line);border-rad
 .stats-left{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline}
 .stats-right{display:flex;gap:6px;align-items:center}
 .stats b{color:var(--fg);font-weight:700;font-variant-numeric:tabular-nums;font-size:14px}
-.canvasbox{min-height:0;display:flex;justify-content:center;align-items:center;overflow:auto;padding:12px;background:rgba(0,0,0,.03);border-radius:10px;border:1px solid var(--line)}
-canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,40,.18);transition:width .12s,height .12s}
+.canvasbox{position:relative;min-height:0;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:12px;background:rgba(0,0,0,.04);border-radius:10px;border:1px solid var(--line);user-select:none;cursor:grab}
+.canvasbox.dragging{cursor:grabbing}
+canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,40,.18);transform-origin:center center;will-change:transform}
+.float-zoom-hud{position:absolute;bottom:14px;right:14px;display:flex;align-items:center;gap:6px;background:rgba(15,23,42,.88);backdrop-filter:blur(6px);color:#fff;padding:6px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.18);box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:20;font-size:12px}
+.float-zoom-hud button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:3px 9px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;transition:background .12s}
+.float-zoom-hud button:hover{background:var(--ai);border-color:var(--ai)}
+.float-zoom-hud input[type=range]{width:95px;accent-color:#38bdf8}
+.float-help-pill{position:absolute;top:12px;right:14px;background:rgba(15,23,42,.78);color:#e2e8f0;padding:4px 10px;border-radius:999px;font-size:11px;pointer-events:none;z-index:15;border:1px solid rgba(255,255,255,.14)}
 .subbox{display:grid;gap:8px;padding:9px 10px;background:var(--bg);border-radius:8px;border:1px solid var(--line)}
 .save-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
 .save-input{width:100%;box-sizing:border-box;padding:6px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-size:12.5px}
@@ -547,13 +553,29 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         </div>
         <div class="stats-right" id="zoomChips">
           <span style="font-size:11.5px">表示倍率:</span>
-          <button class="chip" data-zoom="1" aria-pressed="true">全体表示</button>
-          <button class="chip" data-zoom="1.8" aria-pressed="false">1.8倍</button>
-          <button class="chip" data-zoom="3" aria-pressed="false">3倍(細部確認)</button>
+          <button type="button" class="mini-btn" id="zoomOutTopBtn" title="縮小">－</button>
+          <input type="range" id="zoomRangeTop" min="40" max="450" step="5" value="100" style="width:90px">
+          <button type="button" class="mini-btn" id="zoomInTopBtn" title="拡大">＋</button>
+          <b id="zoomPctTop" style="min-width:42px;text-align:right;font-size:12.5px">100%</b>
+          <button type="button" class="chip" data-zoom="1" aria-pressed="true">全体(100%)</button>
+          <button type="button" class="chip" data-zoom="1.5" aria-pressed="false">1.5倍</button>
+          <button type="button" class="chip" data-zoom="2.2" aria-pressed="false">2.2倍</button>
+          <button type="button" class="chip" data-zoom="3.2" aria-pressed="false">3.2倍</button>
+          <button type="button" class="mini-btn" id="resetPanZoomTopBtn" title="位置と倍率を中央リセット">🎯 中央に戻す</button>
         </div>
       </div>
     </div>
-    <div class="canvasbox" id="box"><canvas id="cv" aria-label="手ぬぐいデザインとダボ仕立てのプレビュー"></canvas></div>
+    <div class="canvasbox" id="box">
+      <div class="float-help-pill" id="stageHelpPill">🖱️ ドラッグで画面移動 ／ ホイールで拡大縮小 ／ ダブルクリックで中央リセット（ロゴ上ドラッグでロゴ移動）</div>
+      <canvas id="cv" aria-label="手ぬぐいデザインとダボ仕立てのプレビュー"></canvas>
+      <div class="float-zoom-hud">
+        <button type="button" id="hudZoomOutBtn" title="縮小">－</button>
+        <input type="range" id="hudZoomRange" min="40" max="450" step="5" value="100" aria-label="表示倍率スライダー">
+        <button type="button" id="hudZoomInBtn" title="拡大">＋</button>
+        <span id="hudZoomPct" style="min-width:40px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums">100%</span>
+        <button type="button" id="hudResetBtn" title="位置と倍率を初期位置に戻す">🎯 全体表示</button>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -1104,7 +1126,50 @@ function beziers(a){const n=a.length,seg=[];for(let i=0;i<n;i++){const p0=a[(i-1
 
 /* ---- 5. キャンバス描画（手ぬぐい生地 ／ 生地の取り方裁断図 ＋ ダボ完成プレビュー） ---- */
 const cv=$('cv'),box=$('box');
-let ZOOM=1;
+let ZOOM=1, PAN_X=0, PAN_Y=0, LAST_RENDER_ZOOM=1, ZOOM_REDRAW_TIMER=null;
+
+function applyStageTransform(){
+  if(!cv) return;
+  cv.style.transformOrigin = 'center center';
+  cv.style.transform = `translate(${Math.round(PAN_X)}px, ${Math.round(PAN_Y)}px) scale(${ZOOM})`;
+}
+
+function syncZoomUI(){
+  const pct = Math.round(ZOOM * 100);
+  if($('zoomRangeTop')) $('zoomRangeTop').value = pct;
+  if($('hudZoomRange')) $('hudZoomRange').value = pct;
+  if($('zoomPctTop')) $('zoomPctTop').textContent = pct + '%';
+  if($('hudZoomPct')) $('hudZoomPct').textContent = pct + '%';
+  document.querySelectorAll('#zoomChips .chip[data-zoom]').forEach(c=>{
+    const cz = parseFloat(c.dataset.zoom) || 1;
+    c.setAttribute('aria-pressed', (Math.abs(cz - ZOOM) < 0.04) + '');
+  });
+}
+
+function setStageZoom(newZ, resetPan, anchorClientX, anchorClientY){
+  const clamped = Math.max(0.4, Math.min(4.5, Math.round(newZ * 100) / 100));
+  if(resetPan){
+    PAN_X = 0;
+    PAN_Y = 0;
+  } else if(anchorClientX !== undefined && anchorClientY !== undefined && box){
+    const br = box.getBoundingClientRect();
+    const cx = br.left + br.width / 2;
+    const cy = br.top + br.height / 2;
+    const ox = anchorClientX - cx - PAN_X;
+    const oy = anchorClientY - cy - PAN_Y;
+    const ratio = clamped / ZOOM;
+    PAN_X -= ox * (ratio - 1);
+    PAN_Y -= oy * (ratio - 1);
+  }
+  ZOOM = clamped;
+  syncZoomUI();
+  applyStageTransform();
+  // 拡大率が大きく変わった場合は少し遅らせて高精細再描画
+  if(Math.abs(ZOOM - LAST_RENDER_ZOOM) > 0.35){
+    clearTimeout(ZOOM_REDRAW_TIMER);
+    ZOOM_REDRAW_TIMER = setTimeout(()=>{ draw(); }, 120);
+  }
+}
 
 // 任意の設定オブジェクト st から手ぬぐい1枚分のオフスクリーンCanvasを生成
 function renderArbitraryTenuguiCanvas(st, includeOverlays, pxPerMm, patScaleMul){
@@ -1324,20 +1389,27 @@ function buildDaboCutPlan(){
 
 // 裁断図およびダボ完成プレビューを一括描画
 function drawDaboAndCutScene(targetCv, viewMode, exportMode){
-  const dpr = exportMode ? 2 : (window.devicePixelRatio || 1);
+  const baseDpr = exportMode ? 2 : (window.devicePixelRatio || 1);
+  const hiDpr = exportMode ? 2 : (baseDpr * Math.min(2.2, Math.max(1, ZOOM * 0.95)));
   const bw = exportMode ? 1500 : ((box.clientWidth || 720) - 20);
   const bh = exportMode ? 960 : ((box.clientHeight || 680) - 20);
-  const cw = Math.max(520, Math.floor(bw * (exportMode ? 1 : ZOOM)));
-  const ch = Math.max(440, Math.floor(bh * (exportMode ? 1 : ZOOM)));
+  const cw = Math.max(520, Math.floor(bw));
+  const ch = Math.max(440, Math.floor(bh));
 
   if(!exportMode){
     targetCv.style.width = cw + 'px';
     targetCv.style.height = ch + 'px';
+    LAST_RENDER_ZOOM = ZOOM;
+    applyStageTransform();
+    syncZoomUI();
+    if($('stageHelpPill')){
+      $('stageHelpPill').textContent = '🖱️ マウスドラッグで画面移動 ／ ホイールで拡大縮小 ／ ダブルクリックで中央リセット';
+    }
   }
-  targetCv.width = Math.floor(cw * dpr);
-  targetCv.height = Math.floor(ch * dpr);
+  targetCv.width = Math.floor(cw * hiDpr);
+  targetCv.height = Math.floor(ch * hiDpr);
   const x = targetCv.getContext('2d');
-  x.setTransform(dpr, 0, 0, dpr, 0, 0);
+  x.setTransform(hiDpr, 0, 0, hiDpr, 0, 0);
 
   // 背景グラデーション（和紙・工房ステージ風）
   const bgGrad = x.createLinearGradient(0, 0, 0, ch);
@@ -2432,10 +2504,18 @@ function draw(){
 
   const bw=(box.clientWidth||600)-24, bh=(box.clientHeight||640)-24;
   const baseS=Math.min(bw/S.W, bh/S.H);
-  const s=baseS*ZOOM, dpr=window.devicePixelRatio||1;
-  cv.style.width=Math.floor(S.W*s)+'px'; cv.style.height=Math.floor(S.H*s)+'px';
-  cv.width=Math.floor(S.W*s*dpr); cv.height=Math.floor(S.H*s*dpr);
-  const x=cv.getContext('2d'); x.setTransform(s*dpr,0,0,s*dpr,0,0);
+  const dpr=(window.devicePixelRatio||1) * Math.min(2.4, Math.max(1, ZOOM * 0.95));
+  cv.style.width=Math.floor(S.W*baseS)+'px'; cv.style.height=Math.floor(S.H*baseS)+'px';
+  cv.width=Math.floor(S.W*baseS*dpr); cv.height=Math.floor(S.H*baseS*dpr);
+  LAST_RENDER_ZOOM = ZOOM;
+  applyStageTransform();
+  syncZoomUI();
+  if($('stageHelpPill')){
+    $('stageHelpPill').textContent = (S.showCrest || S.showLogo || S.showText)
+      ? '🖱️ ロゴ・紋の上をドラッグで位置移動 ／ 余白ドラッグで画面移動 ／ ホイールで拡大縮小'
+      : '🖱️ マウスドラッグで画面移動 ／ ホイールで拡大縮小 ／ ダブルクリックで中央リセット';
+  }
+  const x=cv.getContext('2d'); x.setTransform(baseS*dpr,0,0,baseS*dpr,0,0);
 
   // 1. 地色（または透過チェッカーボード）
   if(S.showBg){
@@ -3290,11 +3370,18 @@ document.querySelectorAll('#anglePresets .chip').forEach(b=>b.addEventListener('
   }
   update(true);
 }));
-document.querySelectorAll('#zoomChips .chip').forEach(b=>b.addEventListener('click',()=>{
-  ZOOM=parseFloat(b.dataset.zoom)||1;
-  document.querySelectorAll('#zoomChips .chip').forEach(c=>c.setAttribute('aria-pressed',(c===b)+''));
-  draw();
+document.querySelectorAll('#zoomChips .chip[data-zoom]').forEach(b=>b.addEventListener('click',()=>{
+  const z = parseFloat(b.dataset.zoom)||1;
+  setStageZoom(z, z===1);
 }));
+if($('zoomRangeTop')) $('zoomRangeTop').addEventListener('input',e=>setStageZoom(parseFloat(e.target.value)/100, false));
+if($('hudZoomRange')) $('hudZoomRange').addEventListener('input',e=>setStageZoom(parseFloat(e.target.value)/100, false));
+if($('zoomOutTopBtn')) $('zoomOutTopBtn').addEventListener('click',()=>setStageZoom(ZOOM - 0.25, false));
+if($('zoomInTopBtn')) $('zoomInTopBtn').addEventListener('click',()=>setStageZoom(ZOOM + 0.25, false));
+if($('hudZoomOutBtn')) $('hudZoomOutBtn').addEventListener('click',()=>setStageZoom(ZOOM - 0.25, false));
+if($('hudZoomInBtn')) $('hudZoomInBtn').addEventListener('click',()=>setStageZoom(ZOOM + 0.25, false));
+if($('resetPanZoomTopBtn')) $('resetPanZoomTopBtn').addEventListener('click',()=>setStageZoom(1, true));
+if($('hudResetBtn')) $('hudResetBtn').addEventListener('click',()=>setStageZoom(1, true));
 document.querySelectorAll('#quickStyles .chip').forEach(b=>b.addEventListener('click',()=>{
   const st=b.dataset.style;
   if(st==='std'){
@@ -3438,37 +3525,87 @@ for(const selId of ['daboCutMode','daboLogoTarget','daboStripRot','daboSize','da
 }
 $('saveDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng());
 
-// キャンバス上での丸紋・ロゴ・名入れ文字の直接ドラッグ移動
+// キャンバス上での丸紋・ロゴ・名入れ文字の直接ドラッグ移動 ＆ ステージ全体のマウスドラッグ移動（パン）・ホイール拡大縮小
 let dragTarget = null;
-cv.addEventListener('mousedown', e=>{
-  if(S.viewMode !== 'fabric') return;
-  const r = cv.getBoundingClientRect();
-  const mx = (e.clientX - r.left) / r.width * S.W;
-  const my = (e.clientY - r.top) / r.height * S.H;
-  const candidates = [];
-  if(S.showText) candidates.push({ keyX:'textX', keyY:'textY', x:S.W*(S.textX/100), y:S.H*(S.textY/100), rad:Math.max(30, S.textSize*1.2) });
-  if(S.showLogo) candidates.push({ keyX:'logoX', keyY:'logoY', x:S.W*(S.logoX/100), y:S.H*(S.logoY/100), rad:Math.max(30, S.logoSize*0.65) });
-  if(S.showCrest) candidates.push({ keyX:'crestX', keyY:'crestY', x:S.W*(S.crestX/100), y:S.H*(S.crestY/100), rad:Math.max(25, S.crestSize*0.6) });
-  for(const c of candidates){
-    if(Math.hypot(mx - c.x, my - c.y) <= c.rad){
-      dragTarget = c;
-      cv.style.cursor = 'grabbing';
-      e.preventDefault();
-      break;
+let isPanningStage = false;
+let panStartClientX = 0, panStartClientY = 0;
+let panOriginX = 0, panOriginY = 0;
+
+box.addEventListener('mousedown', e=>{
+  // 右下のフローティングHUD操作時はパンしない
+  if(e.target && e.target.closest && e.target.closest('.float-zoom-hud')) return;
+  if(e.button !== 0) return;
+
+  // 手ぬぐい生地モードで、丸紋・ロゴ・名入れ文字の上をクリックした場合は要素ドラッグを優先
+  if(S.viewMode === 'fabric' && !e.spaceKey && !e.shiftKey){
+    const r = cv.getBoundingClientRect();
+    if(r.width > 0 && r.height > 0){
+      const mx = (e.clientX - r.left) / r.width * S.W;
+      const my = (e.clientY - r.top) / r.height * S.H;
+      const candidates = [];
+      if(S.showText) candidates.push({ keyX:'textX', keyY:'textY', x:S.W*(S.textX/100), y:S.H*(S.textY/100), rad:Math.max(28, S.textSize*1.1) });
+      if(S.showLogo) candidates.push({ keyX:'logoX', keyY:'logoY', x:S.W*(S.logoX/100), y:S.H*(S.logoY/100), rad:Math.max(28, S.logoSize*0.62) });
+      if(S.showCrest) candidates.push({ keyX:'crestX', keyY:'crestY', x:S.W*(S.crestX/100), y:S.H*(S.crestY/100), rad:Math.max(24, S.crestSize*0.58) });
+      for(const c of candidates){
+        if(Math.hypot(mx - c.x, my - c.y) <= c.rad){
+          dragTarget = c;
+          box.classList.add('is-panning');
+          e.preventDefault();
+          return;
+        }
+      }
     }
   }
+
+  // それ以外（余白またはダボ仕上がり・裁断プレビュー画面）はステージ全体をドラッグで自由移動（パン）
+  isPanningStage = true;
+  panStartClientX = e.clientX;
+  panStartClientY = e.clientY;
+  panOriginX = PAN_X;
+  panOriginY = PAN_Y;
+  box.classList.add('is-panning');
+  e.preventDefault();
 });
+
 window.addEventListener('mousemove', e=>{
-  if(!dragTarget) return;
-  const r = cv.getBoundingClientRect();
-  const px = Math.max(5, Math.min(95, Math.round(((e.clientX - r.left) / r.width) * 1000) / 10));
-  const py = Math.max(5, Math.min(95, Math.round(((e.clientY - r.top) / r.height) * 1000) / 10));
-  S[dragTarget.keyX] = px;
-  S[dragTarget.keyY] = py;
-  update(false);
+  if(dragTarget){
+    const r = cv.getBoundingClientRect();
+    if(r.width > 0 && r.height > 0){
+      const px = Math.max(2, Math.min(98, Math.round(((e.clientX - r.left) / r.width) * 1000) / 10));
+      const py = Math.max(2, Math.min(98, Math.round(((e.clientY - r.top) / r.height) * 1000) / 10));
+      S[dragTarget.keyX] = px;
+      S[dragTarget.keyY] = py;
+      update(false);
+    }
+    return;
+  }
+  if(isPanningStage){
+    PAN_X = panOriginX + (e.clientX - panStartClientX);
+    PAN_Y = panOriginY + (e.clientY - panStartClientY);
+    applyStageTransform();
+  }
 });
+
 window.addEventListener('mouseup', ()=>{
-  if(dragTarget){ dragTarget = null; cv.style.cursor = 'default'; }
+  if(dragTarget || isPanningStage){
+    dragTarget = null;
+    isPanningStage = false;
+    box.classList.remove('is-panning');
+  }
+});
+
+// マウスホイールでのスムーズ拡大・縮小（カーソル位置を中心にズーム）
+box.addEventListener('wheel', e=>{
+  if(e.target && e.target.closest && e.target.closest('.float-zoom-hud')) return;
+  e.preventDefault();
+  const factor = e.deltaY < 0 ? 1.13 : (1 / 1.13);
+  setStageZoom(ZOOM * factor, false, e.clientX, e.clientY);
+}, { passive: false });
+
+// ステージのダブルクリックで中央・100%にワンタッチリセット
+box.addEventListener('dblclick', e=>{
+  if(e.target && e.target.closest && e.target.closest('.float-zoom-hud')) return;
+  setStageZoom(1, true);
 });
 if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
 

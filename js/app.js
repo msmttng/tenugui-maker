@@ -3009,6 +3009,68 @@
       });
     }
 
+    // ダボ仕上がりプレビュー（studioDaboViewport）のマウスドラッグ移動＆ホイール拡大縮小
+    const daboVp = document.getElementById('studioDaboViewport');
+    const daboCv = document.getElementById('studioDaboCanvas');
+    if (daboVp && daboCv) {
+      let daboZoom = 1, daboPanX = 0, daboPanY = 0;
+      let daboDragging = false, daboStartX = 0, daboStartY = 0, daboOrigX = 0, daboOrigY = 0;
+      const applyDaboTransform = () => {
+        daboCv.style.transform = `translate(${Math.round(daboPanX)}px, ${Math.round(daboPanY)}px) scale(${daboZoom})`;
+        const pct = Math.round(daboZoom * 100);
+        const rng = document.getElementById('studioDaboZoomRange');
+        const txt = document.getElementById('studioDaboZoomPct');
+        if (rng) rng.value = pct;
+        if (txt) txt.textContent = pct + '%';
+      };
+      const setDaboZoom = (z, resetPan) => {
+        daboZoom = Math.max(0.5, Math.min(4.0, Math.round(z * 100) / 100));
+        if (resetPan) { daboPanX = 0; daboPanY = 0; }
+        applyDaboTransform();
+      };
+      daboVp.addEventListener('mousedown', e => {
+        if (e.target && e.target.closest && e.target.closest('#studioDaboZoomHud')) return;
+        if (e.button !== 0) return;
+        daboDragging = true;
+        daboStartX = e.clientX;
+        daboStartY = e.clientY;
+        daboOrigX = daboPanX;
+        daboOrigY = daboPanY;
+        daboVp.style.cursor = 'grabbing';
+        e.preventDefault();
+      });
+      window.addEventListener('mousemove', e => {
+        if (!daboDragging) return;
+        daboPanX = daboOrigX + (e.clientX - daboStartX);
+        daboPanY = daboOrigY + (e.clientY - daboStartY);
+        applyDaboTransform();
+      });
+      window.addEventListener('mouseup', () => {
+        if (daboDragging) {
+          daboDragging = false;
+          daboVp.style.cursor = 'grab';
+        }
+      });
+      daboVp.addEventListener('wheel', e => {
+        if (e.target && e.target.closest && e.target.closest('#studioDaboZoomHud')) return;
+        e.preventDefault();
+        const factor = e.deltaY < 0 ? 1.13 : (1 / 1.13);
+        setDaboZoom(daboZoom * factor, false);
+      }, { passive: false });
+      daboVp.addEventListener('dblclick', e => {
+        if (e.target && e.target.closest && e.target.closest('#studioDaboZoomHud')) return;
+        setDaboZoom(1, true);
+      });
+      const zRange = document.getElementById('studioDaboZoomRange');
+      const zOut = document.getElementById('studioDaboZoomOut');
+      const zIn = document.getElementById('studioDaboZoomIn');
+      const zReset = document.getElementById('studioDaboZoomReset');
+      if (zRange) zRange.addEventListener('input', e => setDaboZoom(parseFloat(e.target.value) / 100, false));
+      if (zOut) zOut.addEventListener('click', () => setDaboZoom(daboZoom - 0.25, false));
+      if (zIn) zIn.addEventListener('click', () => setDaboZoom(daboZoom + 0.25, false));
+      if (zReset) zReset.addEventListener('click', () => setDaboZoom(1, true));
+    }
+
     document.getElementById('projectSaveBtn').addEventListener('click', () => {
       document.getElementById('projectModal').classList.remove('hidden');
       renderStudioPresetsList();
