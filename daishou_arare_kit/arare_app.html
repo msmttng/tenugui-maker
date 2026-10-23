@@ -471,7 +471,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
           </label>
         </div>
         <div class="pair">
-          <label class="field"><span>掛け襟（えり）の色・生地</span>
+          <label class="field"><span>襟ぐり・前立ての色・生地</span>
             <select id="daboCollarMode" style="font-size:11.5px">
               <option value="same">共布（手ぬぐいから取る）</option>
               <option value="solidBg">地色の無地（統一）</option>
@@ -481,11 +481,11 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
               <option value="white">白無地（#FFFFFF）</option>
             </select>
           </label>
-          <label class="field"><span>左胸ポケット</span>
+          <label class="field"><span>左胸ポケット（鯉口は通常なし）</span>
             <select id="daboPocketMode" style="font-size:11.5px">
               <option value="match">あり（柄・ロゴ合わせ）</option>
               <option value="bias">あり（斜め45°バイアス柄）</option>
-              <option value="none">ポケットなし</option>
+              <option value="none">ポケットなし（鯉口標準）</option>
             </select>
           </label>
         </div>
@@ -1511,24 +1511,24 @@ function drawCuttingLayoutPanel(x, px, py, pw, ph, plan){
 
 function traceCutPartShape(x, rx, ry, rw, rh, shape){
   if(shape === 'frontR'){
-    // 右前身頃（左上＝右肩先、右上＝Vネック襟元）
-    x.moveTo(rx, ry + rh*0.03);
-    x.lineTo(rx + rw*0.72, ry);
-    x.lineTo(rx + rw, ry + rh*0.24);
+    // 右前身頃（左上＝右肩先、右上＝丸首襟ぐり）
+    x.moveTo(rx, ry + rh*0.02);
+    x.lineTo(rx + rw*0.64, ry);
+    x.quadraticCurveTo(rx + rw*0.72, ry + rh*0.09, rx + rw, ry + rh*0.09);
     x.lineTo(rx + rw, ry + rh);
     x.lineTo(rx, ry + rh);
     x.closePath();
   }else if(shape === 'frontL'){
-    // 左前身頃（左上＝Vネック襟元、右上＝左肩先）
-    x.moveTo(rx, ry + rh*0.24);
-    x.lineTo(rx + rw*0.28, ry);
-    x.lineTo(rx + rw, ry + rh*0.03);
+    // 左前身頃（左上＝丸首襟ぐり、右上＝左肩先）
+    x.moveTo(rx, ry + rh*0.09);
+    x.quadraticCurveTo(rx + rw*0.28, ry + rh*0.09, rx + rw*0.36, ry);
+    x.lineTo(rx + rw, ry + rh*0.02);
     x.lineTo(rx + rw, ry + rh);
     x.lineTo(rx, ry + rh);
     x.closePath();
   }else if(shape === 'sleeveR' || shape === 'sleeveL'){
     const isKoi = S.daboStyle === 'koikuchi';
-    const tap = isKoi ? 0.16 : 0.05;
+    const tap = isKoi ? 0.19 : 0.04;
     x.moveTo(rx, ry);
     x.lineTo(rx + rw, ry);
     x.lineTo(rx + rw*(1 - tap), ry + rh);
@@ -1628,7 +1628,7 @@ function getCollarFillColor(bodyCfg){
   return null; // 'same' -> 共布
 }
 
-// ダボシャツ / 鯉口シャツ 1着（front または back）を精密和裁シルエットで描画
+// ダボシャツ / 鯉口シャツ 1着（front または back）を本物の祭り衣装（浅草中屋・江戸一等の実物構造）に基づいて精密描画
 function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
   const isKoi = (S.daboStyle === 'koikuchi');
   // 全体バウンディングボックス: 横幅 350 (-175..+175), 縦幅 265 (-130..+135)
@@ -1641,51 +1641,68 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
   // ラベルバッジ
   x.save();
   x.fillStyle = side === 'front' ? '#0284c7' : '#d97706';
-  x.beginPath(); x.roundRect(-66, -126, 132, 20, 99); x.fill();
-  x.fillStyle = '#ffffff'; x.font = '700 11px sans-serif'; x.textAlign = 'center';
-  x.fillText(side === 'front' ? '【前 面】フロント' : '【背 面】バック（背中）', 0, -112);
+  x.beginPath(); x.roundRect(-78, -126, 156, 20, 99); x.fill();
+  x.fillStyle = '#ffffff'; x.font = '700 10.5px sans-serif'; x.textAlign = 'center';
+  const badgeTitle = side === 'front'
+    ? (isKoi ? '【前 面】鯉口シャツ（関東襟・5つ釦）' : '【前 面】ダボシャツ（前開き・広袖）')
+    : (isKoi ? '【背 面】鯉口シャツ（背中）' : '【背 面】ダボシャツ（背中）');
+  x.fillText(badgeTitle, 0, -112);
   x.restore();
 
-  // 和裁（ダボシャツ・鯉口シャツ）の正確なプロポーション定義
-  // 手ぬぐい幅35cm（半身頃＝約29〜31cm、身幅58〜62cm、着丈76cm）をそのまま活かした直線断ち構造
-  const neckW = 24;                    // 襟ぐり半幅
-  const shldrW = isKoi ? 60 : 66;      // 肩幅（身頃の幅）片側
-  const bodyTop = -92;                 // 肩山Y座標
-  const shldrDrop = 5;                 // 肩下がり
-  const shldrY = bodyTop + shldrDrop;  // 肩先Y座標 (-87)
-  const bodyBot = 114;                 // 裾Y座標
-  const bodyH = bodyBot - bodyTop;     // 着丈 (206)
-  const armDrop = isKoi ? 56 : 68;     // 袖付け（アームホール）深さ
-  const armPitY = shldrY + armDrop;    // 脇下Y座標
-  const waistW = isKoi ? 55 : 65;      // 胴幅（鯉口はくびれ、ダボは寸胴）
-  const hemW = isKoi ? 57 : 66;        // 裾幅
-  const slitH = 16;                    // 両脇の裾スリット（馬乗り）高さ
-  const vDepthY = bodyTop + 56;        // 前襟の合わせ交点Y座標 (-36)
-  const overlapX = -15;                // 上前（左身頃）が向かって左へ重なるX座標
+  // ■ 本物の「ダボシャツ」「鯉口シャツ」の実物構造と決定的な違い
+  // 1. 襟（えり）：法被や半纏のような「深いV字の掛け襟・斜め打ち合わせ（着物襟）」ではなく、
+  //    首元に沿った「襟なし（丸首・関東襟・盤カラー）」で、首の下から前中心を【垂直（まっすぐ縦）】に前立てが開く構造！
+  // 2. 前立てとボタン：前中心（X=0）に垂直な前立て（幅約3cm）があり、首元から裾まで4〜5個の共布くるみボタン（または白ボタン）が縦一列に並ぶ。
+  // 3. ポケット：
+  //    ・鯉口シャツ：腹掛を重ね着し柄の繋がりを美しく見せるため、表の胸ポケットは原則なし（または柄合わせの内ポケット）。
+  //    ・ダボシャツ：左胸（向かって右）または左裾に角型のパッチポケットが付く。
+  // 4. 袖と身頃：
+  //    ・鯉口シャツ：ウエストがシェイプされ、袖口が「鯉の口」のようにキュッと細くすぼまった七分袖（脇下に立体マチ）。
+  //    ・ダボシャツ：寸胴のボックス型で、袖口が広いストレートな筒袖（八分〜七分袖）＋両脇裾スリット。
 
-  // 袖のジオメトリ（和裁の筒袖・広袖）
-  const slvSpanX = isKoi ? 86 : 94;    // 袖の横張り出し量
-  const slvDropTop = isKoi ? 26 : 22;  // 袖山の垂れ下がり量
-  const cuffH = isKoi ? 36 : 58;       // 袖口の高さ（鯉口は細く絞られ、ダボは広い筒袖）
+  const neckW = isKoi ? 22 : 25;         // 首ぐり半幅（鯉口は首元がキュッと詰まった関東襟）
+  const neckFrontDip = isKoi ? 14 : 18;  // 前首ぐりの深さ（丸首・クルーネック状）
+  const neckBackDip = 5;                 // 後ろ首ぐりの深さ
+  const collarTrimW = 5.5;               // 首回りを包む共布パイピング（玉縁・盤カラー）の太さ
 
-  // --- 0. 襟ぐりの奥に見える背面裏地（首元の奥行き表現） ---
+  const shldrW = isKoi ? 56 : 66;        // 肩幅（身頃幅）片側
+  const bodyTop = -92;                   // 首付け根（肩山）Y座標
+  const shldrDrop = isKoi ? 6 : 4;       // 肩下がり
+  const shldrY = bodyTop + shldrDrop;    // 肩先Y座標
+  const bodyBot = 114;                   // 裾Y座標
+  const bodyH = bodyBot - bodyTop;       // 着丈 (206)
+
+  const armDrop = isKoi ? 52 : 66;       // 袖付け（アームホール）深さ
+  const armPitY = shldrY + armDrop;      // 脇下Y座標
+  const waistW = isKoi ? 50 : 65;        // 胴幅（鯉口はタイトにシェイプ、ダボはゆったり寸胴）
+  const hemW = isKoi ? 53 : 66;          // 裾幅
+  const slitH = isKoi ? 10 : 16;         // 両脇の裾スリット
+
+  // 袖のジオメトリ
+  const slvSpanX = isKoi ? 88 : 94;      // 袖の横張り出し量
+  const slvDropTop = isKoi ? 28 : 20;    // 袖山の角度下がり
+  // ★鯉口シャツの最大の特徴：袖口（cuffH）が「鯉の口」のようにキュッと細く絞られている（30 vs ダボの60）
+  const cuffH = isKoi ? 30 : 60;
+
+  // --- 0. 前面から見える後ろ首ぐりの内側（裏地） ---
   if(side === 'front'){
     x.save();
     x.beginPath();
     x.moveTo(-neckW, bodyTop);
-    x.quadraticCurveTo(0, bodyTop + 8, neckW, bodyTop);
-    x.lineTo(0, vDepthY + 4);
+    x.quadraticCurveTo(0, bodyTop + neckBackDip, neckW, bodyTop);
+    x.quadraticCurveTo(neckW * 0.7, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
+    x.quadraticCurveTo(-neckW * 0.7, bodyTop + neckFrontDip, -neckW, bodyTop);
     x.closePath();
     x.fillStyle = bodyCfg.bgColor || '#046e7e';
     x.fill();
-    x.fillStyle = 'rgba(0,0,0,0.42)';
+    x.fillStyle = 'rgba(0,0,0,0.48)';
     x.fill();
-    // 後ろ首元の折り返し線
+    // 後ろ襟ぐりのパイピング縁
     x.strokeStyle = 'rgba(255,255,255,0.22)';
-    x.lineWidth = 1;
+    x.lineWidth = 1.5;
     x.beginPath();
-    x.moveTo(-neckW + 2, bodyTop + 2);
-    x.quadraticCurveTo(0, bodyTop + 10, neckW - 2, bodyTop + 2);
+    x.moveTo(-neckW + 2, bodyTop + 1);
+    x.quadraticCurveTo(0, bodyTop + neckBackDip + 1, neckW - 2, bodyTop + 1);
     x.stroke();
     x.restore();
   }
@@ -1699,7 +1716,8 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
     const sx0 = dir * (shldrW - 1), sy0 = shldrY;
     const sx1 = dir * (shldrW - 1), sy1 = armPitY;
     const ex0 = dir * (shldrW + slvSpanX), ey0 = shldrY + slvDropTop;
-    const ex1 = dir * (shldrW + slvSpanX - (isKoi ? 10 : 6)), ey1 = ey0 + cuffH;
+    // 袖口の角度（腕のラインに垂直になるよう少し内側へ傾ける）
+    const ex1 = dir * (shldrW + slvSpanX - (isKoi ? 9 : 5)), ey1 = ey0 + cuffH;
 
     const traceSleeve = () => {
       x.beginPath();
@@ -1707,10 +1725,14 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
       x.lineTo(ex0, ey0);
       x.lineTo(ex1, ey1);
       if(isKoi){
-        // 鯉口シャツ特有の袖下の絞られたカーブ
-        x.quadraticCurveTo(dir * (shldrW + slvSpanX * 0.42), sy1 + 4, sx1, sy1);
+        // 鯉口シャツ特有：脇下（立体的マチ）から細く絞られた「鯉の口」の袖口へ向かう流線型の絞りカーブ
+        x.bezierCurveTo(
+          dir * (shldrW + slvSpanX * 0.55), ey1 + 1,
+          dir * (shldrW + slvSpanX * 0.22), sy1 + 2,
+          sx1, sy1
+        );
       }else{
-        // ダボシャツの直線的な広袖
+        // ダボシャツ特有：袖口まで太さが変わらない真っ直ぐな広袖（筒袖）
         x.lineTo(sx1, sy1);
       }
       x.closePath();
@@ -1730,7 +1752,7 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
     x.clip();
 
     // 手ぬぐいストリップの袖枠を、歪みなし（1:1スケール比）で袖の傾きに合わせてマッピング
-    const ang = Math.atan2(ey0 - sy0, ex0 - sx0); // 向かって右は 約+13°、向かって左は 約+167°
+    const ang = Math.atan2(ey0 - sy0, ex0 - sx0);
     const rotDeg = (dir > 0) ? (ang * 180 / Math.PI) : ((Math.atan2(sy0 - ey0, sx0 - ex0)) * 180 / Math.PI);
     const boxW = slvSpanX + 24;
     const boxH = Math.max(armDrop, cuffH) + 24;
@@ -1740,9 +1762,18 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
     x.save();
     x.translate(midX, midY);
     x.rotate((rotDeg * Math.PI) / 180);
-    // 手ぬぐいは縦長(例: 35×90cm)なので、袖を横方向に取る場合は90°回転させた比率でカバーさせるかそのままカバー
     drawCroppedPiece(x, entry, -boxW * 0.55, -boxH * 0.55, boxW * 1.1, boxH * 1.1, 0);
     x.restore();
+
+    // 鯉口シャツの脇下立体マチ（三角マチ）の縫い目表現
+    if(isKoi){
+      x.strokeStyle = 'rgba(0,0,0,0.35)';
+      x.lineWidth = 0.9;
+      x.beginPath();
+      x.moveTo(sx1, sy1 - 14);
+      x.quadraticCurveTo(dir * (shldrW + 14), sy1 - 8, dir * (shldrW + 20), sy1 + 4);
+      x.stroke();
+    }
 
     // 袖の立体陰影（丸みと脇下の落ち影）
     const sg = x.createLinearGradient(sx0, sy0, sx1, ey1);
@@ -1773,37 +1804,38 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
   drawAuthenticSleeve(-1, leftSideEntry);
   drawAuthenticSleeve(+1, rightSideEntry);
 
-  // --- 2. 身頃（胴体）のシルエット定義 ---
+  // --- 2. 身頃（胴体）のシルエット定義（丸首・関東襟＋直線/シェイプ身頃） ---
   const traceTorsoOutline = () => {
     x.beginPath();
     if(side === 'front'){
+      // 左肩首付け根 -> 丸首の前襟ぐりカーブ -> 右肩首付け根
       x.moveTo(-neckW, bodyTop);
-      x.lineTo(-shldrW, shldrY);
-      x.lineTo(-shldrW, armPitY);
-      x.quadraticCurveTo(-waistW, (armPitY + bodyBot) * 0.5, -hemW, bodyBot - slitH);
-      // 左裾スリット
-      x.lineTo(-hemW + 4, bodyBot - slitH);
-      x.lineTo(-hemW + 4, bodyBot);
-      // 裾ライン（下前と上前の段差を自然に繋ぐ）
-      x.lineTo(hemW - 4, bodyBot);
-      x.lineTo(hemW - 4, bodyBot - slitH);
-      x.lineTo(hemW, bodyBot - slitH);
-      x.quadraticCurveTo(waistW, (armPitY + bodyBot) * 0.5, shldrW, armPitY);
-      x.lineTo(shldrW, shldrY);
-      x.lineTo(neckW, bodyTop);
-      // 前合わせVゾーンの谷
-      x.lineTo(0, vDepthY);
-      x.closePath();
-    }else{
-      x.moveTo(-neckW, bodyTop);
-      x.quadraticCurveTo(0, bodyTop + 8, neckW, bodyTop);
+      x.quadraticCurveTo(-neckW * 0.65, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
+      x.quadraticCurveTo(neckW * 0.65, bodyTop + neckFrontDip, neckW, bodyTop);
+      // 右肩 -> 右袖ぐり -> 右脇 -> 右裾
       x.lineTo(shldrW, shldrY);
       x.lineTo(shldrW, armPitY);
       x.quadraticCurveTo(waistW, (armPitY + bodyBot) * 0.5, hemW, bodyBot - slitH);
-      x.lineTo(hemW - 4, bodyBot - slitH);
-      x.lineTo(hemW - 4, bodyBot);
-      x.lineTo(-hemW + 4, bodyBot);
-      x.lineTo(-hemW + 4, bodyBot - slitH);
+      x.lineTo(hemW - 3.5, bodyBot - slitH);
+      x.lineTo(hemW - 3.5, bodyBot);
+      // 裾水平ライン -> 左裾スリット -> 左脇 -> 左袖ぐり -> 左肩
+      x.lineTo(-hemW + 3.5, bodyBot);
+      x.lineTo(-hemW + 3.5, bodyBot - slitH);
+      x.lineTo(-hemW, bodyBot - slitH);
+      x.quadraticCurveTo(-waistW, (armPitY + bodyBot) * 0.5, -shldrW, armPitY);
+      x.lineTo(-shldrW, shldrY);
+      x.closePath();
+    }else{
+      // 後ろ襟ぐり（浅いカーブ）
+      x.moveTo(-neckW, bodyTop);
+      x.quadraticCurveTo(0, bodyTop + neckBackDip, neckW, bodyTop);
+      x.lineTo(shldrW, shldrY);
+      x.lineTo(shldrW, armPitY);
+      x.quadraticCurveTo(waistW, (armPitY + bodyBot) * 0.5, hemW, bodyBot - slitH);
+      x.lineTo(hemW - 3.5, bodyBot - slitH);
+      x.lineTo(hemW - 3.5, bodyBot);
+      x.lineTo(-hemW + 3.5, bodyBot);
+      x.lineTo(-hemW + 3.5, bodyBot - slitH);
       x.lineTo(-hemW, bodyBot - slitH);
       x.quadraticCurveTo(-waistW, (armPitY + bodyBot) * 0.5, -shldrW, armPitY);
       x.lineTo(-shldrW, shldrY);
@@ -1825,150 +1857,147 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
   traceTorsoOutline();
   x.clip();
 
+  const collarCol = getCollarFillColor(bodyCfg);
+
   if(side === 'front'){
-    // ① 下前（向かって左＝右前身頃 frontR）: 1本の手ぬぐい幅が [-shldrW .. +12] をカバー
+    // ★ 本物のダボシャツ・鯉口シャツの前身頃構造：
+    // 前中心（X = 0）で左右の前身頃が出会い、中心に垂直な「前立て（幅約11px）」が首元から裾まで通る。
+    // 向かって左＝右前身頃（frontR）、向かって右＝左前身頃（frontL）。
+    const placketHalfW = 5.5; // 前立ての半幅（全幅11px）
+
+    // ① 向かって左：右前身頃（frontR） [-shldrW .. +placketHalfW]
     x.save();
     x.beginPath();
-    x.rect(-shldrW - 4, bodyTop - 4, shldrW + 20, bodyH + 8);
+    x.rect(-shldrW - 4, bodyTop - 4, shldrW + 4 + placketHalfW, bodyH + 8);
     x.clip();
-    drawCroppedPiece(x, partMap.frontR, -shldrW, bodyTop, shldrW + 14, bodyH, 0);
-    // 下前が上前の下に潜り込む部分の自然なインナーシャドウ
-    const underGrad = x.createLinearGradient(overlapX - 14, 0, overlapX + 4, 0);
-    underGrad.addColorStop(0, 'rgba(0,0,0,0)');
-    underGrad.addColorStop(1, 'rgba(0,0,0,0.35)');
-    x.fillStyle = underGrad;
-    x.fillRect(overlapX - 14, bodyTop, 20, bodyH);
+    drawCroppedPiece(x, partMap.frontR, -shldrW, bodyTop, shldrW + placketHalfW, bodyH, 0);
     x.restore();
 
-    // ② 上前（向かって右＝左前身頃 frontL：右前身頃の上に重なる！）
-    // 襟のライン (neckW, bodyTop) -> (0, vDepthY) -> (overlapX, vDepthY + 26) -> (overlapX, bodyBot)
-    const lapTurnY = vDepthY + 26;
+    // ② 向かって右：左前身頃（frontL） [-placketHalfW .. +shldrW]（前立て部分が上に重なる）
     x.save();
     x.beginPath();
-    x.moveTo(neckW, bodyTop);
-    x.lineTo(shldrW + 4, bodyTop);
-    x.lineTo(shldrW + 4, bodyBot + 4);
-    x.lineTo(overlapX, bodyBot + 4);
-    x.lineTo(overlapX, lapTurnY);
-    x.lineTo(0, vDepthY);
-    x.closePath();
+    x.rect(-placketHalfW, bodyTop - 4, shldrW + 4 + placketHalfW, bodyH + 8);
     x.clip();
-    drawCroppedPiece(x, partMap.frontL, overlapX, bodyTop, shldrW - overlapX + 2, bodyH, 0);
+    drawCroppedPiece(x, partMap.frontL, -placketHalfW, bodyTop, shldrW + placketHalfW, bodyH, 0);
     x.restore();
 
-    // ③ 掛け襟（合わせ襟・一本の細長い共布または別布の帯がV字に重なる）
-    const collarCol = getCollarFillColor(bodyCfg);
-    const bandW = 11.5; // 襟幅
-
-    // 3-A. 下前の右襟帯（向かって左上から中央下へ斜めに走る帯）
+    // ③ 垂直な前立て（まえたて）の重なり表現（首元 bodyTop + neckFrontDip から 裾 bodyBot まで真っ直ぐ縦に走る）
+    const plTopY = bodyTop + neckFrontDip;
     x.save();
-    x.beginPath();
-    x.moveTo(-neckW, bodyTop);
-    x.lineTo(-neckW - bandW, bodyTop + 1);
-    x.lineTo(0 - bandW * 0.4, vDepthY + 14);
-    x.lineTo(6, vDepthY + 14);
-    x.closePath();
     if(collarCol){
       x.fillStyle = collarCol;
-      x.fill();
+      x.fillRect(-placketHalfW, plTopY, placketHalfW * 2, bodyBot - plTopY);
     }else{
-      x.save();
-      x.clip();
-      drawCroppedPiece(x, partMap.collar || partMap.frontR, -neckW - bandW - 4, bodyTop, (neckW + bandW) * 2, 95, 0);
-      x.fillStyle = 'rgba(0,0,0,0.12)';
-      x.fillRect(-50, bodyTop, 100, 100);
-      x.restore();
+      // 共布の前立て（ほんの少し立体感を出す）
+      x.fillStyle = 'rgba(255,255,255,0.04)';
+      x.fillRect(-placketHalfW, plTopY, placketHalfW * 2, bodyBot - plTopY);
     }
-    x.strokeStyle = 'rgba(0,0,0,0.42)';
-    x.lineWidth = 1.1;
-    x.stroke();
-    x.restore();
-
-    // 3-B. 上前の左襟帯（向かって右上から斜めに降りて overlapX まで続き、そこから前立てとして垂直に少し降りる）
-    x.save();
-    x.shadowColor = 'rgba(0,0,0,0.35)';
-    x.shadowBlur = 4;
-    x.shadowOffsetX = -1.5;
+    // 前立ての左端（上前が下前に重なるエッジと落ち影）
+    x.shadowColor = 'rgba(0,0,0,0.45)';
+    x.shadowBlur = 3;
+    x.shadowOffsetX = -1.2;
+    x.strokeStyle = 'rgba(0,0,0,0.55)';
+    x.lineWidth = 1.3;
     x.beginPath();
-    x.moveTo(neckW, bodyTop);
-    x.lineTo(neckW + bandW, bodyTop + 1);
-    x.lineTo(overlapX + bandW, lapTurnY + 3);
-    x.lineTo(overlapX + bandW, lapTurnY + 20);
-    x.lineTo(overlapX, lapTurnY + 20);
-    x.lineTo(overlapX, lapTurnY);
-    x.lineTo(0, vDepthY);
-    x.closePath();
-    if(collarCol){
-      x.fillStyle = collarCol;
-      x.fill();
-    }else{
-      x.save();
-      x.clip();
-      drawCroppedPiece(x, partMap.collar || partMap.frontL, -30, bodyTop, 75, 110, 0);
-      x.fillStyle = 'rgba(255,255,255,0.06)';
-      x.fillRect(-40, bodyTop, 90, 120);
-      x.restore();
-    }
-    x.strokeStyle = 'rgba(0,0,0,0.48)';
-    x.lineWidth = 1.2;
+    x.moveTo(-placketHalfW, plTopY);
+    x.lineTo(-placketHalfW, bodyBot);
     x.stroke();
-    x.restore();
+    x.shadowColor = 'transparent';
 
-    // 上前の前合わせ縦ライン（胸元から裾までの重なりエッジ）
-    x.save();
-    x.strokeStyle = 'rgba(0,0,0,0.48)';
-    x.lineWidth = 1.4;
+    // 前立ての右端（見返しステッチライン）
+    x.strokeStyle = 'rgba(0,0,0,0.32)';
+    x.lineWidth = 0.9;
     x.beginPath();
-    x.moveTo(overlapX, lapTurnY);
-    x.lineTo(overlapX, bodyBot);
+    x.moveTo(placketHalfW, plTopY + collarTrimW);
+    x.lineTo(placketHalfW, bodyBot);
     x.stroke();
-    // 襟・前立てのステッチ線
     x.strokeStyle = 'rgba(255,255,255,0.28)';
-    x.lineWidth = 0.8;
+    x.lineWidth = 0.75;
     x.setLineDash([2.5, 2.5]);
     x.beginPath();
-    x.moveTo(overlapX + 2.5, lapTurnY);
-    x.lineTo(overlapX + 2.5, bodyBot);
+    x.moveTo(-placketHalfW + 2, plTopY + collarTrimW);
+    x.lineTo(-placketHalfW + 2, bodyBot);
+    x.moveTo(placketHalfW - 1.5, plTopY + collarTrimW);
+    x.lineTo(placketHalfW - 1.5, bodyBot);
     x.stroke();
     x.setLineDash([]);
     x.restore();
 
-    // ダボシャツ・鯉口シャツの共布ループ紐ボタン（前合わせに3箇所）
-    const btnColor = collarCol || bodyCfg.kakuColor || '#ffffff';
-    [lapTurnY + 14, lapTurnY + 52, lapTurnY + 90].forEach(by => {
-      if(by > bodyBot - 18) return;
-      x.save();
-      x.strokeStyle = btnColor;
-      x.fillStyle = btnColor;
-      x.lineWidth = 1.6;
-      // 紐ループ
-      x.beginPath();
-      x.moveTo(overlapX - 6, by);
-      x.lineTo(overlapX + 7, by);
-      x.stroke();
-      // 結び玉ボタン
-      x.beginPath();
-      x.arc(overlapX - 6, by, 2.3, 0, Math.PI * 2);
+    // ④ 首回りの丸首パイピング襟（関東襟・盤カラー：首ぐりに沿った細い縁取り）
+    x.save();
+    x.beginPath();
+    x.moveTo(-neckW - collarTrimW, bodyTop);
+    x.quadraticCurveTo(-neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, 0, bodyTop + neckFrontDip + collarTrimW);
+    x.quadraticCurveTo(neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, neckW + collarTrimW, bodyTop);
+    x.lineTo(neckW, bodyTop);
+    x.quadraticCurveTo(neckW * 0.65, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
+    x.quadraticCurveTo(-neckW * 0.65, bodyTop + neckFrontDip, -neckW, bodyTop);
+    x.closePath();
+    if(collarCol){
+      x.fillStyle = collarCol;
       x.fill();
-      x.strokeStyle = 'rgba(0,0,0,0.4)';
-      x.lineWidth = 0.7;
-      x.stroke();
-      x.restore();
-    });
-
-    // ④ 左胸ポケット（向かって右側・五角形のホームベース型パッチポケット）
-    if(S.daboPocketMode !== 'none'){
-      const pkX = 15, pkY = bodyTop + 62, pkW = 33, pkH = 38;
+    }else{
       x.save();
-      x.shadowColor = 'rgba(0,0,0,0.35)';
-      x.shadowBlur = 5;
-      x.shadowOffsetY = 2;
+      x.clip();
+      drawCroppedPiece(x, partMap.collar || partMap.frontL, -neckW - 10, bodyTop, (neckW + 10) * 2, 35, 0);
+      x.restore();
+    }
+    x.strokeStyle = 'rgba(0,0,0,0.48)';
+    x.lineWidth = 1.1;
+    x.stroke();
+    // 襟元の中心合わせ目（小さな縦スリット線）
+    x.beginPath();
+    x.moveTo(0, bodyTop + neckFrontDip);
+    x.lineTo(0, bodyTop + neckFrontDip + collarTrimW);
+    x.stroke();
+    x.restore();
+
+    // ⑤ 前立ての縦並びボタン（大人用標準の5つボタン＋共布ループ）
+    const btnFill = collarCol || bodyCfg.kakuColor || '#ffffff';
+    const btnStartY = plTopY + 11;
+    const btnEndY = bodyBot - 38;
+    const btnCount = 5;
+    for(let i = 0; i < btnCount; i++){
+      const by = btnStartY + ((btnEndY - btnStartY) / (btnCount - 1)) * i;
+      x.save();
+      // 横向きの小さな共布ボタンループ（輪っか）
+      x.strokeStyle = btnFill;
+      x.lineWidth = 1.3;
       x.beginPath();
+      x.moveTo(-placketHalfW, by);
+      x.lineTo(1.5, by);
+      x.stroke();
+      // 丸いくるみボタン（または水牛調ボタン）
+      x.fillStyle = btnFill;
+      x.beginPath();
+      x.arc(0, by, 2.5, 0, Math.PI * 2);
+      x.fill();
+      x.strokeStyle = 'rgba(0,0,0,0.5)';
+      x.lineWidth = 0.8;
+      x.stroke();
+      // ボタンの糸穴（2つ点）
+      x.fillStyle = 'rgba(0,0,0,0.45)';
+      x.fillRect(-0.9, by - 0.5, 0.7, 0.7);
+      x.fillRect(0.3, by - 0.5, 0.7, 0.7);
+      x.restore();
+    }
+
+    // ⑥ 左胸ポケット（向かって右側）
+    // ※実物の鯉口シャツでも「柄合わせ確認用」にポケットを表示したい場合があるため S.daboPocketMode に従う
+    if(S.daboPocketMode !== 'none'){
+      const pkX = 14, pkY = bodyTop + 56, pkW = 32, pkH = 36;
+      x.save();
+      x.shadowColor = 'rgba(0,0,0,0.32)';
+      x.shadowBlur = 4;
+      x.shadowOffsetY = 1.5;
+      x.beginPath();
+      // 角型（下辺両角をわずかに落とした実用パッチポケット）
       x.moveTo(pkX, pkY);
       x.lineTo(pkX + pkW, pkY);
-      x.lineTo(pkX + pkW, pkY + pkH - 6);
-      x.lineTo(pkX + pkW * 0.5, pkY + pkH);
-      x.lineTo(pkX, pkY + pkH - 6);
+      x.lineTo(pkX + pkW, pkY + pkH - 4);
+      x.lineTo(pkX + pkW - 4, pkY + pkH);
+      x.lineTo(pkX + 4, pkY + pkH);
+      x.lineTo(pkX, pkY + pkH - 4);
       x.closePath();
       x.save();
       x.clip();
@@ -1977,15 +2006,15 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
       }else{
         drawCroppedPiece(x, partMap.pocket || partMap.frontL, pkX, pkY, pkW, pkH, 0);
       }
-      // ポケット口の折り返し陰影
-      x.fillStyle = 'rgba(0,0,0,0.18)';
-      x.fillRect(pkX, pkY, pkW, 5);
+      // ポケット口の三つ折りステッチ陰影
+      x.fillStyle = 'rgba(0,0,0,0.16)';
+      x.fillRect(pkX, pkY, pkW, 4.5);
       x.restore();
-      x.strokeStyle = 'rgba(0,0,0,0.45)';
+      x.strokeStyle = 'rgba(0,0,0,0.48)';
       x.lineWidth = 1.1;
       x.stroke();
-      x.strokeStyle = 'rgba(255,255,255,0.42)';
-      x.lineWidth = 0.85;
+      x.strokeStyle = 'rgba(255,255,255,0.4)';
+      x.lineWidth = 0.8;
       x.setLineDash([2, 2]);
       x.stroke();
       x.setLineDash([]);
@@ -2037,35 +2066,34 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
       x.strokeStyle = 'rgba(0,0,0,0.48)';
       x.lineWidth = 1.3;
       x.beginPath();
-      x.moveTo(0, bodyTop + 8); x.lineTo(0, bodyBot);
+      x.moveTo(0, bodyTop + neckBackDip); x.lineTo(0, bodyBot);
       x.stroke();
       x.strokeStyle = 'rgba(255,255,255,0.25)';
       x.lineWidth = 0.8;
       x.setLineDash([2.5, 2.5]);
       x.beginPath();
-      x.moveTo(1.5, bodyTop + 8); x.lineTo(1.5, bodyBot);
+      x.moveTo(1.5, bodyTop + neckBackDip); x.lineTo(1.5, bodyBot);
       x.stroke();
       x.setLineDash([]);
     }
 
-    // 後ろ首元の掛け襟バンド
-    const collarCol = getCollarFillColor(bodyCfg);
+    // 後ろ首元のパイピング襟バンド
     x.save();
     x.beginPath();
-    x.moveTo(-neckW - 10, bodyTop + 1);
-    x.quadraticCurveTo(0, bodyTop + 9, neckW + 10, bodyTop + 1);
-    x.lineTo(neckW + 10, bodyTop + 11);
-    x.quadraticCurveTo(0, bodyTop + 19, -neckW - 10, bodyTop + 11);
+    x.moveTo(-neckW - collarTrimW, bodyTop);
+    x.quadraticCurveTo(0, bodyTop + neckBackDip + collarTrimW, neckW + collarTrimW, bodyTop);
+    x.lineTo(neckW, bodyTop);
+    x.quadraticCurveTo(0, bodyTop + neckBackDip, -neckW, bodyTop);
     x.closePath();
     if(collarCol){
       x.fillStyle = collarCol; x.fill();
     }else{
       x.save();
       x.clip();
-      drawCroppedPiece(x, partMap.collar || partMap.frontR, -neckW - 12, bodyTop, (neckW + 12) * 2, 24, 0);
+      drawCroppedPiece(x, partMap.collar || partMap.frontR, -neckW - 8, bodyTop, (neckW + 8) * 2, 18, 0);
       x.restore();
     }
-    x.strokeStyle = 'rgba(0,0,0,0.4)'; x.lineWidth = 1.1; x.stroke();
+    x.strokeStyle = 'rgba(0,0,0,0.45)'; x.lineWidth = 1.1; x.stroke();
     x.restore();
   }
 
@@ -3404,6 +3432,8 @@ $('openDaboViewBtn').addEventListener('click',()=>{
 });
 document.querySelectorAll('#daboStyleTabs .chip').forEach(b=>b.addEventListener('click',()=>{
   S.daboStyle=b.dataset.dstyle;
+  if(S.daboStyle === 'koikuchi') S.daboPocketMode = 'none';
+  else if(S.daboPocketMode === 'none') S.daboPocketMode = 'match';
   if(S.viewMode==='fabric') S.viewMode='cut_dabo';
   update(false);
 }));

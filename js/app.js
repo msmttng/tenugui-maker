@@ -1978,23 +1978,23 @@
 
     const drawShirt = (cx, cy, sc, isBack) => {
       const isKoi = style === 'koikuchi';
-      const neckW = 24;
-      const shldrW = isKoi ? 60 : 66;
+      const neckW = isKoi ? 22 : 25;
+      const neckFrontDip = isKoi ? 14 : 18;
+      const neckBackDip = 5;
+      const collarTrimW = 5.5;
+      const shldrW = isKoi ? 56 : 66;
       const bodyTop = -92;
-      const shldrY = bodyTop + 5;
+      const shldrY = bodyTop + (isKoi ? 6 : 4);
       const bodyBot = 114;
       const bodyH = bodyBot - bodyTop;
-      const armDrop = isKoi ? 56 : 68;
+      const armDrop = isKoi ? 52 : 66;
       const armPitY = shldrY + armDrop;
-      const waistW = isKoi ? 55 : 65;
-      const hemW = isKoi ? 57 : 66;
-      const slitH = 15;
-      const vDepthY = bodyTop + 56;
-      const overlapX = -15;
-      const lapTurnY = vDepthY + 26;
-      const slvSpanX = isKoi ? 84 : 92;
-      const slvDropTop = isKoi ? 26 : 22;
-      const cuffH = isKoi ? 36 : 58;
+      const waistW = isKoi ? 50 : 65;
+      const hemW = isKoi ? 53 : 66;
+      const slitH = isKoi ? 10 : 15;
+      const slvSpanX = isKoi ? 86 : 92;
+      const slvDropTop = isKoi ? 28 : 20;
+      const cuffH = isKoi ? 30 : 58;
 
       dctx.save();
       dctx.translate(cx, cy);
@@ -2004,12 +2004,13 @@
         dctx.save();
         dctx.beginPath();
         dctx.moveTo(-neckW, bodyTop);
-        dctx.quadraticCurveTo(0, bodyTop + 8, neckW, bodyTop);
-        dctx.lineTo(0, vDepthY + 4);
+        dctx.quadraticCurveTo(0, bodyTop + neckBackDip, neckW, bodyTop);
+        dctx.quadraticCurveTo(neckW * 0.7, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
+        dctx.quadraticCurveTo(-neckW * 0.7, bodyTop + neckFrontDip, -neckW, bodyTop);
         dctx.closePath();
         dctx.fillStyle = state.bgColor;
         dctx.fill();
-        dctx.fillStyle = 'rgba(0,0,0,0.42)';
+        dctx.fillStyle = 'rgba(0,0,0,0.48)';
         dctx.fill();
         dctx.restore();
       }
@@ -2018,14 +2019,18 @@
         const sx0 = dir * (shldrW - 1), sy0 = shldrY;
         const sx1 = dir * (shldrW - 1), sy1 = armPitY;
         const ex0 = dir * (shldrW + slvSpanX), ey0 = shldrY + slvDropTop;
-        const ex1 = dir * (shldrW + slvSpanX - (isKoi ? 10 : 6)), ey1 = ey0 + cuffH;
+        const ex1 = dir * (shldrW + slvSpanX - (isKoi ? 9 : 5)), ey1 = ey0 + cuffH;
         const traceSlv = () => {
           dctx.beginPath();
           dctx.moveTo(sx0, sy0);
           dctx.lineTo(ex0, ey0);
           dctx.lineTo(ex1, ey1);
           if (isKoi) {
-            dctx.quadraticCurveTo(dir * (shldrW + slvSpanX * 0.42), sy1 + 4, sx1, sy1);
+            dctx.bezierCurveTo(
+              dir * (shldrW + slvSpanX * 0.55), ey1 + 1,
+              dir * (shldrW + slvSpanX * 0.22), sy1 + 2,
+              sx1, sy1
+            );
           } else {
             dctx.lineTo(sx1, sy1);
           }
@@ -2069,29 +2074,29 @@
         dctx.beginPath();
         if (!isBack) {
           dctx.moveTo(-neckW, bodyTop);
-          dctx.lineTo(-shldrW, shldrY);
-          dctx.lineTo(-shldrW, armPitY);
-          dctx.quadraticCurveTo(-waistW, (armPitY + bodyBot) * 0.5, -hemW, bodyBot - slitH);
-          dctx.lineTo(-hemW + 4, bodyBot - slitH);
-          dctx.lineTo(-hemW + 4, bodyBot);
-          dctx.lineTo(hemW - 4, bodyBot);
-          dctx.lineTo(hemW - 4, bodyBot - slitH);
-          dctx.lineTo(hemW, bodyBot - slitH);
-          dctx.quadraticCurveTo(waistW, (armPitY + bodyBot) * 0.5, shldrW, armPitY);
-          dctx.lineTo(shldrW, shldrY);
-          dctx.lineTo(neckW, bodyTop);
-          dctx.lineTo(0, vDepthY);
-          dctx.closePath();
-        } else {
-          dctx.moveTo(-neckW, bodyTop);
-          dctx.quadraticCurveTo(0, bodyTop + 8, neckW, bodyTop);
+          dctx.quadraticCurveTo(-neckW * 0.65, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
+          dctx.quadraticCurveTo(neckW * 0.65, bodyTop + neckFrontDip, neckW, bodyTop);
           dctx.lineTo(shldrW, shldrY);
           dctx.lineTo(shldrW, armPitY);
           dctx.quadraticCurveTo(waistW, (armPitY + bodyBot) * 0.5, hemW, bodyBot - slitH);
-          dctx.lineTo(hemW - 4, bodyBot - slitH);
-          dctx.lineTo(hemW - 4, bodyBot);
-          dctx.lineTo(-hemW + 4, bodyBot);
-          dctx.lineTo(-hemW + 4, bodyBot - slitH);
+          dctx.lineTo(hemW - 3.5, bodyBot - slitH);
+          dctx.lineTo(hemW - 3.5, bodyBot);
+          dctx.lineTo(-hemW + 3.5, bodyBot);
+          dctx.lineTo(-hemW + 3.5, bodyBot - slitH);
+          dctx.lineTo(-hemW, bodyBot - slitH);
+          dctx.quadraticCurveTo(-waistW, (armPitY + bodyBot) * 0.5, -shldrW, armPitY);
+          dctx.lineTo(-shldrW, shldrY);
+          dctx.closePath();
+        } else {
+          dctx.moveTo(-neckW, bodyTop);
+          dctx.quadraticCurveTo(0, bodyTop + neckBackDip, neckW, bodyTop);
+          dctx.lineTo(shldrW, shldrY);
+          dctx.lineTo(shldrW, armPitY);
+          dctx.quadraticCurveTo(waistW, (armPitY + bodyBot) * 0.5, hemW, bodyBot - slitH);
+          dctx.lineTo(hemW - 3.5, bodyBot - slitH);
+          dctx.lineTo(hemW - 3.5, bodyBot);
+          dctx.lineTo(-hemW + 3.5, bodyBot);
+          dctx.lineTo(-hemW + 3.5, bodyBot - slitH);
           dctx.lineTo(-hemW, bodyBot - slitH);
           dctx.quadraticCurveTo(-waistW, (armPitY + bodyBot) * 0.5, -shldrW, armPitY);
           dctx.lineTo(-shldrW, shldrY);
@@ -2122,36 +2127,47 @@
       const colColor = resolveCollarColor();
 
       if (!isBack) {
-        // 下前（右前身頃）
+        const placketHalfW = 5.5;
+        // 向かって左：右前身頃
         dctx.save();
         dctx.beginPath();
-        dctx.rect(-shldrW - 4, bodyTop - 4, shldrW + 20, bodyH + 8);
+        dctx.rect(-shldrW - 4, bodyTop - 4, shldrW + 4 + placketHalfW, bodyH + 8);
         dctx.clip();
-        drawPiece('frontR', -shldrW, bodyTop, shldrW + 14, bodyH, stripWithLogo);
+        drawPiece('frontR', -shldrW, bodyTop, shldrW + placketHalfW, bodyH, stripWithLogo);
         dctx.restore();
 
-        // 上前（左前身頃・右前身頃の上に重なる）
+        // 向かって右：左前身頃
         dctx.save();
         dctx.beginPath();
-        dctx.moveTo(neckW, bodyTop);
-        dctx.lineTo(shldrW + 4, bodyTop);
-        dctx.lineTo(shldrW + 4, bodyBot + 4);
-        dctx.lineTo(overlapX, bodyBot + 4);
-        dctx.lineTo(overlapX, lapTurnY);
-        dctx.lineTo(0, vDepthY);
-        dctx.closePath();
+        dctx.rect(-placketHalfW, bodyTop - 4, shldrW + 4 + placketHalfW, bodyH + 8);
         dctx.clip();
-        drawPiece('frontL', overlapX, bodyTop, shldrW - overlapX + 2, bodyH, stripWithLogo);
+        drawPiece('frontL', -placketHalfW, bodyTop, shldrW + placketHalfW, bodyH, stripWithLogo);
         dctx.restore();
 
-        // 掛け襟（下前＋上前）
-        const bandW = 11.5;
+        // 垂直な前立て（中心 X=0）
+        const plTopY = bodyTop + neckFrontDip;
+        if (colColor) {
+          dctx.fillStyle = colColor;
+          dctx.fillRect(-placketHalfW, plTopY, placketHalfW * 2, bodyBot - plTopY);
+        }
+        dctx.strokeStyle = 'rgba(0,0,0,0.52)';
+        dctx.lineWidth = 1.3;
+        dctx.beginPath();
+        dctx.moveTo(-placketHalfW, plTopY);
+        dctx.lineTo(-placketHalfW, bodyBot);
+        dctx.moveTo(placketHalfW, plTopY + collarTrimW);
+        dctx.lineTo(placketHalfW, bodyBot);
+        dctx.stroke();
+
+        // 首回りの丸首パイピング襟（関東襟・盤カラー）
         dctx.save();
         dctx.beginPath();
-        dctx.moveTo(-neckW, bodyTop);
-        dctx.lineTo(-neckW - bandW, bodyTop + 1);
-        dctx.lineTo(-bandW * 0.4, vDepthY + 14);
-        dctx.lineTo(6, vDepthY + 14);
+        dctx.moveTo(-neckW - collarTrimW, bodyTop);
+        dctx.quadraticCurveTo(-neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, 0, bodyTop + neckFrontDip + collarTrimW);
+        dctx.quadraticCurveTo(neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, neckW + collarTrimW, bodyTop);
+        dctx.lineTo(neckW, bodyTop);
+        dctx.quadraticCurveTo(neckW * 0.65, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
+        dctx.quadraticCurveTo(-neckW * 0.65, bodyTop + neckFrontDip, -neckW, bodyTop);
         dctx.closePath();
         if (colColor) {
           dctx.fillStyle = colColor;
@@ -2159,56 +2175,46 @@
         } else {
           dctx.save();
           dctx.clip();
-          drawPiece('collar', -neckW - bandW - 4, bodyTop, (neckW + bandW) * 2, 95, stripPlain);
+          drawPiece('collar', -neckW - 10, bodyTop, (neckW + 10) * 2, 35, stripPlain);
           dctx.restore();
         }
-        dctx.strokeStyle = 'rgba(0,0,0,0.42)';
+        dctx.strokeStyle = 'rgba(0,0,0,0.48)';
         dctx.lineWidth = 1.1;
         dctx.stroke();
         dctx.restore();
 
-        dctx.save();
-        dctx.beginPath();
-        dctx.moveTo(neckW, bodyTop);
-        dctx.lineTo(neckW + bandW, bodyTop + 1);
-        dctx.lineTo(overlapX + bandW, lapTurnY + 3);
-        dctx.lineTo(overlapX + bandW, lapTurnY + 20);
-        dctx.lineTo(overlapX, lapTurnY + 20);
-        dctx.lineTo(overlapX, lapTurnY);
-        dctx.lineTo(0, vDepthY);
-        dctx.closePath();
-        if (colColor) {
-          dctx.fillStyle = colColor;
+        // 前立ての5つボタン＋共布ループ
+        const btnFill = colColor || '#ffffff';
+        const btnStartY = plTopY + 11;
+        const btnEndY = bodyBot - 38;
+        for (let i = 0; i < 5; i++) {
+          const by = btnStartY + ((btnEndY - btnStartY) / 4) * i;
+          dctx.strokeStyle = btnFill;
+          dctx.lineWidth = 1.2;
+          dctx.beginPath();
+          dctx.moveTo(-placketHalfW, by);
+          dctx.lineTo(1.5, by);
+          dctx.stroke();
+          dctx.fillStyle = btnFill;
+          dctx.beginPath();
+          dctx.arc(0, by, 2.4, 0, Math.PI * 2);
           dctx.fill();
-        } else {
-          dctx.save();
-          dctx.clip();
-          drawPiece('collar', -30, bodyTop, 75, 110, stripPlain);
-          dctx.restore();
+          dctx.strokeStyle = 'rgba(0,0,0,0.5)';
+          dctx.lineWidth = 0.8;
+          dctx.stroke();
         }
-        dctx.strokeStyle = 'rgba(0,0,0,0.48)';
-        dctx.lineWidth = 1.2;
-        dctx.stroke();
-        dctx.restore();
-
-        // 上前の縦合わせライン
-        dctx.strokeStyle = 'rgba(0,0,0,0.48)';
-        dctx.lineWidth = 1.4;
-        dctx.beginPath();
-        dctx.moveTo(overlapX, lapTurnY);
-        dctx.lineTo(overlapX, bodyBot);
-        dctx.stroke();
 
         // 左胸ポケット
         if (pocketMode !== 'none') {
-          const px = 15, py = bodyTop + 62, pw = 33, ph = 38;
+          const px = 14, py = bodyTop + 56, pw = 32, ph = 36;
           dctx.save();
           dctx.beginPath();
           dctx.moveTo(px, py);
           dctx.lineTo(px + pw, py);
-          dctx.lineTo(px + pw, py + ph - 6);
-          dctx.lineTo(px + pw / 2, py + ph);
-          dctx.lineTo(px, py + ph - 6);
+          dctx.lineTo(px + pw, py + ph - 4);
+          dctx.lineTo(px + pw - 4, py + ph);
+          dctx.lineTo(px + 4, py + ph);
+          dctx.lineTo(px, py + ph - 4);
           dctx.closePath();
           dctx.save();
           dctx.clip();
@@ -2260,18 +2266,18 @@
           dctx.strokeStyle = 'rgba(0,0,0,0.48)';
           dctx.lineWidth = 1.3;
           dctx.beginPath();
-          dctx.moveTo(0, bodyTop + 8);
+          dctx.moveTo(0, bodyTop + neckBackDip);
           dctx.lineTo(0, bodyBot);
           dctx.stroke();
         }
 
-        // 後ろ首元の掛け襟バンド
+        // 後ろ首元のパイピング襟バンド
         dctx.save();
         dctx.beginPath();
-        dctx.moveTo(-neckW - 10, bodyTop + 1);
-        dctx.quadraticCurveTo(0, bodyTop + 9, neckW + 10, bodyTop + 1);
-        dctx.lineTo(neckW + 10, bodyTop + 11);
-        dctx.quadraticCurveTo(0, bodyTop + 19, -neckW - 10, bodyTop + 11);
+        dctx.moveTo(-neckW - collarTrimW, bodyTop);
+        dctx.quadraticCurveTo(0, bodyTop + neckBackDip + collarTrimW, neckW + collarTrimW, bodyTop);
+        dctx.lineTo(neckW, bodyTop);
+        dctx.quadraticCurveTo(0, bodyTop + neckBackDip, -neckW, bodyTop);
         dctx.closePath();
         if (colColor) {
           dctx.fillStyle = colColor;
@@ -2279,7 +2285,7 @@
         } else {
           dctx.save();
           dctx.clip();
-          drawPiece('collar', -neckW - 12, bodyTop, (neckW + 12) * 2, 24, stripPlain);
+          drawPiece('collar', -neckW - 8, bodyTop, (neckW + 8) * 2, 18, stripPlain);
           dctx.restore();
         }
         dctx.strokeStyle = 'rgba(0,0,0,0.4)';
@@ -2308,7 +2314,7 @@
       dctx.textAlign = 'center';
       const labelTxt = isBack
         ? (cutMode === 'backCenter' ? '背面（背中中央1枚取り・背紋活かし）' : '背面（後身頃・背中心接ぎ）')
-        : '前面（前身頃・掛け襟・左胸ポケット）';
+        : (isKoi ? '前面（鯉口シャツ：関東襟・前立て5つ釦）' : '前面（ダボシャツ：丸首・前立て5つ釦・左胸ポケ）');
       dctx.fillText(labelTxt, 0, bodyBot + 22);
       dctx.restore();
     };
