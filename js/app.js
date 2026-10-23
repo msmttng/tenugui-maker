@@ -1943,160 +1943,175 @@
 
     const drawPiece = (pieceId, destX, destY, destW, destH, fallbackStrip, rotDeg = 0) => {
       const entry = cutMap[pieceId];
-      if (!entry) {
-        dctx.drawImage(fallbackStrip, 0, 0, fallbackStrip.width, fallbackStrip.height, destX, destY, destW, destH);
-        return;
-      }
-      const { cut, strip } = entry;
-      const sx = cut.x * strip.width;
-      const sy = cut.y * strip.height;
-      const sw = cut.w * strip.width;
-      const sh = cut.h * strip.height;
+      const strip = entry ? entry.strip : fallbackStrip;
+      const sx = entry ? entry.cut.x * strip.width : 0;
+      const sy = entry ? entry.cut.y * strip.height : 0;
+      const sw = Math.max(1, entry ? entry.cut.w * strip.width : strip.width);
+      const sh = Math.max(1, entry ? entry.cut.h * strip.height : strip.height);
+
       if (rotDeg) {
         dctx.save();
         dctx.translate(destX + destW / 2, destY + destH / 2);
         dctx.rotate(rotDeg * Math.PI / 180);
         const diag = Math.hypot(destW, destH);
-        dctx.drawImage(strip, sx, sy, sw, sh, -diag / 2, -diag / 2, diag, diag);
+        const scale = Math.max(diag / sw, diag / sh);
+        const rw = sw * scale, rh = sh * scale;
+        dctx.drawImage(strip, sx, sy, sw, sh, -rw / 2, -rh / 2, rw, rh);
         dctx.restore();
-      } else {
-        dctx.drawImage(strip, sx, sy, sw, sh, destX, destY, destW, destH);
+        return;
       }
+
+      // 手ぬぐいの縦横比を一切歪めずに（aspect-preserving cover）指定領域にマッピング
+      const scale = Math.max(destW / sw, destH / sh);
+      const rw = sw * scale;
+      const rh = sh * scale;
+      const ox = destX + (destW - rw) * 0.5;
+      const oy = destY + (destH - rh) * 0.5;
+
+      dctx.save();
+      dctx.beginPath();
+      dctx.rect(destX, destY, destW, destH);
+      dctx.clip();
+      dctx.drawImage(strip, sx, sy, sw, sh, ox, oy, rw, rh);
+      dctx.restore();
     };
 
     const drawShirt = (cx, cy, sc, isBack) => {
       const isKoi = style === 'koikuchi';
-      const bodyW = isKoi ? 64 : 74;
-      const hemW = isKoi ? 67 : 78;
-      const bodyTop = -115;
-      const bodyBot = 128;
-      const shY = -98;
-      const armBotY = isKoi ? -22 : -6;
-      const slSpanX = isKoi ? 168 : 184;
-      const slDropY = isKoi ? 26 : 36;
-      const cuffH = isKoi ? 48 : 66;
-      const neckW = 31;
-      const neckBackDepth = -100;
-      const neckFrontDepth = -34;
+      const neckW = 24;
+      const shldrW = isKoi ? 60 : 66;
+      const bodyTop = -92;
+      const shldrY = bodyTop + 5;
+      const bodyBot = 114;
+      const bodyH = bodyBot - bodyTop;
+      const armDrop = isKoi ? 56 : 68;
+      const armPitY = shldrY + armDrop;
+      const waistW = isKoi ? 55 : 65;
+      const hemW = isKoi ? 57 : 66;
+      const slitH = 15;
+      const vDepthY = bodyTop + 56;
+      const overlapX = -15;
+      const lapTurnY = vDepthY + 26;
+      const slvSpanX = isKoi ? 84 : 92;
+      const slvDropTop = isKoi ? 26 : 22;
+      const cuffH = isKoi ? 36 : 58;
 
       dctx.save();
       dctx.translate(cx, cy);
       dctx.scale(sc, sc);
 
-      const shirtPath = p => {
-        p.beginPath();
-        p.moveTo(-neckW, bodyTop);
-        p.lineTo(-bodyW, shY);
-        p.lineTo(-slSpanX, shY + slDropY);
-        p.lineTo(-slSpanX + 12, shY + slDropY + cuffH);
-        p.lineTo(-bodyW, armBotY);
-        p.lineTo(-hemW, bodyBot);
-        p.lineTo(hemW, bodyBot);
-        p.lineTo(bodyW, armBotY);
-        p.lineTo(slSpanX - 12, shY + slDropY + cuffH);
-        p.lineTo(slSpanX, shY + slDropY);
-        p.lineTo(bodyW, shY);
-        p.lineTo(neckW, bodyTop);
-        if (isBack) {
-          p.quadraticCurveTo(0, neckBackDepth, -neckW, bodyTop);
+      if (!isBack) {
+        dctx.save();
+        dctx.beginPath();
+        dctx.moveTo(-neckW, bodyTop);
+        dctx.quadraticCurveTo(0, bodyTop + 8, neckW, bodyTop);
+        dctx.lineTo(0, vDepthY + 4);
+        dctx.closePath();
+        dctx.fillStyle = state.bgColor;
+        dctx.fill();
+        dctx.fillStyle = 'rgba(0,0,0,0.42)';
+        dctx.fill();
+        dctx.restore();
+      }
+
+      const drawAuthSleeve = (dir, pieceId) => {
+        const sx0 = dir * (shldrW - 1), sy0 = shldrY;
+        const sx1 = dir * (shldrW - 1), sy1 = armPitY;
+        const ex0 = dir * (shldrW + slvSpanX), ey0 = shldrY + slvDropTop;
+        const ex1 = dir * (shldrW + slvSpanX - (isKoi ? 10 : 6)), ey1 = ey0 + cuffH;
+        const traceSlv = () => {
+          dctx.beginPath();
+          dctx.moveTo(sx0, sy0);
+          dctx.lineTo(ex0, ey0);
+          dctx.lineTo(ex1, ey1);
+          if (isKoi) {
+            dctx.quadraticCurveTo(dir * (shldrW + slvSpanX * 0.42), sy1 + 4, sx1, sy1);
+          } else {
+            dctx.lineTo(sx1, sy1);
+          }
+          dctx.closePath();
+        };
+        dctx.save();
+        dctx.shadowColor = 'rgba(0,0,0,0.45)';
+        dctx.shadowBlur = 14;
+        dctx.shadowOffsetY = 5;
+        traceSlv();
+        dctx.fillStyle = state.bgColor;
+        dctx.fill();
+        dctx.restore();
+
+        dctx.save();
+        traceSlv();
+        dctx.clip();
+        const ang = Math.atan2(ey0 - sy0, ex0 - sx0);
+        const rotDeg = dir > 0 ? (ang * 180 / Math.PI) : (Math.atan2(sy0 - ey0, sx0 - ex0) * 180 / Math.PI);
+        const boxW = slvSpanX + 24;
+        const boxH = Math.max(armDrop, cuffH) + 24;
+        const midX = (sx0 + ex0 + sx1 + ex1) * 0.25;
+        const midY = (sy0 + ey0 + sy1 + ey1) * 0.25;
+        dctx.save();
+        dctx.translate(midX, midY);
+        dctx.rotate(rotDeg * Math.PI / 180);
+        drawPiece(pieceId, -boxW * 0.55, -boxH * 0.55, boxW * 1.1, boxH * 1.1, stripPlain, 0);
+        dctx.restore();
+        dctx.restore();
+
+        traceSlv();
+        dctx.strokeStyle = 'rgba(0,0,0,0.5)';
+        dctx.lineWidth = 1.25;
+        dctx.stroke();
+      };
+
+      drawAuthSleeve(-1, isBack ? 'sleeveL' : 'sleeveR');
+      drawAuthSleeve(+1, isBack ? 'sleeveR' : 'sleeveL');
+
+      const traceTorso = () => {
+        dctx.beginPath();
+        if (!isBack) {
+          dctx.moveTo(-neckW, bodyTop);
+          dctx.lineTo(-shldrW, shldrY);
+          dctx.lineTo(-shldrW, armPitY);
+          dctx.quadraticCurveTo(-waistW, (armPitY + bodyBot) * 0.5, -hemW, bodyBot - slitH);
+          dctx.lineTo(-hemW + 4, bodyBot - slitH);
+          dctx.lineTo(-hemW + 4, bodyBot);
+          dctx.lineTo(hemW - 4, bodyBot);
+          dctx.lineTo(hemW - 4, bodyBot - slitH);
+          dctx.lineTo(hemW, bodyBot - slitH);
+          dctx.quadraticCurveTo(waistW, (armPitY + bodyBot) * 0.5, shldrW, armPitY);
+          dctx.lineTo(shldrW, shldrY);
+          dctx.lineTo(neckW, bodyTop);
+          dctx.lineTo(0, vDepthY);
+          dctx.closePath();
         } else {
-          p.lineTo(0, neckFrontDepth);
-          p.lineTo(-neckW, bodyTop);
+          dctx.moveTo(-neckW, bodyTop);
+          dctx.quadraticCurveTo(0, bodyTop + 8, neckW, bodyTop);
+          dctx.lineTo(shldrW, shldrY);
+          dctx.lineTo(shldrW, armPitY);
+          dctx.quadraticCurveTo(waistW, (armPitY + bodyBot) * 0.5, hemW, bodyBot - slitH);
+          dctx.lineTo(hemW - 4, bodyBot - slitH);
+          dctx.lineTo(hemW - 4, bodyBot);
+          dctx.lineTo(-hemW + 4, bodyBot);
+          dctx.lineTo(-hemW + 4, bodyBot - slitH);
+          dctx.lineTo(-hemW, bodyBot - slitH);
+          dctx.quadraticCurveTo(-waistW, (armPitY + bodyBot) * 0.5, -shldrW, armPitY);
+          dctx.lineTo(-shldrW, shldrY);
+          dctx.closePath();
         }
-        p.closePath();
       };
 
       dctx.save();
-      dctx.shadowColor = 'rgba(0,0,0,0.5)';
+      dctx.shadowColor = 'rgba(0,0,0,0.45)';
       dctx.shadowBlur = 16;
-      dctx.shadowOffsetY = 6;
-      shirtPath(dctx);
+      dctx.shadowOffsetY = 5;
+      traceTorso();
       dctx.fillStyle = state.bgColor;
       dctx.fill();
       dctx.restore();
 
-      // 左袖（向かって左＝右腕）
       dctx.save();
-      dctx.beginPath();
-      dctx.moveTo(-bodyW, shY);
-      dctx.lineTo(-slSpanX, shY + slDropY);
-      dctx.lineTo(-slSpanX + 12, shY + slDropY + cuffH);
-      dctx.lineTo(-bodyW, armBotY);
-      dctx.closePath();
+      traceTorso();
       dctx.clip();
-      drawPiece(isBack ? 'sleeveL' : 'sleeveR', -slSpanX, shY, slSpanX - bodyW + 8, slDropY + cuffH + 12, stripPlain);
-      dctx.restore();
 
-      // 右袖（向かって右＝左腕）
-      dctx.save();
-      dctx.beginPath();
-      dctx.moveTo(bodyW, shY);
-      dctx.lineTo(slSpanX, shY + slDropY);
-      dctx.lineTo(slSpanX - 12, shY + slDropY + cuffH);
-      dctx.lineTo(bodyW, armBotY);
-      dctx.closePath();
-      dctx.clip();
-      drawPiece(isBack ? 'sleeveR' : 'sleeveL', bodyW - 8, shY, slSpanX - bodyW + 8, slDropY + cuffH + 12, stripPlain);
-      dctx.restore();
-
-      // 身頃
-      const torsoH = bodyBot - bodyTop;
-      if (isBack && cutMode === 'backCenter') {
-        const centerHalfW = hemW * 0.66;
-        dctx.save();
-        dctx.beginPath();
-        dctx.rect(-hemW, bodyTop, hemW - centerHalfW, torsoH);
-        dctx.clip();
-        drawPiece('backSideL', -hemW, bodyTop, hemW - centerHalfW, torsoH, stripPlain);
-        dctx.restore();
-
-        dctx.save();
-        dctx.beginPath();
-        dctx.rect(centerHalfW, bodyTop, hemW - centerHalfW, torsoH);
-        dctx.clip();
-        drawPiece('backSideR', centerHalfW, bodyTop, hemW - centerHalfW, torsoH, stripPlain);
-        dctx.restore();
-
-        dctx.save();
-        dctx.beginPath();
-        dctx.moveTo(-neckW, bodyTop);
-        dctx.lineTo(-centerHalfW, shY);
-        dctx.lineTo(-centerHalfW, bodyBot);
-        dctx.lineTo(centerHalfW, bodyBot);
-        dctx.lineTo(centerHalfW, shY);
-        dctx.lineTo(neckW, bodyTop);
-        dctx.quadraticCurveTo(0, neckBackDepth, -neckW, bodyTop);
-        dctx.closePath();
-        dctx.clip();
-        drawPiece('backCenter', -centerHalfW, bodyTop, centerHalfW * 2, torsoH, stripWithLogo);
-        dctx.restore();
-      } else {
-        dctx.save();
-        dctx.beginPath();
-        dctx.moveTo(-neckW, bodyTop);
-        dctx.lineTo(-bodyW, shY);
-        dctx.lineTo(-hemW, bodyBot);
-        dctx.lineTo(0, bodyBot);
-        dctx.lineTo(0, isBack ? neckBackDepth : neckFrontDepth);
-        dctx.closePath();
-        dctx.clip();
-        drawPiece(isBack ? 'backL' : 'frontR', -hemW, bodyTop, hemW, torsoH, stripWithLogo);
-        dctx.restore();
-
-        dctx.save();
-        dctx.beginPath();
-        dctx.moveTo(neckW, bodyTop);
-        dctx.lineTo(bodyW, shY);
-        dctx.lineTo(hemW, bodyBot);
-        dctx.lineTo(0, bodyBot);
-        dctx.lineTo(0, isBack ? neckBackDepth : neckFrontDepth);
-        dctx.closePath();
-        dctx.clip();
-        drawPiece(isBack ? 'backR' : 'frontL', 0, bodyTop, hemW, torsoH, stripWithLogo);
-        dctx.restore();
-      }
-
-      // 掛け襟・ポケット
       const resolveCollarColor = () => {
         if (collarMode === 'solidBg') return state.bgColor;
         if (collarMode === 'black') return '#1B1E24';
@@ -2107,28 +2122,86 @@
       const colColor = resolveCollarColor();
 
       if (!isBack) {
-        const bandW = 14;
+        // 下前（右前身頃）
         dctx.save();
         dctx.beginPath();
-        dctx.moveTo(-neckW - bandW, bodyTop + 3);
-        dctx.lineTo(-neckW, bodyTop);
-        dctx.lineTo(0, neckFrontDepth);
-        dctx.lineTo(neckW, bodyTop);
-        dctx.lineTo(neckW + bandW, bodyTop + 3);
-        dctx.lineTo(0, neckFrontDepth + bandW * 1.45);
+        dctx.rect(-shldrW - 4, bodyTop - 4, shldrW + 20, bodyH + 8);
+        dctx.clip();
+        drawPiece('frontR', -shldrW, bodyTop, shldrW + 14, bodyH, stripWithLogo);
+        dctx.restore();
+
+        // 上前（左前身頃・右前身頃の上に重なる）
+        dctx.save();
+        dctx.beginPath();
+        dctx.moveTo(neckW, bodyTop);
+        dctx.lineTo(shldrW + 4, bodyTop);
+        dctx.lineTo(shldrW + 4, bodyBot + 4);
+        dctx.lineTo(overlapX, bodyBot + 4);
+        dctx.lineTo(overlapX, lapTurnY);
+        dctx.lineTo(0, vDepthY);
         dctx.closePath();
         dctx.clip();
+        drawPiece('frontL', overlapX, bodyTop, shldrW - overlapX + 2, bodyH, stripWithLogo);
+        dctx.restore();
+
+        // 掛け襟（下前＋上前）
+        const bandW = 11.5;
+        dctx.save();
+        dctx.beginPath();
+        dctx.moveTo(-neckW, bodyTop);
+        dctx.lineTo(-neckW - bandW, bodyTop + 1);
+        dctx.lineTo(-bandW * 0.4, vDepthY + 14);
+        dctx.lineTo(6, vDepthY + 14);
+        dctx.closePath();
         if (colColor) {
           dctx.fillStyle = colColor;
-          dctx.fillRect(-60, bodyTop - 10, 120, 120);
+          dctx.fill();
         } else {
-          drawPiece('collar', -neckW - bandW, bodyTop, (neckW + bandW) * 2, 100, stripPlain);
+          dctx.save();
+          dctx.clip();
+          drawPiece('collar', -neckW - bandW - 4, bodyTop, (neckW + bandW) * 2, 95, stripPlain);
+          dctx.restore();
         }
+        dctx.strokeStyle = 'rgba(0,0,0,0.42)';
+        dctx.lineWidth = 1.1;
+        dctx.stroke();
         dctx.restore();
+
+        dctx.save();
+        dctx.beginPath();
+        dctx.moveTo(neckW, bodyTop);
+        dctx.lineTo(neckW + bandW, bodyTop + 1);
+        dctx.lineTo(overlapX + bandW, lapTurnY + 3);
+        dctx.lineTo(overlapX + bandW, lapTurnY + 20);
+        dctx.lineTo(overlapX, lapTurnY + 20);
+        dctx.lineTo(overlapX, lapTurnY);
+        dctx.lineTo(0, vDepthY);
+        dctx.closePath();
+        if (colColor) {
+          dctx.fillStyle = colColor;
+          dctx.fill();
+        } else {
+          dctx.save();
+          dctx.clip();
+          drawPiece('collar', -30, bodyTop, 75, 110, stripPlain);
+          dctx.restore();
+        }
+        dctx.strokeStyle = 'rgba(0,0,0,0.48)';
+        dctx.lineWidth = 1.2;
+        dctx.stroke();
+        dctx.restore();
+
+        // 上前の縦合わせライン
+        dctx.strokeStyle = 'rgba(0,0,0,0.48)';
+        dctx.lineWidth = 1.4;
+        dctx.beginPath();
+        dctx.moveTo(overlapX, lapTurnY);
+        dctx.lineTo(overlapX, bodyBot);
+        dctx.stroke();
 
         // 左胸ポケット
         if (pocketMode !== 'none') {
-          const px = 18, py = -22, pw = 36, ph = 42;
+          const px = 15, py = bodyTop + 62, pw = 33, ph = 38;
           dctx.save();
           dctx.beginPath();
           dctx.moveTo(px, py);
@@ -2147,12 +2220,58 @@
           dctx.restore();
         }
       } else {
+        if (cutMode === 'backCenter') {
+          const centerHalfW = 44;
+          dctx.save();
+          dctx.beginPath();
+          dctx.rect(-shldrW - 4, bodyTop, shldrW + 4 - centerHalfW, bodyH);
+          dctx.clip();
+          drawPiece('backSideL', -shldrW, bodyTop, shldrW - centerHalfW + 4, bodyH, stripPlain);
+          dctx.restore();
+
+          dctx.save();
+          dctx.beginPath();
+          dctx.rect(centerHalfW, bodyTop, shldrW + 4 - centerHalfW, bodyH);
+          dctx.clip();
+          drawPiece('backSideR', centerHalfW - 2, bodyTop, shldrW - centerHalfW + 4, bodyH, stripPlain);
+          dctx.restore();
+
+          dctx.save();
+          dctx.beginPath();
+          dctx.rect(-centerHalfW, bodyTop, centerHalfW * 2, bodyH);
+          dctx.clip();
+          drawPiece('backCenter', -centerHalfW, bodyTop, centerHalfW * 2, bodyH, stripWithLogo);
+          dctx.restore();
+        } else {
+          dctx.save();
+          dctx.beginPath();
+          dctx.rect(-shldrW - 4, bodyTop, shldrW + 4, bodyH);
+          dctx.clip();
+          drawPiece('backL', -shldrW, bodyTop, shldrW, bodyH, stripWithLogo);
+          dctx.restore();
+
+          dctx.save();
+          dctx.beginPath();
+          dctx.rect(0, bodyTop, shldrW + 4, bodyH);
+          dctx.clip();
+          drawPiece('backR', 0, bodyTop, shldrW, bodyH, stripWithLogo);
+          dctx.restore();
+
+          dctx.strokeStyle = 'rgba(0,0,0,0.48)';
+          dctx.lineWidth = 1.3;
+          dctx.beginPath();
+          dctx.moveTo(0, bodyTop + 8);
+          dctx.lineTo(0, bodyBot);
+          dctx.stroke();
+        }
+
+        // 後ろ首元の掛け襟バンド
         dctx.save();
         dctx.beginPath();
-        dctx.moveTo(-neckW - 8, bodyTop + 2);
-        dctx.quadraticCurveTo(0, neckBackDepth + 10, neckW + 8, bodyTop + 2);
-        dctx.lineTo(neckW, bodyTop);
-        dctx.quadraticCurveTo(0, neckBackDepth, -neckW, bodyTop);
+        dctx.moveTo(-neckW - 10, bodyTop + 1);
+        dctx.quadraticCurveTo(0, bodyTop + 9, neckW + 10, bodyTop + 1);
+        dctx.lineTo(neckW + 10, bodyTop + 11);
+        dctx.quadraticCurveTo(0, bodyTop + 19, -neckW - 10, bodyTop + 11);
         dctx.closePath();
         if (colColor) {
           dctx.fillStyle = colColor;
@@ -2160,16 +2279,28 @@
         } else {
           dctx.save();
           dctx.clip();
-          drawPiece('collar', -neckW - 10, bodyTop - 10, (neckW + 10) * 2, 30, stripPlain);
+          drawPiece('collar', -neckW - 12, bodyTop, (neckW + 12) * 2, 24, stripPlain);
           dctx.restore();
         }
+        dctx.strokeStyle = 'rgba(0,0,0,0.4)';
+        dctx.lineWidth = 1.1;
+        dctx.stroke();
         dctx.restore();
       }
 
-      // 外枠
-      shirtPath(dctx);
-      dctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      // アームホール縫い目
+      dctx.strokeStyle = 'rgba(0,0,0,0.5)';
       dctx.lineWidth = 1.4;
+      dctx.beginPath();
+      dctx.moveTo(-shldrW + 0.5, shldrY); dctx.lineTo(-shldrW + 0.5, armPitY);
+      dctx.moveTo(shldrW - 0.5, shldrY);  dctx.lineTo(shldrW - 0.5, armPitY);
+      dctx.stroke();
+
+      dctx.restore(); // torso clip end
+
+      traceTorso();
+      dctx.strokeStyle = 'rgba(0,0,0,0.55)';
+      dctx.lineWidth = 1.35;
       dctx.stroke();
 
       dctx.fillStyle = '#e2e8f0';
@@ -2815,6 +2946,49 @@
     ['studioDaboShiftY', 'studioDaboShiftX'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('input', renderStudioDaboScene);
+    });
+    document.querySelectorAll('#studioDaboSmartBtns button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sp = btn.dataset.spot;
+        const dim = getDimensions();
+        if (state.items.length === 0) {
+          addTextItem('仲羽田', true, 120);
+        }
+        const targetItem = state.items.find(it => it.id === state.selectedId) || state.items[state.items.length - 1];
+        // ストリップ正規化座標 (u, v) を手ぬぐいキャンバス座標に変換
+        const setStripNormPos = (u, v) => {
+          if (!targetItem) return;
+          if (dim.trimW_px > dim.trimH_px) {
+            // 横向き手ぬぐいは -90° 回転されて縦ストリップになるため (u = 1 - ry, v = rx) -> rx = v, ry = 1 - u
+            targetItem.x = Math.round(dim.bleedPx + v * dim.trimW_px);
+            targetItem.y = Math.round(dim.bleedPx + (1 - u) * dim.trimH_px);
+          } else {
+            targetItem.x = Math.round(dim.bleedPx + u * dim.trimW_px);
+            targetItem.y = Math.round(dim.bleedPx + v * dim.trimH_px);
+          }
+        };
+        if (sp === 'backCrest') {
+          document.getElementById('studioDaboCutMode').value = 'backCenter';
+          document.getElementById('studioDaboLogoTarget').value = 'backOnly';
+          setStripNormPos(0.50, 0.24);
+        } else if (sp === 'backMid') {
+          document.getElementById('studioDaboCutMode').value = 'backCenter';
+          document.getElementById('studioDaboLogoTarget').value = 'backOnly';
+          setStripNormPos(0.50, 0.46);
+        } else if (sp === 'chestPocket') {
+          document.getElementById('studioDaboLogoTarget').value = 'backPocket';
+          document.getElementById('studioDaboPocket').value = 'match';
+          setStripNormPos(0.50, 0.92);
+        } else if (sp === 'frontHem') {
+          document.getElementById('studioDaboLogoTarget').value = 'frontBack';
+          setStripNormPos(0.50, 0.74);
+        } else if (sp === 'sleeves') {
+          document.getElementById('studioDaboLogoTarget').value = 'sleevesOnly';
+          setStripNormPos(0.50, 0.42);
+        }
+        renderCanvas();
+        renderStudioDaboScene();
+      });
     });
     const downloadStudioDaboPngBtn = document.getElementById('downloadStudioDaboPngBtn');
     if (downloadStudioDaboPngBtn) {
