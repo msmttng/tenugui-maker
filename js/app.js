@@ -1580,6 +1580,677 @@
   }
 
   // =========================================================================
+  // 8-B. できた手ぬぐい生地でダボを作る（✂️ 生地の取り方・裁断図 ＆ ダボ仕立てプレビュー）
+  //      ＆ アプリ内への名前付きデザイン保存（サムネイル付）
+  // =========================================================================
+  const STUDIO_PRESET_KEY = 'tenugui-studio-presets-v1';
+
+  function loadStudioPresets() {
+    try {
+      const raw = localStorage.getItem(STUDIO_PRESET_KEY);
+      if (!raw) return [];
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveStudioPresets(list) {
+    try {
+      localStorage.setItem(STUDIO_PRESET_KEY, JSON.stringify(list));
+    } catch (e) {
+      alert('ブラウザの保存容量上限に達しました。不要な保存データを削除してください。');
+    }
+  }
+
+  function makeStudioThumbnailDataUrl() {
+    const dim = getDimensions();
+    const tc = document.createElement('canvas');
+    tc.width = 160;
+    tc.height = 64;
+    const tctx = tc.getContext('2d');
+    const flat = document.createElement('canvas');
+    flat.width = dim.trimW_px;
+    flat.height = dim.trimH_px;
+    drawTenuguiScene(flat.getContext('2d'), {
+      scaleFactor: 1.0,
+      includeBleed: false,
+      showGuides: false,
+      showTexture: false,
+      showSelection: false
+    });
+    tctx.fillStyle = state.bgColor;
+    tctx.fillRect(0, 0, tc.width, tc.height);
+    tctx.drawImage(flat, 0, 0, tc.width, tc.height);
+    return tc.toDataURL('image/jpeg', 0.78);
+  }
+
+  function renderStudioPresetsList() {
+    const box = document.getElementById('appSavedPresetsList');
+    if (!box) return;
+    const list = loadStudioPresets();
+    box.innerHTML = '';
+    if (list.length === 0) {
+      box.innerHTML = '<div style="font-size:12px;color:#64748b;padding:8px;text-align:center;">まだアプリ内に保存されたデザインはありません。上の入力欄に名前を入れて「＋ アプリに保存」を押してください。</div>';
+      return;
+    }
+    list.forEach((item, idx) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:8px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:6px;padding:6px 8px;';
+      if (item.thumb) {
+        const img = document.createElement('img');
+        img.src = item.thumb;
+        img.style.cssText = 'width:58px;height:24px;object-fit:cover;border-radius:3px;border:1px solid #94a3b8;flex-shrink:0;';
+        row.appendChild(img);
+      }
+      const info = document.createElement('div');
+      info.style.cssText = 'flex:1;min-width:0;';
+      const title = document.createElement('div');
+      title.style.cssText = 'font-size:12.5px;font-weight:700;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;';
+      title.textContent = item.name;
+      const sub = document.createElement('div');
+      sub.style.cssText = 'font-size:10.5px;color:#64748b;';
+      sub.textContent = item.date || '';
+      info.appendChild(title);
+      info.appendChild(sub);
+      row.appendChild(info);
+
+      const loadBtn = document.createElement('button');
+      loadBtn.type = 'button';
+      loadBtn.className = 'primary-btn small';
+      loadBtn.textContent = '読込';
+      loadBtn.onclick = () => {
+        restoreSerializedState(item.jsonStr);
+        pushHistory();
+        const msg = document.getElementById('appSaveStatusMsg');
+        if (msg) msg.textContent = `✅ 「${item.name}」を読み込みました`;
+      };
+
+      const daboBtn = document.createElement('button');
+      daboBtn.type = 'button';
+      daboBtn.className = 'secondary-btn small';
+      daboBtn.textContent = '👕ダボ';
+      daboBtn.onclick = () => {
+        restoreSerializedState(item.jsonStr);
+        pushHistory();
+        document.getElementById('projectModal').classList.add('hidden');
+        openDaboSimModal();
+      };
+
+      const delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'secondary-btn small';
+      delBtn.style.color = '#dc2626';
+      delBtn.textContent = '✕';
+      delBtn.onclick = () => {
+        const next = loadStudioPresets();
+        next.splice(idx, 1);
+        saveStudioPresets(next);
+        renderStudioPresetsList();
+      };
+
+      row.appendChild(loadBtn);
+      row.appendChild(daboBtn);
+      row.appendChild(delBtn);
+      box.appendChild(row);
+    });
+  }
+
+  function orientStudioStrip(srcCanvas, rotMode) {
+    let deg = 0;
+    if (rotMode === 'auto') {
+      deg = srcCanvas.width > srcCanvas.height ? -90 : 0;
+    } else {
+      deg = Number(rotMode) || 0;
+    }
+    if (deg === 0) return srcCanvas;
+    const out = document.createElement('canvas');
+    if (Math.abs(deg) === 90) {
+      out.width = srcCanvas.height;
+      out.height = srcCanvas.width;
+    } else {
+      out.width = srcCanvas.width;
+      out.height = srcCanvas.height;
+    }
+    const octx = out.getContext('2d');
+    octx.translate(out.width / 2, out.height / 2);
+    octx.rotate(deg * Math.PI / 180);
+    octx.drawImage(srcCanvas, -srcCanvas.width / 2, -srcCanvas.height / 2);
+    return out;
+  }
+
+  function buildStudioDaboCutPlan(cutMode, logoTarget, shiftX, shiftY) {
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+    const useLogoBack = ['all', 'backOnly', 'backPocket', 'frontBack'].includes(logoTarget);
+    const useLogoFront = ['all', 'frontBack'].includes(logoTarget);
+    const useLogoSleeve = ['all', 'sleevesOnly'].includes(logoTarget);
+    const useLogoPocket = ['all', 'backPocket', 'frontBack'].includes(logoTarget);
+
+    const bx = clamp(0.10 + shiftX, 0.02, 0.20);
+    const by = clamp(0.08 + shiftY, 0.02, 0.20);
+    const bw = 0.80;
+    const bh = 0.78;
+    const sx = clamp(0.08 + shiftX * 0.5, 0.02, 0.22);
+    const sy = clamp(0.15 + shiftY * 0.5, 0.03, 0.35);
+
+    if (cutMode === 'backCenter') {
+      return {
+        stripCount: 6,
+        title: '② 背中中央1枚取り（手ぬぐい6本：中央のロゴ・背紋を切らずに背中心へ配置）',
+        strips: [
+          { idx: 1, title: '1本目：後中心（背紋・大ロゴ）', hasLogo: useLogoBack, cuts: [{ id: 'backCenter', label: '背中中央パネル', x: clamp(0.05 + shiftX, 0.01, 0.12), y: by, w: 0.90, h: bh, color: '#fbbf24' }] },
+          { idx: 2, title: '2本目：後両脇マチ＋掛け襟', hasLogo: false, cuts: [
+            { id: 'backSideL', label: '左後脇マチ', x: 0.05, y: by, w: 0.42, h: bh, color: '#38bdf8' },
+            { id: 'backSideR', label: '右後脇マチ', x: 0.53, y: by, w: 0.42, h: bh, color: '#38bdf8' },
+            { id: 'collar', label: '掛け襟', x: 0.08, y: 0.88, w: 0.84, h: 0.10, color: '#a78bfa' }
+          ]},
+          { idx: 3, title: '3本目：右前身頃', hasLogo: useLogoFront, cuts: [{ id: 'frontR', label: '右前身頃', x: bx, y: by, w: bw, h: bh, color: '#34d399' }] },
+          { idx: 4, title: '4本目：左前身頃＋胸ポケ', hasLogo: useLogoFront, cuts: [
+            { id: 'frontL', label: '左前身頃', x: bx, y: by, w: bw, h: bh, color: '#34d399' },
+            { id: 'pocket', label: '胸ポケ', x: 0.22, y: 0.87, w: 0.56, h: 0.11, color: '#f472b6', forceLogo: useLogoPocket }
+          ]},
+          { idx: 5, title: '5本目：右袖', hasLogo: useLogoSleeve, cuts: [{ id: 'sleeveR', label: '右袖', x: sx, y: sy, w: 0.84, h: 0.56, color: '#fb923c' }] },
+          { idx: 6, title: '6本目：左袖', hasLogo: useLogoSleeve, cuts: [{ id: 'sleeveL', label: '左袖', x: sx, y: sy, w: 0.84, h: 0.56, color: '#fb923c' }] }
+        ]
+      };
+    }
+
+    if (cutMode === '5piece') {
+      return {
+        stripCount: 5,
+        title: '③ 省エネ5枚取り（手ぬぐい5本：5本目を上下二分割して両袖を取る）',
+        strips: [
+          { idx: 1, title: '1本目：右前身頃＋掛け襟', hasLogo: useLogoFront, cuts: [
+            { id: 'frontR', label: '右前身頃', x: bx, y: by, w: bw, h: bh, color: '#34d399' },
+            { id: 'collar', label: '掛け襟', x: 0.10, y: 0.88, w: 0.80, h: 0.10, color: '#a78bfa' }
+          ]},
+          { idx: 2, title: '2本目：左前身頃＋胸ポケ', hasLogo: useLogoFront, cuts: [
+            { id: 'frontL', label: '左前身頃', x: bx, y: by, w: bw, h: bh, color: '#34d399' },
+            { id: 'pocket', label: '胸ポケ', x: 0.22, y: 0.87, w: 0.56, h: 0.11, color: '#f472b6', forceLogo: useLogoPocket }
+          ]},
+          { idx: 3, title: '3本目：左後身頃', hasLogo: useLogoBack, cuts: [{ id: 'backL', label: '左後身頃', x: bx, y: by, w: bw, h: bh, color: '#fbbf24' }] },
+          { idx: 4, title: '4本目：右後身頃', hasLogo: useLogoBack, cuts: [{ id: 'backR', label: '右後身頃', x: bx, y: by, w: bw, h: bh, color: '#fbbf24' }] },
+          { idx: 5, title: '5本目：両袖（上下2分割）', hasLogo: useLogoSleeve, cuts: [
+            { id: 'sleeveR', label: '右袖（上半分）', x: sx, y: 0.04, w: 0.84, h: 0.44, color: '#fb923c' },
+            { id: 'sleeveL', label: '左袖（下半分）', x: sx, y: 0.52, w: 0.84, h: 0.44, color: '#fb923c' }
+          ]}
+        ]
+      };
+    }
+
+    return {
+      stripCount: 6,
+      title: '① 定番6枚取り（手ぬぐい6本：前身頃2・後身頃2・両袖2／背中心接ぎ）',
+      strips: [
+        { idx: 1, title: '1本目：右前身頃＋掛け襟', hasLogo: useLogoFront, cuts: [
+          { id: 'frontR', label: '右前身頃', x: bx, y: by, w: bw, h: bh, color: '#34d399' },
+          { id: 'collar', label: '掛け襟', x: 0.10, y: 0.88, w: 0.80, h: 0.10, color: '#a78bfa' }
+        ]},
+        { idx: 2, title: '2本目：左前身頃＋胸ポケ', hasLogo: useLogoFront, cuts: [
+          { id: 'frontL', label: '左前身頃', x: bx, y: by, w: bw, h: bh, color: '#34d399' },
+          { id: 'pocket', label: '胸ポケ', x: 0.22, y: 0.87, w: 0.56, h: 0.11, color: '#f472b6', forceLogo: useLogoPocket }
+        ]},
+        { idx: 3, title: '3本目：左後身頃', hasLogo: useLogoBack, cuts: [{ id: 'backL', label: '左後身頃', x: bx, y: by, w: bw, h: bh, color: '#fbbf24' }] },
+        { idx: 4, title: '4本目：右後身頃', hasLogo: useLogoBack, cuts: [{ id: 'backR', label: '右後身頃', x: bx, y: by, w: bw, h: bh, color: '#fbbf24' }] },
+        { idx: 5, title: '5本目：右袖', hasLogo: useLogoSleeve, cuts: [{ id: 'sleeveR', label: '右袖', x: sx, y: sy, w: 0.84, h: 0.56, color: '#fb923c' }] },
+        { idx: 6, title: '6本目：左袖', hasLogo: useLogoSleeve, cuts: [{ id: 'sleeveL', label: '左袖', x: sx, y: sy, w: 0.84, h: 0.56, color: '#fb923c' }] }
+      ]
+    };
+  }
+
+  function renderStudioDaboScene() {
+    const c = document.getElementById('studioDaboCanvas');
+    if (!c) return;
+    const dctx = c.getContext('2d');
+    const style = document.getElementById('studioDaboStyle').value;
+    const cutMode = document.getElementById('studioDaboCutMode').value;
+    const logoTarget = document.getElementById('studioDaboLogoTarget').value;
+    const rotMode = document.getElementById('studioDaboRot').value;
+    const sizeKey = document.getElementById('studioDaboSize').value;
+    const shiftY = (Number(document.getElementById('studioDaboShiftY').value) || 0) / 100;
+    const shiftX = (Number(document.getElementById('studioDaboShiftX').value) || 0) / 100;
+    const collarMode = document.getElementById('studioDaboCollar').value;
+    const pocketMode = document.getElementById('studioDaboPocket').value;
+
+    document.getElementById('studioDaboShiftYVal').textContent = `${Math.round(shiftY * 100)}%`;
+    document.getElementById('studioDaboShiftXVal').textContent = `${Math.round(shiftX * 100)}%`;
+
+    const dim = getDimensions();
+    // 1) ロゴ・文字入り手ぬぐい
+    const rawLogo = document.createElement('canvas');
+    rawLogo.width = dim.trimW_px;
+    rawLogo.height = dim.trimH_px;
+    drawTenuguiScene(rawLogo.getContext('2d'), {
+      scaleFactor: 1.0,
+      includeBleed: false,
+      showGuides: false,
+      showTexture: true,
+      showSelection: false
+    });
+    // 2) 地紋のみの手ぬぐい（ロゴ・文字を一時オフ）
+    const rawPlain = document.createElement('canvas');
+    rawPlain.width = dim.trimW_px;
+    rawPlain.height = dim.trimH_px;
+    const savedItems = state.items;
+    state.items = [];
+    drawTenuguiScene(rawPlain.getContext('2d'), {
+      scaleFactor: 1.0,
+      includeBleed: false,
+      showGuides: false,
+      showTexture: true,
+      showSelection: false
+    });
+    state.items = savedItems;
+
+    const stripWithLogo = orientStudioStrip(rawLogo, rotMode);
+    const stripPlain = orientStudioStrip(rawPlain, rotMode);
+    const plan = buildStudioDaboCutPlan(cutMode, logoTarget, shiftX, shiftY);
+
+    const cutMap = {};
+    plan.strips.forEach(st => {
+      const stripImg = st.hasLogo ? stripWithLogo : stripPlain;
+      st.cuts.forEach(cut => {
+        const useLogo = cut.forceLogo !== undefined ? cut.forceLogo : st.hasLogo;
+        cutMap[cut.id] = { cut, strip: useLogo ? stripWithLogo : stripImg };
+      });
+    });
+
+    const W = c.width;
+    const H = c.height;
+    dctx.fillStyle = '#111622';
+    dctx.fillRect(0, 0, W, H);
+
+    // 上段：手ぬぐいからの生地取り図 (H=230)
+    const topH = 235;
+    dctx.fillStyle = '#1b2234';
+    dctx.fillRect(10, 8, W - 20, topH - 12);
+    dctx.strokeStyle = '#334155';
+    dctx.strokeRect(10, 8, W - 20, topH - 12);
+
+    dctx.fillStyle = '#93c5fd';
+    dctx.font = 'bold 12.5px sans-serif';
+    dctx.textAlign = 'left';
+    dctx.fillText(`✂️ ${plan.title}`, 20, 26);
+
+    const n = plan.strips.length;
+    const gap = 10;
+    const availW = W - 40;
+    const cardW = Math.floor((availW - gap * (n - 1)) / n);
+    const cardH = topH - 48;
+    const startY = 34;
+
+    plan.strips.forEach((st, i) => {
+      const cx = 20 + i * (cardW + gap);
+      const cy = startY;
+      dctx.fillStyle = '#0f172a';
+      dctx.fillRect(cx, cy, cardW, cardH);
+      dctx.strokeStyle = st.hasLogo ? '#f59e0b' : '#334155';
+      dctx.strokeRect(cx, cy, cardW, cardH);
+
+      dctx.fillStyle = st.hasLogo ? '#fde68a' : '#cbd5e1';
+      dctx.font = 'bold 10px sans-serif';
+      dctx.textAlign = 'center';
+      dctx.fillText(st.title, cx + cardW / 2, cy + 13);
+
+      const stripImg = st.hasLogo ? stripWithLogo : stripPlain;
+      const aspect = stripImg.width / stripImg.height;
+      const maxH = cardH - 22;
+      const maxW = cardW - 12;
+      let sw = maxH * aspect;
+      let sh = maxH;
+      if (sw > maxW) {
+        sw = maxW;
+        sh = sw / aspect;
+      }
+      const sx = cx + (cardW - sw) / 2;
+      const sy = cy + 18 + (maxH - sh) / 2;
+
+      dctx.drawImage(stripImg, sx, sy, sw, sh);
+      dctx.strokeStyle = 'rgba(255,255,255,0.35)';
+      dctx.strokeRect(sx, sy, sw, sh);
+
+      st.cuts.forEach(cut => {
+        const rx = sx + cut.x * sw;
+        const ry = sy + cut.y * sh;
+        const rw = cut.w * sw;
+        const rh = cut.h * sh;
+        dctx.save();
+        dctx.fillStyle = cut.color + '28';
+        dctx.fillRect(rx, ry, rw, rh);
+        dctx.strokeStyle = cut.color;
+        dctx.lineWidth = 1.6;
+        dctx.setLineDash([4, 2]);
+        dctx.strokeRect(rx, ry, rw, rh);
+        dctx.setLineDash([]);
+        dctx.fillStyle = 'rgba(15,23,42,0.88)';
+        const tw = Math.min(rw - 2, dctx.measureText(cut.label).width + 8);
+        dctx.fillRect(rx + (rw - tw) / 2, ry + rh / 2 - 7, tw, 14);
+        dctx.fillStyle = cut.color;
+        dctx.font = 'bold 9.5px sans-serif';
+        dctx.fillText(cut.label, rx + rw / 2, ry + rh / 2 + 3);
+        dctx.restore();
+      });
+    });
+
+    // 下段：仕立て上がりダボシャツ（前面・背面・上下セット）
+    const botY = topH + 4;
+    const botH = H - botY - 8;
+    dctx.fillStyle = '#1b2234';
+    dctx.fillRect(10, botY, W - 20, botH);
+    dctx.strokeStyle = '#334155';
+    dctx.strokeRect(10, botY, W - 20, botH);
+
+    const drawPiece = (pieceId, destX, destY, destW, destH, fallbackStrip, rotDeg = 0) => {
+      const entry = cutMap[pieceId];
+      if (!entry) {
+        dctx.drawImage(fallbackStrip, 0, 0, fallbackStrip.width, fallbackStrip.height, destX, destY, destW, destH);
+        return;
+      }
+      const { cut, strip } = entry;
+      const sx = cut.x * strip.width;
+      const sy = cut.y * strip.height;
+      const sw = cut.w * strip.width;
+      const sh = cut.h * strip.height;
+      if (rotDeg) {
+        dctx.save();
+        dctx.translate(destX + destW / 2, destY + destH / 2);
+        dctx.rotate(rotDeg * Math.PI / 180);
+        const diag = Math.hypot(destW, destH);
+        dctx.drawImage(strip, sx, sy, sw, sh, -diag / 2, -diag / 2, diag, diag);
+        dctx.restore();
+      } else {
+        dctx.drawImage(strip, sx, sy, sw, sh, destX, destY, destW, destH);
+      }
+    };
+
+    const drawShirt = (cx, cy, sc, isBack) => {
+      const isKoi = style === 'koikuchi';
+      const bodyW = isKoi ? 64 : 74;
+      const hemW = isKoi ? 67 : 78;
+      const bodyTop = -115;
+      const bodyBot = 128;
+      const shY = -98;
+      const armBotY = isKoi ? -22 : -6;
+      const slSpanX = isKoi ? 168 : 184;
+      const slDropY = isKoi ? 26 : 36;
+      const cuffH = isKoi ? 48 : 66;
+      const neckW = 31;
+      const neckBackDepth = -100;
+      const neckFrontDepth = -34;
+
+      dctx.save();
+      dctx.translate(cx, cy);
+      dctx.scale(sc, sc);
+
+      const shirtPath = p => {
+        p.beginPath();
+        p.moveTo(-neckW, bodyTop);
+        p.lineTo(-bodyW, shY);
+        p.lineTo(-slSpanX, shY + slDropY);
+        p.lineTo(-slSpanX + 12, shY + slDropY + cuffH);
+        p.lineTo(-bodyW, armBotY);
+        p.lineTo(-hemW, bodyBot);
+        p.lineTo(hemW, bodyBot);
+        p.lineTo(bodyW, armBotY);
+        p.lineTo(slSpanX - 12, shY + slDropY + cuffH);
+        p.lineTo(slSpanX, shY + slDropY);
+        p.lineTo(bodyW, shY);
+        p.lineTo(neckW, bodyTop);
+        if (isBack) {
+          p.quadraticCurveTo(0, neckBackDepth, -neckW, bodyTop);
+        } else {
+          p.lineTo(0, neckFrontDepth);
+          p.lineTo(-neckW, bodyTop);
+        }
+        p.closePath();
+      };
+
+      dctx.save();
+      dctx.shadowColor = 'rgba(0,0,0,0.5)';
+      dctx.shadowBlur = 16;
+      dctx.shadowOffsetY = 6;
+      shirtPath(dctx);
+      dctx.fillStyle = state.bgColor;
+      dctx.fill();
+      dctx.restore();
+
+      // 左袖（向かって左＝右腕）
+      dctx.save();
+      dctx.beginPath();
+      dctx.moveTo(-bodyW, shY);
+      dctx.lineTo(-slSpanX, shY + slDropY);
+      dctx.lineTo(-slSpanX + 12, shY + slDropY + cuffH);
+      dctx.lineTo(-bodyW, armBotY);
+      dctx.closePath();
+      dctx.clip();
+      drawPiece(isBack ? 'sleeveL' : 'sleeveR', -slSpanX, shY, slSpanX - bodyW + 8, slDropY + cuffH + 12, stripPlain);
+      dctx.restore();
+
+      // 右袖（向かって右＝左腕）
+      dctx.save();
+      dctx.beginPath();
+      dctx.moveTo(bodyW, shY);
+      dctx.lineTo(slSpanX, shY + slDropY);
+      dctx.lineTo(slSpanX - 12, shY + slDropY + cuffH);
+      dctx.lineTo(bodyW, armBotY);
+      dctx.closePath();
+      dctx.clip();
+      drawPiece(isBack ? 'sleeveR' : 'sleeveL', bodyW - 8, shY, slSpanX - bodyW + 8, slDropY + cuffH + 12, stripPlain);
+      dctx.restore();
+
+      // 身頃
+      const torsoH = bodyBot - bodyTop;
+      if (isBack && cutMode === 'backCenter') {
+        const centerHalfW = hemW * 0.66;
+        dctx.save();
+        dctx.beginPath();
+        dctx.rect(-hemW, bodyTop, hemW - centerHalfW, torsoH);
+        dctx.clip();
+        drawPiece('backSideL', -hemW, bodyTop, hemW - centerHalfW, torsoH, stripPlain);
+        dctx.restore();
+
+        dctx.save();
+        dctx.beginPath();
+        dctx.rect(centerHalfW, bodyTop, hemW - centerHalfW, torsoH);
+        dctx.clip();
+        drawPiece('backSideR', centerHalfW, bodyTop, hemW - centerHalfW, torsoH, stripPlain);
+        dctx.restore();
+
+        dctx.save();
+        dctx.beginPath();
+        dctx.moveTo(-neckW, bodyTop);
+        dctx.lineTo(-centerHalfW, shY);
+        dctx.lineTo(-centerHalfW, bodyBot);
+        dctx.lineTo(centerHalfW, bodyBot);
+        dctx.lineTo(centerHalfW, shY);
+        dctx.lineTo(neckW, bodyTop);
+        dctx.quadraticCurveTo(0, neckBackDepth, -neckW, bodyTop);
+        dctx.closePath();
+        dctx.clip();
+        drawPiece('backCenter', -centerHalfW, bodyTop, centerHalfW * 2, torsoH, stripWithLogo);
+        dctx.restore();
+      } else {
+        dctx.save();
+        dctx.beginPath();
+        dctx.moveTo(-neckW, bodyTop);
+        dctx.lineTo(-bodyW, shY);
+        dctx.lineTo(-hemW, bodyBot);
+        dctx.lineTo(0, bodyBot);
+        dctx.lineTo(0, isBack ? neckBackDepth : neckFrontDepth);
+        dctx.closePath();
+        dctx.clip();
+        drawPiece(isBack ? 'backL' : 'frontR', -hemW, bodyTop, hemW, torsoH, stripWithLogo);
+        dctx.restore();
+
+        dctx.save();
+        dctx.beginPath();
+        dctx.moveTo(neckW, bodyTop);
+        dctx.lineTo(bodyW, shY);
+        dctx.lineTo(hemW, bodyBot);
+        dctx.lineTo(0, bodyBot);
+        dctx.lineTo(0, isBack ? neckBackDepth : neckFrontDepth);
+        dctx.closePath();
+        dctx.clip();
+        drawPiece(isBack ? 'backR' : 'frontL', 0, bodyTop, hemW, torsoH, stripWithLogo);
+        dctx.restore();
+      }
+
+      // 掛け襟・ポケット
+      const resolveCollarColor = () => {
+        if (collarMode === 'solidBg') return state.bgColor;
+        if (collarMode === 'black') return '#1B1E24';
+        if (collarMode === 'navy') return '#122342';
+        if (collarMode === 'gold') return '#877028';
+        return null;
+      };
+      const colColor = resolveCollarColor();
+
+      if (!isBack) {
+        const bandW = 14;
+        dctx.save();
+        dctx.beginPath();
+        dctx.moveTo(-neckW - bandW, bodyTop + 3);
+        dctx.lineTo(-neckW, bodyTop);
+        dctx.lineTo(0, neckFrontDepth);
+        dctx.lineTo(neckW, bodyTop);
+        dctx.lineTo(neckW + bandW, bodyTop + 3);
+        dctx.lineTo(0, neckFrontDepth + bandW * 1.45);
+        dctx.closePath();
+        dctx.clip();
+        if (colColor) {
+          dctx.fillStyle = colColor;
+          dctx.fillRect(-60, bodyTop - 10, 120, 120);
+        } else {
+          drawPiece('collar', -neckW - bandW, bodyTop, (neckW + bandW) * 2, 100, stripPlain);
+        }
+        dctx.restore();
+
+        // 左胸ポケット
+        if (pocketMode !== 'none') {
+          const px = 18, py = -22, pw = 36, ph = 42;
+          dctx.save();
+          dctx.beginPath();
+          dctx.moveTo(px, py);
+          dctx.lineTo(px + pw, py);
+          dctx.lineTo(px + pw, py + ph - 6);
+          dctx.lineTo(px + pw / 2, py + ph);
+          dctx.lineTo(px, py + ph - 6);
+          dctx.closePath();
+          dctx.save();
+          dctx.clip();
+          drawPiece('pocket', px, py, pw, ph, stripWithLogo, pocketMode === 'bias' ? 45 : 0);
+          dctx.restore();
+          dctx.strokeStyle = 'rgba(255,255,255,0.45)';
+          dctx.lineWidth = 1.1;
+          dctx.stroke();
+          dctx.restore();
+        }
+      } else {
+        dctx.save();
+        dctx.beginPath();
+        dctx.moveTo(-neckW - 8, bodyTop + 2);
+        dctx.quadraticCurveTo(0, neckBackDepth + 10, neckW + 8, bodyTop + 2);
+        dctx.lineTo(neckW, bodyTop);
+        dctx.quadraticCurveTo(0, neckBackDepth, -neckW, bodyTop);
+        dctx.closePath();
+        if (colColor) {
+          dctx.fillStyle = colColor;
+          dctx.fill();
+        } else {
+          dctx.save();
+          dctx.clip();
+          drawPiece('collar', -neckW - 10, bodyTop - 10, (neckW + 10) * 2, 30, stripPlain);
+          dctx.restore();
+        }
+        dctx.restore();
+      }
+
+      // 外枠
+      shirtPath(dctx);
+      dctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      dctx.lineWidth = 1.4;
+      dctx.stroke();
+
+      dctx.fillStyle = '#e2e8f0';
+      dctx.font = 'bold 12px sans-serif';
+      dctx.textAlign = 'center';
+      const labelTxt = isBack
+        ? (cutMode === 'backCenter' ? '背面（背中中央1枚取り・背紋活かし）' : '背面（後身頃・背中心接ぎ）')
+        : '前面（前身頃・掛け襟・左胸ポケット）';
+      dctx.fillText(labelTxt, 0, bodyBot + 22);
+      dctx.restore();
+    };
+
+    const drawPants = (cx, cy, sc) => {
+      dctx.save();
+      dctx.translate(cx, cy);
+      dctx.scale(sc, sc);
+      const pPath = p => {
+        p.beginPath();
+        p.moveTo(-54, -105);
+        p.lineTo(54, -105);
+        p.lineTo(68, 115);
+        p.lineTo(16, 115);
+        p.lineTo(0, -18);
+        p.lineTo(-16, 115);
+        p.lineTo(-68, 115);
+        p.closePath();
+      };
+      pPath(dctx);
+      dctx.save();
+      dctx.clip();
+      dctx.drawImage(stripPlain, -70, -105, 70, 220);
+      dctx.drawImage(stripPlain, 0, -105, 70, 220);
+      dctx.restore();
+      pPath(dctx);
+      dctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      dctx.lineWidth = 1.4;
+      dctx.stroke();
+      dctx.fillStyle = '#e2e8f0';
+      dctx.font = 'bold 12px sans-serif';
+      dctx.textAlign = 'center';
+      dctx.fillText('ダボズボン（手ぬぐい4〜5本）', 0, 138);
+      dctx.restore();
+    };
+
+    const midY = botY + botH * 0.47;
+    if (style === 'setup') {
+      drawShirt(W * 0.22, midY, 0.88, false);
+      drawShirt(W * 0.56, midY, 0.88, true);
+      drawPants(W * 0.84, midY, 0.88);
+    } else {
+      drawShirt(W * 0.28, midY, 1.0, false);
+      drawShirt(W * 0.72, midY, 1.0, true);
+    }
+
+    // 用尺・仕様表示
+    const sizeInfo = {
+      S: { len: 70, chest: 52, strips: plan.stripCount, rolls: '約 0.5 反（約5.4m）' },
+      M: { len: 73, chest: 55, strips: plan.stripCount, rolls: '約 0.55 反（約6.0m）' },
+      L: { len: 76, chest: 59, strips: plan.stripCount, rolls: '約 0.6 反（約6.2m）' },
+      LL: { len: 79, chest: 63, strips: plan.stripCount + 1, rolls: '約 0.65 反（約7.0m）' },
+      '3L': { len: 82, chest: 68, strips: plan.stripCount + 1, rolls: '約 0.75 反（約8.0m）' }
+    }[sizeKey] || { len: 76, chest: 59, strips: 6, rolls: '約 0.6 反' };
+
+    const logoStrips = plan.strips.filter(s => s.hasLogo).length;
+    const plainStrips = plan.strips.length - logoStrips;
+    const specBox = document.getElementById('studioDaboSpecInfo');
+    if (specBox) {
+      specBox.innerHTML =
+        `<strong>📏 仕立て用尺 (${sizeKey}サイズ：着丈${sizeInfo.len}cm / 身幅${sizeInfo.chest}cm)</strong><br>` +
+        `・必要手ぬぐい本数：<strong>計 ${plan.stripCount} 本</strong>（ロゴ入り <strong>${logoStrips}本</strong> ＋ 地紋のみ <strong>${plainStrips}本</strong>）` +
+        (style === 'setup' ? ` ＋ ダボズボン用 4〜5本` : '') + `<br>` +
+        `・反物換算の目安：<strong>${sizeInfo.rolls}</strong>`;
+    }
+  }
+
+  function openDaboSimModal() {
+    document.getElementById('daboSimModal').classList.remove('hidden');
+    renderStudioDaboScene();
+  }
+
+  // =========================================================================
   // 9. 入稿データ・高解像度PNG / SVG / 仕様書出力
   // =========================================================================
   function openExportModal() {
@@ -2133,9 +2804,65 @@
 
     // モーダル開閉
     document.getElementById('foldSimBtn').addEventListener('click', openFoldSimulationModal);
+    const daboSimBtn = document.getElementById('daboSimBtn');
+    if (daboSimBtn) {
+      daboSimBtn.addEventListener('click', openDaboSimModal);
+    }
+    ['studioDaboStyle', 'studioDaboCutMode', 'studioDaboLogoTarget', 'studioDaboRot', 'studioDaboSize', 'studioDaboCollar', 'studioDaboPocket'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', renderStudioDaboScene);
+    });
+    ['studioDaboShiftY', 'studioDaboShiftX'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', renderStudioDaboScene);
+    });
+    const downloadStudioDaboPngBtn = document.getElementById('downloadStudioDaboPngBtn');
+    if (downloadStudioDaboPngBtn) {
+      downloadStudioDaboPngBtn.addEventListener('click', () => {
+        renderStudioDaboScene();
+        const c = document.getElementById('studioDaboCanvas');
+        if (!c) return;
+        const a = document.createElement('a');
+        a.href = c.toDataURL('image/png');
+        a.download = `tenugui_dabo_simulation_${new Date().toISOString().slice(0, 10)}.png`;
+        a.click();
+      });
+    }
+
     document.getElementById('projectSaveBtn').addEventListener('click', () => {
       document.getElementById('projectModal').classList.remove('hidden');
+      renderStudioPresetsList();
     });
+    const appSavePresetBtn = document.getElementById('appSavePresetBtn');
+    if (appSavePresetBtn) {
+      appSavePresetBtn.addEventListener('click', () => {
+        const nameInput = document.getElementById('appPresetNameInput');
+        let name = (nameInput.value || '').trim();
+        if (!name) {
+          const now = new Date();
+          name = `デザイン_${now.getMonth() + 1}月${now.getDate()}日_${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        }
+        const nowStr = new Date().toLocaleString('ja-JP', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+        const list = loadStudioPresets();
+        const entry = {
+          name,
+          date: nowStr,
+          thumb: makeStudioThumbnailDataUrl(),
+          jsonStr: serializeState()
+        };
+        const existIdx = list.findIndex(x => x.name === name);
+        if (existIdx >= 0) {
+          list[existIdx] = entry;
+        } else {
+          list.unshift(entry);
+        }
+        saveStudioPresets(list);
+        nameInput.value = '';
+        renderStudioPresetsList();
+        const msg = document.getElementById('appSaveStatusMsg');
+        if (msg) msg.textContent = `💾 「${name}」をアプリ内に保存しました！`;
+      });
+    }
     document.getElementById('exportModalBtn').addEventListener('click', openExportModal);
 
     document.querySelectorAll('.modal-close').forEach(btn => {

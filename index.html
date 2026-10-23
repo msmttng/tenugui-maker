@@ -70,9 +70,10 @@
       <button type="button" id="undoBtn" class="icon-btn" title="元に戻す (Ctrl+Z)" disabled>↶ 戻す</button>
       <button type="button" id="redoBtn" class="icon-btn" title="やり直す (Ctrl+Y)" disabled>↷ やり直し</button>
       <div class="divider-v"></div>
-      <a href="arare_app.html" class="secondary-btn" style="text-decoration:none;display:inline-flex;align-items:center;" title="仲羽田（角字）＆大小あられ配置・Illustrator(.ai/SVG)専用スタジオを開く">📐 仲羽田・あられ専用スタジオ (.ai出力)</a>
-      <button type="button" id="foldSimBtn" class="secondary-btn" title="畳んだ時の見え方や頭に巻いたイメージを確認">🧣 畳み・着用プレビュー</button>
-      <button type="button" id="projectSaveBtn" class="secondary-btn" title="編集中のプロジェクトをファイルに保存">💾 保存/読込</button>
+      <a href="arare_app.html" class="secondary-btn" style="text-decoration:none;display:inline-flex;align-items:center;" title="仲羽田（角字）＆大小あられ配置・ダボ仕立て・Illustrator(.ai/SVG)専用スタジオを開く">📐 仲羽田・あられ・ダボ専用スタジオ</a>
+      <button type="button" id="daboSimBtn" class="primary-btn" style="background:linear-gradient(135deg,#046e7e 0%,#0f4c5c 100%)" title="作成した手ぬぐい生地からのダボの作り方（生地の取り方）とダボ完成イメージを確認">👕 ダボを作る(生地取り図)</button>
+      <button type="button" id="foldSimBtn" class="secondary-btn" title="畳んだ時の見え方や頭に巻いたイメージを確認">🧣 畳み・着用</button>
+      <button type="button" id="projectSaveBtn" class="secondary-btn" title="デザインに名前を付けてアプリ内に保存・呼び出し">💾 名前を付けて保存</button>
       <button type="button" id="exportModalBtn" class="primary-btn">🖨️ 入稿・画像出力</button>
     </div>
   </header>
@@ -578,24 +579,131 @@
     </div>
   </div>
 
-  <!-- モーダル2：プロジェクト保存 / 読込 -->
-  <div id="projectModal" class="modal-backdrop hidden">
-    <div class="modal-content">
+  <!-- モーダル1-B：できた生地でダボを作る（生地の取り方・裁断割付図＆ダボ完成シミュレーション） -->
+  <div id="daboSimModal" class="modal-backdrop hidden">
+    <div class="modal-content wide" style="max-width:1180px;">
       <div class="modal-header">
-        <h2>💾 デザインデータの保存・読み込み</h2>
+        <h2>👕 できた手ぬぐい生地でダボを作る（✂️ 生地の取り方・裁断図 ＆ ダボ仕立てプレビュー）</h2>
+        <button type="button" class="modal-close" data-close="daboSimModal">✕</button>
+      </div>
+      <div class="modal-body" style="display:grid;grid-template-columns:330px minmax(0,1fr);gap:16px;align-items:start;">
+        <div style="display:flex;flex-direction:column;gap:10px;background:#f8fafc;padding:12px;border:1px solid #cbd5e1;border-radius:8px;">
+          <div>
+            <label class="section-title">① 仕立てる衣装の型</label>
+            <select id="studioDaboStyle">
+              <option value="dabo" selected>ダボシャツ（ゆったり広袖・七分袖）</option>
+              <option value="koikuchi">鯉口シャツ（粋・細身七分袖）</option>
+              <option value="setup">ダボ上下セット（ダボシャツ＋ダボズボン）</option>
+            </select>
+          </div>
+          <div>
+            <label class="section-title">② ✂️ 手ぬぐいからの生地の取り方（裁断割付）</label>
+            <select id="studioDaboCutMode">
+              <option value="6piece" selected>① 定番6枚取り（前2・後2・袖2／背中心接ぎ）</option>
+              <option value="backCenter">② 背中中央1枚取り（中央のロゴ・紋を切らずに背紋にする）</option>
+              <option value="5piece">③ 省エネ5枚取り（前2・後2・1本から両袖を上下分割）</option>
+            </select>
+          </div>
+          <div>
+            <label class="section-title">③ ロゴ・文字入り手ぬぐいを使う部位</label>
+            <select id="studioDaboLogoTarget">
+              <option value="all" selected>全パーツに同じロゴ入り手ぬぐいを使う</option>
+              <option value="backOnly">背中（後身頃）のみロゴ入り手ぬぐいを使う（他は地紋のみ）</option>
+              <option value="backPocket">背中＋左胸ポケットのみロゴ入りを使う</option>
+              <option value="frontBack">前身頃＋後身頃にロゴ入りを使う（袖は地紋のみ）</option>
+              <option value="sleevesOnly">両袖のみロゴ入り手ぬぐいを使う</option>
+            </select>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <label class="section-title">手ぬぐいの裁断向き</label>
+              <select id="studioDaboRot">
+                <option value="auto" selected>自動（長辺を縦＝着丈へ）</option>
+                <option value="0">そのまま（回転なし）</option>
+                <option value="-90">左へ90°回転</option>
+                <option value="90">右へ90°回転</option>
+                <option value="180">上下反転（180°）</option>
+              </select>
+            </div>
+            <div>
+              <label class="section-title">サイズ規格（用尺）</label>
+              <select id="studioDaboSize">
+                <option value="S">小 (S: 着丈70/身幅52)</option>
+                <option value="M">中 (M: 着丈73/身幅55)</option>
+                <option value="L" selected>大 (L: 着丈76/身幅59)</option>
+                <option value="LL">特大 (LL: 着丈79/身幅63)</option>
+                <option value="3L">巾広 (3L: 着丈82/身幅68)</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <label>身頃の取り位置(上下) <span id="studioDaboShiftYVal">0%</span></label>
+            <input type="range" id="studioDaboShiftY" min="-45" max="45" value="0" />
+          </div>
+          <div class="field-row">
+            <label>身頃の取り位置(左右) <span id="studioDaboShiftXVal">0%</span></label>
+            <input type="range" id="studioDaboShiftX" min="-45" max="45" value="0" />
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <label class="section-title">掛け襟（えり）</label>
+              <select id="studioDaboCollar">
+                <option value="same" selected>共布（手ぬぐいから取る）</option>
+                <option value="solidBg">地色の無地</option>
+                <option value="black">黒繻子風（#1B1E24）</option>
+                <option value="navy">濃紺無地（#122342）</option>
+                <option value="gold">羽田金（#877028）</option>
+              </select>
+            </div>
+            <div>
+              <label class="section-title">左胸ポケット</label>
+              <select id="studioDaboPocket">
+                <option value="match" selected>あり（柄・ロゴ合わせ）</option>
+                <option value="bias">あり（斜め45°バイアス柄）</option>
+                <option value="none">ポケットなし</option>
+              </select>
+            </div>
+          </div>
+          <div id="studioDaboSpecInfo" style="background:#e0f2fe;border:1px solid #0284c7;border-radius:6px;padding:8px 10px;font-size:11.5px;line-height:1.5;color:#0f172a;"></div>
+          <button type="button" id="downloadStudioDaboPngBtn" class="primary-btn full-width">📸 ダボ仕上がり＆生地取り図をPNG保存</button>
+        </div>
+        <div style="background:#161c28;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;border:1px solid #334155;">
+          <canvas id="studioDaboCanvas" width="820" height="580" style="width:100%;height:auto;display:block;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- モーダル2：プロジェクト保存 / 読込（アプリ内への名前付き保存＆ファイル入出力） -->
+  <div id="projectModal" class="modal-backdrop hidden">
+    <div class="modal-content" style="max-width:620px;">
+      <div class="modal-header">
+        <h2>💾 デザインを名前を付けてアプリに保存・呼び出し</h2>
         <button type="button" class="modal-close" data-close="projectModal">✕</button>
       </div>
-      <div class="modal-body">
-        <div class="export-option-card">
-          <h4>ファイルに保存（バックアップ）</h4>
-          <p>現在の手ぬぐいデザイン（配置したロゴ・文字・色設定すべて）を <code>.tenugui.json</code> ファイルとしてパソコンに保存します。いつでも続きから編集できます。</p>
-          <button type="button" id="downloadProjectJsonBtn" class="primary-btn">📥 プロジェクトファイルを保存 (.json)</button>
+      <div class="modal-body" style="display:flex;flex-direction:column;gap:14px;">
+        <div class="export-option-card featured">
+          <h4>📌 アプリ内に名前を付けて保存（ブラウザ内に何件でも保存可能）</h4>
+          <p>現在のデザイン（背景柄・色・追加した文字・ロゴすべて）に名前を付けて保存します。サムネイル付きでいつでもワンクリックで呼び出せます。</p>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="appPresetNameInput" placeholder="デザイン名（例：仲羽田 濃紺 背紋入り案1）" style="flex:1;padding:8px 10px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;" />
+            <button type="button" id="appSavePresetBtn" class="primary-btn" style="white-space:nowrap;">＋ アプリに保存</button>
+          </div>
+          <p id="appSaveStatusMsg" style="font-size:12px;color:#0284c7;font-weight:700;min-height:1.2em;"></p>
+          <div id="appSavedPresetsList" style="display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;"></div>
         </div>
-        <div class="export-option-card">
-          <h4>保存したファイルを読み込む</h4>
-          <p>以前保存した <code>.tenugui.json</code> ファイルを読み込んで復元します。</p>
-          <input type="file" id="uploadProjectJsonInput" accept=".json" hidden />
-          <button type="button" id="triggerLoadJsonBtn" class="secondary-btn">📂 ファイルを選択して読み込む</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="export-option-card">
+            <h4>📥 ファイルとしてPC/スマホに保存</h4>
+            <p>現在のデザインを <code>.tenugui.json</code> ファイルとして端末にダウンロード保存します。</p>
+            <button type="button" id="downloadProjectJsonBtn" class="secondary-btn">📥 ファイル保存 (.json)</button>
+          </div>
+          <div class="export-option-card">
+            <h4>📂 保存したファイルを読み込む</h4>
+            <p>以前保存した <code>.tenugui.json</code> ファイルを読み込んで復元します。</p>
+            <input type="file" id="uploadProjectJsonInput" accept=".json" hidden />
+            <button type="button" id="triggerLoadJsonBtn" class="secondary-btn">📂 ファイル読込 (.json)</button>
+          </div>
         </div>
       </div>
     </div>
