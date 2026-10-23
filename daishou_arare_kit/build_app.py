@@ -25,7 +25,18 @@ if emblem_path.exists():
 else:
     emblem_js = "const EMBLEM={loops:[]};"
 
-body = tpl.replace("/*__LIB__*/", lib_js).replace("/*__EMBLEM__*/", emblem_js)
+hanten_logo_path = here / "hanten_logo_b64.txt"
+if hanten_logo_path.exists():
+    hanten_b64 = hanten_logo_path.read_text(encoding="utf-8").strip()
+    hanten_js = f'const HANTEN_LOGO_B64="{hanten_b64}";'
+else:
+    hanten_js = 'const HANTEN_LOGO_B64="";'
+
+body = (
+    tpl.replace("/*__LIB__*/", lib_js)
+    .replace("/*__EMBLEM__*/", emblem_js)
+    .replace("/*__HANTEN_LOGO__*/", hanten_js)
+)
 
 (here / "arare_app_artifact.html").write_text(body, encoding="utf-8")
 

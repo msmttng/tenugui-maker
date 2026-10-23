@@ -224,10 +224,10 @@
           </div>
 
           <div class="upload-dropzone" id="logoDropzone">
-            <input type="file" id="logoFileInput" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden />
+            <input type="file" id="logoFileInput" accept=".ai,.pdf,.eps,image/png,image/jpeg,image/webp,image/svg+xml,application/pdf,application/postscript" hidden />
             <div class="dropzone-icon">📁</div>
-            <div class="dropzone-title">ロゴ・画像ファイルを選択</div>
-            <div class="dropzone-sub">またはここへドラッグ＆ドロップ (PNG / JPG / SVG)</div>
+            <div class="dropzone-title">ロゴ・画像ファイルを選択（.ai / PDF / PNG / JPG / SVG）</div>
+            <div class="dropzone-sub">Illustratorの .ai データもそのまま読み込めます</div>
             <button type="button" class="primary-btn small" id="logoSelectBtn">ファイルを選ぶ</button>
           </div>
 
@@ -597,11 +597,13 @@
             </select>
           </div>
           <div>
-            <label class="section-title">② ✂️ 手ぬぐいからの生地の取り方（裁断割付）</label>
+            <label class="section-title">② ✂️ 手ぬぐいからの生地の取り方（裁断割付・枚数）</label>
             <select id="studioDaboCutMode">
-              <option value="6piece" selected>① 定番6枚取り（前2・後2・袖2／背中心接ぎ）</option>
-              <option value="backCenter">② 背中中央1枚取り（中央のロゴ・紋を切らずに背紋にする）</option>
-              <option value="5piece">③ 省エネ5枚取り（前2・後2・1本から両袖を上下分割）</option>
+              <option value="adult7" selected>① 大人用・標準7枚取り（前2・後2・袖2 ＋ 7本目：襟・前立て・胸ポケ・マチ）★推奨</option>
+              <option value="adult8_crest">② 大人用・背紋1枚＋ゆったり8枚取り（背中央1・後脇マチ1・前2・袖2・袖太マチ1・襟＆ポケ1）</option>
+              <option value="6piece">③ 小柄・子ども・6枚取り（前2・後2・袖2／裾余りから襟・ポケ）</option>
+              <option value="backCenter">④ 6枚・背中中央1枚取り（中央のロゴ・紋を切らずに背紋にする）</option>
+              <option value="5piece">⑤ 子ども用・最小5枚取り（前2・後2・5本目から両袖を上下分割）</option>
             </select>
           </div>
           <div>

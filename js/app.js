@@ -1727,12 +1727,66 @@
     const useLogoSleeve = ['all', 'sleevesOnly'].includes(logoTarget);
     const useLogoPocket = ['all', 'backPocket', 'frontBack'].includes(logoTarget);
 
+    const isAdultFull = (cutMode === 'adult7' || cutMode === 'adult8_crest');
     const bx = clamp(0.10 + shiftX, 0.02, 0.20);
-    const by = clamp(0.08 + shiftY, 0.02, 0.20);
+    const by = clamp((isAdultFull ? 0.05 : 0.08) + shiftY, 0.02, 0.20);
     const bw = 0.80;
-    const bh = 0.78;
+    const bh = isAdultFull ? 0.86 : 0.78;
     const sx = clamp(0.08 + shiftX * 0.5, 0.02, 0.22);
-    const sy = clamp(0.15 + shiftY * 0.5, 0.03, 0.35);
+    const sy = clamp(0.14 + shiftY * 0.5, 0.03, 0.35);
+
+    if (cutMode === 'adult7') {
+      return {
+        stripCount: 7,
+        title: '① 大人用・標準7枚取り（前2・後2・両袖2 ＋ 7本目：前立て・襟・柄合わせ胸ポケ・袖下マチ）',
+        strips: [
+          { idx: 1, title: '1本目：右後身頃', hasLogo: useLogoBack, cuts: [{ id: 'backR', label: '右後身頃', x: bx, y: by, w: bw, h: bh, color: '#fbbf24' }] },
+          { idx: 2, title: '2本目：左後身頃', hasLogo: useLogoBack, cuts: [{ id: 'backL', label: '左後身頃', x: bx, y: by, w: bw, h: bh, color: '#fbbf24' }] },
+          { idx: 3, title: '3本目：右前身頃', hasLogo: useLogoFront, cuts: [{ id: 'frontR', label: '右前身頃', x: bx, y: by, w: bw, h: bh, color: '#34d399' }] },
+          { idx: 4, title: '4本目：左前身頃', hasLogo: useLogoFront, cuts: [{ id: 'frontL', label: '左前身頃', x: bx, y: by, w: bw, h: bh, color: '#34d399' }] },
+          { idx: 5, title: '5本目：右袖＋マチ', hasLogo: useLogoSleeve, cuts: [
+            { id: 'sleeveR', label: '右袖', x: sx, y: sy, w: 0.84, h: 0.56, color: '#fb923c' },
+            { id: 'gussetR', label: '右袖下マチ', x: 0.18, y: 0.76, w: 0.64, h: 0.16, color: '#38bdf8' }
+          ]},
+          { idx: 6, title: '6本目：左袖＋マチ', hasLogo: useLogoSleeve, cuts: [
+            { id: 'sleeveL', label: '左袖', x: sx, y: sy, w: 0.84, h: 0.56, color: '#fb923c' },
+            { id: 'gussetL', label: '左袖下マチ', x: 0.18, y: 0.76, w: 0.64, h: 0.16, color: '#38bdf8' }
+          ]},
+          { idx: 7, title: '7本目：襟・前立・ポケ', hasLogo: useLogoPocket, cuts: [
+            { id: 'placket', label: '通し前立て', x: 0.05, y: 0.04, w: 0.20, h: 0.92, color: '#a78bfa' },
+            { id: 'collar', label: '関東襟縁取', x: 0.28, y: 0.04, w: 0.18, h: 0.72, color: '#a78bfa' },
+            { id: 'pocket', label: '胸ポケ(柄合)', x: 0.50, y: 0.22, w: 0.42, h: 0.24, color: '#f472b6', forceLogo: useLogoPocket }
+          ]}
+        ]
+      };
+    }
+
+    if (cutMode === 'adult8_crest') {
+      return {
+        stripCount: 8,
+        title: '② 大人用・背紋1枚＋ゆったり8枚取り（背中央1・後両脇マチ1・前2・袖2・袖下太マチ1・襟＆胸ポケ1）',
+        strips: [
+          { idx: 1, title: '1本目：背中中央(背紋)', hasLogo: useLogoBack, cuts: [{ id: 'backCenter', label: '背中中央パネル', x: clamp(0.05 + shiftX, 0.01, 0.12), y: by, w: 0.90, h: bh, color: '#fbbf24' }] },
+          { idx: 2, title: '2本目：後両脇マチ', hasLogo: false, cuts: [
+            { id: 'backSideL', label: '左後脇マチ', x: 0.05, y: by, w: 0.42, h: bh, color: '#38bdf8' },
+            { id: 'backSideR', label: '右後脇マチ', x: 0.53, y: by, w: 0.42, h: bh, color: '#38bdf8' }
+          ]},
+          { idx: 3, title: '3本目：右前身頃', hasLogo: useLogoFront, cuts: [{ id: 'frontR', label: '右前身頃', x: bx, y: by, w: bw, h: bh, color: '#34d399' }] },
+          { idx: 4, title: '4本目：左前身頃', hasLogo: useLogoFront, cuts: [{ id: 'frontL', label: '左前身頃', x: bx, y: by, w: bw, h: bh, color: '#34d399' }] },
+          { idx: 5, title: '5本目：右袖', hasLogo: useLogoSleeve, cuts: [{ id: 'sleeveR', label: '右袖', x: sx, y: sy, w: 0.84, h: 0.56, color: '#fb923c' }] },
+          { idx: 6, title: '6本目：左袖', hasLogo: useLogoSleeve, cuts: [{ id: 'sleeveL', label: '左袖', x: sx, y: sy, w: 0.84, h: 0.56, color: '#fb923c' }] },
+          { idx: 7, title: '7本目：両袖下太マチ', hasLogo: false, cuts: [
+            { id: 'gussetR', label: '右袖太マチ', x: 0.08, y: 0.06, w: 0.84, h: 0.40, color: '#38bdf8' },
+            { id: 'gussetL', label: '左袖太マチ', x: 0.08, y: 0.52, w: 0.84, h: 0.40, color: '#38bdf8' }
+          ]},
+          { idx: 8, title: '8本目：襟・前立・ポケ', hasLogo: useLogoPocket, cuts: [
+            { id: 'placket', label: '通し前立て', x: 0.05, y: 0.04, w: 0.20, h: 0.92, color: '#a78bfa' },
+            { id: 'collar', label: '関東襟縁取', x: 0.28, y: 0.04, w: 0.18, h: 0.72, color: '#a78bfa' },
+            { id: 'pocket', label: '胸ポケ(柄合)', x: 0.50, y: 0.22, w: 0.42, h: 0.24, color: '#f472b6', forceLogo: useLogoPocket }
+          ]}
+        ]
+      };
+    }
 
     if (cutMode === 'backCenter') {
       return {
@@ -2226,7 +2280,7 @@
           dctx.restore();
         }
       } else {
-        if (cutMode === 'backCenter') {
+        if (cutMode === 'backCenter' || cutMode === 'adult8_crest') {
           const centerHalfW = 44;
           dctx.save();
           dctx.beginPath();
