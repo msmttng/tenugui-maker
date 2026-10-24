@@ -535,15 +535,41 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
           </div>
         </div>
 
-        <!-- 2枚目の札(⑩二枚重ね札) / 頭文字(丸紋) / 差し札(肩文字) 用のサブ文字入力欄 -->
-        <div id="fudaSubTextRow" style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;background:#f8fafc;padding:5px 7px;border:1px solid #cbd5e1;border-radius:6px">
-          <span style="font-size:11px;font-weight:700;color:#334155;white-space:nowrap">2枚目札・頭文字・差札:</span>
-          <input type="text" id="customTextSubStr" class="save-input" value="青年会" maxlength="8" placeholder="例：遠州 / 羽田 / 青年会 / 祭" style="padding:4px 7px;font-size:12px;flex:1;min-width:90px">
-          <div class="chips" id="subTextQuickChips">
-            <button type="button" class="mini-btn" data-sub="遠州">遠州</button>
-            <button type="button" class="mini-btn" data-sub="羽田">羽田</button>
-            <button type="button" class="mini-btn" data-sub="青年会">青年会</button>
-            <button type="button" class="mini-btn" data-sub="祭">祭</button>
+        <!-- 2枚目の札(⑩二枚重ね札) / 頭文字(丸紋) / 差し札(肩文字) 用のサブ文字入力欄 ＆ 下の札の位置ずらし -->
+        <div id="fudaSubTextRow" style="display:grid;gap:4px;background:#fffbeb;padding:6px 8px;border:1px solid #f59e0b;border-radius:6px">
+          <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+            <span style="font-size:11px;font-weight:700;color:#78350f;white-space:nowrap">2枚目(下の札)・差札文字:</span>
+            <input type="text" id="customTextSubStr" class="save-input" value="遠州" maxlength="8" placeholder="例：遠州 / 羽田 / 青年会 / 祭" style="padding:4px 7px;font-size:12px;flex:1;min-width:85px">
+            <div class="chips" id="subTextQuickChips">
+              <button type="button" class="mini-btn" data-sub="遠州">遠州</button>
+              <button type="button" class="mini-btn" data-sub="羽田">羽田</button>
+              <button type="button" class="mini-btn" data-sub="青年会">青年会</button>
+              <button type="button" class="mini-btn" data-sub="祭">祭</button>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px">
+            <span style="font-size:11px;font-weight:700;color:#92400e">🎴 2枚目(下の札)の位置ずらし（マウスでも移動可）:</span>
+            <div class="chips" id="fudaSubPosPresetChips">
+              <button type="button" class="mini-btn" data-subpos="fan_right">右扇開き(被らない)</button>
+              <button type="button" class="mini-btn" data-subpos="parallel">左右平行</button>
+              <button type="button" class="mini-btn" data-subpos="fan_left">左扇開き</button>
+            </div>
+          </div>
+          <div class="row"><label for="fudaSubOffX">下の札 横ずらし(X)</label><input type="range" id="fudaSubOffX" min="-150" max="150" step="2" value="56"><output for="fudaSubOffX" id="fudaSubOffX-o"></output></div>
+          <div class="row"><label for="fudaSubOffY">下の札 縦ずらし(Y)</label><input type="range" id="fudaSubOffY" min="-120" max="120" step="2" value="6"><output for="fudaSubOffY" id="fudaSubOffY-o"></output></div>
+          <div class="row"><label for="fudaSubAngle">下の札 開き角度差</label><input type="range" id="fudaSubAngle" min="-75" max="75" step="1" value="18"><output for="fudaSubAngle" id="fudaSubAngle-o"></output></div>
+        </div>
+
+        <!-- 🏷️ 札のかたち（今の形・四角など選択可能） -->
+        <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;background:#f0fdf4;padding:5px 7px;border:1px solid #86efac;border-radius:6px">
+          <span style="font-size:11px;font-weight:700;color:#14532d;white-space:nowrap">🏷️ 札のかたち:</span>
+          <div class="chips" id="fudaShapeChips">
+            <button type="button" class="mini-btn" data-fshape="auto">自動(種類別)</button>
+            <button type="button" class="mini-btn" data-fshape="trapezoid">今の形(上台形6角)</button>
+            <button type="button" class="mini-btn" data-fshape="rect">四角(長方形)</button>
+            <button type="button" class="mini-btn" data-fshape="pointed">山形5角(将棋駒)</button>
+            <button type="button" class="mini-btn" data-fshape="round_rect">角丸四角</button>
+            <button type="button" class="mini-btn" data-fshape="chamfer">八角(隅切り)</button>
           </div>
         </div>
 
@@ -964,7 +990,8 @@ const DEF={
   // 名入れ文字・札(ふだ)ロゴ・1文字ちりばめ総柄パラメーター
   showText:false, customTextStr:'仲羽田', customTextSubStr:'遠州', customTextFont:"'Reggae One', sans-serif",
   customTextVert:true, customTextFrame:'senjafuda', customTextColor:'#ffffff', customTextBg:'#046e7e', customTextOutline:true,
-  fudaCharLimit:0, fudaCordStyle:'auto', fudaWidthPct:100, fudaHeightPct:100, fudaDepth3d:0,
+  fudaCharLimit:0, fudaShape:'auto', fudaCordStyle:'auto', fudaWidthPct:100, fudaHeightPct:100, fudaDepth3d:0,
+  fudaSubOffX:56, fudaSubOffY:6, fudaSubAngle:18,
   fudaCordColor:'#046e7e', fudaCordStroke:'#ffffff', fudaBgTransparent:false, fudaCordTransparent:false, fudaOpacity:100, showFudaGizmo:true,
   fudaCordKnotX:0, fudaCordKnotY:0, fudaCordTailX:0, fudaCordTailY:0,
   textSize:44, textSpacing:6, textOutlineW:5, textAngle:0, textX:50, textY:75,
@@ -2564,7 +2591,7 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
   const hScale = (st.fudaHeightPct || 100) / 100;
   let gizmoHandles = null;
 
-  // ⑩ 二枚重ね夫婦木札（濱松・遠州風）の場合は、奥の札と手前の札の2枚を扇状に重ねて合成する
+  // ⑩ 二枚重ね夫婦木札（濱松・遠州風）の場合は、奥の札と手前の札の2枚を扇状に重ねて合成する（下の札の位置ずらし・角度差対応）
   if(frame === 'twin_kifuda'){
     const subChars = getEffectiveFudaChars(subTxt, 0, '遠州');
     const cordChoice = (!st.fudaCordStyle || st.fudaCordStyle === 'auto') ? 'top_knot' : st.fudaCordStyle;
@@ -2572,8 +2599,12 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
     const cos0 = Math.cos(rad0), sin0 = Math.sin(rad0);
     const rotOff = (ox, oy) => [cx + ox * cos0 - oy * sin0, cy + ox * sin0 + oy * cos0];
 
-    const [bx, by] = rotOff(fs * 0.44 * wScale, -fs * 0.08 * hScale);
-    const [fx, fy] = rotOff(-fs * 0.30 * wScale, fs * 0.08 * hScale);
+    const subOffXRatio = (st.fudaSubOffX ?? 56) / 100;
+    const subOffYRatio = (st.fudaSubOffY ?? 6) / 100;
+    const subAngDiff = (st.fudaSubAngle ?? 18);
+
+    const [fx, fy] = rotOff(-fs * 0.28 * wScale, fs * 0.04 * hScale);
+    const [bx, by] = rotOff((-0.28 + subOffXRatio * 1.35) * fs * wScale, (0.04 + subOffYRatio * 1.35) * fs * hScale);
 
     const stBack = Object.assign({}, st, {
       customTextFrame: 'kifuda_3d_rope',
@@ -2590,13 +2621,21 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
       fudaDepth3d: Math.max(4.5, st.fudaDepth3d || 5.5)
     });
 
-    const pBack = buildSingleFudaOrTextPrimitivesMm(bx, by, deg - 32, fs * 0.88, stBack, includeTracedTextVector);
-    const pFront = buildSingleFudaOrTextPrimitivesMm(fx, fy, deg - 14, fs * 0.90, stFront, includeTracedTextVector);
+    const frontDeg = deg - 12;
+    const backDeg = frontDeg + subAngDiff;
+
+    const pBack = buildSingleFudaOrTextPrimitivesMm(bx, by, backDeg, fs * 0.88, stBack, includeTracedTextVector);
+    const pFront = buildSingleFudaOrTextPrimitivesMm(fx, fy, frontDeg, fs * 0.90, stFront, includeTracedTextVector);
+    const combinedGizmo = pFront.gizmoHandles ? Object.assign({}, pFront.gizmoHandles, {
+      subMove: [bx, by],
+      subRot: pBack.gizmoHandles ? pBack.gizmoHandles.rotate : null,
+      subCx: bx, subCy: by, baseFs: fs, wScale, hScale, baseDeg: deg
+    }) : null;
     return {
       frameItems: [...pBack.frameItems, ...pFront.frameItems],
       textItems: [...pBack.textItems, ...pFront.textItems],
       charDrawList: [...pBack.charDrawList, ...pFront.charDrawList],
-      gizmoHandles: pFront.gizmoHandles
+      gizmoHandles: combinedGizmo
     };
   }
 
@@ -2679,25 +2718,32 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
 
     const getLocalOuterVertices = (inset = 0) => {
       const iw = hw - inset, ih = hh - inset;
-      if(frame === 'kifuda_3d_rope'){
+      const shapeMode = (st.fudaShape && st.fudaShape !== 'auto')
+        ? st.fudaShape
+        : ((frame === 'kifuda_3d_rope') ? 'trapezoid'
+          : (frame === 'kifuda' ? 'pointed'
+            : (frame === 'sumikiri' ? 'chamfer'
+              : (frame === 'tenmaru' ? 'round_rect' : 'rect'))));
+
+      if(shapeMode === 'trapezoid'){
         // 写真1・写真2のような上部台形削ぎ（6角形）の喧嘩札
         const topFlat = iw * 0.36;
         const shoulderY = -ih + (ih * 2) * 0.125;
         return [[-topFlat, -ih], [topFlat, -ih], [iw, shoulderY], [iw, ih], [-iw, ih], [-iw, shoulderY]];
       }
-      if(frame === 'kifuda'){
+      if(shapeMode === 'pointed'){
         const shoulderY = -ih + (ih * 2) * 0.13;
         return [[0, -ih], [iw, shoulderY], [iw, ih], [-iw, ih], [-iw, shoulderY]];
       }
-      if(frame === 'sumikiri'){
+      if(shapeMode === 'chamfer'){
         const c = Math.min(iw, ih) * 0.28;
         return [
           [-iw + c, -ih], [iw - c, -ih], [iw, -ih + c], [iw, ih - c],
           [iw - c, ih], [-iw + c, ih], [-iw, ih - c], [-iw, -ih + c]
         ];
       }
-      if(frame === 'tenmaru'){
-        const r = Math.min(iw, ih, w * 0.08);
+      if(shapeMode === 'round_rect'){
+        const r = Math.min(iw, ih, w * 0.14);
         const pts = [];
         const corners = [
           [iw - r, -ih + r, -Math.PI / 2, 0],
@@ -3110,9 +3156,11 @@ function drawCustomLogoAndTextMm(x, cfg){
       }
       x.restore();
 
-      // プレビューキャンバス（st === S）かつ先頭の札の場合、マウス操作ハンドル（紐移動・サイズ・幅・縦・回転）を記録＆描画
+      // プレビューキャンバス（st === S）かつ先頭の札の場合、マウス操作ハンドル（下札移動・紐移動・サイズ・幅・縦・回転）を記録＆描画
       if(st === S && pIdx === 0 && gizmoHandles){
         const list = [];
+        if(gizmoHandles.subMove) list.push({ id: 'subMove', pt: gizmoHandles.subMove, col: '#16a34a', label: '🎴下札移動', gh: gizmoHandles });
+        if(gizmoHandles.subRot) list.push({ id: 'subRot', pt: gizmoHandles.subRot, col: '#ca8a04', label: '↻下札角度', gh: gizmoHandles });
         if(gizmoHandles.knot) list.push({ id: 'knot', pt: gizmoHandles.knot, col: '#f97316', label: '🪢上紐', gh: gizmoHandles });
         if(gizmoHandles.tail) list.push({ id: 'tail', pt: gizmoHandles.tail, col: '#fb923c', label: '🪢脇紐', gh: gizmoHandles });
         if(gizmoHandles.scale) list.push({ id: 'scale', pt: gizmoHandles.scale, col: '#22c55e', label: '↘サイズ', gh: gizmoHandles });
@@ -6114,6 +6162,7 @@ const ranges={
   logoSize:v=>v+' mm', logoAngle:v=>(v>0?'+':'')+v+'°', logoX:v=>v+'%', logoY:v=>v+'%',
   logoRepeatGapX:v=>v+' mm', logoRepeatGapY:v=>v+' mm', logoRepeatGridAngle:v=>(v>0?'+':'')+v+'°', logoRepeatAngleVar:v=>v+'°', logoRepeatSizeVar:v=>v+'%',
   textSize:v=>v+' mm', fudaWidthPct:v=>v+'%', fudaHeightPct:v=>v+'%', fudaDepth3d:v=>v+' mm', fudaOpacity:v=>v+'%',
+  fudaSubOffX:v=>(v>0?'+':'')+v+'%', fudaSubOffY:v=>(v>0?'+':'')+v+'%', fudaSubAngle:v=>(v>0?'+':'')+v+'°',
   textSpacing:v=>(v>0?'+':'')+v+'%', textOutlineW:v=>v+'', textAngle:v=>(v>0?'+':'')+v+'°', textX:v=>v+'%', textY:v=>v+'%',
   textRepeatGapX:v=>v+' mm', textRepeatGapY:v=>v+' mm', textRepeatGridAngle:v=>(v>0?'+':'')+v+'°', textRepeatAngleVar:v=>v+'°', textRepeatSizeVar:v=>v+'%',
   daboShiftY:v=>(v>0?'+':'')+v+'%', daboShiftX:v=>(v>0?'+':'')+v+'%', daboSleeveShiftY:v=>(v>0?'+':'')+v+'%', daboPatScale:v=>v+'%',
@@ -6171,6 +6220,9 @@ function syncUI(){
   for(const b of document.querySelectorAll('#fudaCharLimitChips button[data-climit]')){
     b.setAttribute('aria-pressed', (parseInt(b.dataset.climit,10) === (S.fudaCharLimit || 0)) + '');
   }
+  for(const b of document.querySelectorAll('#fudaShapeChips button[data-fshape]')){
+    b.setAttribute('aria-pressed', (b.dataset.fshape === (S.fudaShape || 'auto')) + '');
+  }
   if($('textRepeatMode')) $('textRepeatMode').value=S.textRepeatMode||'none';
   if($('textRepeatParamsBox')) $('textRepeatParamsBox').hidden=(!S.textRepeatMode || S.textRepeatMode==='none');
 
@@ -6227,7 +6279,7 @@ const NO_LAYOUT_KEYS = new Set([
   'logoThreshold','logoSoftness','logoDilate','logoContrast','logoOpacity','logoOutlineMm',
   'logoSize','logoAngle','logoX','logoY',
   'logoRepeatGapX','logoRepeatGapY','logoRepeatGridAngle','logoRepeatAngleVar','logoRepeatSizeVar',
-  'textSize','fudaWidthPct','fudaHeightPct','fudaDepth3d','fudaOpacity','textSpacing','textOutlineW','textAngle','textX','textY',
+  'textSize','fudaWidthPct','fudaHeightPct','fudaDepth3d','fudaOpacity','fudaSubOffX','fudaSubOffY','fudaSubAngle','textSpacing','textOutlineW','textAngle','textX','textY',
   'textRepeatGapX','textRepeatGapY','textRepeatGridAngle','textRepeatAngleVar','textRepeatSizeVar',
   'daboShiftY','daboShiftX','daboSleeveShiftY','daboPatScale'
 ]);
@@ -6607,6 +6659,20 @@ document.querySelectorAll('#fudaCharLimitChips button[data-climit]').forEach(b=>
   S.showText = true;
   update(false);
 }));
+document.querySelectorAll('#fudaShapeChips button[data-fshape]').forEach(b=>b.addEventListener('click',()=>{
+  S.fudaShape = b.dataset.fshape || 'auto';
+  S.showText = true;
+  update(false);
+}));
+document.querySelectorAll('#fudaSubPosPresetChips button[data-subpos]').forEach(b=>b.addEventListener('click',()=>{
+  const m = b.dataset.subpos;
+  S.customTextFrame = 'twin_kifuda';
+  S.showText = true;
+  if(m === 'fan_right'){ S.fudaSubOffX = 56; S.fudaSubOffY = 6; S.fudaSubAngle = 18; }
+  else if(m === 'parallel'){ S.fudaSubOffX = 78; S.fudaSubOffY = -6; S.fudaSubAngle = 0; }
+  else if(m === 'fan_left'){ S.fudaSubOffX = -56; S.fudaSubOffY = 8; S.fudaSubAngle = -18; }
+  update(false);
+}));
 if($('fudaCordStyle')){
   $('fudaCordStyle').addEventListener('change',e=>{
     S.fudaCordStyle = e.target.value;
@@ -6764,6 +6830,9 @@ box.addEventListener('mousedown', e=>{
               startWidthPct: S.fudaWidthPct || 100,
               startHeightPct: S.fudaHeightPct || 100,
               startAngle: S.textAngle || 0,
+              startSubOffX: S.fudaSubOffX ?? 56,
+              startSubOffY: S.fudaSubOffY ?? 6,
+              startSubAngle: S.fudaSubAngle ?? 18,
               startKnotX: S.fudaCordKnotX || 0,
               startKnotY: S.fudaCordKnotY || 0,
               startTailX: S.fudaCordTailX || 0,
@@ -6850,7 +6919,21 @@ window.addEventListener('mousemove', e=>{
         const ldx = dx * cos + dy * sin;
         const ldy = -dx * sin + dy * cos;
 
-        if(dragTarget.gizmoId === 'knot'){
+        if(dragTarget.gizmoId === 'subMove'){
+          const rad0 = ((dragTarget.gh.baseDeg || 0) * Math.PI) / 180;
+          const cos0 = Math.cos(rad0), sin0 = Math.sin(rad0);
+          const bdx = dx * cos0 + dy * sin0;
+          const bdy = -dx * sin0 + dy * cos0;
+          const fsUnit = Math.max(8, (dragTarget.gh.baseFs || 44) * 1.35);
+          S.fudaSubOffX = Math.max(-150, Math.min(150, Math.round(dragTarget.startSubOffX + (bdx / fsUnit) * 100)));
+          S.fudaSubOffY = Math.max(-120, Math.min(120, Math.round(dragTarget.startSubOffY + (bdy / fsUnit) * 100)));
+        }else if(dragTarget.gizmoId === 'subRot'){
+          const scx = dragTarget.gh.subCx ?? dragTarget.gh.cx;
+          const scy = dragTarget.gh.subCy ?? dragTarget.gh.cy;
+          const a0 = Math.atan2(dragTarget.startMy - scy, dragTarget.startMx - scx);
+          const a1 = Math.atan2(my - scy, mx - scx);
+          S.fudaSubAngle = Math.max(-75, Math.min(75, Math.round(dragTarget.startSubAngle + ((a1 - a0) * 180) / Math.PI)));
+        }else if(dragTarget.gizmoId === 'knot'){
           S.fudaCordKnotX = Math.max(-120, Math.min(120, Math.round((dragTarget.startKnotX + ldx) * 10) / 10));
           S.fudaCordKnotY = Math.max(-120, Math.min(120, Math.round((dragTarget.startKnotY + ldy) * 10) / 10));
         }else if(dragTarget.gizmoId === 'tail'){
