@@ -355,25 +355,26 @@
   <div class="wrap">
     <div class="header">
       <div>
-        <h1>🏮 祭り木札・喧嘩札・千社札ロゴ 10種スタジオ（二枚重ね札・立体木札・組紐変更・文字数＆サイズ変更）</h1>
-        <p>ご提示いただいた「立体斜め木札＋江戸打組紐」「二枚重ね夫婦木札（濱松・遠州風）」を追加！紐の形・札のサイズ・文字数すべて変更でき、そのままIllustrator(.ai/.svg)で処理できます。</p>
+        <h1>🏮 祭り木札・喧嘩札・千社札ロゴ 10種スタジオ（マウスで紐＆札サイズ直接調整・自由色変更・背景透過・Illustrator出力）</h1>
+        <p>プレビュー画面上で<b>「🪢 紐（上結び・脇組紐・房）」や「📐 札のサイズ・横幅・縦長・角度・位置」をマウスドラッグで自由自在に調整</b>できます！札や紐の<b>色変更・中抜き透過・半透明</b>にも完全対応。</p>
       </div>
       <div class="theme-bar">
-        <span style="font-size:11.5px;color:#94a3b8;font-weight:700">配色:</span>
-        <button type="button" class="theme-btn active" data-theme="asagi-fill" style="background:#046e7e;color:#fff">浅葱＋白抜</button>
-        <button type="button" class="theme-btn" data-theme="navy-fill" style="background:#0f1f3d;color:#fff">濃紺＋白抜(見本風)</button>
+        <span style="font-size:11.5px;color:#94a3b8;font-weight:700">配色プリセット:</span>
+        <button type="button" class="theme-btn" data-theme="asagi-fill" style="background:#046e7e;color:#fff">浅葱＋白抜</button>
+        <button type="button" class="theme-btn active" data-theme="navy-fill" style="background:#0f1f3d;color:#fff">濃紺＋白抜(見本風)</button>
         <button type="button" class="theme-btn" data-theme="sumi-fill" style="background:#1c1917;color:#f5f5f4">黒檀・墨＋白抜</button>
         <button type="button" class="theme-btn" data-theme="asagi-white" style="background:#ffffff;color:#046e7e">白札＋浅葱字</button>
         <button type="button" class="theme-btn" data-theme="black-red" style="background:#18181b;color:#f8fafc;border-color:#c93a40">黒札＋朱印</button>
         <button type="button" class="theme-btn" data-theme="hinoki" style="background:#dfc18b;color:#291707">檜(ヒノキ)木札</button>
+        <button type="button" class="theme-btn" data-theme="hollow-white" style="background:transparent;color:#ffffff;border:2px dashed #38bdf8">✨背景透過(白線のみ)</button>
       </div>
     </div>
 
     <!-- ✨ Illustrator ダイレクト処理・ベクター書き出しバー -->
     <div class="ai-export-bar">
       <div class="ai-export-info">
-        <b>✒️ プレビューのデータをそのまま Adobe Illustrator で編集・処理する（立体側面・組紐・文字すべて完全ベクターパス出力）</b>
-        <span>※木札の3D厚み側面・ねじり組紐の1粒ずつの編み目・江戸勘亭流/毛筆文字すべてを「アウトライン化済みベクターパス」として出力します</span>
+        <b>✒️ プレビューのデータをそのまま Adobe Illustrator で編集・処理する（マウスで動かした紐・サイズ・色・透過も完全反映）</b>
+        <span>※木札の3D厚み側面・マウスで形を変えた組紐・アウトライン文字・中抜き透過すべてを「ベクターパス」として出力します</span>
         <div id="exportStatusMsg" class="status-toast"></div>
       </div>
       <div class="ai-btn-group">
@@ -386,8 +387,8 @@
       </div>
     </div>
 
-    <!-- 🎛️ 操作パネル（4カラム：文字＆文字数 / 2枚目＆サブ文字 / 紐の形＆書体 / 札のサイズ・幅・縦横比・厚み） -->
-    <div class="controls">
+    <!-- 🎛️ 操作パネル（5カラム：文字＆文字数 / 2枚目＆サブ文字 / 紐の形＆マウス移動リセット / 色変更＆透過設定 / 札サイズ・幅・厚み） -->
+    <div class="controls" style="grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));">
       <!-- ① 表札文字 ＆ 文字数制限 -->
       <div class="ctrl-box">
         <div class="ctrl-label">
@@ -403,7 +404,7 @@
         </div>
         <input type="text" id="mainTextInput" value="仲羽田" maxlength="10" placeholder="入れる文字を入力（例：仲羽田 / 同志會 / 濱松）">
         <div class="ctrl-label" style="margin-top:2px">
-          <span>🔢 表示する文字数を選ぶ（文字数に合わせて文字サイズ自動最適化）</span>
+          <span>🔢 表示する文字数を選ぶ（自動サイズ最適化）</span>
         </div>
         <div class="chips" id="charCountChips">
           <button type="button" class="mini-chip active" data-cnt="0">自動(全文)</button>
@@ -419,7 +420,7 @@
       <!-- ② 二枚重ね札の2枚目文字 ／ 頭文字・差し札 -->
       <div class="ctrl-box">
         <div class="ctrl-label">
-          <span>② 2枚目の札の文字（⑩二枚重ね札）＆ 頭文字・差し札</span>
+          <span>② 2枚目の札の文字（⑩二枚重ね札）＆ 差し札</span>
           <div class="chips">
             <button type="button" class="mini-chip quick-sub" data-val="遠州">遠州(見本)</button>
             <button type="button" class="mini-chip quick-sub" data-val="羽田">羽田</button>
@@ -428,7 +429,7 @@
             <button type="button" class="mini-chip quick-sub" data-val="御祭禮">御祭禮</button>
           </div>
         </div>
-        <input type="text" id="subTextInput" value="遠州" maxlength="8" placeholder="2枚目の札の文字 / 頭文字 / 差し札（例：遠州・羽田・青年会）">
+        <input type="text" id="subTextInput" value="遠州" maxlength="8" placeholder="2枚目の札の文字 / 頭文字 / 差し札">
         <div class="ctrl-label" style="margin-top:2px">
           <span>🔢 2枚目の札の文字数（⑩二枚重ね札用）</span>
         </div>
@@ -444,13 +445,14 @@
       <!-- ③ 紐（ひも）の形を選ぶ ＆ 書体選択 -->
       <div class="ctrl-box">
         <div class="ctrl-label">
-          <span>③ 🪢 紐（ひも・根付・組紐）の形を選ぶ</span>
+          <span>③ 🪢 紐の形（プレビュー上でマウス移動可能！）</span>
+          <button type="button" class="mini-chip" id="resetCordPosBtn" title="マウスで動かした紐の位置を初期位置に戻します">紐の位置リセット</button>
         </div>
         <select id="cordStyleSelect">
-          <option value="side_loop" selected>① 脇添えねじり組紐＋房（写真2「同志會」風・木札の脇を巡る組紐）</option>
-          <option value="top_knot">② 上結び輪っか紐＋垂れ紐（写真1「濱松・遠州」風・穴通し輪結び）</option>
-          <option value="double_bow">③ 祭り叶結び（かのうむすび・左右対称の縁起飾り結び）</option>
-          <option value="tassel">④ 房付き根付紐（上輪っか＋下部の飾り房タッセル）</option>
+          <option value="side_loop" selected>① 脇添えねじり組紐＋房（写真2「同志會」風）</option>
+          <option value="top_knot">② 上結び輪っか紐＋垂れ紐（写真1「濱松・遠州」風）</option>
+          <option value="double_bow">③ 祭り叶結び（左右対称の縁起飾り結び）</option>
+          <option value="tassel">④ 房付き根付紐（上輪っか＋下部の飾り房）</option>
           <option value="neck_cord">⑤ 首掛け長紐（V字の首下げ祭り紐）</option>
           <option value="none">⑥ 紐なし（木札・千社札の枠のみ）</option>
         </select>
@@ -462,36 +464,80 @@
           </label>
         </div>
         <select id="fontSelect">
-          <option value="reggae" selected>【江戸勘亭流・祭り太筆風】Reggae One（見本に近い力強い祭り文字）</option>
-          <option value="yuji">【本格毛筆・楷書】佑字 粛（堂々とした毛筆書体）</option>
-          <option value="dela">【極太千社札・番付風】Dela Gothic（隙間なく埋まる極太字）</option>
-          <option value="kakuji">【江戸角字（カクジ）】直線格子・角字彫り（仲・羽・田・祭 等）</option>
-          <option value="shippori">【伝統明朝・古典】しっぽり明朝（格調高い老舗風）</option>
-          <option value="antique">【レトロ活版・大正風】Zen アンチック（粋な太明朝）</option>
-          <option value="klee">【手書き行書風】Klee One（やわらかい筆文字）</option>
-          <option value="maru">【江戸丸ゴシック】Zen 丸ゴシック（親しみやすい太丸字）</option>
+          <option value="reggae" selected>【江戸勘亭流・祭り太筆風】Reggae One</option>
+          <option value="yuji">【本格毛筆・楷書】佑字 粛</option>
+          <option value="dela">【極太千社札・番付風】Dela Gothic</option>
+          <option value="kakuji">【江戸角字（カクジ）】直線格子・角字彫り</option>
+          <option value="shippori">【伝統明朝・古典】しっぽり明朝</option>
+          <option value="antique">【レトロ活版・大正風】Zen アンチック</option>
+          <option value="klee">【手書き行書風】Klee One</option>
+          <option value="maru">【江戸丸ゴシック】Zen 丸ゴシック</option>
         </select>
       </div>
 
-      <!-- ④ 札のサイズ・横幅比率・立体厚み・傾き角度 -->
+      <!-- ④ 🎨 色の変更・背景透過（中抜き）・不透明度 -->
+      <div class="ctrl-box" style="border-color:#a855f7;">
+        <div class="ctrl-label" style="color:#e9d5ff;">
+          <span>④ 🎨 色変更 ＆ 透過（中抜き・半透明）</span>
+          <button type="button" class="mini-chip" id="swapColorsBtn" title="札の地色と文字・枠色を入れ替えます">色反転⇄</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11.5px;align-items:center">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+            <input type="color" id="fgColorPicker" value="#ffffff" style="width:26px;height:24px;border:none;background:none;cursor:pointer">
+            <span>文字・枠の色</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+            <input type="color" id="bgColorPicker" value="#0f1f3d" style="width:26px;height:24px;border:none;background:none;cursor:pointer">
+            <span>札本体の地色</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+            <input type="color" id="cordFillPicker" value="#0f1f3d" style="width:26px;height:24px;border:none;background:none;cursor:pointer">
+            <span>紐(ひも)の塗り色</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+            <input type="color" id="cordStrokePicker" value="#ffffff" style="width:26px;height:24px;border:none;background:none;cursor:pointer">
+            <span>紐のフチ線色</span>
+          </label>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;padding:4px 6px;background:#1e293b;border-radius:6px;font-size:11.5px">
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#7dd3fc;font-weight:800" title="ONにすると札の塗りつぶしを無くし、背後の手ぬぐい柄が透けて見えるようになります">
+            <input type="checkbox" id="bgTransparentToggle"> ✨札の背景を透過(中抜き)
+          </label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#fcd34d;font-weight:800" title="ONにすると紐の内部塗りを透過し、線のみで表現します">
+            <input type="checkbox" id="cordTransparentToggle"> ✨紐の中を透過
+          </label>
+        </div>
+        <div class="slider-row">
+          <label for="fudaOpacityRange">札の不透明度</label>
+          <input type="range" id="fudaOpacityRange" min="15" max="100" step="5" value="100">
+          <output id="fudaOpacityOut">100%</output>
+        </div>
+        <div class="slider-row">
+          <label for="cordOpacityRange">紐の不透明度</label>
+          <input type="range" id="cordOpacityRange" min="15" max="100" step="5" value="100">
+          <output id="cordOpacityOut">100%</output>
+        </div>
+      </div>
+
+      <!-- ⑤ 📐 札のサイズ・横幅比率・立体厚み・傾き角度（マウスでも調整可能） -->
       <div class="ctrl-box">
         <div class="ctrl-label">
-          <span>④ 📐 札のサイズ・太さ比率・立体3D厚みを自由変更</span>
+          <span>⑤ 📐 札のサイズ・太さ・厚み（マウス操作連動）</span>
           <button type="button" class="mini-chip" id="resetSizeBtn">標準に戻す</button>
         </div>
         <div class="slider-row">
           <label for="fudaScaleRange">全体の大きさ</label>
-          <input type="range" id="fudaScaleRange" min="50" max="160" step="2" value="100">
+          <input type="range" id="fudaScaleRange" min="45" max="175" step="1" value="100">
           <output id="fudaScaleOut">100%</output>
         </div>
         <div class="slider-row">
           <label for="fudaWidthRange">札の横幅(細⇄太)</label>
-          <input type="range" id="fudaWidthRange" min="65" max="155" step="2" value="100">
+          <input type="range" id="fudaWidthRange" min="60" max="165" step="1" value="100">
           <output id="fudaWidthOut">100%</output>
         </div>
         <div class="slider-row">
           <label for="fudaHeightRange">札の縦長(短⇄長)</label>
-          <input type="range" id="fudaHeightRange" min="65" max="145" step="2" value="100">
+          <input type="range" id="fudaHeightRange" min="60" max="160" step="1" value="100">
           <output id="fudaHeightOut">100%</output>
         </div>
         <div class="slider-row">
@@ -499,18 +545,34 @@
           <input type="range" id="fudaDepthRange" min="0" max="22" step="1" value="10">
           <output id="fudaDepthOut">10mm</output>
         </div>
+        <div class="slider-row">
+          <label for="fudaAngleRange">札の傾き角度</label>
+          <input type="range" id="fudaAngleRange" min="-180" max="180" step="1" value="0">
+          <output id="fudaAngleOut">0°</output>
+        </div>
       </div>
     </div>
 
     <div class="main-grid">
-      <!-- 左側：選択中の札 拡大＆手ぬぐい配置プレビュー -->
+      <!-- 左側：選択中の札 拡大＆マウス直接操作プレビュー -->
       <div class="preview-panel">
-        <div class="preview-top">
+        <div class="preview-top" style="flex-wrap:wrap">
           <div class="preview-title" id="selectedFudaTitle">⑨ 立体喧嘩札（3D木札＋ねじり組紐）</div>
-          <button type="button" class="toggle-btn" id="previewBgToggle">背景：手ぬぐい柄 ON/OFF</button>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <label style="font-size:11.5px;color:#fde047;font-weight:800;display:flex;align-items:center;gap:4px;cursor:pointer">
+              <input type="checkbox" id="showGizmoToggle" checked> 🖱️操作ハンドル表示
+            </label>
+            <button type="button" class="toggle-btn" id="previewBgToggle">背景：手ぬぐい柄 ON/OFF</button>
+          </div>
         </div>
-        <div class="canvas-holder">
-          <canvas id="mainPreviewCanvas" width="400" height="400"></canvas>
+        <div style="font-size:11px;color:#38bdf8;background:#091526;border:1px solid #1e3a8a;border-radius:6px;padding:5px 8px;line-height:1.4">
+          🖱️ <b>キャンバス上で直接マウス操作：</b>
+          <span style="color:#fdba74">●オレンジ丸(🪢上紐・脇紐)</span>をドラッグで<b>紐を自由移動</b> ／
+          <span style="color:#7dd3fc">■水色角(↘・↔・↕)</span>で<b>札のサイズ・幅・長さを変更</b> ／
+          <span style="color:#d8b4fe">●紫丸(↻)</span>で<b>回転</b> ／ 札の中央ドラッグで<b>位置移動</b>
+        </div>
+        <div class="canvas-holder" style="position:relative">
+          <canvas id="mainPreviewCanvas" width="400" height="400" style="cursor:grab;max-width:100%"></canvas>
         </div>
         <div class="desc-text" id="selectedFudaDesc">
           ご提示の写真2（「同志會」木札）を再現した、厚みのある立体木札にねじり組紐（江戸打紐）を添えた粋なスタイルです。
@@ -543,12 +605,13 @@
     ];
 
     const THEMES = {
-      'asagi-fill':  { bg: '#046e7e', fg: '#ffffff', frameOuter: '#ffffff', frameInner: '#ffffff', accent: '#c93a40', wood: false },
-      'navy-fill':   { bg: '#0f1f3d', fg: '#ffffff', frameOuter: '#ffffff', frameInner: '#ffffff', accent: '#c93a40', wood: false },
-      'sumi-fill':   { bg: '#1c1917', fg: '#f5f5f4', frameOuter: '#f5f5f4', frameInner: '#f5f5f4', accent: '#c93a40', wood: false },
-      'asagi-white': { bg: '#ffffff', fg: '#046e7e', frameOuter: '#046e7e', frameInner: '#046e7e', accent: '#c93a40', wood: false },
-      'black-red':   { bg: '#18181b', fg: '#ffffff', frameOuter: '#c93a40', frameInner: '#ffffff', accent: '#c93a40', wood: false },
-      'hinoki':      { bg: '#dfc18b', fg: '#291707', frameOuter: '#3d220a', frameInner: '#5c3411', accent: '#b91c1c', wood: true }
+      'asagi-fill':   { bg: '#046e7e', fg: '#ffffff', frameOuter: '#ffffff', frameInner: '#ffffff', accent: '#c93a40', wood: false, hollow: false },
+      'navy-fill':    { bg: '#0f1f3d', fg: '#ffffff', frameOuter: '#ffffff', frameInner: '#ffffff', accent: '#c93a40', wood: false, hollow: false },
+      'sumi-fill':    { bg: '#1c1917', fg: '#f5f5f4', frameOuter: '#f5f5f4', frameInner: '#f5f5f4', accent: '#c93a40', wood: false, hollow: false },
+      'asagi-white':  { bg: '#ffffff', fg: '#046e7e', frameOuter: '#046e7e', frameInner: '#046e7e', accent: '#c93a40', wood: false, hollow: false },
+      'black-red':    { bg: '#18181b', fg: '#ffffff', frameOuter: '#c93a40', frameInner: '#ffffff', accent: '#c93a40', wood: false, hollow: false },
+      'hinoki':       { bg: '#dfc18b', fg: '#291707', frameOuter: '#3d220a', frameInner: '#5c3411', accent: '#b91c1c', wood: true,  hollow: false },
+      'hollow-white': { bg: '#0f1f3d', fg: '#ffffff', frameOuter: '#ffffff', frameInner: '#ffffff', accent: '#c93a40', wood: false, hollow: true }
     };
 
     const state = {
@@ -562,10 +625,26 @@
       widthPct: 100,
       heightPct: 100,
       depth3d: 10,
+      fudaAngle: 0,      // 札の傾き角度（マウス回転ハンドル＆スライダー連動）
+      mainCx: 148,       // 左プレビュー上のメイン札中心X（マウスドラッグ移動可能）
+      mainCy: 204,       // 左プレビュー上のメイン札中心Y（マウスドラッグ移動可能）
+      cordKnotOffX: 0,   // 紐の上部結び目・輪っかのマウス移動オフセットX
+      cordKnotOffY: 0,   // 紐の上部結び目・輪っかのマウス移動オフセットY
+      cordTailOffX: 0,   // 紐の脇・房タッセルのマウス移動オフセットX
+      cordTailOffY: 0,   // 紐の脇・房タッセルのマウス移動オフセットY
       fontKey: 'reggae',
       themeKey: 'navy-fill',
+      fgColor: '#ffffff',
+      bgColor: '#0f1f3d',
+      cordFillColor: '#0f1f3d',
+      cordStrokeColor: '#ffffff',
+      bgTransparent: false,   // 札本体の背景を透過（中抜き）
+      cordTransparent: false, // 紐の塗りを透過（線のみ）
+      fudaOpacity: 100,       // 札全体の不透明度 (%)
+      cordOpacity: 100,       // 紐の不透明度 (%)
       outline: false,
-      showTenuguiBg: true
+      showTenuguiBg: true,
+      showGizmo: true         // マウス操作ハンドル表示
     };
 
     function showToast(msg) {
@@ -650,9 +729,8 @@
        ★ 江戸打組紐（ねじり紐・輪結び・叶結び・房タッセル）のベクター生成ヘルパー
        ============================================================================ */
     // 点列 pathPts に沿って、ねじり組紐（楕円ビーズの連なり）を frameItems に追加する
-    function addTwistedRopeBeads(frameItems, tr, pathPts, beadRadius, fillCol, strokeCol, strokeW) {
+    function addTwistedRopeBeads(frameItems, tr, pathPts, beadRadius, fillCol, strokeCol, strokeW, opacityVal = 1) {
       if (pathPts.length < 2) return;
-      // 累積長を計算し、一定ピッチでビーズを配置
       const dists = [0];
       for (let i = 1; i < pathPts.length; i++) {
         const dx = pathPts[i][0] - pathPts[i - 1][0];
@@ -672,7 +750,7 @@
         const t = (targetD - dists[idx]) / segLen;
         const bx = pathPts[idx][0] + (pathPts[idx + 1][0] - pathPts[idx][0]) * t;
         const by = pathPts[idx][1] + (pathPts[idx + 1][1] - pathPts[idx][1]) * t;
-        const tanAngle = Math.atan2(pathPts[idx + 1][1] - pathPts[idx][1], pathPts[idx + 1][0] - pathPts[idx][0]) + 0.52; // 30度傾けてねじり感を出す
+        const tanAngle = Math.atan2(pathPts[idx + 1][1] - pathPts[idx][1], pathPts[idx + 1][0] - pathPts[idx][0]) + 0.52;
         const rx = beadRadius * 1.15;
         const ry = beadRadius * 0.72;
         const c = Math.cos(tanAngle), s = Math.sin(tanAngle);
@@ -688,16 +766,25 @@
           fill: fillCol,
           stroke: strokeCol,
           strokeWidth: strokeW,
+          opacity: opacityVal,
+          isCord: true,
           pts
         });
       }
     }
 
-    // 紐のスタイルに応じたベクタープリミティブを生成（札の背後レイヤー backCordItems と 手前レイヤー frontCordItems に分ける）
-    function buildCordVectorItems(cordStyle, tr, hw, hh, holeX, holeY, beadR, fillCol, strokeCol, strokeW) {
+    // 紐のスタイルに応じたベクタープリミティブを生成（マウス移動オフセット knotOffX/Y, tailOffX/Y 対応）
+    function buildCordVectorItems(cordStyle, tr, hw, hh, holeX, holeY, beadR, fillCol, strokeCol, strokeW, stateObj) {
       const backCordItems = [];
       const frontCordItems = [];
-      if (!cordStyle || cordStyle === 'none') return { backCordItems, frontCordItems };
+      if (!cordStyle || cordStyle === 'none') return { backCordItems, frontCordItems, knotHandlePt: null, tailHandlePt: null };
+
+      const kx = (stateObj && stateObj.cordKnotOffX) || 0;
+      const ky = (stateObj && stateObj.cordKnotOffY) || 0;
+      const tx = (stateObj && stateObj.cordTailOffX) || 0;
+      const ty = (stateObj && stateObj.cordTailOffY) || 0;
+      const effFill = (stateObj && stateObj.cordTransparent) ? null : fillCol;
+      const cordOp = ((stateObj && stateObj.cordOpacity) ?? 100) / 100;
 
       const sampleBezier = (p0, p1, p2, p3, n = 18) => {
         const pts = [];
@@ -711,108 +798,116 @@
         return pts;
       };
 
+      let localKnotAnchor = [holeX + kx, -hh * 1.15 + ky];
+      let localTailAnchor = [hw * 0.95 + tx, hh * 0.65 + ty];
+
       if (cordStyle === 'side_loop') {
-        // 写真2「同志會」風：穴から右上へ結び輪が出て、左脇から右下へねじり組紐が巡り、下に2本の房が出る
-        // 左脇〜右下へ背後に回る組紐
         const leftArc = sampleBezier(
-          [-hw * 0.65, -hh * 0.55],
-          [-hw * 1.48, -hh * 0.15],
-          [-hw * 1.35, hh * 0.35],
-          [hw * 0.55, hh * 0.45],
+          [-hw * 0.65 + kx * 0.3, -hh * 0.55 + ky * 0.3],
+          [-hw * 1.48 + tx * 0.65, -hh * 0.15 + ty * 0.45],
+          [-hw * 1.35 + tx * 0.85, hh * 0.35 + ty * 0.75],
+          [hw * 0.55 + tx, hh * 0.45 + ty],
           22
         );
-        addTwistedRopeBeads(backCordItems, tr, leftArc, beadR, fillCol, strokeCol, strokeW);
+        addTwistedRopeBeads(backCordItems, tr, leftArc, beadR, effFill, strokeCol, strokeW, cordOp);
 
-        // 右下の2本の垂れ紐（房）
         const tail1 = sampleBezier(
-          [hw * 0.35, hh * 0.35],
-          [hw * 1.25, hh * 0.58],
-          [hw * 1.10, hh * 0.82],
-          [hw * 0.62, hh * 0.98],
+          [hw * 0.35 + tx * 0.8, hh * 0.35 + ty * 0.8],
+          [hw * 1.25 + tx, hh * 0.58 + ty],
+          [hw * 1.10 + tx * 1.05, hh * 0.82 + ty * 1.05],
+          [hw * 0.62 + tx * 1.1, hh * 0.98 + ty * 1.1],
           14
         );
         const tail2 = sampleBezier(
-          [hw * 0.52, hh * 0.25],
-          [hw * 1.42, hh * 0.48],
-          [hw * 1.38, hh * 0.78],
-          [hw * 1.08, hh * 0.96],
+          [hw * 0.52 + tx * 0.8, hh * 0.25 + ty * 0.8],
+          [hw * 1.42 + tx, hh * 0.48 + ty],
+          [hw * 1.38 + tx * 1.05, hh * 0.78 + ty * 1.05],
+          [hw * 1.08 + tx * 1.1, hh * 0.96 + ty * 1.1],
           14
         );
-        addTwistedRopeBeads(backCordItems, tr, tail1, beadR * 0.92, fillCol, strokeCol, strokeW);
-        addTwistedRopeBeads(backCordItems, tr, tail2, beadR * 0.92, fillCol, strokeCol, strokeW);
+        addTwistedRopeBeads(backCordItems, tr, tail1, beadR * 0.92, effFill, strokeCol, strokeW, cordOp);
+        addTwistedRopeBeads(backCordItems, tr, tail2, beadR * 0.92, effFill, strokeCol, strokeW, cordOp);
 
-        // 上部の穴から出る結び目（手前）
         const topKnot = sampleBezier(
           [holeX, holeY],
-          [holeX + hw * 0.22, -hh * 1.12],
-          [hw * 0.95, -hh * 1.05],
-          [hw * 0.72, -hh * 0.72],
+          [holeX + hw * 0.22 + kx, -hh * 1.12 + ky],
+          [hw * 0.95 + kx, -hh * 1.05 + ky],
+          [hw * 0.72 + kx * 0.6, -hh * 0.72 + ky * 0.6],
           14
         );
-        addTwistedRopeBeads(frontCordItems, tr, topKnot, beadR * 0.95, fillCol, strokeCol, strokeW);
+        addTwistedRopeBeads(frontCordItems, tr, topKnot, beadR * 0.95, effFill, strokeCol, strokeW, cordOp);
+        localKnotAnchor = [hw * 0.58 + kx, -hh * 0.98 + ky];
+        localTailAnchor = [hw * 1.15 + tx, hh * 0.68 + ty];
 
       } else if (cordStyle === 'top_knot') {
-        // 写真1「濱松・遠州」風：上部の穴を通る縦輪っかと、左右の垂れ紐
         const loopPts = sampleBezier(
           [holeX - beadR * 0.5, holeY],
-          [holeX - hw * 0.52, -hh * 1.28],
-          [holeX + hw * 0.52, -hh * 1.28],
+          [holeX - hw * 0.52 + kx, -hh * 1.28 + ky],
+          [holeX + hw * 0.52 + kx, -hh * 1.28 + ky],
           [holeX + beadR * 0.5, holeY],
           18
         );
-        addTwistedRopeBeads(frontCordItems, tr, loopPts, beadR * 0.9, fillCol, strokeCol, strokeW);
+        addTwistedRopeBeads(frontCordItems, tr, loopPts, beadR * 0.9, effFill, strokeCol, strokeW, cordOp);
 
-        // 左脇に垂れる2本の紐
         const side1 = sampleBezier(
           [-hw * 0.85, -hh * 0.22],
-          [-hw * 1.32, hh * 0.02],
-          [-hw * 1.22, hh * 0.28],
-          [-hw * 1.10, hh * 0.48],
+          [-hw * 1.32 + tx, hh * 0.02 + ty * 0.6],
+          [-hw * 1.22 + tx, hh * 0.28 + ty * 0.85],
+          [-hw * 1.10 + tx, hh * 0.48 + ty],
           10
         );
         const side2 = sampleBezier(
           [-hw * 0.85, -hh * 0.05],
-          [-hw * 1.18, hh * 0.15],
-          [-hw * 1.12, hh * 0.35],
-          [-hw * 0.95, hh * 0.55],
+          [-hw * 1.18 + tx, hh * 0.15 + ty * 0.6],
+          [-hw * 1.12 + tx, hh * 0.35 + ty * 0.85],
+          [-hw * 0.95 + tx, hh * 0.55 + ty],
           10
         );
-        addTwistedRopeBeads(backCordItems, tr, side1, beadR * 0.82, fillCol, strokeCol, strokeW);
-        addTwistedRopeBeads(backCordItems, tr, side2, beadR * 0.82, fillCol, strokeCol, strokeW);
+        addTwistedRopeBeads(backCordItems, tr, side1, beadR * 0.82, effFill, strokeCol, strokeW, cordOp);
+        addTwistedRopeBeads(backCordItems, tr, side2, beadR * 0.82, effFill, strokeCol, strokeW, cordOp);
+        localKnotAnchor = [holeX + kx, -hh * 1.18 + ky];
+        localTailAnchor = [-hw * 1.15 + tx, hh * 0.38 + ty];
 
       } else if (cordStyle === 'double_bow') {
-        // 叶結び（左右に輪が広がる縁起結び）
-        const leftEar = sampleBezier([holeX, holeY - hh * 0.12], [-hw * 0.95, -hh * 1.18], [-hw * 1.05, -hh * 0.65], [holeX, holeY - hh * 0.08], 16);
-        const rightEar = sampleBezier([holeX, holeY - hh * 0.12], [hw * 0.95, -hh * 1.18], [hw * 1.05, -hh * 0.65], [holeX, holeY - hh * 0.08], 16);
-        const topRing = sampleBezier([holeX - hw * 0.22, holeY - hh * 0.12], [holeX - hw * 0.32, -hh * 1.35], [holeX + hw * 0.32, -hh * 1.35], [holeX + hw * 0.22, holeY - hh * 0.12], 14);
-        addTwistedRopeBeads(frontCordItems, tr, leftEar, beadR * 0.88, fillCol, strokeCol, strokeW);
-        addTwistedRopeBeads(frontCordItems, tr, rightEar, beadR * 0.88, fillCol, strokeCol, strokeW);
-        addTwistedRopeBeads(frontCordItems, tr, topRing, beadR * 0.88, fillCol, strokeCol, strokeW);
+        const leftEar = sampleBezier([holeX, holeY - hh * 0.12], [-hw * 0.95 - tx * 0.6, -hh * 1.18 + ty * 0.6], [-hw * 1.05 - tx, -hh * 0.65 + ty], [holeX, holeY - hh * 0.08], 16);
+        const rightEar = sampleBezier([holeX, holeY - hh * 0.12], [hw * 0.95 + tx * 0.6, -hh * 1.18 + ty * 0.6], [hw * 1.05 + tx, -hh * 0.65 + ty], [holeX, holeY - hh * 0.08], 16);
+        const topRing = sampleBezier([holeX - hw * 0.22, holeY - hh * 0.12], [holeX - hw * 0.32 + kx, -hh * 1.35 + ky], [holeX + hw * 0.32 + kx, -hh * 1.35 + ky], [holeX + hw * 0.22, holeY - hh * 0.12], 14);
+        addTwistedRopeBeads(frontCordItems, tr, leftEar, beadR * 0.88, effFill, strokeCol, strokeW, cordOp);
+        addTwistedRopeBeads(frontCordItems, tr, rightEar, beadR * 0.88, effFill, strokeCol, strokeW, cordOp);
+        addTwistedRopeBeads(frontCordItems, tr, topRing, beadR * 0.88, effFill, strokeCol, strokeW, cordOp);
+        localKnotAnchor = [holeX + kx, -hh * 1.24 + ky];
+        localTailAnchor = [hw * 0.95 + tx, -hh * 0.82 + ty];
 
       } else if (cordStyle === 'tassel') {
-        // 上輪っか＋下部タッセル房
-        const topLoop = sampleBezier([holeX, holeY], [-hw * 0.45, -hh * 1.25], [hw * 0.45, -hh * 1.25], [holeX, holeY], 16);
-        addTwistedRopeBeads(frontCordItems, tr, topLoop, beadR * 0.9, fillCol, strokeCol, strokeW);
-        // 下部の房
-        const by = hh * 1.04;
-        const spread = hw * 0.48;
+        const topLoop = sampleBezier([holeX, holeY], [-hw * 0.45 + kx, -hh * 1.25 + ky], [hw * 0.45 + kx, -hh * 1.25 + ky], [holeX, holeY], 16);
+        addTwistedRopeBeads(frontCordItems, tr, topLoop, beadR * 0.9, effFill, strokeCol, strokeW, cordOp);
+        const by = hh * 1.04 + ty;
+        const spread = hw * 0.48 + Math.abs(tx) * 0.35;
         const tasselPoly = [
-          tr(-beadR * 1.2, hh * 0.98),
-          tr(beadR * 1.2, hh * 0.98),
-          tr(spread, by + hh * 0.22),
-          tr(-spread, by + hh * 0.22)
+          tr(-beadR * 1.2 + tx * 0.3, hh * 0.98),
+          tr(beadR * 1.2 + tx * 0.3, hh * 0.98),
+          tr(spread + tx, by + hh * 0.22),
+          tr(-spread + tx, by + hh * 0.22)
         ];
-        backCordItems.push({ type: 'poly', fill: fillCol, stroke: strokeCol, strokeWidth: strokeW, pts: tasselPoly });
+        backCordItems.push({ type: 'poly', fill: effFill, stroke: strokeCol, strokeWidth: strokeW, opacity: cordOp, isCord: true, pts: tasselPoly });
+        localKnotAnchor = [holeX + kx, -hh * 1.15 + ky];
+        localTailAnchor = [tx, by + hh * 0.16];
 
       } else if (cordStyle === 'neck_cord') {
-        // V字の首掛け長紐
-        const leftV = sampleBezier([holeX, holeY], [-hw * 0.55, -hh * 1.05], [-hw * 0.95, -hh * 1.25], [-hw * 1.25, -hh * 1.42], 14);
-        const rightV = sampleBezier([holeX, holeY], [hw * 0.55, -hh * 1.05], [hw * 0.95, -hh * 1.25], [hw * 1.25, -hh * 1.42], 14);
-        addTwistedRopeBeads(frontCordItems, tr, leftV, beadR * 0.9, fillCol, strokeCol, strokeW);
-        addTwistedRopeBeads(frontCordItems, tr, rightV, beadR * 0.9, fillCol, strokeCol, strokeW);
+        const leftV = sampleBezier([holeX, holeY], [-hw * 0.55 + kx * 0.5, -hh * 1.05 + ky * 0.5], [-hw * 0.95 + kx, -hh * 1.25 + ky], [-hw * 1.25 + kx - tx * 0.5, -hh * 1.42 + ky + ty * 0.5], 14);
+        const rightV = sampleBezier([holeX, holeY], [hw * 0.55 + kx * 0.5, -hh * 1.05 + ky * 0.5], [hw * 0.95 + kx, -hh * 1.25 + ky], [hw * 1.25 + kx + tx, -hh * 1.42 + ky + ty], 14);
+        addTwistedRopeBeads(frontCordItems, tr, leftV, beadR * 0.9, effFill, strokeCol, strokeW, cordOp);
+        addTwistedRopeBeads(frontCordItems, tr, rightV, beadR * 0.9, effFill, strokeCol, strokeW, cordOp);
+        localKnotAnchor = [holeX + kx, -hh * 1.15 + ky];
+        localTailAnchor = [hw * 1.15 + kx + tx, -hh * 1.38 + ky + ty];
       }
 
-      return { backCordItems, frontCordItems };
+      return {
+        backCordItems,
+        frontCordItems,
+        knotHandlePt: tr(localKnotAnchor[0], localKnotAnchor[1]),
+        tailHandlePt: tr(localTailAnchor[0], localTailAnchor[1])
+      };
     }
 
     /* ============================================================================
@@ -950,9 +1045,17 @@
       return (lx, ly) => [cx + lx * cos - ly * sin, cy + lx * sin + ly * cos];
     }
 
-    // 単一の木札/千社札パーツを生成する内部関数（二枚重ね札ではこれを2回呼び出す）
+    // 単一の木札/千社札パーツを生成する内部関数（色変更・透過・紐オフセット完全対応）
     function buildSingleTagPrimitives(fudaId, cx, cy, baseW, baseH, deg, charsList, subTextStr, state, cordOverride, depthOverride) {
-      const theme = THEMES[state.themeKey] || THEMES['navy-fill'];
+      const themeBase = THEMES[state.themeKey] || THEMES['navy-fill'];
+      const fgCol = state.fgColor || themeBase.fg;
+      const bgCol = state.bgColor || themeBase.bg;
+      const isBgHollow = !!state.bgTransparent;
+      const bodyFill = isBgHollow ? null : bgCol;
+      const fudaOp = (state.fudaOpacity ?? 100) / 100;
+      const cordFill = state.cordFillColor || bgCol;
+      const cordStroke = state.cordStrokeColor || fgCol;
+
       const w = baseW * ((state.widthPct || 100) / 100);
       const h = baseH * ((state.heightPct || 100) / 100);
       const hw = w / 2, hh = h / 2;
@@ -972,18 +1075,18 @@
         return pts;
       };
 
-      const addCharacterVector = (ch, localCx, localCy, charSize, fgCol, bgOutlineCol, useOutline, forceFontKey) => {
+      const addCharacterVector = (ch, localCx, localCy, charSize, cFg, bgOutlineCol, useOutline, forceFontKey) => {
         const fKey = forceFontKey || state.fontKey;
-        charDrawList.push({ ch, localCx, localCy, charSize, fgCol, bgOutlineCol, useOutline, fKey });
+        charDrawList.push({ ch, localCx, localCy, charSize, fgCol: cFg, bgOutlineCol, useOutline, fKey, opacity: fudaOp });
         if (fKey === 'kakuji') {
           const kData = getKakujiCharRects(ch, charSize);
           if (kData) {
             const hs = kData.boxS / 2;
             if (useOutline) {
-              textItems.push({ type: 'poly', fill: bgOutlineCol, stroke: null, pts: rectToPts(localCx - hs - 2.5, localCy - hs - 2.5, kData.boxS + 5, kData.boxS + 5) });
+              textItems.push({ type: 'poly', fill: bgOutlineCol, stroke: null, opacity: fudaOp, pts: rectToPts(localCx - hs - 2.5, localCy - hs - 2.5, kData.boxS + 5, kData.boxS + 5) });
             }
             for (const [rx, ry, rw, rh] of kData.rects) {
-              textItems.push({ type: 'poly', fill: fgCol, stroke: null, pts: rectToPts(localCx + rx, localCy + ry, rw, rh) });
+              textItems.push({ type: 'poly', fill: cFg, stroke: null, opacity: fudaOp, pts: rectToPts(localCx + rx, localCy + ry, rw, rh) });
             }
             return;
           }
@@ -994,7 +1097,7 @@
           const outLoops = traceGlyphToVectorLoops(ch, fKey === 'kakuji' ? 'dela' : fKey, sx, sy, true, 0.15);
           if (outLoops.length > 0) {
             textItems.push({
-              type: 'compound', fill: bgOutlineCol,
+              type: 'compound', fill: bgOutlineCol, opacity: fudaOp,
               loops: outLoops.map(lp => lp.map(([nx, ny]) => tr(localCx + nx * charSize, localCy + ny * charSize)))
             });
           }
@@ -1002,7 +1105,7 @@
         const fgLoops = traceGlyphToVectorLoops(ch, fKey === 'kakuji' ? 'dela' : fKey, sx, sy, false, 0);
         if (fgLoops.length > 0) {
           textItems.push({
-            type: 'compound', fill: fgCol,
+            type: 'compound', fill: cFg, opacity: fudaOp,
             loops: fgLoops.map(lp => lp.map(([nx, ny]) => tr(localCx + nx * charSize, localCy + ny * charSize)))
           });
         }
@@ -1011,11 +1114,9 @@
       const is3DWood = (fudaId === 'kifuda_3d_rope' || fudaId === 'twin_kifuda' || (depthOverride && depthOverride > 0));
       const depthPx = is3DWood ? Math.max(4, (state.depth3d ?? 10) * (w / 95)) : ((state.depth3d > 12) ? (state.depth3d - 10) * 0.7 : 0);
 
-      // 5角形/6角形の上部削ぎ木札頂点（ローカル座標）
       const getLocalOuterVertices = (inset = 0) => {
         const iw = hw - inset, ih = hh - inset;
         if (fudaId === 'kifuda_3d_rope' || fudaId === 'twin_kifuda') {
-          // 写真1・写真2のような「上部左右を斜めに落とした台形山型（6角形）喧嘩札」
           const topFlatHalf = iw * 0.36;
           const shoulderY = -ih + (ih * 2) * 0.125;
           return [
@@ -1058,7 +1159,7 @@
         return [[-iw, -ih], [iw, -ih], [iw, ih], [-iw, ih]];
       };
 
-      const outerStrokeCol = theme.frameOuter === theme.bg ? theme.fg : theme.frameOuter;
+      const outerStrokeCol = fgCol;
       const strokeW = Math.max(2.2, w * 0.048);
       const holeY = -hh + h * 0.115;
       const holeR = Math.max(3.5, w * 0.068);
@@ -1066,8 +1167,8 @@
 
       // 紐の決定
       const effectiveCord = cordOverride !== undefined ? cordOverride : state.cordStyle;
-      const { backCordItems, frontCordItems } = buildCordVectorItems(
-        effectiveCord, tr, hw, hh, 0, holeY, beadR, theme.bg, outerStrokeCol, Math.max(1.8, strokeW * 0.68)
+      const { backCordItems, frontCordItems, knotHandlePt, tailHandlePt } = buildCordVectorItems(
+        effectiveCord, tr, hw, hh, 0, holeY, beadR, cordFill, cordStroke, Math.max(1.8, strokeW * 0.68), state
       );
 
       // 0. 札の背後に回る組紐を追加
@@ -1076,30 +1177,28 @@
       // 1. 外座布団（2D千社札系のみ）または 3D立体木札の側面・底面押し出し
       const localV = getLocalOuterVertices(0);
       if (depthPx > 0.5) {
-        // 3D押し出しベクトル（右斜め下方向 dx, dy）
         const dx = depthPx * 0.85;
         const dy = depthPx * 0.65;
-        // 側面クワッドを描画（右上斜面・右側面・底面）
         for (let i = 0; i < localV.length; i++) {
           const pA = localV[i];
           const pB = localV[(i + 1) % localV.length];
-          // 法線が右下を向いているエッジを側面として描画
           const ex = pB[0] - pA[0], ey = pB[1] - pA[1];
-          const nx = ey, ny = -ex; // 外向き法線
+          const nx = ey, ny = -ex;
           if (nx * dx + ny * dy > -0.01) {
             frameItems.push({
               type: 'poly',
-              fill: theme.bg,
+              fill: bodyFill,
               stroke: outerStrokeCol,
               strokeWidth: strokeW * 0.85,
+              opacity: fudaOp,
               pts: [tr(pA[0], pA[1]), tr(pB[0], pB[1]), tr(pB[0] + dx, pB[1] + dy), tr(pA[0] + dx, pA[1] + dy)]
             });
           }
         }
-      } else {
+      } else if (!isBgHollow) {
         const pad = Math.max(3, w * 0.048);
         frameItems.push({
-          type: 'poly', fill: theme.frameOuter, stroke: null,
+          type: 'poly', fill: outerStrokeCol, stroke: null, opacity: fudaOp,
           pts: getLocalOuterVertices(-pad).map(([x, y]) => tr(x, y))
         });
       }
@@ -1107,9 +1206,10 @@
       // 2. 札の表面塗り＋太枠ストローク
       frameItems.push({
         type: 'poly',
-        fill: theme.bg,
+        fill: bodyFill,
         stroke: outerStrokeCol,
         strokeWidth: strokeW,
+        opacity: fudaOp,
         pts: localV.map(([x, y]) => tr(x, y))
       });
 
@@ -1132,19 +1232,19 @@
           addArc(iw, ih, Math.PI * 1.5, Math.PI);
           addArc(-iw, ih, 0, Math.PI * 1.5);
           addArc(-iw, -ih, Math.PI * 0.5, 0);
-          frameItems.push({ type: 'poly', fill: null, stroke: theme.fg, strokeWidth: innerLw, pts });
+          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts });
         } else if (fudaId === 'ukibori') {
           const iw = hw - inGap, ih = hh - inGap;
           const c = w * 0.12;
-          frameItems.push({ type: 'poly', fill: null, stroke: theme.fg, strokeWidth: innerLw, pts: rectToPts(-iw, -ih, iw * 2, ih * 2) });
-          frameItems.push({ type: 'poly', fill: null, stroke: theme.fg, strokeWidth: innerLw, pts: rectToPts(-iw, -ih, c, c) });
-          frameItems.push({ type: 'poly', fill: null, stroke: theme.fg, strokeWidth: innerLw, pts: rectToPts(iw - c, -ih, c, c) });
-          frameItems.push({ type: 'poly', fill: null, stroke: theme.fg, strokeWidth: innerLw, pts: rectToPts(-iw, ih - c, c, c) });
-          frameItems.push({ type: 'poly', fill: null, stroke: theme.fg, strokeWidth: innerLw, pts: rectToPts(iw - c, ih - c, c, c) });
+          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(-iw, -ih, iw * 2, ih * 2) });
+          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(-iw, -ih, c, c) });
+          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(iw - c, -ih, c, c) });
+          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(-iw, ih - c, c, c) });
+          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(iw - c, ih - c, c, c) });
         } else {
-          frameItems.push({ type: 'poly', fill: null, stroke: theme.fg, strokeWidth: innerLw, pts: getLocalOuterVertices(inGap).map(([x, y]) => tr(x, y)) });
+          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: getLocalOuterVertices(inGap).map(([x, y]) => tr(x, y)) });
           if (fudaId === 'kakuji_box') {
-            frameItems.push({ type: 'poly', fill: null, stroke: theme.fg, strokeWidth: innerLw, pts: getLocalOuterVertices(inGap * 1.55).map(([x, y]) => tr(x, y)) });
+            frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: getLocalOuterVertices(inGap * 1.55).map(([x, y]) => tr(x, y)) });
           }
         }
       }
@@ -1156,8 +1256,8 @@
 
       if (fudaId === 'kifuda' || fudaId === 'kifuda_3d_rope' || fudaId === 'twin_kifuda' || effectiveCord !== 'none') {
         frameItems.push({
-          type: 'poly', fill: '#0b1324', stroke: theme.fg,
-          strokeWidth: Math.max(1.8, w * 0.028), pts: circleToPts(0, holeY, holeR, 22)
+          type: 'poly', fill: isBgHollow ? null : '#0b1324', stroke: fgCol,
+          strokeWidth: Math.max(1.8, w * 0.028), opacity: fudaOp, pts: circleToPts(0, holeY, holeR, 22)
         });
         textTop = holeY + holeR + h * 0.035;
         textBottom = hh - h * 0.065;
@@ -1167,30 +1267,30 @@
         const maruR = w * 0.235;
         const maruY = -hh + inGap + maruR + h * 0.025;
         frameItems.push({
-          type: 'poly', fill: theme.accent, stroke: '#ffffff',
-          strokeWidth: Math.max(1.8, w * 0.026), pts: circleToPts(0, maruY, maruR, 28)
+          type: 'poly', fill: isBgHollow ? null : themeBase.accent, stroke: fgCol,
+          strokeWidth: Math.max(1.8, w * 0.026), opacity: fudaOp, pts: circleToPts(0, maruY, maruR, 28)
         });
         const subChars = Array.from((subTextStr || '祭').slice(0, 2));
         const subSz = maruR * (subChars.length > 1 ? 0.82 : 1.15);
         if (subChars.length === 1) {
-          addCharacterVector(subChars[0], 0, maruY + 1, subSz, '#ffffff', theme.accent, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
+          addCharacterVector(subChars[0], 0, maruY + 1, subSz, '#ffffff', themeBase.accent, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
         } else {
           subChars.forEach((sc, si) => {
-            addCharacterVector(sc, (si - 0.5) * subSz * 0.85, maruY + 1, subSz * 0.9, '#ffffff', theme.accent, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
+            addCharacterVector(sc, (si - 0.5) * subSz * 0.85, maruY + 1, subSz * 0.9, '#ffffff', themeBase.accent, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
           });
         }
         const sepY = maruY + maruR + h * 0.028;
-        frameItems.push({ type: 'poly', fill: theme.fg, stroke: null, pts: rectToPts(-hw + inGap * 1.4, sepY - 0.8, (hw - inGap * 1.4) * 2, 1.6) });
+        frameItems.push({ type: 'poly', fill: fgCol, stroke: null, opacity: fudaOp, pts: rectToPts(-hw + inGap * 1.4, sepY - 0.8, (hw - inGap * 1.4) * 2, 1.6) });
         textTop = sepY + h * 0.03;
       } else if (fudaId === 'sashifuda') {
         const sw = w * 0.27, sh = h * 0.36;
         const sx = hw - inGap * 1.35 - sw, sy = -hh + inGap * 1.35;
-        frameItems.push({ type: 'poly', fill: theme.fg, stroke: null, pts: rectToPts(sx, sy, sw, sh) });
+        frameItems.push({ type: 'poly', fill: isBgHollow ? null : fgCol, stroke: isBgHollow ? fgCol : null, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(sx, sy, sw, sh) });
         const sChars = Array.from(subTextStr || '青年会').slice(0, 4);
         const sStep = sh / (sChars.length + 0.5);
         const sSize = Math.min(sw * 0.74, sStep * 0.85);
         sChars.forEach((c, idx) => {
-          addCharacterVector(c, sx + sw / 2, sy + sStep * (idx + 0.75), sSize, theme.bg, theme.fg, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
+          addCharacterVector(c, sx + sw / 2, sy + sStep * (idx + 0.75), sSize, isBgHollow ? fgCol : bgCol, fgCol, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
         });
         textCenterX = -w * 0.09;
       }
@@ -1200,7 +1300,7 @@
 
       // 6. 親文字の配置（文字数に応じてサイズと間隔を自動最適化）
       const chars = charsList;
-      const outlineCol = theme.fg === '#ffffff' ? theme.bg : '#ffffff';
+      const outlineCol = fgCol.toLowerCase() === '#ffffff' ? bgCol : '#ffffff';
       if (chars.length > 0) {
         const availH = textBottom - textTop;
         const step = availH / chars.length;
@@ -1209,11 +1309,11 @@
         chars.forEach((ch, i) => {
           const cyChar = textTop + step * (i + 0.5);
           const cxChar = (fudaId === 'sashifuda' && i * step < h * 0.34) ? textCenterX : 0;
-          addCharacterVector(ch, cxChar, cyChar, charSize, theme.fg, outlineCol, state.outline, state.fontKey);
+          addCharacterVector(ch, cxChar, cyChar, charSize, fgCol, outlineCol, state.outline, state.fontKey);
         });
       }
 
-      return { frameItems, textItems, charDrawList, tr, w, h };
+      return { frameItems, textItems, charDrawList, tr, w, h, hw, hh, cx, cy, deg, knotHandlePt, tailHandlePt };
     }
 
     // 任意の札IDに対してベクタープリミティブを生成（⑩二枚重ね夫婦木札にも対応）
@@ -1225,7 +1325,6 @@
       const subChars = getEffectiveChars(state.subText, state.subCharLimit, '遠州');
 
       if (fudaId === 'twin_kifuda') {
-        // 写真1「濱松・遠州」風：奥の札（右斜め -33°）＋ 手前の札（左斜め -16°）の2枚重ね
         const cordMode = state.cordStyle === 'none' ? 'none' : 'top_knot';
         const backTag = buildSingleTagPrimitives(
           'twin_kifuda',
@@ -1260,7 +1359,6 @@
         };
       }
 
-      // ⑨ 立体喧嘩札(組紐付) の場合は写真2のように少し右斜め（+22°）に傾けると粋に見える
       const effectiveDeg = (fudaId === 'kifuda_3d_rope' && deg === 0) ? 20 : deg;
       const singleTag = buildSingleTagPrimitives(
         fudaId, cx, cy, sw, sh, effectiveDeg, mainChars, state.subText, state, state.cordStyle, state.depth3d
@@ -1272,12 +1370,14 @@
       };
     }
 
-    // Canvas 上への高速・鮮明描画（ベクタープリミティブと完全一致）
+    // Canvas 上への高速・鮮明描画（ベクタープリミティブと完全一致、不透明度・透過対応）
     function drawFudaLogo(ctx, fudaId, cx, cy, w, h, state, baseDeg = 0) {
       const { frameItems, tagsForCanvas } = buildFudaVectorPrimitives(fudaId, cx, cy, w, h, baseDeg, state);
       ctx.save();
       for (const it of frameItems) {
         if (it.type === 'poly' && it.pts && it.pts.length >= 3) {
+          ctx.save();
+          ctx.globalAlpha = it.opacity !== undefined ? it.opacity : 1;
           ctx.beginPath();
           ctx.moveTo(it.pts[0][0], it.pts[0][1]);
           for (let i = 1; i < it.pts.length; i++) ctx.lineTo(it.pts[i][0], it.pts[i][1]);
@@ -1289,16 +1389,17 @@
             ctx.lineJoin = 'round';
             ctx.stroke();
           }
+          ctx.restore();
         }
       }
       // 各タグの文字を描画
       for (const tag of tagsForCanvas) {
         for (const cd of tag.charDrawList) {
           const [gx, gy] = tag.tr(cd.localCx, cd.localCy);
-          // 回転角を復元
           const p0 = tag.tr(0, 0), p1 = tag.tr(1, 0);
           const ang = Math.atan2(p1[1] - p0[1], p1[0] - p0[0]);
           ctx.save();
+          ctx.globalAlpha = cd.opacity !== undefined ? cd.opacity : 1;
           ctx.translate(gx, gy);
           ctx.rotate(ang);
           if (cd.fKey === 'kakuji') {
@@ -1332,6 +1433,7 @@
         }
       }
       ctx.restore();
+      return tagsForCanvas;
     }
 
     function drawTenuguiBackground(ctx, w, h) {
@@ -1360,7 +1462,7 @@
       ctx.strokeRect(12, 12, w - 24, h - 24);
     }
 
-    // プリミティブ群から SVG 文字列を生成
+    // プリミティブ群から SVG 文字列を生成（透過・不透明度・マウス調整位置すべて反映）
     function buildVectorSvgDocument(mode) {
       let W = 400, H = 400;
       const bgLayer = [];
@@ -1368,8 +1470,8 @@
       const allTextItems = [];
 
       if (mode === 'single') {
-        W = 220; H = 360;
-        const { frameItems, textItems } = buildFudaVectorPrimitives(state.selectedId, W / 2, H / 2, 106, 270, 0, state);
+        W = 240; H = 380;
+        const { frameItems, textItems } = buildFudaVectorPrimitives(state.selectedId, W / 2, H / 2, 106, 270, state.fudaAngle || 0, state);
         allFrameItems.push(...frameItems);
         allTextItems.push(...textItems);
       } else if (mode === 'all10') {
@@ -1378,7 +1480,7 @@
         FUDA_TYPES.forEach((f, idx) => {
           const cx = 68 + idx * 126;
           const cy = 190;
-          const { frameItems, textItems } = buildFudaVectorPrimitives(f.id, cx, cy, 84, 224, 0, state);
+          const { frameItems, textItems } = buildFudaVectorPrimitives(f.id, cx, cy, 84, 224, state.fudaAngle || 0, state);
           allFrameItems.push(...frameItems);
           allTextItems.push(...textItems);
         });
@@ -1400,23 +1502,24 @@
         } else {
           bgLayer.push(`<rect width="${W}" height="${H}" fill="#0b1324"/>`);
         }
-        const pMain = buildFudaVectorPrimitives(state.selectedId, 148, 204, 108, 276, 0, state);
-        const pSub1 = buildFudaVectorPrimitives(state.selectedId, 322, 114, 52, 134, -18, state);
-        const pSub2 = buildFudaVectorPrimitives(state.selectedId, 324, 286, 52, 134, 14, state);
+        const pMain = buildFudaVectorPrimitives(state.selectedId, state.mainCx, state.mainCy, 108, 276, state.fudaAngle || 0, state);
+        const pSub1 = buildFudaVectorPrimitives(state.selectedId, 322, 114, 52, 134, (state.fudaAngle || 0) - 18, state);
+        const pSub2 = buildFudaVectorPrimitives(state.selectedId, 324, 286, 52, 134, (state.fudaAngle || 0) + 14, state);
         allFrameItems.push(...pMain.frameItems, ...pSub1.frameItems, ...pSub2.frameItems);
         allTextItems.push(...pMain.textItems, ...pSub1.textItems, ...pSub2.textItems);
       }
 
       const itemToSvg = it => {
+        const opAttr = (it.opacity !== undefined && it.opacity < 0.999) ? ` opacity="${f2(it.opacity)}"` : '';
         if (it.type === 'poly') {
           const d = 'M' + it.pts.map(([x, y]) => `${f2(x)},${f2(y)}`).join('L') + 'Z';
           const fillAttr = it.fill ? `fill="${it.fill}"` : 'fill="none"';
           const strkAttr = it.stroke ? `stroke="${it.stroke}" stroke-width="${f2(it.strokeWidth || 1)}" stroke-linejoin="round"` : '';
-          return `  <path d="${d}" ${fillAttr} ${strkAttr}/>`;
+          return `  <path d="${d}" ${fillAttr} ${strkAttr}${opAttr}/>`;
         }
         if (it.type === 'compound') {
           const d = it.loops.map(lp => 'M' + lp.map(([x, y]) => `${f2(x)},${f2(y)}`).join('L') + 'Z').join(' ');
-          return `  <path d="${d}" fill="${it.fill}" fill-rule="evenodd"/>`;
+          return `  <path d="${d}" fill="${it.fill}" fill-rule="evenodd"${opAttr}/>`;
         }
         return '';
       };
@@ -1440,8 +1543,8 @@
       let includeTenuguiBg = false;
 
       if (mode === 'single') {
-        W = 220; H = 360;
-        const { frameItems, textItems } = buildFudaVectorPrimitives(state.selectedId, W / 2, H / 2, 106, 270, 0, state);
+        W = 240; H = 380;
+        const { frameItems, textItems } = buildFudaVectorPrimitives(state.selectedId, W / 2, H / 2, 106, 270, state.fudaAngle || 0, state);
         allFrameItems.push(...frameItems);
         allTextItems.push(...textItems);
       } else if (mode === 'all10') {
@@ -1449,16 +1552,16 @@
         FUDA_TYPES.forEach((f, idx) => {
           const cx = 68 + idx * 126;
           const cy = 190;
-          const { frameItems, textItems } = buildFudaVectorPrimitives(f.id, cx, cy, 84, 224, 0, state);
+          const { frameItems, textItems } = buildFudaVectorPrimitives(f.id, cx, cy, 84, 224, state.fudaAngle || 0, state);
           allFrameItems.push(...frameItems);
           allTextItems.push(...textItems);
         });
       } else {
         W = 400; H = 400;
         includeTenuguiBg = state.showTenuguiBg;
-        const pMain = buildFudaVectorPrimitives(state.selectedId, 148, 204, 108, 276, 0, state);
-        const pSub1 = buildFudaVectorPrimitives(state.selectedId, 322, 114, 52, 134, -18, state);
-        const pSub2 = buildFudaVectorPrimitives(state.selectedId, 324, 286, 52, 134, 14, state);
+        const pMain = buildFudaVectorPrimitives(state.selectedId, state.mainCx, state.mainCy, 108, 276, state.fudaAngle || 0, state);
+        const pSub1 = buildFudaVectorPrimitives(state.selectedId, 322, 114, 52, 134, (state.fudaAngle || 0) - 18, state);
+        const pSub2 = buildFudaVectorPrimitives(state.selectedId, 324, 286, 52, 134, (state.fudaAngle || 0) + 14, state);
         allFrameItems.push(...pMain.frameItems, ...pSub1.frameItems, ...pSub2.frameItems);
         allTextItems.push(...pMain.textItems, ...pSub1.textItems, ...pSub2.textItems);
       }
@@ -1588,9 +1691,9 @@
 
     function buildIllustratorJsxDocument() {
       const W = 400, H = 400;
-      const pMain = buildFudaVectorPrimitives(state.selectedId, 148, 204, 108, 276, 0, state);
-      const pSub1 = buildFudaVectorPrimitives(state.selectedId, 322, 114, 52, 134, -18, state);
-      const pSub2 = buildFudaVectorPrimitives(state.selectedId, 324, 286, 52, 134, 14, state);
+      const pMain = buildFudaVectorPrimitives(state.selectedId, state.mainCx, state.mainCy, 108, 276, state.fudaAngle || 0, state);
+      const pSub1 = buildFudaVectorPrimitives(state.selectedId, 322, 114, 52, 134, (state.fudaAngle || 0) - 18, state);
+      const pSub2 = buildFudaVectorPrimitives(state.selectedId, 324, 286, 52, 134, (state.fudaAngle || 0) + 14, state);
       const frames = [...pMain.frameItems, ...pSub1.frameItems, ...pSub2.frameItems];
       const texts = [...pMain.textItems, ...pSub1.textItems, ...pSub2.textItems];
 
@@ -1622,6 +1725,7 @@
         p.setEntirePath(pts); p.closed = true;
         p.filled = !!it.fill; if(it.fill) p.fillColor = hexCmykObj(it.fill);
         p.stroked = !!it.stroke; if(it.stroke){ p.strokeColor = hexCmykObj(it.stroke); p.strokeWidth = (it.strokeWidth||1)*MM; }
+        if(it.opacity !== undefined) p.opacity = it.opacity * 100;
       } else if(it.type === "compound"){
         var cp = lay.compoundPathItems.add();
         var col = hexCmykObj(it.fill || "#ffffff");
@@ -1629,6 +1733,7 @@
           var lp = it.loops[k], sp = cp.pathItems.add(), pts2 = [];
           for(var m=0; m<lp.length; m++) pts2.push(P(lp[m]));
           sp.setEntirePath(pts2); sp.closed = true; sp.filled = true; sp.fillColor = col; sp.stroked = false;
+          if(it.opacity !== undefined) sp.opacity = it.opacity * 100;
           sp.evenodd = true;
         }
       }
@@ -1653,14 +1758,130 @@
       setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
     }
 
+    // ★ プレビューキャンバス上のマウス操作ハンドル情報（ヒット判定用）
+    let ACTIVE_GIZMOS = [];
+
+    function drawInteractiveGizmos(ctx, primaryTag) {
+      ACTIVE_GIZMOS = [];
+      if (!primaryTag) return;
+      const { tr, hw, hh, knotHandlePt, tailHandlePt } = primaryTag;
+
+      // 1. 札のバウンディングボックス点線（回転対応）
+      const cTL = tr(-hw, -hh), cTR = tr(hw, -hh), cBR = tr(hw, hh), cBL = tr(-hw, hh);
+      const edgeRight = tr(hw, 0);
+      const edgeBot = tr(0, hh);
+      const rotPt = tr(0, -hh - 26);
+
+      if (state.showGizmo) {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.75)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(cTL[0], cTL[1]);
+        ctx.lineTo(cTR[0], cTR[1]);
+        ctx.lineTo(cBR[0], cBR[1]);
+        ctx.lineTo(cBL[0], cBL[1]);
+        ctx.closePath();
+        ctx.stroke();
+
+        // 回転ハンドルへの接続線
+        const topMid = tr(0, -hh);
+        ctx.beginPath();
+        ctx.moveTo(topMid[0], topMid[1]);
+        ctx.lineTo(rotPt[0], rotPt[1]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        const drawHandleBadge = (pt, col, borderCol, label, isRect) => {
+          ctx.save();
+          ctx.fillStyle = col;
+          ctx.strokeStyle = borderCol;
+          ctx.lineWidth = 2;
+          if (isRect) {
+            ctx.beginPath();
+            ctx.rect(pt[0] - 7, pt[1] - 7, 14, 14);
+            ctx.fill();
+            ctx.stroke();
+          } else {
+            ctx.beginPath();
+            ctx.arc(pt[0], pt[1], 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+          }
+          if (label) {
+            ctx.font = '800 10px sans-serif';
+            const tw = ctx.measureText(label).width + 8;
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+            ctx.fillRect(pt[0] - tw / 2, pt[1] - 22, tw, 13);
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(label, pt[0], pt[1] - 15.5);
+          }
+          ctx.restore();
+        };
+
+        // サイズ変更・横幅・縦長・回転ハンドルを描画
+        drawHandleBadge(cBR, '#0284c7', '#e0f2fe', '↘サイズ', true);
+        drawHandleBadge(edgeRight, '#2563eb', '#dbeafe', '↔幅', true);
+        drawHandleBadge(edgeBot, '#2563eb', '#dbeafe', '↕縦', true);
+        drawHandleBadge(rotPt, '#9333ea', '#f3e8ff', '↻回転', false);
+
+        // 紐のドラッグハンドル（上結び・脇/房）を描画
+        if (knotHandlePt) {
+          drawHandleBadge(knotHandlePt, '#ea580c', '#ffedd5', '🪢上紐移動', false);
+        }
+        if (tailHandlePt) {
+          drawHandleBadge(tailHandlePt, '#d97706', '#fef3c7', '🪢脇・房紐', false);
+        }
+        ctx.restore();
+      }
+
+      // ヒットテスト用にハンドル座標を登録（showGizmoがOFFでもドラッグ可能にする）
+      if (knotHandlePt) ACTIVE_GIZMOS.push({ type: 'knot', pt: knotHandlePt, r: 16, cursor: 'move', tag: primaryTag });
+      if (tailHandlePt) ACTIVE_GIZMOS.push({ type: 'tail', pt: tailHandlePt, r: 16, cursor: 'move', tag: primaryTag });
+      ACTIVE_GIZMOS.push({ type: 'scale', pt: cBR, r: 14, cursor: 'nwse-resize', tag: primaryTag });
+      ACTIVE_GIZMOS.push({ type: 'width', pt: edgeRight, r: 13, cursor: 'ew-resize', tag: primaryTag });
+      ACTIVE_GIZMOS.push({ type: 'height', pt: edgeBot, r: 13, cursor: 'ns-resize', tag: primaryTag });
+      ACTIVE_GIZMOS.push({ type: 'rotate', pt: rotPt, r: 14, cursor: 'grab', tag: primaryTag });
+      ACTIVE_GIZMOS.push({ type: 'body', pt: [primaryTag.cx, primaryTag.cy], r: Math.max(hw, hh) * 0.88, cursor: 'grab', tag: primaryTag });
+    }
+
+    function syncControlSlidersFromState() {
+      const setVal = (id, outId, val, unit) => {
+        const el = document.getElementById(id), out = document.getElementById(outId);
+        if (el) el.value = val;
+        if (out) out.textContent = val + unit;
+      };
+      setVal('fudaScaleRange', 'fudaScaleOut', Math.round(state.scalePct), '%');
+      setVal('fudaWidthRange', 'fudaWidthOut', Math.round(state.widthPct), '%');
+      setVal('fudaHeightRange', 'fudaHeightOut', Math.round(state.heightPct), '%');
+      setVal('fudaDepthRange', 'fudaDepthOut', Math.round(state.depth3d), 'mm');
+      setVal('fudaAngleRange', 'fudaAngleOut', Math.round(state.fudaAngle), '°');
+      setVal('fudaOpacityRange', 'fudaOpacityOut', Math.round(state.fudaOpacity), '%');
+      setVal('cordOpacityRange', 'cordOpacityOut', Math.round(state.cordOpacity), '%');
+      if (document.getElementById('fgColorPicker')) document.getElementById('fgColorPicker').value = state.fgColor;
+      if (document.getElementById('bgColorPicker')) document.getElementById('bgColorPicker').value = state.bgColor;
+      if (document.getElementById('cordFillPicker')) document.getElementById('cordFillPicker').value = state.cordFillColor;
+      if (document.getElementById('cordStrokePicker')) document.getElementById('cordStrokePicker').value = state.cordStrokeColor;
+      if (document.getElementById('bgTransparentToggle')) document.getElementById('bgTransparentToggle').checked = !!state.bgTransparent;
+      if (document.getElementById('cordTransparentToggle')) document.getElementById('cordTransparentToggle').checked = !!state.cordTransparent;
+    }
+
     function renderAll() {
+      syncControlSlidersFromState();
       const mainCv = document.getElementById('mainPreviewCanvas');
       const mCtx = mainCv.getContext('2d');
       drawTenuguiBackground(mCtx, mainCv.width, mainCv.height);
 
-      drawFudaLogo(mCtx, state.selectedId, 148, 204, 108, 276, state, 0);
-      drawFudaLogo(mCtx, state.selectedId, 322, 114, 52, 134, state, -18);
-      drawFudaLogo(mCtx, state.selectedId, 324, 286, 52, 134, state, 14);
+      const mainTags = drawFudaLogo(mCtx, state.selectedId, state.mainCx, state.mainCy, 108, 276, state, state.fudaAngle || 0);
+      drawFudaLogo(mCtx, state.selectedId, 322, 114, 52, 134, state, (state.fudaAngle || 0) - 18);
+      drawFudaLogo(mCtx, state.selectedId, 324, 286, 52, 134, state, (state.fudaAngle || 0) + 14);
+
+      if (mainTags && mainTags.length > 0) {
+        drawInteractiveGizmos(mCtx, mainTags[mainTags.length - 1]);
+      }
 
       const activeObj = FUDA_TYPES.find(f => f.id === state.selectedId) || FUDA_TYPES[0];
       document.getElementById('selectedFudaTitle').textContent = activeObj.name;
@@ -1672,7 +1893,7 @@
         const ctx = cv.getContext('2d');
         ctx.fillStyle = '#090f1d';
         ctx.fillRect(0, 0, cv.width, cv.height);
-        drawFudaLogo(ctx, f.id, cv.width / 2, cv.height / 2 + 4, 62, 162, state, 0);
+        drawFudaLogo(ctx, f.id, cv.width / 2, cv.height / 2 + 4, 62, 162, state, state.fudaAngle || 0);
 
         const card = document.getElementById('fuda-card-' + f.id);
         if (card) card.classList.toggle('active', f.id === state.selectedId);
@@ -1722,6 +1943,108 @@
       });
       grid.appendChild(card);
     });
+
+    // ★ プレビューキャンバス上のマウス直接操作（紐のドラッグ移動・札のサイズ調整・幅/縦調整・回転・本体移動・ホイール拡縮）
+    const mainCvEl = document.getElementById('mainPreviewCanvas');
+    let activeDrag = null;
+
+    function getCanvasMouseXY(e) {
+      const r = mainCvEl.getBoundingClientRect();
+      return [
+        ((e.clientX - r.left) / Math.max(1, r.width)) * mainCvEl.width,
+        ((e.clientY - r.top) / Math.max(1, r.height)) * mainCvEl.height
+      ];
+    }
+
+    mainCvEl.addEventListener('mousedown', e => {
+      if (e.button !== 0) return;
+      const [mx, my] = getCanvasMouseXY(e);
+      for (const g of ACTIVE_GIZMOS) {
+        if (Math.hypot(mx - g.pt[0], my - g.pt[1]) <= g.r) {
+          activeDrag = {
+            type: g.type,
+            startX: mx,
+            startY: my,
+            origMainCx: state.mainCx,
+            origMainCy: state.mainCy,
+            origScale: state.scalePct,
+            origWidth: state.widthPct,
+            origHeight: state.heightPct,
+            origAngle: state.fudaAngle,
+            origKnotX: state.cordKnotOffX,
+            origKnotY: state.cordKnotOffY,
+            origTailX: state.cordTailOffX,
+            origTailY: state.cordTailOffY,
+            tagCx: g.tag.cx,
+            tagCy: g.tag.cy,
+            tagDeg: g.tag.deg,
+            startDist: Math.max(10, Math.hypot(mx - g.tag.cx, my - g.tag.cy)),
+            startAng: Math.atan2(my - g.tag.cy, mx - g.tag.cx) * 180 / Math.PI
+          };
+          e.preventDefault();
+          return;
+        }
+      }
+    });
+
+    window.addEventListener('mousemove', e => {
+      const [mx, my] = getCanvasMouseXY(e);
+      if (!activeDrag) {
+        let cur = 'default';
+        for (const g of ACTIVE_GIZMOS) {
+          if (Math.hypot(mx - g.pt[0], my - g.pt[1]) <= g.r) {
+            cur = g.cursor || 'pointer';
+            break;
+          }
+        }
+        mainCvEl.style.cursor = cur;
+        return;
+      }
+
+      const dx = mx - activeDrag.startX;
+      const dy = my - activeDrag.startY;
+      // ローカル座標系への逆回転変換（札が傾いていても直感的に動くようにする）
+      const rad = (-activeDrag.tagDeg * Math.PI) / 180;
+      const ldx = dx * Math.cos(rad) - dy * Math.sin(rad);
+      const ldy = dx * Math.sin(rad) + dy * Math.cos(rad);
+
+      if (activeDrag.type === 'knot') {
+        state.cordKnotOffX = Math.max(-140, Math.min(140, Math.round(activeDrag.origKnotX + ldx)));
+        state.cordKnotOffY = Math.max(-140, Math.min(140, Math.round(activeDrag.origKnotY + ldy)));
+      } else if (activeDrag.type === 'tail') {
+        state.cordTailOffX = Math.max(-160, Math.min(160, Math.round(activeDrag.origTailX + ldx)));
+        state.cordTailOffY = Math.max(-160, Math.min(160, Math.round(activeDrag.origTailY + ldy)));
+      } else if (activeDrag.type === 'scale') {
+        const curDist = Math.max(10, Math.hypot(mx - activeDrag.tagCx, my - activeDrag.tagCy));
+        const ratio = curDist / activeDrag.startDist;
+        state.scalePct = Math.max(45, Math.min(175, Math.round(activeDrag.origScale * ratio)));
+      } else if (activeDrag.type === 'width') {
+        state.widthPct = Math.max(60, Math.min(165, Math.round(activeDrag.origWidth + ldx * 1.4)));
+      } else if (activeDrag.type === 'height') {
+        state.heightPct = Math.max(60, Math.min(160, Math.round(activeDrag.origHeight + ldy * 0.85)));
+      } else if (activeDrag.type === 'rotate') {
+        const curAng = Math.atan2(my - activeDrag.tagCy, mx - activeDrag.tagCx) * 180 / Math.PI;
+        let nextA = Math.round(activeDrag.origAngle + (curAng - activeDrag.startAng));
+        while (nextA > 180) nextA -= 360;
+        while (nextA < -180) nextA += 360;
+        state.fudaAngle = nextA;
+      } else if (activeDrag.type === 'body') {
+        state.mainCx = Math.max(40, Math.min(360, Math.round(activeDrag.origMainCx + dx)));
+        state.mainCy = Math.max(40, Math.min(360, Math.round(activeDrag.origMainCy + dy)));
+      }
+      renderAll();
+    });
+
+    window.addEventListener('mouseup', () => {
+      activeDrag = null;
+    });
+
+    mainCvEl.addEventListener('wheel', e => {
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 4 : -4;
+      state.scalePct = Math.max(45, Math.min(175, state.scalePct + delta));
+      renderAll();
+    }, { passive: false });
 
     // イベント配線
     document.getElementById('btnExportPreviewAi').addEventListener('click', () => {
@@ -1774,6 +2097,12 @@
       state.cordStyle = e.target.value;
       renderAll();
     });
+    document.getElementById('resetCordPosBtn').addEventListener('click', () => {
+      state.cordKnotOffX = 0; state.cordKnotOffY = 0;
+      state.cordTailOffX = 0; state.cordTailOffY = 0;
+      renderAll();
+      showToast('🪢 紐の位置を標準に戻しました（オレンジ色の●ハンドルをドラッグすると自由に動かせます）');
+    });
     document.getElementById('fontSelect').addEventListener('change', e => {
       state.fontKey = e.target.value;
       GLYPH_TRACE_CACHE.clear();
@@ -1783,8 +2112,49 @@
       state.outline = e.target.checked;
       renderAll();
     });
+    document.getElementById('showGizmoToggle').addEventListener('change', e => {
+      state.showGizmo = e.target.checked;
+      renderAll();
+    });
     document.getElementById('previewBgToggle').addEventListener('click', () => {
       state.showTenuguiBg = !state.showTenuguiBg;
+      renderAll();
+    });
+
+    // 色変更＆透過コントロール
+    document.getElementById('fgColorPicker').addEventListener('input', e => {
+      state.fgColor = e.target.value;
+      state.cordStrokeColor = e.target.value;
+      renderAll();
+    });
+    document.getElementById('bgColorPicker').addEventListener('input', e => {
+      state.bgColor = e.target.value;
+      state.cordFillColor = e.target.value;
+      renderAll();
+    });
+    document.getElementById('cordFillPicker').addEventListener('input', e => {
+      state.cordFillColor = e.target.value;
+      renderAll();
+    });
+    document.getElementById('cordStrokePicker').addEventListener('input', e => {
+      state.cordStrokeColor = e.target.value;
+      renderAll();
+    });
+    document.getElementById('bgTransparentToggle').addEventListener('change', e => {
+      state.bgTransparent = e.target.checked;
+      renderAll();
+    });
+    document.getElementById('cordTransparentToggle').addEventListener('change', e => {
+      state.cordTransparent = e.target.checked;
+      renderAll();
+    });
+    document.getElementById('swapColorsBtn').addEventListener('click', () => {
+      const tmp = state.fgColor;
+      state.fgColor = state.bgColor;
+      state.bgColor = tmp;
+      const tmpC = state.cordStrokeColor;
+      state.cordStrokeColor = state.cordFillColor;
+      state.cordFillColor = tmpC;
       renderAll();
     });
 
@@ -1806,12 +2176,13 @@
       });
     });
 
-    // サイズ・幅・縦長・厚みスライダー
+    // サイズ・幅・縦長・厚み・角度・不透明度スライダー
     const bindSlider = (id, outId, key, unit) => {
       const el = document.getElementById(id), out = document.getElementById(outId);
+      if (!el) return;
       el.addEventListener('input', e => {
         state[key] = parseFloat(e.target.value);
-        out.textContent = state[key] + unit;
+        if (out) out.textContent = state[key] + unit;
         renderAll();
       });
     };
@@ -1819,13 +2190,14 @@
     bindSlider('fudaWidthRange', 'fudaWidthOut', 'widthPct', '%');
     bindSlider('fudaHeightRange', 'fudaHeightOut', 'heightPct', '%');
     bindSlider('fudaDepthRange', 'fudaDepthOut', 'depth3d', 'mm');
+    bindSlider('fudaAngleRange', 'fudaAngleOut', 'fudaAngle', '°');
+    bindSlider('fudaOpacityRange', 'fudaOpacityOut', 'fudaOpacity', '%');
+    bindSlider('cordOpacityRange', 'cordOpacityOut', 'cordOpacity', '%');
 
     document.getElementById('resetSizeBtn').addEventListener('click', () => {
       state.scalePct = 100; state.widthPct = 100; state.heightPct = 100; state.depth3d = 10;
-      document.getElementById('fudaScaleRange').value = 100; document.getElementById('fudaScaleOut').textContent = '100%';
-      document.getElementById('fudaWidthRange').value = 100; document.getElementById('fudaWidthOut').textContent = '100%';
-      document.getElementById('fudaHeightRange').value = 100; document.getElementById('fudaHeightOut').textContent = '100%';
-      document.getElementById('fudaDepthRange').value = 10; document.getElementById('fudaDepthOut').textContent = '10mm';
+      state.fudaAngle = 0; state.mainCx = 148; state.mainCy = 204;
+      state.cordKnotOffX = 0; state.cordKnotOffY = 0; state.cordTailOffX = 0; state.cordTailOffY = 0;
       renderAll();
     });
 
@@ -1834,6 +2206,13 @@
         document.querySelectorAll('.theme-btn').forEach(x => x.classList.remove('active'));
         b.classList.add('active');
         state.themeKey = b.dataset.theme;
+        const th = THEMES[state.themeKey] || THEMES['navy-fill'];
+        state.fgColor = th.fg;
+        state.bgColor = th.bg;
+        state.cordFillColor = th.bg;
+        state.cordStrokeColor = th.fg;
+        state.bgTransparent = !!th.hollow;
+        state.cordTransparent = !!th.hollow;
         renderAll();
       });
     });

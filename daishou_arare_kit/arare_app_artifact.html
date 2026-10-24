@@ -539,8 +539,12 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
           </div>
         </div>
 
-        <!-- 🪢 紐（ひも・組紐・根付）の形を選ぶ -->
-        <label class="field"><span>🪢 札の紐（ひも・江戸打組紐・根付）の形</span>
+        <!-- 🪢 紐（ひも・組紐・根付）の形を選ぶ ＆ 紐のマウス移動リセット -->
+        <div style="display:grid;gap:4px">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px">
+            <span style="font-size:11.5px;font-weight:700">🪢 札の紐（組紐・根付）の形（プレビュー上でマウス移動可能！）</span>
+            <button type="button" class="mini-btn" id="resetFudaCordPosBtn" title="マウスで動かした紐の位置を初期位置に戻します">🪢 紐の位置リセット</button>
+          </div>
           <select id="fudaCordStyle" style="font-size:12px;font-weight:700">
             <option value="auto">自動（⑨立体札は脇組紐、⑩二枚札は上輪結び、他は紐なし）</option>
             <option value="side_loop">① 脇添えねじり組紐＋房（写真2「同志會」風・木札の脇を巡る組紐）</option>
@@ -550,7 +554,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
             <option value="neck_cord">⑤ 首掛け長紐（V字の首下げ祭り紐）</option>
             <option value="none">⑥ 紐なし（札の枠のみ）</option>
           </select>
-        </label>
+        </div>
 
         <label class="field"><span>書体（フォント選択・江戸角字／勘亭流／毛筆 等 12種）</span>
           <select id="customTextFont" style="font-size:12.5px;font-weight:600">
@@ -597,15 +601,36 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
               </optgroup>
             </select>
           </label>
-          <label class="field"><span>文字・内枠色 ／ 札地・座布団色</span>
+          <label class="field"><span>文字・枠色 ／ 札地色 ／ 紐の色</span>
             <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
-              <input type="color" id="customTextColor" value="#ffffff" title="文字・内枠の色">
-              <input type="color" id="customTextBg" value="#046e7e" title="札本体・座布団・袋文字フチの色">
+              <input type="color" id="customTextColor" value="#ffffff" title="文字・枠の色">
+              <input type="color" id="customTextBg" value="#046e7e" title="札本体の地色・袋文字フチの色">
+              <input type="color" id="fudaCordColor" value="#046e7e" title="紐（組紐）の塗り色">
+              <input type="color" id="fudaCordStroke" value="#ffffff" title="紐（組紐）のフチ線色">
               <button type="button" class="mini-btn" id="textSwapColBtn" title="文字色と札背景色を入れ替え（白札⇄色札）">白札⇄色札</button>
               <button type="button" class="mini-btn" id="textMatchBgBtn" title="札背景色を地色と同じにして白抜きにします">地色抜</button>
-              <label class="chk" style="font-size:11px"><input type="checkbox" id="customTextOutline" checked>袋文字フチ</label>
             </div>
           </label>
+        </div>
+
+        <!-- 🎨 札・紐の透過（中抜き透過＆半透明スライダー）＆ マウス操作ガイド -->
+        <div style="background:#f5f3ff;border:1px solid #c4b5fd;border-radius:6px;padding:6px 8px;display:grid;gap:4px">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:11.5px">
+            <label class="chk" style="font-weight:700;color:#5b21b6" title="ONにすると札本体の塗りを透明（中抜き）にし、下の手ぬぐい柄が透けて見えます">
+              <input type="checkbox" id="fudaBgTransparent">✨札の背景を透過(中抜き)
+            </label>
+            <label class="chk" style="font-weight:700;color:#92400e" title="ONにすると紐の塗りを透明（線のみ）にします">
+              <input type="checkbox" id="fudaCordTransparent">✨紐の中を透過
+            </label>
+            <label class="chk" style="font-size:11px"><input type="checkbox" id="customTextOutline" checked>袋文字フチ</label>
+            <label class="chk" style="font-size:11px;color:#0369a1;font-weight:700" title="手ぬぐい画面上で紐の位置や札のサイズをマウスで直接動かすハンドルを表示します">
+              <input type="checkbox" id="showFudaGizmo" checked>🖱️マウス操作ハンドル表示
+            </label>
+          </div>
+          <div class="row"><label for="fudaOpacity">札・紐の不透明度</label><input type="range" id="fudaOpacity" min="15" max="100" step="5" value="100"><output for="fudaOpacity" id="fudaOpacity-o"></output></div>
+          <div style="font-size:10.5px;color:#4c1d95;line-height:1.35">
+            💡 <b>手ぬぐい画面上で直接マウス調整：</b>札の周りの<b style="color:#d97706">●オレンジ丸(🪢上紐・脇紐)</b>をドラッグで<b>紐を移動</b>、<b style="color:#0284c7">■水色四角(↘サイズ・↔幅・↕縦)</b>をドラッグで<b>札のサイズ変更</b>ができます！
+          </div>
         </div>
 
         <!-- ✒️ 作成した札ロゴ単体を Illustrator (.ai / .svg) で即保存 or ロゴ保管棚に登録 -->
@@ -932,6 +957,8 @@ const DEF={
   showText:false, customTextStr:'仲羽田', customTextSubStr:'遠州', customTextFont:"'Reggae One', sans-serif",
   customTextVert:true, customTextFrame:'senjafuda', customTextColor:'#ffffff', customTextBg:'#046e7e', customTextOutline:true,
   fudaCharLimit:0, fudaCordStyle:'auto', fudaWidthPct:100, fudaHeightPct:100, fudaDepth3d:0,
+  fudaCordColor:'#046e7e', fudaCordStroke:'#ffffff', fudaBgTransparent:false, fudaCordTransparent:false, fudaOpacity:100, showFudaGizmo:true,
+  fudaCordKnotX:0, fudaCordKnotY:0, fudaCordTailX:0, fudaCordTailY:0,
   textSize:44, textSpacing:6, textOutlineW:5, textAngle:0, textX:50, textY:75,
   textRepeatMode:'none', textRepeatGapX:68, textRepeatGapY:68, textRepeatGridAngle:0, textRepeatAngleVar:0, textRepeatSizeVar:0,
   showBand:false, bandH:52,
@@ -2442,9 +2469,13 @@ function addTwistedRopeBeadsMm(frameItems, tr, pathPts, beadR, fillCol, strokeCo
   }
 }
 
-function buildFudaCordItemsMm(cordStyle, tr, hw, hh, holeX, holeY, beadR, fillCol, strokeCol, strokeW){
+function buildFudaCordItemsMm(cordStyle, tr, hw, hh, holeX, holeY, beadR, fillCol, strokeCol, strokeW, knotOff, tailOff){
   const backCord = [], frontCord = [];
-  if(!cordStyle || cordStyle === 'none') return { backCord, frontCord };
+  if(!cordStyle || cordStyle === 'none') return { backCord, frontCord, knotHandlePt: null, tailHandlePt: null };
+  const kx = (knotOff && knotOff[0]) || 0, ky = (knotOff && knotOff[1]) || 0;
+  const tx = (tailOff && tailOff[0]) || 0, ty = (tailOff && tailOff[1]) || 0;
+  let knotLocal = [holeX + kx, -hh * 1.15 + ky];
+  let tailLocal = [hw * 0.95 + tx, hh * 0.55 + ty];
   const sampleBez = (p0, p1, p2, p3, n = 16) => {
     const pts = [];
     for(let i = 0; i <= n; i++){
@@ -2457,43 +2488,53 @@ function buildFudaCordItemsMm(cordStyle, tr, hw, hh, holeX, holeY, beadR, fillCo
     return pts;
   };
   if(cordStyle === 'side_loop'){
-    const leftArc = sampleBez([-hw*0.65, -hh*0.55], [-hw*1.48, -hh*0.15], [-hw*1.35, hh*0.35], [hw*0.55, hh*0.45], 20);
-    const tail1 = sampleBez([hw*0.35, hh*0.35], [hw*1.25, hh*0.58], [hw*1.10, hh*0.82], [hw*0.62, hh*0.98], 12);
-    const tail2 = sampleBez([hw*0.52, hh*0.25], [hw*1.42, hh*0.48], [hw*1.38, hh*0.78], [hw*1.08, hh*0.96], 12);
-    const topKnot = sampleBez([holeX, holeY], [holeX + hw*0.22, -hh*1.12], [hw*0.95, -hh*1.05], [hw*0.72, -hh*0.72], 12);
+    const leftArc = sampleBez([-hw*0.65, -hh*0.55], [-hw*1.48 + tx*0.65, -hh*0.15 + ty*0.5], [-hw*1.35 + tx*0.5, hh*0.35 + ty*0.6], [hw*0.55 + tx*0.45, hh*0.45 + ty*0.45], 20);
+    const tail1 = sampleBez([hw*0.35 + tx*0.3, hh*0.35 + ty*0.3], [hw*1.25 + tx*0.9, hh*0.58 + ty*0.8], [hw*1.10 + tx, hh*0.82 + ty], [hw*0.62 + tx, hh*0.98 + ty], 12);
+    const tail2 = sampleBez([hw*0.52 + tx*0.3, hh*0.25 + ty*0.3], [hw*1.42 + tx*0.9, hh*0.48 + ty*0.8], [hw*1.38 + tx, hh*0.78 + ty], [hw*1.08 + tx, hh*0.96 + ty], 12);
+    const topKnot = sampleBez([holeX, holeY], [holeX + hw*0.22 + kx*0.8, -hh*1.12 + ky], [hw*0.95 + kx, -hh*1.05 + ky], [hw*0.72 + kx*0.85, -hh*0.72 + ky*0.85], 12);
     addTwistedRopeBeadsMm(backCord, tr, leftArc, beadR, fillCol, strokeCol, strokeW);
     addTwistedRopeBeadsMm(backCord, tr, tail1, beadR * 0.92, fillCol, strokeCol, strokeW);
     addTwistedRopeBeadsMm(backCord, tr, tail2, beadR * 0.92, fillCol, strokeCol, strokeW);
     addTwistedRopeBeadsMm(frontCord, tr, topKnot, beadR * 0.95, fillCol, strokeCol, strokeW);
+    knotLocal = [hw*0.62 + kx*0.9, -hh*0.98 + ky*0.9];
+    tailLocal = [hw*1.08 + tx, hh*0.75 + ty];
   }else if(cordStyle === 'top_knot'){
-    const loopPts = sampleBez([holeX - beadR*0.5, holeY], [holeX - hw*0.52, -hh*1.28], [holeX + hw*0.52, -hh*1.28], [holeX + beadR*0.5, holeY], 16);
-    const side1 = sampleBez([-hw*0.85, -hh*0.22], [-hw*1.32, hh*0.02], [-hw*1.22, hh*0.28], [-hw*1.10, hh*0.48], 10);
-    const side2 = sampleBez([-hw*0.85, -hh*0.05], [-hw*1.18, hh*0.15], [-hw*1.12, hh*0.35], [-hw*0.95, hh*0.55], 10);
+    const loopPts = sampleBez([holeX - beadR*0.5, holeY], [holeX - hw*0.52 + kx, -hh*1.28 + ky], [holeX + hw*0.52 + kx, -hh*1.28 + ky], [holeX + beadR*0.5, holeY], 16);
+    const side1 = sampleBez([-hw*0.85, -hh*0.22], [-hw*1.32 + tx*0.8, hh*0.02 + ty*0.7], [-hw*1.22 + tx, hh*0.28 + ty*0.9], [-hw*1.10 + tx, hh*0.48 + ty], 10);
+    const side2 = sampleBez([-hw*0.85, -hh*0.05], [-hw*1.18 + tx*0.8, hh*0.15 + ty*0.7], [-hw*1.12 + tx, hh*0.35 + ty*0.9], [-hw*0.95 + tx, hh*0.55 + ty], 10);
     addTwistedRopeBeadsMm(frontCord, tr, loopPts, beadR * 0.9, fillCol, strokeCol, strokeW);
     addTwistedRopeBeadsMm(backCord, tr, side1, beadR * 0.82, fillCol, strokeCol, strokeW);
     addTwistedRopeBeadsMm(backCord, tr, side2, beadR * 0.82, fillCol, strokeCol, strokeW);
+    knotLocal = [holeX + kx, -hh*1.12 + ky];
+    tailLocal = [-hw*1.15 + tx, hh*0.35 + ty];
   }else if(cordStyle === 'double_bow'){
-    const leftEar = sampleBez([holeX, holeY - hh*0.12], [-hw*0.95, -hh*1.18], [-hw*1.05, -hh*0.65], [holeX, holeY - hh*0.08], 14);
-    const rightEar = sampleBez([holeX, holeY - hh*0.12], [hw*0.95, -hh*1.18], [hw*1.05, -hh*0.65], [holeX, holeY - hh*0.08], 14);
-    const topRing = sampleBez([holeX - hw*0.22, holeY - hh*0.12], [holeX - hw*0.32, -hh*1.35], [holeX + hw*0.32, -hh*1.35], [holeX + hw*0.22, holeY - hh*0.12], 12);
+    const leftEar = sampleBez([holeX, holeY - hh*0.12], [-hw*0.95 - tx*0.6, -hh*1.18 + ty*0.7], [-hw*1.05 - tx, -hh*0.65 + ty], [holeX, holeY - hh*0.08], 14);
+    const rightEar = sampleBez([holeX, holeY - hh*0.12], [hw*0.95 + tx*0.6, -hh*1.18 + ty*0.7], [hw*1.05 + tx, -hh*0.65 + ty], [holeX, holeY - hh*0.08], 14);
+    const topRing = sampleBez([holeX - hw*0.22, holeY - hh*0.12], [holeX - hw*0.32 + kx, -hh*1.35 + ky], [holeX + hw*0.32 + kx, -hh*1.35 + ky], [holeX + hw*0.22, holeY - hh*0.12], 12);
     addTwistedRopeBeadsMm(frontCord, tr, leftEar, beadR * 0.88, fillCol, strokeCol, strokeW);
     addTwistedRopeBeadsMm(frontCord, tr, rightEar, beadR * 0.88, fillCol, strokeCol, strokeW);
     addTwistedRopeBeadsMm(frontCord, tr, topRing, beadR * 0.88, fillCol, strokeCol, strokeW);
+    knotLocal = [holeX + kx, -hh*1.20 + ky];
+    tailLocal = [hw*0.95 + tx, -hh*0.88 + ty];
   }else if(cordStyle === 'tassel'){
-    const topLoop = sampleBez([holeX, holeY], [-hw*0.45, -hh*1.25], [hw*0.45, -hh*1.25], [holeX, holeY], 14);
+    const topLoop = sampleBez([holeX, holeY], [-hw*0.45 + kx, -hh*1.25 + ky], [hw*0.45 + kx, -hh*1.25 + ky], [holeX, holeY], 14);
     addTwistedRopeBeadsMm(frontCord, tr, topLoop, beadR * 0.9, fillCol, strokeCol, strokeW);
-    const by = hh * 1.04, spread = hw * 0.48;
+    const by = hh * 1.04 + ty, spread = hw * 0.48 + tx * 0.5;
     backCord.push({
       type: 'poly', fill: fillCol, stroke: strokeCol, strokeWidth: strokeW,
-      pts: [tr(-beadR*1.2, hh*0.98), tr(beadR*1.2, hh*0.98), tr(spread, by + hh*0.22), tr(-spread, by + hh*0.22)]
+      pts: [tr(-beadR*1.2 + tx*0.3, hh*0.98), tr(beadR*1.2 + tx*0.3, hh*0.98), tr(spread + tx, by + hh*0.22), tr(-spread + tx, by + hh*0.22)]
     });
+    knotLocal = [holeX + kx, -hh*1.12 + ky];
+    tailLocal = [tx, by + hh*0.15];
   }else if(cordStyle === 'neck_cord'){
-    const leftV = sampleBez([holeX, holeY], [-hw*0.55, -hh*1.05], [-hw*0.95, -hh*1.25], [-hw*1.25, -hh*1.42], 12);
-    const rightV = sampleBez([holeX, holeY], [hw*0.55, -hh*1.05], [hw*0.95, -hh*1.25], [hw*1.25, -hh*1.42], 12);
+    const leftV = sampleBez([holeX, holeY], [-hw*0.55 - tx*0.4, -hh*1.05 + ky*0.5], [-hw*0.95 - tx*0.7, -hh*1.25 + ky*0.8], [-hw*1.25 - tx, -hh*1.42 + ky], 12);
+    const rightV = sampleBez([holeX, holeY], [hw*0.55 + tx*0.4, -hh*1.05 + ky*0.5], [hw*0.95 + tx*0.7, -hh*1.25 + ky*0.8], [hw*1.25 + tx, -hh*1.42 + ky], 12);
     addTwistedRopeBeadsMm(frontCord, tr, leftV, beadR * 0.9, fillCol, strokeCol, strokeW);
     addTwistedRopeBeadsMm(frontCord, tr, rightV, beadR * 0.9, fillCol, strokeCol, strokeW);
+    knotLocal = [holeX + kx, -hh*1.25 + ky];
+    tailLocal = [hw*1.10 + tx, -hh*1.32 + ky];
   }
-  return { backCord, frontCord };
+  return { backCord, frontCord, knotHandlePt: tr(knotLocal[0], knotLocal[1]), tailHandlePt: tr(tailLocal[0], tailLocal[1]) };
 }
 
 // 1箇所の「札ロゴ（全10種・立体3D木札・二枚重ね木札・組紐6種対応）または文字」のベクタープリミティブ＆描画データを生成
@@ -2504,12 +2545,16 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
   const isV = st.customTextVert !== false;
   const fg = st.customTextColor || '#ffffff';
   const bg = st.customTextBg || '#046e7e';
+  const bodyFill = st.fudaBgTransparent ? null : bg;
+  const cordFill = st.fudaCordTransparent ? null : (st.fudaCordColor || bg);
+  const cordStroke = st.fudaCordStroke || fg;
   const fontVal = st.customTextFont || "'Reggae One', sans-serif";
   const useOutline = (st.customTextOutline !== false) || frame === 'outline';
   const sp = (st.textSpacing ?? 6) * (fs / 100);
   const ow = (st.textOutlineW ?? 5) * (fs / 44);
   const wScale = (st.fudaWidthPct || 100) / 100;
   const hScale = (st.fudaHeightPct || 100) / 100;
+  let gizmoHandles = null;
 
   // ⑩ 二枚重ね夫婦木札（濱松・遠州風）の場合は、奥の札と手前の札の2枚を扇状に重ねて合成する
   if(frame === 'twin_kifuda'){
@@ -2542,7 +2587,8 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
     return {
       frameItems: [...pBack.frameItems, ...pFront.frameItems],
       textItems: [...pBack.textItems, ...pFront.textItems],
-      charDrawList: [...pBack.charDrawList, ...pFront.charDrawList]
+      charDrawList: [...pBack.charDrawList, ...pFront.charDrawList],
+      gizmoHandles: pFront.gizmoHandles
     };
   }
 
@@ -2670,8 +2716,21 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
     const beadR = Math.max(1.4, w * 0.058);
 
     // 0. 組紐（背後レイヤー＆手前レイヤー）を生成
-    const { backCord, frontCord } = buildFudaCordItemsMm(effCord, tr, hw, hh, 0, holeY, beadR, bg, fg, Math.max(0.9, outerLw * 0.72));
+    const knotOff = [st.fudaCordKnotX || 0, st.fudaCordKnotY || 0];
+    const tailOff = [st.fudaCordTailX || 0, st.fudaCordTailY || 0];
+    const { backCord, frontCord, knotHandlePt, tailHandlePt } = buildFudaCordItemsMm(
+      effCord, tr, hw, hh, 0, holeY, beadR, cordFill, cordStroke, Math.max(0.9, outerLw * 0.72), knotOff, tailOff
+    );
     frameItems.push(...backCord);
+    gizmoHandles = {
+      cx, cy, deg, hw, hh,
+      knot: knotHandlePt,
+      tail: tailHandlePt,
+      scale: tr(hw, hh),
+      width: tr(hw, 0),
+      height: tr(0, hh),
+      rotate: tr(0, -hh - Math.max(8, fs * 0.25))
+    };
 
     // 1. 3D木札の厚み側面 または 2D外座布団
     const depthMm = (frame === 'kifuda_3d_rope') ? Math.max(4.5, st.fudaDepth3d || 5.5) : (st.fudaDepth3d || 0);
@@ -2684,17 +2743,17 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
         const nx = ey, ny = -ex;
         if(nx * dx + ny * dy > -0.01){
           frameItems.push({
-            type: 'poly', fill: bg, stroke: fg, strokeWidth: outerLw * 0.85,
+            type: 'poly', fill: bodyFill, stroke: fg, strokeWidth: outerLw * 0.85,
             pts: [tr(pA[0], pA[1]), tr(pB[0], pB[1]), tr(pB[0] + dx, pB[1] + dy), tr(pA[0] + dx, pA[1] + dy)]
           });
         }
       }
-    }else{
+    }else if(!st.fudaBgTransparent){
       frameItems.push({ type: 'poly', fill: fg, stroke: null, pts: getOuterPolyPts(-pad) });
     }
 
     // 2. 札本体塗り＋外太枠ストローク
-    frameItems.push({ type: 'poly', fill: bg, stroke: fg, strokeWidth: outerLw, pts: getOuterPolyPts(0) });
+    frameItems.push({ type: 'poly', fill: bodyFill, stroke: fg, strokeWidth: outerLw, pts: getOuterPolyPts(0) });
 
     // 3. 内細枠（立体喧嘩札は写真見本に合わせてすっきり一重太枠、他は内枠あり）
     const inGap = Math.max(2.2, w * 0.105);
@@ -2803,12 +2862,21 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
     // pad / circle / outline / none
     const bw = isV ? fs * 1.38 : chars.length * fs + Math.max(0, chars.length - 1) * sp + fs * 0.5;
     const bh = isV ? chars.length * fs + Math.max(0, chars.length - 1) * sp + fs * 0.5 : fs * 1.42;
-    if(frame === 'pad'){
-      const pw = bw + fs * 0.45, ph = bh + fs * 0.45;
-      frameItems.push({ type: 'poly', fill: bg, stroke: null, pts: rectToPts(-pw / 2, -ph / 2, pw, ph) });
+    const hw = bw * 0.58 * wScale, hh = bh * 0.58 * hScale;
+    gizmoHandles = {
+      cx, cy, deg, hw, hh,
+      knot: null, tail: null,
+      scale: tr(hw, hh),
+      width: tr(hw, 0),
+      height: tr(0, hh),
+      rotate: tr(0, -hh - Math.max(8, fs * 0.25))
+    };
+    if(frame === 'pad' && !st.fudaBgTransparent){
+      const pw = (bw + fs * 0.45) * wScale, ph = (bh + fs * 0.45) * hScale;
+      frameItems.push({ type: 'poly', fill: bodyFill, stroke: null, pts: rectToPts(-pw / 2, -ph / 2, pw, ph) });
     }else if(frame === 'circle'){
-      const radC = Math.max(bw, bh) * 0.62;
-      frameItems.push({ type: 'poly', fill: bg, stroke: fg, strokeWidth: Math.max(0.8, ow * 0.5), pts: circleToPts(0, 0, radC, 28) });
+      const radC = Math.max(bw * wScale, bh * hScale) * 0.62;
+      frameItems.push({ type: 'poly', fill: bodyFill, stroke: fg, strokeWidth: Math.max(0.8, ow * 0.5), pts: circleToPts(0, 0, radC, 28) });
     }
     if(isV){
       const totalH = (chars.length - 1) * (fs + sp);
@@ -2826,7 +2894,7 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
     }
   }
 
-  return { frameItems, textItems, charDrawList };
+  return { frameItems, textItems, charDrawList, gizmoHandles };
 }
 
 // プレビュー上の全カスタムロゴ・札ロゴ・文字のベクタープリミティブを一括生成（.ai / .svg / .jsx 出力用）
@@ -2934,8 +3002,11 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
   return { logoVectorItems, logoSvgImages, fudaFrameItems, fudaTextItems };
 }
 
+let FUDA_STAGE_GIZMOS = [];
+
 function drawCustomLogoAndTextMm(x, cfg){
   const st = cfg || S;
+  if(st === S) FUDA_STAGE_GIZMOS = [];
   // 1. カスタムロゴ画像描画（複数スロット＆ちりばめ総柄対応）
   if(st.showLogo){
     if(st === S) syncActiveSlotFromS();
@@ -2945,12 +3016,13 @@ function drawCustomLogoAndTextMm(x, cfg){
       drawSingleLogoSlotMm(x, effectiveSlot, st.W, st.H, st.bgColor);
     });
   }
-  // 2. 札ロゴ（全8種）・名入れ文字・1文字ちりばめ総柄描画
+  // 2. 札ロゴ（全10種）・名入れ文字・1文字ちりばめ総柄描画
   if(st.showText && (st.customTextStr || '').trim()){
     const baseFs = st.textSize || 44;
     const baseTx = st.W * ((st.textX ?? 50)/100);
     const baseTy = st.H * ((st.textY ?? 75)/100);
     const baseAng = st.textAngle || 0;
+    const fudaAlpha = Math.max(0.1, Math.min(1, (st.fudaOpacity ?? 100) / 100));
 
     const placements = generateScatterPlacementsMm({
       W: st.W, H: st.H,
@@ -2964,14 +3036,15 @@ function drawCustomLogoAndTextMm(x, cfg){
       seed: (st.seed || 1) + 17
     });
 
-    for(const pt of placements){
+    placements.forEach((pt, pIdx) => {
       const fs = Math.max(4, baseFs * (pt.scaleMul || 1));
       const deg = baseAng + (pt.addAngle || 0);
       const ow = (st.textOutlineW ?? 5) * (fs / 44);
-      const { frameItems, charDrawList } = buildSingleFudaOrTextPrimitivesMm(pt.x, pt.y, deg, fs, st, false);
+      const { frameItems, charDrawList, gizmoHandles } = buildSingleFudaOrTextPrimitivesMm(pt.x, pt.y, deg, fs, st, false);
 
       // 札の枠・座布団・丸紋・紐穴を描画
       x.save();
+      x.globalAlpha = fudaAlpha;
       for(const it of frameItems){
         if(it.type === 'poly' && it.pts && it.pts.length >= 3){
           x.beginPath();
@@ -2986,6 +3059,7 @@ function drawCustomLogoAndTextMm(x, cfg){
 
       // 札の中の文字（江戸角字またはフォント文字・二枚重ね札の個別角度にも対応）を描画
       x.save();
+      x.globalAlpha = fudaAlpha;
       x.textAlign = 'center';
       x.textBaseline = 'middle';
 
@@ -3027,7 +3101,34 @@ function drawCustomLogoAndTextMm(x, cfg){
         x.restore();
       }
       x.restore();
-    }
+
+      // プレビューキャンバス（st === S）かつ先頭の札の場合、マウス操作ハンドル（紐移動・サイズ・幅・縦・回転）を記録＆描画
+      if(st === S && pIdx === 0 && gizmoHandles){
+        const list = [];
+        if(gizmoHandles.knot) list.push({ id: 'knot', pt: gizmoHandles.knot, col: '#f97316', label: '🪢上紐', gh: gizmoHandles });
+        if(gizmoHandles.tail) list.push({ id: 'tail', pt: gizmoHandles.tail, col: '#fb923c', label: '🪢脇紐', gh: gizmoHandles });
+        if(gizmoHandles.scale) list.push({ id: 'scale', pt: gizmoHandles.scale, col: '#22c55e', label: '↘サイズ', gh: gizmoHandles });
+        if(gizmoHandles.width) list.push({ id: 'width', pt: gizmoHandles.width, col: '#06b6d4', label: '↔幅', gh: gizmoHandles });
+        if(gizmoHandles.height) list.push({ id: 'height', pt: gizmoHandles.height, col: '#38bdf8', label: '↕縦', gh: gizmoHandles });
+        if(gizmoHandles.rotate) list.push({ id: 'rotate', pt: gizmoHandles.rotate, col: '#a855f7', label: '↻回転', gh: gizmoHandles });
+        FUDA_STAGE_GIZMOS = list;
+
+        if(S.viewMode === 'fabric' && S.showFudaGizmo !== false && (!S.textRepeatMode || S.textRepeatMode === 'none')){
+          x.save();
+          const rMm = Math.max(3.6, Math.min(7.5, S.W * 0.014));
+          for(const h of list){
+            x.beginPath();
+            x.arc(h.pt[0], h.pt[1], rMm, 0, Math.PI * 2);
+            x.fillStyle = h.col;
+            x.fill();
+            x.lineWidth = Math.max(0.8, rMm * 0.25);
+            x.strokeStyle = '#ffffff';
+            x.stroke();
+          }
+          x.restore();
+        }
+      }
+    });
   }
 }
 
@@ -6004,7 +6105,7 @@ const ranges={
   logoThreshold:v=>v+'', logoSoftness:v=>v+'', logoDilate:v=>(v>0?'+':'')+v+' px', logoContrast:v=>(v>0?'+':'')+v, logoOpacity:v=>v+'%', logoOutlineMm:v=>v+' mm',
   logoSize:v=>v+' mm', logoAngle:v=>(v>0?'+':'')+v+'°', logoX:v=>v+'%', logoY:v=>v+'%',
   logoRepeatGapX:v=>v+' mm', logoRepeatGapY:v=>v+' mm', logoRepeatGridAngle:v=>(v>0?'+':'')+v+'°', logoRepeatAngleVar:v=>v+'°', logoRepeatSizeVar:v=>v+'%',
-  textSize:v=>v+' mm', fudaWidthPct:v=>v+'%', fudaHeightPct:v=>v+'%', fudaDepth3d:v=>v+' mm',
+  textSize:v=>v+' mm', fudaWidthPct:v=>v+'%', fudaHeightPct:v=>v+'%', fudaDepth3d:v=>v+' mm', fudaOpacity:v=>v+'%',
   textSpacing:v=>(v>0?'+':'')+v+'%', textOutlineW:v=>v+'', textAngle:v=>(v>0?'+':'')+v+'°', textX:v=>v+'%', textY:v=>v+'%',
   textRepeatGapX:v=>v+' mm', textRepeatGapY:v=>v+' mm', textRepeatGridAngle:v=>(v>0?'+':'')+v+'°', textRepeatAngleVar:v=>v+'°', textRepeatSizeVar:v=>v+'%',
   daboShiftY:v=>(v>0?'+':'')+v+'%', daboShiftX:v=>(v>0?'+':'')+v+'%', daboSleeveShiftY:v=>(v>0?'+':'')+v+'%', daboPatScale:v=>v+'%',
@@ -6049,6 +6150,11 @@ function syncUI(){
   if($('customTextOutline')) $('customTextOutline').checked=(S.customTextOutline!==false);
   if($('customTextColor')) $('customTextColor').value=S.customTextColor||'#046e7e';
   if($('customTextBg')) $('customTextBg').value=S.customTextBg||'#ffffff';
+  if($('fudaCordColor')) $('fudaCordColor').value=S.fudaCordColor||S.customTextBg||'#046e7e';
+  if($('fudaCordStroke')) $('fudaCordStroke').value=S.fudaCordStroke||S.customTextColor||'#ffffff';
+  if($('fudaBgTransparent')) $('fudaBgTransparent').checked=!!S.fudaBgTransparent;
+  if($('fudaCordTransparent')) $('fudaCordTransparent').checked=!!S.fudaCordTransparent;
+  if($('showFudaGizmo')) $('showFudaGizmo').checked=(S.showFudaGizmo!==false);
   if($('textVertBtn')) $('textVertBtn').setAttribute('aria-pressed',(S.customTextVert!==false)+'');
   if($('textHorizBtn')) $('textHorizBtn').setAttribute('aria-pressed',(S.customTextVert===false)+'');
   for(const b of document.querySelectorAll('#fudaStyleQuickChips button[data-fstyle]')){
@@ -6113,7 +6219,7 @@ const NO_LAYOUT_KEYS = new Set([
   'logoThreshold','logoSoftness','logoDilate','logoContrast','logoOpacity','logoOutlineMm',
   'logoSize','logoAngle','logoX','logoY',
   'logoRepeatGapX','logoRepeatGapY','logoRepeatGridAngle','logoRepeatAngleVar','logoRepeatSizeVar',
-  'textSize','fudaWidthPct','fudaHeightPct','fudaDepth3d','textSpacing','textOutlineW','textAngle','textX','textY',
+  'textSize','fudaWidthPct','fudaHeightPct','fudaDepth3d','fudaOpacity','textSpacing','textOutlineW','textAngle','textX','textY',
   'textRepeatGapX','textRepeatGapY','textRepeatGridAngle','textRepeatAngleVar','textRepeatSizeVar',
   'daboShiftY','daboShiftX','daboSleeveShiftY','daboPatScale'
 ]);
@@ -6537,8 +6643,30 @@ $('customTextFont').addEventListener('change',e=>{
 $('customTextFrame').addEventListener('change',e=>{S.customTextFrame=e.target.value; update(false);});
 $('customTextColor').addEventListener('input',e=>{S.customTextColor=e.target.value; update(false);});
 $('customTextBg').addEventListener('input',e=>{S.customTextBg=e.target.value; update(false);});
-$('textSwapColBtn').addEventListener('click',()=>{const t=S.customTextColor; S.customTextColor=S.customTextBg; S.customTextBg=t; update(false);});
-$('textMatchBgBtn').addEventListener('click',()=>{S.customTextBg=S.bgColor; S.customTextColor=(S.mode==='arare'?S.dotColor:S.kakuColor); update(false);});
+$('textSwapColBtn').addEventListener('click',()=>{
+  const t=S.customTextColor; S.customTextColor=S.customTextBg; S.customTextBg=t;
+  const tc=S.fudaCordColor; S.fudaCordColor=S.fudaCordStroke; S.fudaCordStroke=tc;
+  update(false);
+});
+$('textMatchBgBtn').addEventListener('click',()=>{
+  const fg = (S.mode==='arare'?S.dotColor:S.kakuColor);
+  S.customTextBg=S.bgColor; S.customTextColor=fg;
+  S.fudaCordColor=S.bgColor; S.fudaCordStroke=fg;
+  update(false);
+});
+if($('fudaCordColor')) $('fudaCordColor').addEventListener('input',e=>{S.fudaCordColor=e.target.value; S.showText=true; update(false);});
+if($('fudaCordStroke')) $('fudaCordStroke').addEventListener('input',e=>{S.fudaCordStroke=e.target.value; S.showText=true; update(false);});
+if($('fudaBgTransparent')) $('fudaBgTransparent').addEventListener('change',e=>{S.fudaBgTransparent=e.target.checked; S.showText=true; update(false);});
+if($('fudaCordTransparent')) $('fudaCordTransparent').addEventListener('change',e=>{S.fudaCordTransparent=e.target.checked; S.showText=true; update(false);});
+if($('showFudaGizmo')) $('showFudaGizmo').addEventListener('change',e=>{S.showFudaGizmo=e.target.checked; update(false);});
+if($('resetFudaCordPosBtn')){
+  $('resetFudaCordPosBtn').addEventListener('click',()=>{
+    S.fudaCordKnotX = 0; S.fudaCordKnotY = 0;
+    S.fudaCordTailX = 0; S.fudaCordTailY = 0;
+    S.fudaWidthPct = 100; S.fudaHeightPct = 100;
+    update(false);
+  });
+}
 if($('textRepeatMode')){
   $('textRepeatMode').addEventListener('change',e=>{
     S.textRepeatMode = e.target.value;
@@ -6608,12 +6736,38 @@ box.addEventListener('mousedown', e=>{
   if(e.target && e.target.closest && e.target.closest('.float-zoom-hud')) return;
   if(e.button !== 0) return;
 
-  // 1. 手ぬぐい生地モードで、丸紋・ロゴ・名入れ文字の上をクリックした場合は要素ドラッグを優先
+  // 1. 手ぬぐい生地モードで、札の組紐・サイズ変更ギズモ または 丸紋・ロゴ・名入れ文字の上をクリックした場合は要素ドラッグを優先
   if(S.viewMode === 'fabric' && !e.spaceKey && !e.shiftKey){
     const r = cv.getBoundingClientRect();
     if(r.width > 0 && r.height > 0){
       const mx = (e.clientX - r.left) / r.width * S.W;
       const my = (e.clientY - r.top) / r.height * S.H;
+
+      // 1a. 札の組紐ハンドル（🪢上紐・🪢脇紐）やサイズ・幅・縦・回転ハンドルのヒット判定を最優先
+      if(S.showText && FUDA_STAGE_GIZMOS.length > 0){
+        const hitRad = Math.max(8, S.W * 0.028);
+        for(const h of FUDA_STAGE_GIZMOS){
+          if(Math.hypot(mx - h.pt[0], my - h.pt[1]) <= hitRad){
+            dragTarget = {
+              gizmoId: h.id,
+              gh: h.gh,
+              startMx: mx, startMy: my,
+              startTextSize: S.textSize || 44,
+              startWidthPct: S.fudaWidthPct || 100,
+              startHeightPct: S.fudaHeightPct || 100,
+              startAngle: S.textAngle || 0,
+              startKnotX: S.fudaCordKnotX || 0,
+              startKnotY: S.fudaCordKnotY || 0,
+              startTailX: S.fudaCordTailX || 0,
+              startTailY: S.fudaCordTailY || 0
+            };
+            box.classList.add('is-panning');
+            e.preventDefault();
+            return;
+          }
+        }
+      }
+
       const candidates = [];
       if(S.showText) candidates.push({ keyX:'textX', keyY:'textY', x:S.W*(S.textX/100), y:S.H*(S.textY/100), rad:Math.max(28, S.textSize*1.1) });
       if(S.showLogo){
@@ -6678,6 +6832,45 @@ window.addEventListener('mousemove', e=>{
   if(dragTarget){
     const r = cv.getBoundingClientRect();
     if(r.width > 0 && r.height > 0){
+      if(dragTarget.gizmoId){
+        const mx = (e.clientX - r.left) / r.width * S.W;
+        const my = (e.clientY - r.top) / r.height * S.H;
+        const dx = mx - dragTarget.startMx;
+        const dy = my - dragTarget.startMy;
+        const rad = ((dragTarget.gh.deg || 0) * Math.PI) / 180;
+        const cos = Math.cos(rad), sin = Math.sin(rad);
+        const ldx = dx * cos + dy * sin;
+        const ldy = -dx * sin + dy * cos;
+
+        if(dragTarget.gizmoId === 'knot'){
+          S.fudaCordKnotX = Math.max(-120, Math.min(120, Math.round((dragTarget.startKnotX + ldx) * 10) / 10));
+          S.fudaCordKnotY = Math.max(-120, Math.min(120, Math.round((dragTarget.startKnotY + ldy) * 10) / 10));
+        }else if(dragTarget.gizmoId === 'tail'){
+          S.fudaCordTailX = Math.max(-140, Math.min(140, Math.round((dragTarget.startTailX + ldx) * 10) / 10));
+          S.fudaCordTailY = Math.max(-140, Math.min(140, Math.round((dragTarget.startTailY + ldy) * 10) / 10));
+        }else if(dragTarget.gizmoId === 'scale'){
+          const d0 = Math.max(8, Math.hypot(dragTarget.startMx - dragTarget.gh.cx, dragTarget.startMy - dragTarget.gh.cy));
+          const d1 = Math.max(4, Math.hypot(mx - dragTarget.gh.cx, my - dragTarget.gh.cy));
+          S.textSize = Math.max(8, Math.min(200, Math.round(dragTarget.startTextSize * (d1 / d0))));
+        }else if(dragTarget.gizmoId === 'width'){
+          const baseHw = Math.max(6, dragTarget.gh.hw / ((dragTarget.startWidthPct || 100) / 100));
+          const curHw = Math.max(4, dragTarget.gh.hw + ldx);
+          S.fudaWidthPct = Math.max(55, Math.min(190, Math.round((curHw / baseHw) * 100)));
+        }else if(dragTarget.gizmoId === 'height'){
+          const baseHh = Math.max(10, dragTarget.gh.hh / ((dragTarget.startHeightPct || 100) / 100));
+          const curHh = Math.max(6, dragTarget.gh.hh + ldy);
+          S.fudaHeightPct = Math.max(60, Math.min(190, Math.round((curHh / baseHh) * 100)));
+        }else if(dragTarget.gizmoId === 'rotate'){
+          const a0 = Math.atan2(dragTarget.startMy - dragTarget.gh.cy, dragTarget.startMx - dragTarget.gh.cx);
+          const a1 = Math.atan2(my - dragTarget.gh.cy, mx - dragTarget.gh.cx);
+          let nextDeg = Math.round(dragTarget.startAngle + ((a1 - a0) * 180) / Math.PI);
+          if(nextDeg > 180) nextDeg -= 360;
+          if(nextDeg < -180) nextDeg += 360;
+          S.textAngle = Math.max(-180, Math.min(180, nextDeg));
+        }
+        update(false);
+        return;
+      }
       const px = Math.max(2, Math.min(98, Math.round(((e.clientX - r.left) / r.width) * 1000) / 10));
       const py = Math.max(2, Math.min(98, Math.round(((e.clientY - r.top) / r.height) * 1000) / 10));
       S[dragTarget.keyX] = px;
