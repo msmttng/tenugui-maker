@@ -2067,7 +2067,7 @@ function getProcessedLogoCanvas(cfg){
   ].join('|');
   if(PROC_LOGO_MAP.has(key)) return PROC_LOGO_MAP.get(key);
 
-  const maxD = 560;
+  const maxD = 1200;
   let w = rawImg.naturalWidth || 240, h = rawImg.naturalHeight || 240;
   if(w > maxD || h > maxD){ const r = Math.min(maxD/w, maxD/h); w = Math.round(w*r); h = Math.round(h*r); }
   let off = document.createElement('canvas');
@@ -3672,11 +3672,47 @@ function beziers(a){const n=a.length,seg=[];for(let i=0;i<n;i++){const p0=a[(i-1
 /* ---- 5. キャンバス描画（手ぬぐい生地 ／ 生地の取り方裁断図 ＋ ダボ完成プレビュー） ---- */
 const cv=$('cv'),box=$('box');
 let ZOOM=1, PAN_X=0, PAN_Y=0, LAST_RENDER_ZOOM=1, ZOOM_REDRAW_TIMER=null;
+// ステージのベクター座標逆算用メトリクス（CSS scaleによるビットマップぼやけを廃止し、Canvas 2D行列で直接ベクター拡大描画）
+let STAGE_METRICS={ mode:'fabric', stageLeft:0, stageTop:0, baseS:1, cw:350, ch:900, vW:600, vH:640 };
+
+function clientToFabricMm(clientX, clientY){
+  const r = cv.getBoundingClientRect();
+  const vW = STAGE_METRICS.vW || r.width || 1;
+  const vH = STAGE_METRICS.vH || r.height || 1;
+  const vx = (clientX - r.left) * (vW / Math.max(1, r.width));
+  const vy = (clientY - r.top) * (vH / Math.max(1, r.height));
+  const denom = Math.max(0.0001, (STAGE_METRICS.baseS || 1) * ZOOM);
+  const mx = (vx - STAGE_METRICS.stageLeft) / denom;
+  const my = (vy - STAGE_METRICS.stageTop) / denom;
+  return { mx, my, pctX: (mx / S.W) * 100, pctY: (my / S.H) * 100 };
+}
+
+function clientToDaboStageXY(clientX, clientY){
+  const r = cv.getBoundingClientRect();
+  const vW = STAGE_METRICS.vW || r.width || 1;
+  const vH = STAGE_METRICS.vH || r.height || 1;
+  const vx = (clientX - r.left) * (vW / Math.max(1, r.width));
+  const vy = (clientY - r.top) * (vH / Math.max(1, r.height));
+  return {
+    stageX: (vx - STAGE_METRICS.stageLeft) / Math.max(0.01, ZOOM),
+    stageY: (vy - STAGE_METRICS.stageTop) / Math.max(0.01, ZOOM)
+  };
+}
+
+let RAF_DRAW_PENDING = false;
+function requestImmediateVectorDraw(){
+  if(RAF_DRAW_PENDING) return;
+  RAF_DRAW_PENDING = true;
+  requestAnimationFrame(()=>{
+    RAF_DRAW_PENDING = false;
+    draw();
+  });
+}
 
 function applyStageTransform(){
   if(!cv) return;
-  cv.style.transformOrigin = 'center center';
-  cv.style.transform = `translate(${Math.round(PAN_X)}px, ${Math.round(PAN_Y)}px) scale(${ZOOM})`;
+  // CSS scale() を使うとブラウザのGPUコンポジタがビットマップを引き伸ばして文字がぼやけるため、CSS transformは使わずCanvas 2Dのネイティブベクター行列で描画する
+  cv.style.transform = 'none';
 }
 
 function syncZoomUI(){
@@ -3696,8 +3732,8 @@ function setStageZoom(newZ, resetPan, anchorClientX, anchorClientY){
   if(resetPan){
     PAN_X = 0;
     PAN_Y = 0;
-  } else if(anchorClientX !== undefined && anchorClientY !== undefined && box){
-    const br = box.getBoundingClientRect();
+  } else if(anchorClientX !== undefined && anchorClientY !== undefined && cv){
+    const br = cv.getBoundingClientRect();
     const cx = br.left + br.width / 2;
     const cy = br.top + br.height / 2;
     const ox = anchorClientX - cx - PAN_X;
@@ -3709,11 +3745,8 @@ function setStageZoom(newZ, resetPan, anchorClientX, anchorClientY){
   ZOOM = clamped;
   syncZoomUI();
   applyStageTransform();
-  // 拡大率が大きく変わった場合は少し遅らせて超高精細再描画（最大12倍ズームでも文字・柄がくっきり）
-  if(Math.abs(ZOOM - LAST_RENDER_ZOOM) > 0.22){
-    clearTimeout(ZOOM_REDRAW_TIMER);
-    ZOOM_REDRAW_TIMER = setTimeout(()=>{ draw(); }, 90);
-  }
+  // ベクター行列で即時再描画（どの倍率でも文字・角字・木札が100%くっきり表示）
+  requestImmediateVectorDraw();
 }
 
 // 任意の設定オブジェクト st から手ぬぐい1枚分のオフスクリーンCanvasを生成
@@ -3849,6 +3882,169 @@ function orientStripCanvas(srcCv, rotMode){
   ox.rotate((deg * Math.PI) / 180);
   ox.drawImage(srcCv, -srcCv.width/2, -srcCv.height/2);
   return out;
+}
+
+// ★ ダボシャツ・裁断割付図へ直接ベクター＆ネイティブフォント描画するためのストリップ記述子を生成
+// （ビットマップの drawImage による拡大時の文字ぼやけをゼロにし、12倍ズームでも文字・角字・あられ・木札を100%ベクター品質で描画）
+function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
+  const cfg = Object.assign({}, DEF, st);
+  const pScale = (patScaleMul || 1);
+  if(pScale !== 1){
+    cfg.kakuScale = (cfg.kakuScale || 100) * pScale;
+    cfg.scale = (cfg.scale || 100) * pScale;
+  }
+  const W = cfg.W || 350, H = cfg.H || 900;
+  let deg = 0;
+  if(rotMode === 'auto'){
+    deg = (W > H) ? -90 : 0;
+  }else{
+    deg = parseInt(rotMode, 10) || 0;
+  }
+  const stripW = (Math.abs(deg) === 90) ? H : W;
+  const stripH = (Math.abs(deg) === 90) ? W : H;
+
+  if(solidOnly){
+    const drawSolid = (x, dstX, dstY, dstW, dstH) => {
+      x.fillStyle = cfg.bgColor || '#046e7e';
+      x.fillRect(dstX, dstY, dstW, dstH);
+    };
+    return {
+      logoStrip:  { width: stripW, height: stripH, drawVector: drawSolid },
+      plainStrip: { width: stripW, height: stripH, drawVector: drawSolid }
+    };
+  }
+
+  let polys = KAKU_POLYS;
+  let dots = DOTS;
+  const isSamePatternAsS = (
+    cfg.W===S.W && cfg.H===S.H && cfg.mode===S.mode &&
+    cfg.kakuSize===S.kakuSize && Math.abs((cfg.kakuScale||100)-(S.kakuScale||100))<0.1 &&
+    cfg.kakuDensity===S.kakuDensity && cfg.kakuWeight===S.kakuWeight &&
+    cfg.kakuInnerGap===S.kakuInnerGap && cfg.kakuColGap===S.kakuColGap &&
+    cfg.kakuRowGap===S.kakuRowGap && cfg.kakuAngle===S.kakuAngle &&
+    cfg.showBand===S.showBand && cfg.bandH===S.bandH && Math.abs((cfg.scale||100)-(S.scale||100))<0.1 &&
+    cfg.count===S.count
+  );
+  if(!isSamePatternAsS){
+    const bak = S;
+    S = cfg;
+    layoutKaku();
+    layoutArare();
+    polys = KAKU_POLYS;
+    dots = DOTS;
+    S = bak;
+    layoutKaku();
+    layoutArare();
+  }
+
+  // Path2D にプリコンパイルして各ダボ部位へのベクター描画を高速化
+  let kakuPath = null;
+  if(polys && polys.length > 0){
+    kakuPath = new Path2D();
+    for(const poly of polys){
+      kakuPath.moveTo(poly[0][0], poly[0][1]);
+      for(let i = 1; i < poly.length; i++) kakuPath.lineTo(poly[i][0], poly[i][1]);
+      kakuPath.closePath();
+    }
+  }
+  let ararePath = null;
+  if(dots && dots.length > 0){
+    ararePath = new Path2D();
+    for(const o of dots){
+      const a = anchors(o), b = beziers(a);
+      ararePath.moveTo(a[0][0], a[0][1]);
+      for(const q of b) ararePath.bezierCurveTo(q[0], q[1], q[2], q[3], q[4], q[5]);
+      ararePath.closePath();
+    }
+  }
+  const crest = getCrestBeziersMm(cfg);
+  let crestPath = null;
+  if(crest && crest.loops){
+    crestPath = new Path2D();
+    for(const lp of crest.loops){
+      crestPath.moveTo(lp.a[0][0], lp.a[0][1]);
+      for(const q of lp.b) crestPath.bezierCurveTo(q[0], q[1], q[2], q[3], q[4], q[5]);
+      crestPath.closePath();
+    }
+  }
+
+  const ko = (cfg.mode === 'both' && cfg.knockoutMm > 0) ? cfg.knockoutMm : 0;
+  const hasTextScatter = !!(cfg.showText && cfg.textRepeatMode && cfg.textRepeatMode !== 'none');
+  const hasLogoScatter = !!(cfg.showLogo && cfg.logoRepeatMode && cfg.logoRepeatMode !== 'none');
+  const scatterCfg = (hasTextScatter || hasLogoScatter)
+    ? Object.assign({}, cfg, { showCrest: false, showLogo: hasLogoScatter, showText: hasTextScatter, logoSlots: [] })
+    : null;
+
+  const drawCore = (x, dstX, dstY, dstW, dstH, includeOverlays) => {
+    x.save();
+    x.translate(dstX + dstW * 0.5, dstY + dstH * 0.5);
+    x.scale(dstW / stripW, dstH / stripH);
+    if(deg) x.rotate((deg * Math.PI) / 180);
+    x.translate(-W * 0.5, -H * 0.5);
+
+    x.beginPath();
+    x.rect(0, 0, W, H);
+    x.clip();
+
+    x.fillStyle = cfg.bgColor || '#046e7e';
+    x.fillRect(0, 0, W, H);
+    if(cfg.useKoboBase && cfg.koboBaseDataUrl){
+      if(cfg.koboBaseDataUrl !== KOBO_BASE_URL || !KOBO_BASE_IMG) ensureKoboBaseLoaded(cfg.koboBaseDataUrl);
+      if(KOBO_BASE_IMG) x.drawImage(KOBO_BASE_IMG, 0, 0, W, H);
+    }
+
+    const drawArareVec = (isFront) => {
+      if(!ararePath) return;
+      if(isFront && ko > 0){
+        x.save(); x.strokeStyle = cfg.bgColor; x.lineWidth = ko * 2; x.lineJoin = 'round'; x.lineCap = 'round';
+        x.stroke(ararePath); x.restore();
+      }
+      x.fillStyle = cfg.dotColor || '#ffffff';
+      x.fill(ararePath);
+    };
+    const drawKakuVec = (isFront) => {
+      if(!kakuPath) return;
+      if(isFront && ko > 0){
+        x.save(); x.strokeStyle = cfg.bgColor; x.lineWidth = ko * 2; x.lineJoin = 'round'; x.lineCap = 'round';
+        x.stroke(kakuPath); x.restore();
+      }
+      x.fillStyle = cfg.kakuColor || '#ffffff';
+      x.fill(kakuPath);
+    };
+
+    if(cfg.layerOrder === 'arareFront'){
+      drawKakuVec(false); drawArareVec(true);
+    }else{
+      drawArareVec(false); drawKakuVec(true);
+    }
+
+    if(includeOverlays){
+      if(crest && crestPath){
+        x.fillStyle = crest.bg;
+        x.beginPath(); x.arc(crest.cx, crest.cy, crest.bgRad, 0, Math.PI * 2); x.fill();
+        x.fillStyle = crest.fg;
+        x.fill(crestPath, 'evenodd');
+      }
+      drawCustomLogoAndTextMm(x, cfg);
+    }else if(scatterCfg){
+      drawCustomLogoAndTextMm(x, scatterCfg);
+    }
+    x.restore();
+  };
+
+  return {
+    logoStrip:  { width: stripW, height: stripH, drawVector: (x, dx, dy, dw, dh) => drawCore(x, dx, dy, dw, dh, true) },
+    plainStrip: { width: stripW, height: stripH, drawVector: (x, dx, dy, dw, dh) => drawCore(x, dx, dy, dw, dh, false) }
+  };
+}
+
+function drawStripSource(x, src, dx, dy, dw, dh){
+  if(!src) return;
+  if(typeof src.drawVector === 'function'){
+    src.drawVector(x, dx, dy, dw, dh);
+  }else{
+    x.drawImage(src, 0, 0, src.width, src.height, dx, dy, dw, dh);
+  }
 }
 
 // 生地の取り方（裁断パーツ定義）を計算
@@ -4030,21 +4226,18 @@ let DABO_HIT_ZONES = [];
 // ダボ上から逆算配置した際に裁断図上でハイライトするターゲット情報
 let DABO_ACTIVE_REVERSE_HIT = null;
 
-// 裁断図およびダボ完成プレビューを一括描画
+// 裁断図およびダボ完成プレビューを一括描画（CSS拡大を使わずCanvas 2Dベクター行列＆直接ベクターストリップ描画で12倍ズームでも文字が一切ぼやけない設計）
 function drawDaboAndCutScene(targetCv, viewMode, exportMode){
-  const baseDpr = exportMode ? 2.5 : (window.devicePixelRatio || 1);
-  const bw = exportMode ? 1600 : ((box.clientWidth || 720) - 20);
-  const bh = exportMode ? 1020 : ((box.clientHeight || 680) - 20);
-  const cw = Math.max(520, Math.floor(bw));
-  const ch = Math.max(440, Math.floor(bh));
-  // ズーム時でもぼやけないよう最大4096pxまで超高精細レンダリング
-  const maxSafeDpr = Math.min(4096 / cw, 4096 / ch);
-  const hiDpr = exportMode ? Math.min(maxSafeDpr, 2.5) : Math.min(maxSafeDpr, baseDpr * Math.min(5.0, Math.max(1.35, ZOOM * 1.05)));
+  const dpr = exportMode ? 2.5 : Math.max(2, window.devicePixelRatio || 1);
+  const vW = exportMode ? 1600 : Math.max(520, Math.floor((box.clientWidth || 720) - 16));
+  const vH = exportMode ? 1020 : Math.max(440, Math.floor((box.clientHeight || 680) - 16));
+  const cw = vW;
+  const ch = vH;
 
   if(!exportMode){
     DABO_HIT_ZONES = [];
-    targetCv.style.width = cw + 'px';
-    targetCv.style.height = ch + 'px';
+    targetCv.style.width = vW + 'px';
+    targetCv.style.height = vH + 'px';
     LAST_RENDER_ZOOM = ZOOM;
     applyStageTransform();
     syncZoomUI();
@@ -4054,19 +4247,28 @@ function drawDaboAndCutScene(targetCv, viewMode, exportMode){
         : '🖱️ ダボシャツ上をダブルクリックでその位置に直接文字入力 ／ ドラッグで画面移動 ／ ホイールで最大12倍ズーム';
     }
   }
-  targetCv.width = Math.floor(cw * hiDpr);
-  targetCv.height = Math.floor(ch * hiDpr);
+  targetCv.width = Math.floor(vW * dpr);
+  targetCv.height = Math.floor(vH * dpr);
   const x = targetCv.getContext('2d');
   x.imageSmoothingEnabled = true;
   x.imageSmoothingQuality = 'high';
-  x.setTransform(hiDpr, 0, 0, hiDpr, 0, 0);
 
-  // 背景グラデーション（和紙・工房ステージ風）
-  const bgGrad = x.createLinearGradient(0, 0, 0, ch);
+  // ステージ背景クリア
+  x.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const bgGrad = x.createLinearGradient(0, 0, 0, vH);
   bgGrad.addColorStop(0, '#161c28');
   bgGrad.addColorStop(1, '#20293a');
   x.fillStyle = bgGrad;
-  x.fillRect(0, 0, cw, ch);
+  x.fillRect(0, 0, vW, vH);
+
+  // ズーム＆パン変換をCanvas 2Dコンテキストに直接適用（ベクター＆フォントが現在の拡大倍率で直接ラスタライズされる）
+  if(!exportMode){
+    const stageLeft = vW * 0.5 + PAN_X - (cw * ZOOM) * 0.5;
+    const stageTop  = vH * 0.5 + PAN_Y - (ch * ZOOM) * 0.5;
+    STAGE_METRICS = { mode: 'dabo', stageLeft, stageTop, baseS: 1, cw, ch, vW, vH };
+    const effScale = ZOOM * dpr;
+    x.setTransform(effScale, 0, 0, effScale, stageLeft * dpr, stageTop * dpr);
+  }
 
   // 身頃用・袖用の設定取得（保存プリセットからの選択にも対応）
   let bodyCfg = S;
@@ -4087,24 +4289,21 @@ function drawDaboAndCutScene(targetCv, viewMode, exportMode){
   }
 
   const patMul = 100 / (S.daboPatScale || 100);
-  // ズーム倍率や書き出しモードに応じて手ぬぐいストリップ自体の解像度(px/mm)も引き上げ、拡大してもディテールが潰れないようにする
-  const stripPpm = exportMode ? 3.0 : Math.min(3.8, Math.max(2.2, 1.75 * Math.sqrt(Math.max(1, ZOOM))));
-  const rawBodyLogo = renderArbitraryTenuguiCanvas(bodyCfg, true, stripPpm, patMul);
-  const rawBodyPlain = renderArbitraryTenuguiCanvas(bodyCfg, false, stripPpm, patMul);
-  const stripBodyLogo = orientStripCanvas(rawBodyLogo, S.daboStripRot || 'auto');
-  const stripBodyPlain = orientStripCanvas(rawBodyPlain, S.daboStripRot || 'auto');
+  const rMode = S.daboStripRot || 'auto';
+  const bodyVec = createVectorStripDescriptor(bodyCfg, patMul, rMode, false);
+  const stripBodyLogo = bodyVec.logoStrip;
+  const stripBodyPlain = bodyVec.plainStrip;
 
   let stripSleeveLogo = stripBodyLogo;
   let stripSleevePlain = stripBodyPlain;
   if(sleeveSolid){
-    const scv = document.createElement('canvas');
-    scv.width = stripBodyPlain.width; scv.height = stripBodyPlain.height;
-    const sx = scv.getContext('2d'); sx.fillStyle = bodyCfg.bgColor || '#046e7e'; sx.fillRect(0,0,scv.width,scv.height);
-    stripSleeveLogo = scv; stripSleevePlain = scv;
+    const slvVec = createVectorStripDescriptor(bodyCfg, patMul, rMode, true);
+    stripSleeveLogo = slvVec.logoStrip;
+    stripSleevePlain = slvVec.plainStrip;
   }else if(sleeveCfg !== bodyCfg){
-    const rMode = S.daboStripRot || 'auto';
-    stripSleeveLogo = orientStripCanvas(renderArbitraryTenuguiCanvas(sleeveCfg, true, stripPpm, patMul), rMode);
-    stripSleevePlain = orientStripCanvas(renderArbitraryTenuguiCanvas(sleeveCfg, false, stripPpm, patMul), rMode);
+    const slvVec = createVectorStripDescriptor(sleeveCfg, patMul, rMode, false);
+    stripSleeveLogo = slvVec.logoStrip;
+    stripSleevePlain = slvVec.plainStrip;
   }
 
   const plan = buildDaboCutPlan();
@@ -4193,11 +4392,13 @@ function drawCuttingLayoutPanel(x, px, py, pw, ph, plan){
     x.textAlign = 'center';
     x.fillText(st.title, cx + cellW / 2, cy + 11, cellW - 6);
 
-    // 手ぬぐいストリップ本体描画
+    // 手ぬぐいストリップ本体描画（直接ベクター描画で拡大時もくっきり）
     x.save();
     x.shadowColor = 'rgba(0,0,0,0.45)'; x.shadowBlur = 7; x.shadowOffsetY = 2;
-    x.drawImage(scv, sx, sy, dw, dh);
+    x.fillStyle = '#0f172a';
+    x.fillRect(sx, sy, dw, dh);
     x.restore();
+    drawStripSource(x, scv, sx, sy, dw, dh);
 
     // 裁断外（余り布）を少し暗くして切り出しパーツを際立たせる
     x.fillStyle = 'rgba(10, 15, 28, 0.38)';
@@ -4213,7 +4414,7 @@ function drawCuttingLayoutPanel(x, px, py, pw, ph, plan){
       x.beginPath();
       traceCutPartShape(x, rx, ry, rw, rh, p.shape);
       x.clip();
-      x.drawImage(scv, sx, sy, dw, dh);
+      drawStripSource(x, scv, sx, sy, dw, dh);
       x.restore();
 
       // 裁断破線
@@ -4385,7 +4586,7 @@ function drawCroppedPiece(x, entry, dx, dy, dw, dh, rotDeg, alignY, fixedScale){
         const tileX = ox + tx * rw, tileY = oy + ty * rh;
         if(tileX + rw < -halfDiag || tileX > halfDiag || tileY + rh < -halfDiag || tileY > halfDiag) continue;
         const img = (tx === 0 && ty === 0) ? cv : plainCv;
-        x.drawImage(img, 0, 0, img.width, img.height, tileX, tileY, rw, rh);
+        drawStripSource(x, img, tileX, tileY, rw, rh);
       }
     }
     x.restore();
@@ -4404,7 +4605,7 @@ function drawCroppedPiece(x, entry, dx, dy, dw, dh, rotDeg, alignY, fixedScale){
       const tileX = ox + tx * rw, tileY = oy + ty * rh;
       if(tileX + rw < dx - 1 || tileX > dx + dw + 1 || tileY + rh < dy - 1 || tileY > dy + dh + 1) continue;
       const img = (tx === 0 && ty === 0) ? cv : plainCv;
-      x.drawImage(img, 0, 0, img.width, img.height, tileX, tileY, rw, rh);
+      drawStripSource(x, img, tileX, tileY, rw, rh);
     }
   }
   x.restore();
@@ -5492,27 +5693,50 @@ function draw(){
   }
   updateDaboSpecBox(buildDaboCutPlan());
 
-  const bw=(box.clientWidth||600)-24, bh=(box.clientHeight||640)-24;
-  const baseS=Math.min(bw/S.W, bh/S.H);
-  const cssW=Math.max(60, Math.floor(S.W*baseS));
-  const cssH=Math.max(60, Math.floor(S.H*baseS));
-  // 最大1200%ズーム時もベクターがくっきり見えるよう、最大4096pxの範囲内で高倍率DPRを自動適用
-  const maxSafeDpr=Math.min(4096/cssW, 4096/cssH);
-  const dpr=Math.min(maxSafeDpr, (window.devicePixelRatio||1) * Math.min(6.0, Math.max(1.5, ZOOM * 1.15)));
-  cv.style.width=cssW+'px'; cv.style.height=cssH+'px';
-  cv.width=Math.floor(cssW*dpr); cv.height=Math.floor(cssH*dpr);
+  const vW = Math.max(320, Math.floor((box.clientWidth || 640) - 16));
+  const vH = Math.max(320, Math.floor((box.clientHeight || 640) - 16));
+  const baseS = Math.min((vW - 16) / S.W, (vH - 16) / S.H);
+  const dpr = Math.max(2, window.devicePixelRatio || 1);
+  cv.style.width = vW + 'px';
+  cv.style.height = vH + 'px';
+  cv.width = Math.floor(vW * dpr);
+  cv.height = Math.floor(vH * dpr);
   LAST_RENDER_ZOOM = ZOOM;
   applyStageTransform();
   syncZoomUI();
   if($('stageHelpPill')){
     $('stageHelpPill').textContent = (S.showCrest || S.showLogo || S.showText)
-      ? '🖱️ 文字・札・ロゴの上をドラッグで位置移動 ／ 余白ドラッグで画面移動 ／ ホイールで最大12倍ズーム'
-      : '🖱️ ドラッグで画面移動 ／ ホイールで最大12倍ズーム ／ 上部「✍️ ダボ・手ぬぐいに直接文字を打つ」で文字入れ';
+      ? '🖱️ 文字・札・ロゴの上をドラッグで位置移動 ／ 余白ドラッグで画面移動 ／ ホイールで最大12倍ベクターズーム'
+      : '🖱️ ドラッグで画面移動 ／ ホイールで最大12倍ベクターズーム ／ 上部「✍️ ダボ・手ぬぐいに直接文字を打つ」で文字入れ';
   }
-  const x=cv.getContext('2d');
+  const x = cv.getContext('2d');
   x.imageSmoothingEnabled = true;
   x.imageSmoothingQuality = 'high';
-  x.setTransform(baseS*dpr,0,0,baseS*dpr,0,0);
+
+  // ステージ背景をクリア
+  x.setTransform(dpr, 0, 0, dpr, 0, 0);
+  x.clearRect(0, 0, vW, vH);
+
+  // 手ぬぐい用紙の左上ステージ座標（ZOOMとPANをCanvas 2Dコンテキストに直接適用して文字ボケを完全排除）
+  const stageLeft = vW * 0.5 + PAN_X - (S.W * baseS * ZOOM) * 0.5;
+  const stageTop  = vH * 0.5 + PAN_Y - (S.H * baseS * ZOOM) * 0.5;
+  STAGE_METRICS = { mode: 'fabric', stageLeft, stageTop, baseS, cw: S.W, ch: S.H, vW, vH };
+
+  // 手ぬぐい用紙のドロップシャドウ描画
+  x.save();
+  x.shadowColor = 'rgba(0,0,0,0.28)';
+  x.shadowBlur = 18;
+  x.shadowOffsetY = 4;
+  x.fillStyle = S.showBg ? S.bgColor : '#e4e6eb';
+  x.fillRect(stageLeft, stageTop, S.W * baseS * ZOOM, S.H * baseS * ZOOM);
+  x.restore();
+
+  const effScale = baseS * ZOOM * dpr;
+  x.save();
+  x.setTransform(effScale, 0, 0, effScale, stageLeft * dpr, stageTop * dpr);
+  x.beginPath();
+  x.rect(0, 0, S.W, S.H);
+  x.clip();
 
   // 1. 地色（または透過チェッカーボード・手ぬぐい工房ベース生地）
   if(S.showBg){
@@ -5631,6 +5855,7 @@ function draw(){
   x.moveTo(110,S.H-13); x.lineTo(110,S.H-7);
   x.stroke();
   x.fillStyle=ink; x.font='8.5px sans-serif'; x.fillText('10 cm',48,S.H-14);
+  x.restore();
 
   const m=$('msg');
   if(S.mode !== 'haneda' && DOTS.length < S.count){
@@ -7336,12 +7561,11 @@ box.addEventListener('mousedown', e=>{
   if(S.viewMode === 'fabric' && !e.spaceKey && !e.shiftKey){
     const r = cv.getBoundingClientRect();
     if(r.width > 0 && r.height > 0){
-      const mx = (e.clientX - r.left) / r.width * S.W;
-      const my = (e.clientY - r.top) / r.height * S.H;
+      const { mx, my } = clientToFabricMm(e.clientX, e.clientY);
 
       // 1a. 札の組紐ハンドル（🪢上紐・🪢脇紐）やサイズ・幅・縦・回転ハンドルのヒット判定を最優先
       if(S.showText && FUDA_STAGE_GIZMOS.length > 0){
-        const hitRad = Math.max(8, S.W * 0.028);
+        const hitRad = Math.max(4, (S.W * 0.028) / Math.max(1, Math.sqrt(ZOOM)));
         for(const h of FUDA_STAGE_GIZMOS){
           if(Math.hypot(mx - h.pt[0], my - h.pt[1]) <= hitRad){
             dragTarget = {
@@ -7400,7 +7624,7 @@ box.addEventListener('mousedown', e=>{
 
       // 上部の「✍️ 直接文字を打つ」パネルが開いている時は、手ぬぐい上の好きな場所をクリックして文字を移動可能
       const directCardOpen = $('stageDirectTextCard') && !$('stageDirectTextCard').hidden;
-      if(directCardOpen && S.showText){
+      if(directCardOpen && S.showText && mx >= 0 && mx <= S.W && my >= 0 && my <= S.H){
         S.textX = Math.max(2, Math.min(98, Math.round((mx / S.W) * 1000) / 10));
         S.textY = Math.max(2, Math.min(98, Math.round((my / S.H) * 1000) / 10));
         dragTarget = { keyX:'textX', keyY:'textY' };
@@ -7421,18 +7645,12 @@ box.addEventListener('mousedown', e=>{
       S.daboInteractiveLogo = true;
     }
     if(getActiveLogoTypeKey()){
-      const r = cv.getBoundingClientRect();
-      if(r.width > 0 && r.height > 0){
-        const cw = parseFloat(cv.style.width) || r.width;
-        const ch = parseFloat(cv.style.height) || r.height;
-        const stageX = (e.clientX - r.left) / r.width * cw;
-        const stageY = (e.clientY - r.top) / r.height * ch;
-        if(applyReverseDaboPlacementAtStageXY(stageX, stageY, true)){
-          isDraggingDaboReverse = true;
-          box.classList.add('is-panning');
-          e.preventDefault();
-          return;
-        }
+      const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+      if(applyReverseDaboPlacementAtStageXY(stageX, stageY, true)){
+        isDraggingDaboReverse = true;
+        box.classList.add('is-panning');
+        e.preventDefault();
+        return;
       }
     }
   }
@@ -7451,9 +7669,8 @@ window.addEventListener('mousemove', e=>{
   if(dragTarget){
     const r = cv.getBoundingClientRect();
     if(r.width > 0 && r.height > 0){
+      const { mx, my, pctX, pctY } = clientToFabricMm(e.clientX, e.clientY);
       if(dragTarget.gizmoId){
-        const mx = (e.clientX - r.left) / r.width * S.W;
-        const my = (e.clientY - r.top) / r.height * S.H;
         const dx = mx - dragTarget.startMx;
         const dy = my - dragTarget.startMy;
         const rad = ((dragTarget.gh.deg || 0) * Math.PI) / 180;
@@ -7504,8 +7721,8 @@ window.addEventListener('mousemove', e=>{
         update(false);
         return;
       }
-      const px = Math.max(2, Math.min(98, Math.round(((e.clientX - r.left) / r.width) * 1000) / 10));
-      const py = Math.max(2, Math.min(98, Math.round(((e.clientY - r.top) / r.height) * 1000) / 10));
+      const px = Math.max(2, Math.min(98, Math.round(pctX * 10) / 10));
+      const py = Math.max(2, Math.min(98, Math.round(pctY * 10) / 10));
       S[dragTarget.keyX] = px;
       S[dragTarget.keyY] = py;
       update(false);
@@ -7513,20 +7730,14 @@ window.addEventListener('mousemove', e=>{
     return;
   }
   if(isDraggingDaboReverse){
-    const r = cv.getBoundingClientRect();
-    if(r.width > 0 && r.height > 0){
-      const cw = parseFloat(cv.style.width) || r.width;
-      const ch = parseFloat(cv.style.height) || r.height;
-      const stageX = (e.clientX - r.left) / r.width * cw;
-      const stageY = (e.clientY - r.top) / r.height * ch;
-      applyReverseDaboPlacementAtStageXY(stageX, stageY, false);
-    }
+    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+    applyReverseDaboPlacementAtStageXY(stageX, stageY, false);
     return;
   }
   if(isPanningStage){
     PAN_X = panOriginX + (e.clientX - panStartClientX);
     PAN_Y = panOriginY + (e.clientY - panStartClientY);
-    applyStageTransform();
+    requestImmediateVectorDraw();
   }
 });
 
@@ -7551,19 +7762,13 @@ box.addEventListener('wheel', e=>{
 box.addEventListener('dblclick', e=>{
   if(e.target && e.target.closest && (e.target.closest('.float-zoom-hud') || e.target.closest('.stage-direct-text-bar'))) return;
   if(S.viewMode === 'cut_dabo' || S.viewMode === 'dabo'){
-    const r = cv.getBoundingClientRect();
-    if(r.width > 0 && r.height > 0){
-      const cw = parseFloat(cv.style.width) || r.width;
-      const ch = parseFloat(cv.style.height) || r.height;
-      const stageX = (e.clientX - r.left) / r.width * cw;
-      const stageY = (e.clientY - r.top) / r.height * ch;
-      S.showText = true;
-      S.daboInteractiveLogo = true;
-      S.daboDragItemType = 'text';
-      if(applyReverseDaboPlacementAtStageXY(stageX, stageY, true)){
-        openStageDirectTextBar(false, true);
-        return;
-      }
+    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+    S.showText = true;
+    S.daboInteractiveLogo = true;
+    S.daboDragItemType = 'text';
+    if(applyReverseDaboPlacementAtStageXY(stageX, stageY, true)){
+      openStageDirectTextBar(false, true);
+      return;
     }
   }
   setStageZoom(1, true);

@@ -2026,7 +2026,7 @@
       syncControlSlidersFromState();
       const mainCv = document.getElementById('mainPreviewCanvas');
       const zoomMul = Math.max(1, (previewZoomPct || 100) / 100);
-      const dpr = Math.min(4.5, (window.devicePixelRatio || 1) * zoomMul * 1.35);
+      const dpr = Math.min(10.0, Math.max(2, window.devicePixelRatio || 1) * zoomMul);
       const logicalW = 400, logicalH = 400;
       mainCv.style.width = Math.round(logicalW * zoomMul) + 'px';
       mainCv.style.height = Math.round(logicalH * zoomMul) + 'px';
