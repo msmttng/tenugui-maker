@@ -70,7 +70,7 @@
       <button type="button" id="undoBtn" class="icon-btn" title="元に戻す (Ctrl+Z)" disabled>↶ 戻す</button>
       <button type="button" id="redoBtn" class="icon-btn" title="やり直す (Ctrl+Y)" disabled>↷ やり直し</button>
       <div class="divider-v"></div>
-      <a href="arare_app.html" class="secondary-btn" style="text-decoration:none;display:inline-flex;align-items:center;" title="仲羽田（角字）＆大小あられ配置・ダボ仕立て・Illustrator(.ai/SVG)専用スタジオを開く">📐 仲羽田・あられ・ダボ専用スタジオ</a>
+      <a href="arare_app.html" id="sendToArareStudioBtn" class="secondary-btn" style="text-decoration:none;display:inline-flex;align-items:center;background:#eff6ff;border-color:#38bdf8;color:#0369a1;font-weight:700" title="今作っている手ぬぐいをそのまま『仲羽田・あられ・ダボ統合スタジオ』へ送り、ダボ仕立てやIllustrator(.ai)出力に使います">⚡ 今のデザインを仲羽田・ダボ統合スタジオへ送る ↗</a>
       <button type="button" id="daboSimBtn" class="primary-btn" style="background:linear-gradient(135deg,#046e7e 0%,#0f4c5c 100%)" title="作成した手ぬぐい生地からのダボの作り方（生地の取り方）とダボ完成イメージを確認">👕 ダボを作る(生地取り図)</button>
       <button type="button" id="foldSimBtn" class="secondary-btn" title="畳んだ時の見え方や頭に巻いたイメージを確認">🧣 畳み・着用</button>
       <button type="button" id="projectSaveBtn" class="secondary-btn" title="デザインに名前を付けてアプリ内に保存・呼び出し">💾 名前を付けて保存</button>
@@ -271,9 +271,22 @@
             </button>
           </div>
 
+          <div class="form-section" style="background:#faf5ff;border:1.5px solid #c084fc;border-radius:8px;padding:10px;">
+            <label class="section-title" style="color:#6b21a8;">✨ 1個の文字やロゴを多数ちりばめて総柄手ぬぐいを作る</label>
+            <p class="hint" style="color:#581c87;margin-bottom:8px;">1文字（または単語）を手ぬぐい全面に市松・斜め・ランダム吹雪状に多数ちりばめ、角度・大きさ・間隔を自由自在に変更できます。</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <button type="button" class="secondary-btn small" data-scatter-preset="brick" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700;">🧱 市松散らし文字を追加</button>
+              <button type="button" class="secondary-btn small" data-scatter-preset="diag" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700;">📐 斜め-30°散らし文字</button>
+              <button type="button" class="secondary-btn small" data-scatter-preset="random" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700;">🎲 ランダム大小吹雪文字</button>
+              <button type="button" class="secondary-btn small" data-scatter-preset="border" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700;">🖼️ 外周額縁リピート文字</button>
+            </div>
+          </div>
+
           <div class="form-section">
             <label class="section-title">よく使われる定型フレーズ（クリックで追加）</label>
             <div class="phrase-chips">
+              <button type="button" class="phrase-btn" data-text="仲羽田" data-vert="true" data-size="140">仲羽田</button>
+              <button type="button" class="phrase-btn" data-text="羽田" data-vert="true" data-size="150">羽田</button>
               <button type="button" class="phrase-btn" data-text="祭" data-vert="true" data-size="180">祭（大文字）</button>
               <button type="button" class="phrase-btn" data-text="感謝" data-vert="true" data-size="140">感謝</button>
               <button type="button" class="phrase-btn" data-text="商売繁盛" data-vert="true" data-size="110">商売繁盛</button>
@@ -509,18 +522,46 @@
             <input type="range" id="propOpacity" min="10" max="100" value="100" />
           </div>
 
-          <!-- リピート（散らし柄・連続配置）モード -->
-          <div class="form-group highlight-box">
-            <label>リピート配置（ロゴや紋を全面に並べる）</label>
+          <!-- リピート（1個の文字やロゴを多数ちりばめる総柄・連続配置）モード -->
+          <div class="form-group highlight-box" style="background:#faf5ff;border-color:#c084fc;">
+            <label style="color:#6b21a8;font-weight:700;">✨ 多数ちりばめ・リピート配置（文字・ロゴ・紋を全面に並べる）</label>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;" id="propScatterQuickBtns">
+              <button type="button" class="tiny-btn" data-rmode="brick" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700;">🧱 市松散らし</button>
+              <button type="button" class="tiny-btn" data-rmode="diag" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700;">📐 斜め-30°</button>
+              <button type="button" class="tiny-btn" data-rmode="random" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700;">🎲 ランダム吹雪</button>
+              <button type="button" class="tiny-btn" data-rmode="none">1️⃣ 1個に戻す</button>
+            </div>
             <select id="propRepeatMode">
               <option value="none">単体配置（1つだけ）</option>
-              <option value="grid">格子並び（縦横に整列して反復）</option>
-              <option value="brick">互い違い並び（市松・散らし配置）</option>
-              <option value="row">横一列に並べる（帯状）</option>
+              <option value="brick">互い違い並び（市松・江戸小紋散らし）</option>
+              <option value="grid">整列格子並び（縦横に整列して反復）</option>
+              <option value="diag">斜め格子並び（斜め方向に流れる総柄）</option>
+              <option value="random">ランダム吹雪散らし（角度・大小を自在に散らす）</option>
+              <option value="border">外周額縁並び（手ぬぐいの四辺に沿って並べる）</option>
+              <option value="row">横一列に並べる（帯状リピート）</option>
+              <option value="col">縦一列に並べる（縦帯リピート）</option>
             </select>
-            <div id="propRepeatGapRow" class="field-row hidden">
-              <label>間隔 <span id="propRepeatGapVal">180px</span></label>
-              <input type="range" id="propRepeatGap" min="60" max="500" value="180" />
+            <div id="propRepeatGapRow" class="hidden" style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">
+              <div class="field-row">
+                <label>横の間隔 <span id="propRepeatGapVal">160px</span></label>
+                <input type="range" id="propRepeatGap" min="40" max="500" value="160" />
+              </div>
+              <div class="field-row">
+                <label>縦の間隔 <span id="propRepeatGapYVal">150px</span></label>
+                <input type="range" id="propRepeatGapY" min="40" max="500" value="150" />
+              </div>
+              <div class="field-row">
+                <label>並び全体の傾き <span id="propRepeatGridAngleVal">0°</span></label>
+                <input type="range" id="propRepeatGridAngle" min="-90" max="90" value="0" />
+              </div>
+              <div class="field-row">
+                <label>交互・ランダム回転 <span id="propRepeatAngleVarVal">0°</span></label>
+                <input type="range" id="propRepeatAngleVar" min="0" max="180" step="5" value="0" />
+              </div>
+              <div class="field-row">
+                <label>大小サイズばらつき <span id="propRepeatSizeVarVal">0%</span></label>
+                <input type="range" id="propRepeatSizeVar" min="0" max="80" step="5" value="0" />
+              </div>
             </div>
           </div>
 

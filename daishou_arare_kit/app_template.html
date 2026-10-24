@@ -100,17 +100,39 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 <div class="wrap">
   <aside class="panel">
     <header>
-      <h1>仲羽田（角字）＆ 大小あられ</h1>
-      <p>文字の色・背景色・サイズ・密度・線の細さを自在に調整し、Illustrator用（SVG / .ai / .jsx / PNG）に書き出します。</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+        <h1>🏯 手ぬぐい工房 × 仲羽田・あられ・ダボ統合スタジオ</h1>
+      </div>
+      <p>仲羽田（角字）・大小あられ・1文字/1ロゴちりばめ総柄・手ぬぐい工房連携・ダボ仕立て・Illustrator出力を1つに統合。</p>
+      <div style="display:flex;gap:5px;margin-top:8px;flex-wrap:wrap">
+        <button type="button" class="btn" id="openEmbeddedKoboBtn" style="flex:1;padding:6px 9px;font-size:11.5px;background:linear-gradient(135deg,#046e7e 0%,#1e40af 100%);border:none">🏯 「手ぬぐい工房 PRO」を画面内で開く（合体モード）</button>
+        <button type="button" class="mini-btn" id="quickImportLiveKoboBtn" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700;padding:5px 8px" title="手ぬぐい工房で作成・保存した手ぬぐいをワンクリックでここの生地＆ダボに取り込みます">⚡ 工房の手ぬぐいを取込</button>
+      </div>
     </header>
 
-    <!-- 1. 柄モード切替 ＆ レイヤー前後順 -->
+    <!-- 1. 柄モード切替 ＆ レイヤー前後順 ＆ 手ぬぐい工房合体パネル -->
     <section aria-labelledby="h-mode">
-      <h2 id="h-mode"><span>文様モード・レイヤー重ね順</span><a href="index.html" style="font-size:11px;color:var(--ai);text-decoration:none;font-weight:600">🖌️ 手ぬぐい工房(名入れ版)へ →</a></h2>
-      <div class="mode-tabs" id="modeTabs">
-        <button class="chip" data-mode="haneda" aria-pressed="true">仲羽田（角字）</button>
-        <button class="chip" data-mode="arare" aria-pressed="false">大小あられ</button>
-        <button class="chip" data-mode="both" aria-pressed="false">角字＋あられ</button>
+      <h2 id="h-mode"><span>文様モード・手ぬぐい工房合体</span><a href="index.html" style="font-size:11px;color:var(--ai);text-decoration:none;font-weight:600">🖌️ 別タブで手ぬぐい工房を開く ↗</a></h2>
+      <div class="mode-tabs" id="modeTabs" style="grid-template-columns:1fr 1fr">
+        <button class="chip" data-mode="haneda" aria-pressed="true">① 仲羽田（江戸角字）</button>
+        <button class="chip" data-mode="arare" aria-pressed="false">② 大小あられ</button>
+        <button class="chip" data-mode="both" aria-pressed="false">③ 角字＋あられ重ね</button>
+        <button class="chip" data-mode="scatter" aria-pressed="false" title="背景の角字やあられを消し、1個のロゴや1文字を多数ちりばめた総柄手ぬぐいや、手ぬぐい工房の生地をベースにします">④ 1文字/ロゴ散らし・工房生地</button>
+      </div>
+
+      <!-- 🏯 手ぬぐい工房で作った手ぬぐいを入れる・合体連携ボックス -->
+      <div class="cgroup" id="koboBridgeBox" style="background:#f0f9ff;border:1.5px solid #38bdf8;margin-top:2px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+          <span class="clabel" style="font-size:11.5px;color:#0369a1">🏯 手ぬぐい工房で作った手ぬぐいを入れる（ベース生地連携）</span>
+          <span id="koboActiveStatusBadge" class="badge" style="background:#e0f2fe;color:#0284c7">未取込</span>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          <button type="button" class="mini-btn" id="importLiveKoboBtn" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700;flex:1">⚡ 手ぬぐい工房の最新デザインをそのまま入れる</button>
+          <button type="button" class="mini-btn" id="uploadKoboFileBtn" style="background:#ffffff;color:#0369a1;border-color:#7dd3fc;font-weight:600">📂 画像 / .json を生地として読込</button>
+          <button type="button" class="mini-btn del" id="clearKoboFabricBtn" hidden title="取り込んだ手ぬぐい工房のベース生地を解除します">🗑️ 工房生地を解除</button>
+          <input type="file" id="uploadKoboFileInput" accept=".json,image/png,image/jpeg,image/webp,image/svg+xml,.ai,.pdf" hidden>
+        </div>
+        <div id="koboSavedPresetsList" style="display:flex;flex-direction:column;gap:4px;max-height:130px;overflow-y:auto"></div>
       </div>
       <div class="cgroup" id="layerOrderBox" style="margin-top:2px">
         <div style="display:flex;align-items:center;justify-content:space-between">
@@ -235,12 +257,20 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 
     <!-- 5. 丸紋「仲はねだ」・ロゴ画像・名入れ文字・下部帯 -->
     <section id="sec-crest" aria-labelledby="h-crest">
-      <h2 id="h-crest"><span>💮 丸紋・ロゴ画像・名入れ文字</span><span class="badge">ダボの柄位置にも連動</span></h2>
+      <h2 id="h-crest"><span>💮 丸紋・ロゴ画像・名入れ文字</span><span class="badge">複数ロゴ保持＆即消去対応</span></h2>
       <div class="crow2">
         <label class="chk"><input type="checkbox" id="showCrest">丸紋「仲はねだ」</label>
         <label class="chk"><input type="checkbox" id="showLogo">ロゴ画像を追加</label>
         <label class="chk"><input type="checkbox" id="showText">文字(名入れ)を追加</label>
         <label class="chk"><input type="checkbox" id="showBand">下部に無地帯</label>
+      </div>
+      <!-- ワンクリック消去バー（入れたロゴ・丸紋・文字をすぐ消せる） -->
+      <div class="chips" id="quickClearOverlayBar" style="background:#fff1f2;padding:5px 7px;border:1px solid #fecdd3;border-radius:6px;align-items:center">
+        <span style="font-size:11px;font-weight:700;color:#be123c">🗑️ すぐ消す:</span>
+        <button type="button" class="mini-btn" id="quickClearLogoBtn" style="background:#ffe4e6;border-color:#fda4af;color:#9f1239;font-weight:700" title="配置したロゴ画像を消します（保管棚のロゴは残ります）">🖼️ ロゴを消す</button>
+        <button type="button" class="mini-btn" id="quickClearCrestBtn" style="background:#ffe4e6;border-color:#fda4af;color:#9f1239">💮 丸紋を消す</button>
+        <button type="button" class="mini-btn" id="quickClearTextBtn" style="background:#ffe4e6;border-color:#fda4af;color:#9f1239">✍️ 文字を消す</button>
+        <button type="button" class="mini-btn" id="clearAllOverlaysBtn" style="background:#e11d48;border-color:#be123c;color:#fff;font-weight:700;margin-left:auto" title="丸紋・ロゴ・文字をすべて一括で消します">🧹 すべて消す</button>
       </div>
       <div class="crow2" style="background:#eff6ff;padding:5px 8px;border:1px solid #bfdbfe;border-radius:6px;margin-top:2px">
         <label class="chk" style="color:#1e40af;font-weight:700"><input type="checkbox" id="showDaboZoneGuide">📐 手ぬぐい画面に「ダボのどこに出るか」部位ガイド枠を表示</label>
@@ -249,12 +279,13 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 
       <!-- 5-A. 丸紋「仲はねだ」設定 -->
       <div class="subbox" id="crestBox" hidden>
-        <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px">
           <b style="font-size:12px">① 丸紋「仲はねだ」の設定</b>
           <div class="chips" id="crestPosPresets">
             <button type="button" class="mini-btn" data-cx="50" data-cy="80">下部中央</button>
             <button type="button" class="mini-btn" data-cx="50" data-cy="50">ど真ん中</button>
             <button type="button" class="mini-btn" data-cx="50" data-cy="24">背中上(背紋位置)</button>
+            <button type="button" class="mini-btn del" id="hideCrestBtn" title="丸紋を非表示にします">🗑️ 丸紋を消す</button>
           </div>
         </div>
         <div class="row"><label for="crestSize">丸紋サイズ(直径)</label><input type="range" id="crestSize" min="15" max="260" step="1" value="62"><output for="crestSize" id="crestSize-o"></output></div>
@@ -270,15 +301,42 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
           <input type="text" id="crestBgHex" class="hex" maxlength="7" value="#FFFFFF"></div>
       </div>
 
-      <!-- 5-B. カスタムロゴ画像（PNG/JPG/SVG/.ai/PDF）追加・透過・画像編集設定 -->
+      <!-- 5-B. カスタムロゴ画像（PNG/JPG/SVG/.ai/PDF）追加・複数保持・透過・画像編集設定 -->
       <div class="subbox" id="logoBox" hidden>
         <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
-          <b style="font-size:12px">② ロゴ画像（.ai / PDF / PNG / JPG / SVG）の読み込み・編集</b>
+          <b style="font-size:12px">② ロゴ画像（.ai / PDF / PNG / JPG / SVG）の読み込み・複数保持</b>
           <div style="display:flex;gap:4px;flex-wrap:wrap">
             <button type="button" class="mini-btn" id="useHantenLogoPresetBtn" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">🏮 仲羽半纏ロゴを読込</button>
             <button type="button" class="btn" id="uploadLogoBtn" style="padding:4px 9px;font-size:11.5px">📁 ファイルを選ぶ (.ai/画像)</button>
+            <button type="button" class="mini-btn del" id="deleteActiveLogoSlotBtn" style="font-weight:700" title="現在選択しているロゴをキャンバスから消します（Deleteキーでも消せます）">🗑️ このロゴを消す</button>
           </div>
           <input type="file" id="uploadLogoInput" accept=".ai,.pdf,.eps,image/png,image/jpeg,image/webp,image/svg+xml,application/pdf,application/postscript" hidden>
+        </div>
+
+        <!-- 🔢 1. キャンバス上に配置中のロゴ一覧（1枚の手ぬぐい・ダボに複数個のロゴを同時配置・切替可能） -->
+        <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+            <span style="font-size:11.5px;font-weight:700;color:#166534">🔢 配置中のロゴ枠（複数同時配置OK・クリックで編集対象を切替）</span>
+            <div style="display:flex;gap:4px;flex-wrap:wrap">
+              <button type="button" class="mini-btn" id="addLogoSlotBtn" style="background:#16a34a;color:#fff;border-color:#15803d;font-weight:700" title="今のロゴを残したまま、2個目・3個目のロゴを追加配置します">＋ 別のロゴを追加配置</button>
+              <button type="button" class="mini-btn" id="dupLogoSlotBtn" style="background:#dcfce7;color:#166534;border-color:#86efac" title="現在選択中のロゴを複製してもう1個置きます">📋 複製</button>
+              <button type="button" class="mini-btn del" id="clearAllLogosBtn" title="配置中の全ロゴをまとめて消します">🧹 全ロゴ消去</button>
+            </div>
+          </div>
+          <div id="placedLogoSlotsBar" class="chips" style="gap:5px"></div>
+        </div>
+
+        <!-- 📚 2. マイ・ロゴ保管棚（読み込んだ複数ロゴや編集済みロゴを何個でも保持・いつでもワンクリック呼出） -->
+        <div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+            <span style="font-size:11.5px;font-weight:700;color:#1e40af">📚 マイ・ロゴ保管棚 <span id="logoShelfCountBadge" class="badge" style="background:#dbeafe;color:#1e3a8a">0個</span></span>
+            <span style="font-size:10px;color:#3b82f6">※読み込んだ.ai/画像は自動でここにも保持されます</span>
+          </div>
+          <div style="display:flex;gap:4px;align-items:center">
+            <input type="text" id="logoShelfNameInput" class="save-input" placeholder="保管するロゴ名（例：仲羽半纏ロゴ・白抜き）" style="font-size:11.5px;padding:4px 7px">
+            <button type="button" class="mini-btn" id="saveToLogoShelfBtn" style="background:#2563eb;color:#fff;border-color:#1d4ed8;font-weight:700;white-space:nowrap">📌 今のロゴを保管棚に保存</button>
+          </div>
+          <div id="logoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:5px;max-height:165px;overflow-y:auto;padding:2px"></div>
         </div>
 
         <!-- ロゴ元画像 ➔ 編集・透過後 リアルタイム比較プレビュー＆ダイレクト編集ツール -->
@@ -372,10 +430,42 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
             </div>
           </label>
         </div>
-        <div class="row"><label for="logoSize">ロゴの大きさ</label><input type="range" id="logoSize" min="15" max="340" step="1" value="85"><output for="logoSize" id="logoSize-o"></output></div>
+        <div class="row"><label for="logoSize">ロゴの大きさ</label><input type="range" id="logoSize" min="6" max="340" step="1" value="85"><output for="logoSize" id="logoSize-o"></output></div>
         <div class="row"><label for="logoAngle">ロゴの回転角度</label><input type="range" id="logoAngle" min="-180" max="180" step="1" value="0"><output for="logoAngle" id="logoAngle-o"></output></div>
         <div class="row"><label for="logoX">ロゴの横位置</label><input type="range" id="logoX" min="5" max="95" step="0.5" value="50"><output for="logoX" id="logoX-o"></output></div>
         <div class="row"><label for="logoY">ロゴの縦位置</label><input type="range" id="logoY" min="5" max="95" step="0.5" value="28"><output for="logoY" id="logoY-o"></output></div>
+
+        <!-- ✨ ロゴを多数ちりばめて総柄手ぬぐいを作る機能（角度・大きさ・間隔・ばらつき全対応） -->
+        <div style="background:#faf5ff;border:1.5px solid #c084fc;border-radius:6px;padding:7px 8px;display:grid;gap:6px;margin-top:2px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+            <b style="font-size:11.5px;color:#6b21a8">✨ このロゴを多数ちりばめて手ぬぐいを作る（総柄・散らし配置）</b>
+          </div>
+          <div class="chips" id="logoScatterQuickBtns">
+            <button type="button" class="mini-btn" data-scmode="brick" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">🧱 市松散らし(定番)</button>
+            <button type="button" class="mini-btn" data-scmode="diag" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">📐 斜め-30°散らし</button>
+            <button type="button" class="mini-btn" data-scmode="random" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">🎲 ランダム吹雪散らし</button>
+            <button type="button" class="mini-btn" data-scmode="none" style="background:#ffffff;border-color:#cbd5e1;color:#475569">1️⃣ 1個だけに戻す</button>
+          </div>
+          <label class="field"><span>ちりばめ方（リピート配列モード）</span>
+            <select id="logoRepeatMode" style="font-size:11.5px;font-weight:600">
+              <option value="none">単体配置（1個だけ配置）</option>
+              <option value="brick">互い違い市松散らし（1段ごとに半ピッチずらす王道総柄）</option>
+              <option value="grid">整列格子並び（縦・横に規則正しく並べる）</option>
+              <option value="diag">斜め格子並び（斜め方向に流れるように並べる）</option>
+              <option value="random">ランダム散らし（大小あられ・吹雪風に自然にちりばめる）</option>
+              <option value="border">外周額縁並び（手ぬぐいの四辺に沿って並べる）</option>
+              <option value="row">横一列に並べる（帯状リピート）</option>
+              <option value="col">縦一列に並べる（縦帯リピート）</option>
+            </select>
+          </label>
+          <div id="logoRepeatParamsBox" style="display:grid;gap:5px" hidden>
+            <div class="row"><label for="logoRepeatGapX">横の間隔(ピッチ)</label><input type="range" id="logoRepeatGapX" min="14" max="260" step="1" value="72"><output for="logoRepeatGapX" id="logoRepeatGapX-o"></output></div>
+            <div class="row"><label for="logoRepeatGapY">縦の間隔(ピッチ)</label><input type="range" id="logoRepeatGapY" min="14" max="260" step="1" value="72"><output for="logoRepeatGapY" id="logoRepeatGapY-o"></output></div>
+            <div class="row"><label for="logoRepeatGridAngle">並び全体の傾き</label><input type="range" id="logoRepeatGridAngle" min="-90" max="90" step="1" value="0"><output for="logoRepeatGridAngle" id="logoRepeatGridAngle-o"></output></div>
+            <div class="row"><label for="logoRepeatAngleVar">交互・ランダム回転</label><input type="range" id="logoRepeatAngleVar" min="0" max="180" step="5" value="0"><output for="logoRepeatAngleVar" id="logoRepeatAngleVar-o"></output></div>
+            <div class="row"><label for="logoRepeatSizeVar">大小サイズばらつき</label><input type="range" id="logoRepeatSizeVar" min="0" max="80" step="5" value="0"><output for="logoRepeatSizeVar" id="logoRepeatSizeVar-o"></output></div>
+          </div>
+        </div>
         <p class="note">※手ぬぐい画面でもダボ完成図の上でも、マウスでドラッグして直接ロゴ位置を移動できます。</p>
       </div>
 
@@ -389,6 +479,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
             <button type="button" class="mini-btn" data-txt="仲はねだ">仲はねだ</button>
             <button type="button" class="mini-btn" data-txt="祭">祭</button>
             <button type="button" class="mini-btn" data-txt="御祭禮">御祭禮</button>
+            <button type="button" class="mini-btn del" id="hideTextBtn" title="名入れ文字を非表示にします">🗑️ 文字を消す</button>
           </div>
         </div>
         <div class="save-bar">
@@ -438,12 +529,44 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
             </div>
           </label>
         </div>
-        <div class="row"><label for="textSize">文字サイズ</label><input type="range" id="textSize" min="10" max="180" step="1" value="44"><output for="textSize" id="textSize-o"></output></div>
+        <div class="row"><label for="textSize">文字サイズ</label><input type="range" id="textSize" min="6" max="180" step="1" value="44"><output for="textSize" id="textSize-o"></output></div>
         <div class="row"><label for="textSpacing">文字の間隔(字間)</label><input type="range" id="textSpacing" min="-15" max="60" step="1" value="6"><output for="textSpacing" id="textSpacing-o"></output></div>
         <div class="row"><label for="textOutlineW">フチ・枠の太さ</label><input type="range" id="textOutlineW" min="1" max="25" step="0.5" value="5"><output for="textOutlineW" id="textOutlineW-o"></output></div>
         <div class="row"><label for="textAngle">文字の回転角度</label><input type="range" id="textAngle" min="-180" max="180" step="1" value="0"><output for="textAngle" id="textAngle-o"></output></div>
         <div class="row"><label for="textX">文字の横位置</label><input type="range" id="textX" min="5" max="95" step="0.5" value="50"><output for="textX" id="textX-o"></output></div>
         <div class="row"><label for="textY">文字の縦位置</label><input type="range" id="textY" min="5" max="95" step="0.5" value="75"><output for="textY" id="textY-o"></output></div>
+
+        <!-- ✨ 1個の文字（または単語）を多数ちりばめて総柄手ぬぐいを作る機能 -->
+        <div style="background:#faf5ff;border:1.5px solid #c084fc;border-radius:6px;padding:7px 8px;display:grid;gap:6px;margin-top:2px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+            <b style="font-size:11.5px;color:#6b21a8">✨ 1個の文字を多数ちりばめて手ぬぐいを作る（文字散らし総柄）</b>
+          </div>
+          <div class="chips" id="textScatterQuickBtns">
+            <button type="button" class="mini-btn" data-tsc="brick" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">🧱 市松文字散らし</button>
+            <button type="button" class="mini-btn" data-tsc="diag" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">📐 斜め-30°文字並び</button>
+            <button type="button" class="mini-btn" data-tsc="random" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">🎲 ランダム大小散らし</button>
+            <button type="button" class="mini-btn" data-tsc="none" style="background:#ffffff;border-color:#cbd5e1;color:#475569">1️⃣ 1個だけに戻す</button>
+          </div>
+          <label class="field"><span>文字のちりばめ方（リピート配列モード）</span>
+            <select id="textRepeatMode" style="font-size:11.5px;font-weight:600">
+              <option value="none">単体配置（1箇所だけ配置）</option>
+              <option value="brick">互い違い市松散らし（1段ごとに半ピッチずらす江戸小紋風）</option>
+              <option value="grid">整列格子並び（縦・横に規則正しく並べる）</option>
+              <option value="diag">斜め格子並び（斜め方向に流れるように並べる）</option>
+              <option value="random">ランダム散らし（角度や大きさを変えて自由にちりばめる）</option>
+              <option value="border">外周額縁並び（手ぬぐいの四辺に沿って並べる）</option>
+              <option value="row">横一列に並べる（帯状リピート）</option>
+              <option value="col">縦一列に並べる（縦帯リピート）</option>
+            </select>
+          </label>
+          <div id="textRepeatParamsBox" style="display:grid;gap:5px" hidden>
+            <div class="row"><label for="textRepeatGapX">横の間隔(ピッチ)</label><input type="range" id="textRepeatGapX" min="14" max="260" step="1" value="68"><output for="textRepeatGapX" id="textRepeatGapX-o"></output></div>
+            <div class="row"><label for="textRepeatGapY">縦の間隔(ピッチ)</label><input type="range" id="textRepeatGapY" min="14" max="260" step="1" value="68"><output for="textRepeatGapY" id="textRepeatGapY-o"></output></div>
+            <div class="row"><label for="textRepeatGridAngle">並び全体の傾き</label><input type="range" id="textRepeatGridAngle" min="-90" max="90" step="1" value="0"><output for="textRepeatGridAngle" id="textRepeatGridAngle-o"></output></div>
+            <div class="row"><label for="textRepeatAngleVar">交互・ランダム回転</label><input type="range" id="textRepeatAngleVar" min="0" max="180" step="5" value="0"><output for="textRepeatAngleVar" id="textRepeatAngleVar-o"></output></div>
+            <div class="row"><label for="textRepeatSizeVar">大小サイズばらつき</label><input type="range" id="textRepeatSizeVar" min="0" max="80" step="5" value="0"><output for="textRepeatSizeVar" id="textRepeatSizeVar-o"></output></div>
+          </div>
+        </div>
       </div>
 
       <div class="subbox" id="bandBox" hidden>
@@ -495,6 +618,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
               <option value="logo">🖼️ アップロードしたロゴ画像を配置・移動</option>
               <option value="text">✍️ 名入れ文字・千社札を配置・移動</option>
             </select>
+            <button type="button" class="mini-btn del" id="daboClearLogoBtn" style="font-weight:700" title="ダボ上に配置したロゴ・丸紋・文字を消します">🗑️ ロゴ・紋を消す</button>
           </div>
           <div id="daboReverseMapInfo" style="margin-top:5px;padding:5px 7px;background:#ffffff;border:1px solid #93c5fd;border-radius:4px;font-size:11px;line-height:1.45;color:#0f172a">
             💡 右側の<b>「できあがったダボシャツ（背中・前身頃・胸ポケット・両袖）」の上をクリックまたはドラッグ</b>すると、そこにロゴが入り、<b>「手ぬぐいの何本目のどこ（横X%・縦Y% / 何mm）に反映されるか」</b>が左の裁断図とここにリアルタイム表示されます！（※余白ドラッグやShift+ドラッグで画面移動）
@@ -664,6 +788,21 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
   </main>
 </div>
 
+<!-- 🏯 画面内統合「手ぬぐい工房 PRO」モーダル（合体モード） -->
+<div id="koboModalOverlay" style="position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.82);backdrop-filter:blur(4px);display:none;flex-direction:column;padding:12px;box-sizing:border-box">
+  <div style="background:#0f172a;color:#f8fafc;padding:8px 14px;border-radius:10px 10px 0 0;border:1px solid #334155;border-bottom:none;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:15px;font-weight:700;color:#38bdf8">🏯 手ぬぐい工房 PRO（統合モード）</span>
+      <span style="font-size:11.5px;color:#cbd5e1">ここで15種和柄・家紋・落款・文字ちりばめ・自由レイアウトを作成し、右のボタンでそのままダボ＆仲羽田スタジオへ取り込めます！</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button type="button" id="applyFromEmbeddedKoboBtn" style="background:linear-gradient(135deg,#f59e0b 0%,#ea580c 100%);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12.5px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.3)">⚡ 今描いている手ぬぐいを生地＆ダボに取り込んで反映！</button>
+      <button type="button" id="closeEmbeddedKoboBtn" style="background:#334155;color:#f8fafc;border:1px solid #475569;border-radius:6px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer">✕ 閉じる</button>
+    </div>
+  </div>
+  <iframe id="koboEmbeddedFrame" src="about:blank" style="flex:1;width:100%;border:1px solid #334155;border-radius:0 0 10px 10px;background:#ffffff"></iframe>
+</div>
+
 <script>
 /*__LIB__*/
 /*__EMBLEM__*/
@@ -672,11 +811,13 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 const $=id=>document.getElementById(id);
 const DEF={
   viewMode:'fabric', // 'fabric' | 'cut_dabo' | 'dabo'
-  mode:'haneda', // 'haneda' | 'arare' | 'both'
+  mode:'haneda', // 'haneda' | 'arare' | 'both' | 'scatter'
   layerOrder:'kakuFront', // 'kakuFront' (仲羽田が前) | 'arareFront' (大小あられが前)
   knockoutMm:0, // 前面レイヤーのフチ抜き（地色縁取り）幅 mm
   W:350, H:900,
   bgColor:'#046e7e', kakuColor:'#ffffff', dotColor:'#ffffff', showBg:true,
+  // 手ぬぐい工房で作った手ぬぐい・外部手ぬぐい画像のベース生地連携
+  useKoboBase:false, koboBaseName:'', koboBaseDataUrl:'',
   // 仲羽田（江戸角字）パラメーター
   kakuSize:48, kakuScale:100, kakuDensity:100, kakuWeight:100,
   kakuInnerGap:100, kakuColGap:0, kakuRowGap:0,
@@ -684,17 +825,20 @@ const DEF={
   // 丸紋「仲はねだ」＆下部帯パラメーター
   showCrest:false, crestSize:62, crestAngle:0, crestWeight:0, crestX:50, crestY:80,
   crestFg:'#877028', crestBg:'#ffffff',
-  // カスタムロゴ画像＆画像編集パラメーター
-  showLogo:false, logoDataUrl:'', logoRemoveBg:true, logoBgMode:'white', logoKeyColor:'#ffffff',
+  // カスタムロゴ画像＆画像編集パラメーター（複数ロゴ同時配置＆ロゴ保管棚＆ちりばめ総柄対応）
+  showLogo:false, logoName:'仲羽半纏ロゴ', logoDataUrl:'', logoRemoveBg:true, logoBgMode:'white', logoKeyColor:'#ffffff',
   logoInvert:false, logoThreshold:225, logoSoftness:18, logoDilate:0, logoContrast:0, logoOpacity:100,
   logoFlipH:false, logoFlipV:false, logoAutoTrim:false,
   logoMono:false, logoColor:'#ffffff', logoOutlineMm:0, logoOutlineColor:'#ffffff', logoMaskShape:'none',
   logoPadMode:'none', logoPadColor:'#046e7e',
   logoSize:85, logoAngle:0, logoX:50, logoY:28,
-  // 名入れ文字・千社札パラメーター
+  logoRepeatMode:'none', logoRepeatGapX:72, logoRepeatGapY:72, logoRepeatGridAngle:0, logoRepeatAngleVar:0, logoRepeatSizeVar:0,
+  logoSlots:[], activeLogoSlot:0,
+  // 名入れ文字・千社札・1文字ちりばめ総柄パラメーター
   showText:false, customTextStr:'仲羽田', customTextFont:"'Yuji Syuku', serif",
   customTextVert:true, customTextFrame:'senjafuda', customTextColor:'#046e7e', customTextBg:'#ffffff',
   textSize:44, textSpacing:6, textOutlineW:5, textAngle:0, textX:50, textY:75,
+  textRepeatMode:'none', textRepeatGapX:68, textRepeatGapY:68, textRepeatGridAngle:0, textRepeatAngleVar:0, textRepeatSizeVar:0,
   showBand:false, bandH:52,
   // ダボ（ダボシャツ・鯉口・上下）＆生地の取り方パラメーター
   daboStyle:'dabo', // 'dabo' | 'koikuchi' | 'setup'
@@ -754,12 +898,435 @@ function getCrestBeziersMm(st){
   return {cx, cy, rad, bgRad: rad * 0.865, loops, fg: cfg.crestFg, bg: cfg.crestBg};
 }
 
-/* ---- 2-B. カスタムロゴ画像（.ai / PDF / PNG / JPG / SVG）透過・画像編集＆名入れ文字描画 ---- */
+/* ---- 2-B. カスタムロゴ画像（.ai / PDF / PNG / JPG / SVG）透過・画像編集＆複数ロゴ保持＆名入れ文字描画 ---- */
 let RAW_LOGO_IMG = null;
 let RAW_LOGO_URL = '';
 let PROC_LOGO_CV = null;
 let PROC_LOGO_KEY = '';
+const RAW_LOGO_MAP = new Map();
+const PROC_LOGO_MAP = new Map();
+let KOBO_BASE_IMG = null;
+let KOBO_BASE_URL = '';
 let PDFJS_LOADED = null;
+
+const LOGO_SLOT_KEYS = [
+  'logoName','logoDataUrl','logoRemoveBg','logoBgMode','logoKeyColor',
+  'logoInvert','logoThreshold','logoSoftness','logoDilate','logoContrast','logoOpacity',
+  'logoFlipH','logoFlipV','logoAutoTrim','logoMono','logoColor',
+  'logoOutlineMm','logoOutlineColor','logoMaskShape','logoPadMode','logoPadColor',
+  'logoSize','logoAngle','logoX','logoY',
+  'logoRepeatMode','logoRepeatGapX','logoRepeatGapY','logoRepeatGridAngle','logoRepeatAngleVar','logoRepeatSizeVar'
+];
+
+function extractLogoSlotFromS(src){
+  const st = src || S;
+  const obj = {};
+  for(const k of LOGO_SLOT_KEYS){
+    obj[k] = st[k] !== undefined ? st[k] : DEF[k];
+  }
+  if(!obj.logoName) obj.logoName = 'ロゴ' + (( (st.activeLogoSlot||0) + 1 ));
+  return obj;
+}
+
+function applySlotToS(slot){
+  if(!slot) return;
+  for(const k of LOGO_SLOT_KEYS){
+    if(slot[k] !== undefined) S[k] = slot[k];
+  }
+  const effUrl = S.logoDataUrl || (typeof HANTEN_LOGO_B64 !== 'undefined' ? HANTEN_LOGO_B64 : '');
+  if(effUrl) ensureLogoLoaded(effUrl);
+  if($('logoFileStatus')) $('logoFileStatus').textContent = S.logoName || 'ロゴ選択中';
+}
+
+function syncActiveSlotFromS(){
+  if(!S.showLogo) return;
+  if(!Array.isArray(S.logoSlots) || S.logoSlots.length === 0){
+    S.logoSlots = [ extractLogoSlotFromS(S) ];
+    S.activeLogoSlot = 0;
+  }else{
+    const idx = Math.max(0, Math.min(S.logoSlots.length - 1, S.activeLogoSlot || 0));
+    S.activeLogoSlot = idx;
+    S.logoSlots[idx] = extractLogoSlotFromS(S);
+  }
+}
+
+function selectLogoSlot(idx){
+  if(!Array.isArray(S.logoSlots) || idx < 0 || idx >= S.logoSlots.length) return;
+  syncActiveSlotFromS();
+  S.activeLogoSlot = idx;
+  applySlotToS(S.logoSlots[idx]);
+  PROC_LOGO_KEY = '';
+  update(false);
+}
+
+function addNewLogoSlot(customProps){
+  if(S.showLogo) syncActiveSlotFromS();
+  if(!Array.isArray(S.logoSlots)) S.logoSlots = [];
+  const nextNum = S.logoSlots.length + 1;
+  // 既存ロゴと完全に重ならないよう、2個目以降は縦位置を少しずらして配置
+  const defaultPositions = [
+    { x: 50, y: 28 },
+    { x: 50, y: 68 },
+    { x: 70, y: 34 },
+    { x: 30, y: 34 },
+    { x: 50, y: 50 }
+  ];
+  const pos = defaultPositions[(nextNum - 1) % defaultPositions.length];
+  const baseSlot = Object.assign(extractLogoSlotFromS(DEF), {
+    logoName: (customProps && customProps.logoName) ? customProps.logoName : ('ロゴ' + nextNum),
+    logoDataUrl: (customProps && customProps.logoDataUrl !== undefined) ? customProps.logoDataUrl : (typeof HANTEN_LOGO_B64 !== 'undefined' ? HANTEN_LOGO_B64 : ''),
+    logoX: pos.x,
+    logoY: pos.y
+  }, customProps || {});
+  S.showLogo = true;
+  S.logoSlots.push(baseSlot);
+  S.activeLogoSlot = S.logoSlots.length - 1;
+  applySlotToS(baseSlot);
+  PROC_LOGO_KEY = '';
+  update(false);
+}
+
+function duplicateActiveLogoSlot(){
+  if(!S.showLogo){
+    addNewLogoSlot({ logoName: '仲羽半纏ロゴ' });
+    return;
+  }
+  syncActiveSlotFromS();
+  const cur = extractLogoSlotFromS(S);
+  cur.logoName = (cur.logoName || 'ロゴ') + '(複製)';
+  cur.logoX = Math.max(8, Math.min(92, (cur.logoX || 50) + (cur.logoX > 70 ? -16 : 16)));
+  cur.logoY = Math.max(8, Math.min(92, (cur.logoY || 28) + (cur.logoY > 70 ? -18 : 18)));
+  S.logoSlots.push(cur);
+  S.activeLogoSlot = S.logoSlots.length - 1;
+  applySlotToS(cur);
+  PROC_LOGO_KEY = '';
+  update(false);
+}
+
+function removeLogoSlotAt(idx){
+  if(!Array.isArray(S.logoSlots) || S.logoSlots.length <= 1){
+    S.logoSlots = [];
+    S.activeLogoSlot = 0;
+    S.showLogo = false;
+    DABO_ACTIVE_REVERSE_HIT = null;
+    update(false);
+    return;
+  }
+  S.logoSlots.splice(idx, 1);
+  if(S.activeLogoSlot >= S.logoSlots.length) S.activeLogoSlot = S.logoSlots.length - 1;
+  else if(idx < S.activeLogoSlot) S.activeLogoSlot = Math.max(0, S.activeLogoSlot - 1);
+  applySlotToS(S.logoSlots[S.activeLogoSlot]);
+  PROC_LOGO_KEY = '';
+  update(false);
+}
+
+function clearAllLogos(){
+  S.logoSlots = [];
+  S.activeLogoSlot = 0;
+  S.showLogo = false;
+  DABO_ACTIVE_REVERSE_HIT = null;
+  update(false);
+}
+
+function renderLogoSlotsBar(){
+  const bar = $('placedLogoSlotsBar');
+  if(!bar) return;
+  bar.innerHTML = '';
+  if(!S.showLogo){
+    const note = document.createElement('span');
+    note.style.fontSize = '11px';
+    note.style.color = '#64748b';
+    note.textContent = '現在配置中のロゴはありません。「＋ 別のロゴを追加配置」または下の保管棚から選んで配置できます。';
+    bar.appendChild(note);
+    return;
+  }
+  syncActiveSlotFromS();
+  S.logoSlots.forEach((slot, idx) => {
+    const isAct = (idx === S.activeLogoSlot);
+    const wrap = document.createElement('div');
+    wrap.style.display = 'inline-flex';
+    wrap.style.alignItems = 'center';
+    wrap.style.borderRadius = '6px';
+    wrap.style.overflow = 'hidden';
+    wrap.style.border = isAct ? '2px solid #15803d' : '1px solid #cbd5e1';
+    wrap.style.background = isAct ? '#166534' : '#ffffff';
+    wrap.style.color = isAct ? '#ffffff' : '#1e293b';
+    wrap.style.fontSize = '11px';
+    wrap.style.fontWeight = isAct ? '700' : '600';
+
+    const selBtn = document.createElement('button');
+    selBtn.type = 'button';
+    selBtn.style.border = 'none';
+    selBtn.style.background = 'transparent';
+    selBtn.style.color = 'inherit';
+    selBtn.style.padding = '3px 7px';
+    selBtn.style.cursor = 'pointer';
+    selBtn.style.font = 'inherit';
+    const circleNum = ['①','②','③','④','⑤','⑥','⑦','⑧'][idx] || (`#${idx+1}`);
+    selBtn.textContent = `${circleNum} ${slot.logoName || ('ロゴ'+(idx+1))} (${Math.round(slot.logoX??50)}%,${Math.round(slot.logoY??28)}%)`;
+    selBtn.title = 'クリックしてこのロゴを編集・移動対象にします';
+    selBtn.addEventListener('click', () => selectLogoSlot(idx));
+
+    const delBtn = document.createElement('button');
+    delBtn.type = 'button';
+    delBtn.style.border = 'none';
+    delBtn.style.borderLeft = isAct ? '1px solid rgba(255,255,255,0.25)' : '1px solid #e2e8f0';
+    delBtn.style.background = isAct ? 'rgba(0,0,0,0.18)' : '#fff1f2';
+    delBtn.style.color = isAct ? '#fecdd3' : '#e11d48';
+    delBtn.style.padding = '3px 6px';
+    delBtn.style.cursor = 'pointer';
+    delBtn.style.fontWeight = '700';
+    delBtn.textContent = '×';
+    delBtn.title = 'このロゴを消す';
+    delBtn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      removeLogoSlotAt(idx);
+    });
+
+    wrap.appendChild(selBtn);
+    wrap.appendChild(delBtn);
+    bar.appendChild(wrap);
+  });
+}
+
+// 📚 マイ・ロゴ保管棚（複数のロゴをlocalStorageに永続保持し、いつでも切替・追加配置できる機能）
+const LOGO_SHELF_KEY = 'haneda-logo-shelf-v1';
+let LOGO_SHELF = [];
+
+function getDefaultLogoShelfItems(){
+  const hUrl = (typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64) ? HANTEN_LOGO_B64 : '';
+  return [
+    {
+      id: 'shelf_hanten_std',
+      name: '🏮 仲羽半纏ロゴ (標準)',
+      savedAt: Date.now(),
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '仲羽半纏ロゴ',
+        logoDataUrl: hUrl,
+        logoRemoveBg: true, logoBgMode: 'white', logoThreshold: 225, logoSoftness: 18,
+        logoMono: false, logoOutlineMm: 0
+      })
+    },
+    {
+      id: 'shelf_hanten_white',
+      name: '🏮 仲羽半纏 (白染め)',
+      savedAt: Date.now() - 1000,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '仲羽半纏(白)',
+        logoDataUrl: hUrl,
+        logoRemoveBg: true, logoBgMode: 'white', logoThreshold: 225, logoSoftness: 18,
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0
+      })
+    },
+    {
+      id: 'shelf_hanten_gold',
+      name: '🏮 仲羽半纏 (金＋白フチ)',
+      savedAt: Date.now() - 2000,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '仲羽半纏(金)',
+        logoDataUrl: hUrl,
+        logoRemoveBg: true, logoBgMode: 'white', logoThreshold: 225, logoSoftness: 18,
+        logoMono: true, logoColor: '#877028', logoOutlineMm: 2.5, logoOutlineColor: '#ffffff'
+      })
+    }
+  ];
+}
+
+function loadLogoShelfFromStorage(){
+  try{
+    const raw = JSON.parse(localStorage.getItem(LOGO_SHELF_KEY) || 'null');
+    if(Array.isArray(raw) && raw.length > 0){
+      LOGO_SHELF = raw;
+      // バンドルされた仲羽半纏ロゴURLが空だった場合は補完
+      const hUrl = (typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64) ? HANTEN_LOGO_B64 : '';
+      LOGO_SHELF.forEach(item => {
+        if(item && item.slot && !item.slot.logoDataUrl && hUrl) item.slot.logoDataUrl = hUrl;
+      });
+      return;
+    }
+  }catch(e){}
+  LOGO_SHELF = getDefaultLogoShelfItems();
+}
+
+function saveLogoShelfToStorage(){
+  try{
+    localStorage.setItem(LOGO_SHELF_KEY, JSON.stringify(LOGO_SHELF));
+  }catch(e){
+    // 容量超過時は古い項目を1つ減らして再試行
+    if(LOGO_SHELF.length > 3){
+      LOGO_SHELF.pop();
+      try{ localStorage.setItem(LOGO_SHELF_KEY, JSON.stringify(LOGO_SHELF)); }catch(e2){}
+    }
+  }
+}
+
+// 大きなDataURL画像をlocalStorage保管用に適度な解像度(最大520px)へ軽量化
+function compactDataUrlForShelf(dataUrl){
+  return new Promise(resolve => {
+    if(!dataUrl || dataUrl.length < 140000) return resolve(dataUrl);
+    const img = new Image();
+    img.onload = () => {
+      const maxD = 520;
+      let w = img.naturalWidth || 300, h = img.naturalHeight || 300;
+      if(w > maxD || h > maxD){
+        const r = Math.min(maxD / w, maxD / h);
+        w = Math.round(w * r); h = Math.round(h * r);
+      }
+      const cv = document.createElement('canvas');
+      cv.width = w; cv.height = h;
+      cv.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(cv.toDataURL('image/png'));
+    };
+    img.onerror = () => resolve(dataUrl);
+    img.src = dataUrl;
+  });
+}
+
+async function addOrSaveLogoToShelf(customName, slotSource){
+  const srcSlot = extractLogoSlotFromS(slotSource || S);
+  const name = (customName || srcSlot.logoName || 'マイロゴ').trim();
+  srcSlot.logoName = name;
+  if(srcSlot.logoDataUrl){
+    srcSlot.logoDataUrl = await compactDataUrlForShelf(srcSlot.logoDataUrl);
+  }
+  const newItem = {
+    id: 'lg_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+    name,
+    savedAt: Date.now(),
+    slot: srcSlot
+  };
+  LOGO_SHELF.unshift(newItem);
+  if(LOGO_SHELF.length > 16) LOGO_SHELF = LOGO_SHELF.slice(0, 16);
+  saveLogoShelfToStorage();
+  renderLogoShelf();
+}
+
+function renderLogoShelf(){
+  const listEl = $('logoShelfList');
+  const badgeEl = $('logoShelfCountBadge');
+  if(!listEl) return;
+  if(!LOGO_SHELF || LOGO_SHELF.length === 0) loadLogoShelfFromStorage();
+  if(badgeEl) badgeEl.textContent = LOGO_SHELF.length + '個保持中';
+  listEl.innerHTML = '';
+
+  LOGO_SHELF.forEach(item => {
+    const sl = item.slot || extractLogoSlotFromS(DEF);
+    const card = document.createElement('div');
+    card.style.background = '#ffffff';
+    card.style.border = '1px solid #bfdbfe';
+    card.style.borderRadius = '6px';
+    card.style.padding = '5px';
+    card.style.display = 'flex';
+    card.style.flexDirection = 'column';
+    card.style.gap = '4px';
+    card.style.fontSize = '10.5px';
+
+    const topRow = document.createElement('div');
+    topRow.style.display = 'flex';
+    topRow.style.alignItems = 'center';
+    topRow.style.gap = '5px';
+
+    const thumbBox = document.createElement('div');
+    thumbBox.style.width = '36px';
+    thumbBox.style.height = '36px';
+    thumbBox.style.flexShrink = '0';
+    thumbBox.style.borderRadius = '4px';
+    thumbBox.style.border = '1px solid #cbd5e1';
+    thumbBox.style.background = 'repeating-conic-gradient(#e2e8f0 0% 25%, #f8fafc 0% 50%) 50% / 8px 8px';
+    thumbBox.style.display = 'flex';
+    thumbBox.style.alignItems = 'center';
+    thumbBox.style.justifyContent = 'center';
+    thumbBox.style.overflow = 'hidden';
+    thumbBox.style.cursor = 'pointer';
+    thumbBox.title = 'クリックで現在のロゴ枠に読み込みます';
+
+    const tImg = document.createElement('img');
+    tImg.src = sl.logoDataUrl || (typeof HANTEN_LOGO_B64 !== 'undefined' ? HANTEN_LOGO_B64 : '');
+    tImg.style.maxWidth = '100%';
+    tImg.style.maxHeight = '100%';
+    tImg.style.objectFit = 'contain';
+    thumbBox.appendChild(tImg);
+
+    const titleEl = document.createElement('div');
+    titleEl.style.flex = '1';
+    titleEl.style.fontWeight = '700';
+    titleEl.style.color = '#1e293b';
+    titleEl.style.overflow = 'hidden';
+    titleEl.style.textOverflow = 'ellipsis';
+    titleEl.style.whiteSpace = 'nowrap';
+    titleEl.textContent = item.name || sl.logoName || 'ロゴ';
+    titleEl.title = item.name || '';
+
+    const delShelfBtn = document.createElement('button');
+    delShelfBtn.type = 'button';
+    delShelfBtn.className = 'mini-btn del';
+    delShelfBtn.style.padding = '1px 5px';
+    delShelfBtn.style.fontSize = '10px';
+    delShelfBtn.textContent = '×';
+    delShelfBtn.title = '保管棚から削除';
+    delShelfBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      LOGO_SHELF = LOGO_SHELF.filter(x => x.id !== item.id);
+      if(LOGO_SHELF.length === 0) LOGO_SHELF = getDefaultLogoShelfItems();
+      saveLogoShelfToStorage();
+      renderLogoShelf();
+    });
+
+    topRow.appendChild(thumbBox);
+    topRow.appendChild(titleEl);
+    topRow.appendChild(delShelfBtn);
+
+    const btnRow = document.createElement('div');
+    btnRow.style.display = 'flex';
+    btnRow.style.gap = '3px';
+
+    const useCurrentBtn = document.createElement('button');
+    useCurrentBtn.type = 'button';
+    useCurrentBtn.className = 'mini-btn';
+    useCurrentBtn.style.flex = '1';
+    useCurrentBtn.style.padding = '2px 4px';
+    useCurrentBtn.style.fontSize = '10px';
+    useCurrentBtn.style.background = '#eff6ff';
+    useCurrentBtn.style.borderColor = '#93c5fd';
+    useCurrentBtn.style.color = '#1d4ed8';
+    useCurrentBtn.style.fontWeight = '700';
+    useCurrentBtn.textContent = '🔄 今の枠へ切替';
+    useCurrentBtn.title = '現在選択中のロゴをこのロゴに切り替えます（位置はそのまま維持）';
+    const applyToCurrentFn = () => {
+      const keepX = S.logoX ?? 50, keepY = S.logoY ?? 28, keepSz = S.logoSize || 85;
+      S.showLogo = true;
+      applySlotToS(Object.assign({}, sl, { logoName: item.name, logoX: keepX, logoY: keepY, logoSize: keepSz }));
+      syncActiveSlotFromS();
+      PROC_LOGO_KEY = '';
+      update(false);
+    };
+    useCurrentBtn.addEventListener('click', applyToCurrentFn);
+    thumbBox.addEventListener('click', applyToCurrentFn);
+
+    const addMultiBtn = document.createElement('button');
+    addMultiBtn.type = 'button';
+    addMultiBtn.className = 'mini-btn';
+    addMultiBtn.style.flex = '1';
+    addMultiBtn.style.padding = '2px 4px';
+    addMultiBtn.style.fontSize = '10px';
+    addMultiBtn.style.background = '#f0fdf4';
+    addMultiBtn.style.borderColor = '#86efac';
+    addMultiBtn.style.color = '#15803d';
+    addMultiBtn.style.fontWeight = '700';
+    addMultiBtn.textContent = '＋ 追加配置';
+    addMultiBtn.title = '既存のロゴを残したまま、もう1個のロゴとして追加配置します';
+    addMultiBtn.addEventListener('click', () => {
+      addNewLogoSlot(Object.assign({}, sl, { logoName: item.name }));
+    });
+
+    btnRow.appendChild(useCurrentBtn);
+    btnRow.appendChild(addMultiBtn);
+
+    card.appendChild(topRow);
+    card.appendChild(btnRow);
+    listEl.appendChild(card);
+  });
+}
 
 // Illustrator (.ai) / PDF ファイルをブラウザ内で高解像度PNG DataURLに変換するローダー
 async function loadAiOrPdfFileToDataUrl(file){
@@ -839,14 +1406,253 @@ async function loadAiOrPdfFileToDataUrl(file){
   throw new Error('Unsupported AI/PDF format');
 }
 
+function ensureKoboBaseLoaded(url){
+  if(!url){ KOBO_BASE_IMG = null; KOBO_BASE_URL = ''; return; }
+  if(url === KOBO_BASE_URL && KOBO_BASE_IMG) return;
+  KOBO_BASE_URL = url;
+  const img = new Image();
+  img.onload = ()=>{
+    KOBO_BASE_IMG = img;
+    draw();
+  };
+  img.src = url;
+}
+
+// 🏯 手ぬぐい工房 PRO (index.html) との合体・手ぬぐいデータ取込ブリッジ
+const KOBO_PRESETS_KEY = 'tenugui-studio-presets-v1';
+const KOBO_LIVE_BRIDGE_KEY = 'tenugui-studio-live-bridge-v1';
+
+// 手ぬぐい工房のJSONデータ(state)から手ぬぐい画像をオフスクリーンレンダリングしてDataURLを返す
+function renderKoboStateJsonToDataUrl(stateObj){
+  if(!stateObj || typeof stateObj !== 'object') return null;
+  const cv = document.createElement('canvas');
+  const isV = (stateObj.orientation === 'vertical');
+  const wMm = isV ? (stateObj.heightMm || 350) : (stateObj.widthMm || 900);
+  const hMm = isV ? (stateObj.widthMm || 900) : (stateObj.heightMm || 350);
+  const ppm = 2.0;
+  cv.width = Math.round(wMm * ppm);
+  cv.height = Math.round(hMm * ppm);
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = stateObj.bgColor || '#1d3557';
+  ctx.fillRect(0, 0, cv.width, cv.height);
+  if(Array.isArray(stateObj.items)){
+    stateObj.items.forEach(it => {
+      if(!it || it.visible === false) return;
+      if(it.type === 'text' && it.text){
+        ctx.save();
+        ctx.translate((it.x || 0.5) * cv.width, (it.y || 0.5) * cv.height);
+        ctx.rotate(((it.rotation || 0) * Math.PI) / 180);
+        const fs = Math.round((it.fontSize || 80) * (cv.width / 1200));
+        ctx.font = `${it.fontWeight || 700} ${fs}px ${it.fontFamily || "'Yuji Syuku', serif"}`;
+        ctx.fillStyle = it.color || '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        if(it.writingMode === 'vertical'){
+          const chars = Array.from(it.text);
+          const step = fs * (1 + (it.letterSpacing || 0.08));
+          const startY = -((chars.length - 1) * step) / 2;
+          chars.forEach((ch, idx) => ctx.fillText(ch, 0, startY + idx * step));
+        }else{
+          ctx.fillText(it.text, 0, 0);
+        }
+        ctx.restore();
+      }
+    });
+  }
+  return {
+    dataUrl: cv.toDataURL('image/png'),
+    W: wMm,
+    H: hMm,
+    bgColor: stateObj.bgColor || '#1d3557'
+  };
+}
+
+function applyKoboFabricToStudio(dataUrl, name, wMm, hMm, bgColor){
+  if(!dataUrl) return;
+  S.useKoboBase = true;
+  S.koboBaseDataUrl = dataUrl;
+  S.koboBaseName = name || '手ぬぐい工房デザイン';
+  if(wMm && hMm){
+    S.W = Math.round(wMm);
+    S.H = Math.round(hMm);
+  }
+  if(bgColor) S.bgColor = bgColor;
+  // 手ぬぐい工房の柄がそのまま見えるよう「④ 1文字/ロゴ散らし・工房生地」モードに切替
+  S.mode = 'scatter';
+  ensureKoboBaseLoaded(dataUrl);
+  update(true);
+  saySave(`🏯 手ぬぐい工房から「${S.koboBaseName}」をベース生地として取り込みました！このままダボ仕立てやロゴ追加ができます。`);
+}
+
+function importLatestFromKobo(){
+  // 1. まず画面内モーダルの iframe が開いていれば直接レンダリング画像を取得
+  const frame = $('koboEmbeddedFrame');
+  if(frame && frame.contentWindow){
+    try{
+      if(typeof frame.contentWindow.exportCurrentTenuguiForBridge === 'function'){
+        const res = frame.contentWindow.exportCurrentTenuguiForBridge();
+        if(res && res.dataUrl){
+          applyKoboFabricToStudio(res.dataUrl, res.name || '手ぬぐい工房(編集中)', res.widthMm, res.heightMm, res.bgColor);
+          return true;
+        }
+      }
+      const koboCv = frame.contentDocument && frame.contentDocument.getElementById('tenuguiCanvas');
+      if(koboCv){
+        const dUrl = koboCv.toDataURL('image/png');
+        applyKoboFabricToStudio(dUrl, '手ぬぐい工房(ライブ取込)');
+        return true;
+      }
+    }catch(e){}
+  }
+  // 2. localStorage のライブブリッジ ('tenugui-studio-live-bridge-v1') を確認
+  try{
+    const live = JSON.parse(localStorage.getItem(KOBO_LIVE_BRIDGE_KEY) || 'null');
+    if(live && live.dataUrl){
+      applyKoboFabricToStudio(live.dataUrl, live.name || '手ぬぐい工房(最新)', live.widthMm, live.heightMm, live.bgColor);
+      return true;
+    }
+  }catch(e){}
+  // 3. localStorage の手ぬぐい工房プリセット一覧 ('tenugui-studio-presets-v1') の先頭を確認
+  try{
+    const presets = JSON.parse(localStorage.getItem(KOBO_PRESETS_KEY) || 'null');
+    if(Array.isArray(presets) && presets.length > 0){
+      const p = presets[0];
+      if(p.fullDataUrl || p.thumb){
+        applyKoboFabricToStudio(p.fullDataUrl || p.thumb, p.name || '手ぬぐい工房保存デザイン');
+        return true;
+      }
+      if(p.jsonStr){
+        const st = JSON.parse(p.jsonStr);
+        const rendered = renderKoboStateJsonToDataUrl(st);
+        if(rendered){
+          applyKoboFabricToStudio(rendered.dataUrl, p.name || '手ぬぐい工房保存デザイン', rendered.W, rendered.H, rendered.bgColor);
+          return true;
+        }
+      }
+    }
+  }catch(e){}
+  // まだ手ぬぐい工房のデータがない場合は合体モーダルを開く
+  openEmbeddedKoboModal();
+  return false;
+}
+
+function openEmbeddedKoboModal(){
+  const modal = $('koboModalOverlay');
+  const frame = $('koboEmbeddedFrame');
+  if(!modal || !frame) return;
+  if(!frame.src || frame.src === 'about:blank' || frame.src.endsWith('about:blank')){
+    frame.src = 'index.html?embedded=1';
+  }
+  modal.style.display = 'flex';
+}
+
+function closeEmbeddedKoboModal(){
+  const modal = $('koboModalOverlay');
+  if(modal) modal.style.display = 'none';
+  renderKoboBridgeUI();
+}
+
+function renderKoboBridgeUI(){
+  const badge = $('koboActiveStatusBadge');
+  const clearBtn = $('clearKoboFabricBtn');
+  const listEl = $('koboSavedPresetsList');
+  if(badge){
+    if(S.useKoboBase && S.koboBaseDataUrl){
+      badge.textContent = '✅ 取込中: ' + (S.koboBaseName || '工房デザイン');
+      badge.style.background = '#dcfce7';
+      badge.style.color = '#166534';
+    }else{
+      badge.textContent = '未取込';
+      badge.style.background = '#e0f2fe';
+      badge.style.color = '#0284c7';
+    }
+  }
+  if(clearBtn) clearBtn.hidden = !(S.useKoboBase && S.koboBaseDataUrl);
+  if(!listEl) return;
+  listEl.innerHTML = '';
+  let koboPresets = [];
+  try{
+    const raw = JSON.parse(localStorage.getItem(KOBO_PRESETS_KEY) || 'null');
+    if(Array.isArray(raw)) koboPresets = raw;
+  }catch(e){}
+  if(koboPresets.length === 0){
+    const note = document.createElement('div');
+    note.style.fontSize = '10.5px';
+    note.style.color = '#0369a1';
+    note.innerHTML = '💡 上の<b>「🏯 手ぬぐい工房 PRO を画面内で開く」</b>で自由デザインした手ぬぐいや、手ぬぐい工房で保存した手ぬぐいがここに並び、ワンクリックで生地＆ダボに入れられます！';
+    listEl.appendChild(note);
+    return;
+  }
+  koboPresets.forEach(p => {
+    const row = document.createElement('div');
+    row.style.display = 'flex';
+    row.style.alignItems = 'center';
+    row.style.gap = '6px';
+    row.style.background = '#ffffff';
+    row.style.border = '1px solid #bae6fd';
+    row.style.borderRadius = '5px';
+    row.style.padding = '4px 6px';
+    row.style.fontSize = '11px';
+
+    if(p.thumb){
+      const img = document.createElement('img');
+      img.src = p.thumb;
+      img.style.width = '42px';
+      img.style.height = '20px';
+      img.style.objectFit = 'cover';
+      img.style.borderRadius = '3px';
+      img.style.border = '1px solid #cbd5e1';
+      row.appendChild(img);
+    }
+    const nm = document.createElement('span');
+    nm.style.flex = '1';
+    nm.style.fontWeight = '700';
+    nm.style.color = '#0f172a';
+    nm.style.overflow = 'hidden';
+    nm.style.textOverflow = 'ellipsis';
+    nm.style.whiteSpace = 'nowrap';
+    nm.textContent = p.name || '無題の手ぬぐい';
+    row.appendChild(nm);
+
+    const useBtn = document.createElement('button');
+    useBtn.type = 'button';
+    useBtn.className = 'mini-btn';
+    useBtn.style.background = '#0284c7';
+    useBtn.style.color = '#ffffff';
+    useBtn.style.borderColor = '#0369a1';
+    useBtn.style.fontWeight = '700';
+    useBtn.textContent = '📥 この手ぬぐいを入れる';
+    useBtn.addEventListener('click', () => {
+      if(p.fullDataUrl || p.thumb){
+        applyKoboFabricToStudio(p.fullDataUrl || p.thumb, p.name);
+      }else if(p.jsonStr){
+        try{
+          const rendered = renderKoboStateJsonToDataUrl(JSON.parse(p.jsonStr));
+          if(rendered) applyKoboFabricToStudio(rendered.dataUrl, p.name, rendered.W, rendered.H, rendered.bgColor);
+        }catch(err){}
+      }
+    });
+    row.appendChild(useBtn);
+    listEl.appendChild(row);
+  });
+}
+
 function ensureLogoLoaded(url){
   if(!url){ RAW_LOGO_IMG=null; RAW_LOGO_URL=''; PROC_LOGO_CV=null; updateLogoEditPreviewBox(); return; }
-  if(url === RAW_LOGO_URL && RAW_LOGO_IMG) return;
+  if(RAW_LOGO_MAP.has(url)){
+    RAW_LOGO_IMG = RAW_LOGO_MAP.get(url);
+    RAW_LOGO_URL = url;
+    updateLogoEditPreviewBox();
+    return;
+  }
   RAW_LOGO_URL = url;
   const img = new Image();
   img.onload = ()=>{
+    RAW_LOGO_MAP.set(url, img);
     RAW_LOGO_IMG = img;
+    RAW_LOGO_URL = url;
     PROC_LOGO_KEY = '';
+    PROC_LOGO_MAP.clear();
     draw();
     updateLogoEditPreviewBox();
   };
@@ -869,13 +1675,15 @@ function updateLogoEditPreviewBox(){
 
 function getProcessedLogoCanvas(cfg){
   const st = cfg || S;
-  if(!st.showLogo) return null;
+  if(st.showLogo === false && st === S) return null;
   // デフォルトで「仲羽半纏ロゴ」がバンドルされている場合は未選択時にそれを使用
   const effectiveUrl = st.logoDataUrl || (typeof HANTEN_LOGO_B64 !== 'undefined' ? HANTEN_LOGO_B64 : '');
-  if(effectiveUrl && effectiveUrl !== RAW_LOGO_URL){
+  let rawImg = effectiveUrl ? RAW_LOGO_MAP.get(effectiveUrl) : null;
+  if(effectiveUrl && !rawImg){
     ensureLogoLoaded(effectiveUrl);
+    rawImg = RAW_LOGO_MAP.get(effectiveUrl) || (effectiveUrl === RAW_LOGO_URL ? RAW_LOGO_IMG : null);
   }
-  if(!RAW_LOGO_IMG){
+  if(!rawImg){
     const defCv = document.createElement('canvas');
     defCv.width = 240; defCv.height = 240;
     const c = defCv.getContext('2d');
@@ -889,16 +1697,17 @@ function getProcessedLogoCanvas(cfg){
     c.fillText('仲', 0, 4);
     return defCv;
   }
+  const urlSig = effectiveUrl.length + ':' + effectiveUrl.slice(-36);
   const key = [
-    RAW_LOGO_URL.length, st.logoBgMode||'white', st.logoKeyColor||'#ffffff', st.logoRemoveBg,
+    urlSig, st.logoBgMode||'white', st.logoKeyColor||'#ffffff', st.logoRemoveBg,
     st.logoInvert, st.logoThreshold, st.logoSoftness||18, st.logoDilate||0, st.logoContrast||0,
     st.logoFlipH, st.logoFlipV, st.logoAutoTrim, st.logoMono, st.logoColor,
     st.logoOutlineMm||0, st.logoOutlineColor||'#ffffff', st.logoMaskShape||'none'
   ].join('|');
-  if(PROC_LOGO_CV && PROC_LOGO_KEY === key) return PROC_LOGO_CV;
+  if(PROC_LOGO_MAP.has(key)) return PROC_LOGO_MAP.get(key);
 
   const maxD = 560;
-  let w = RAW_LOGO_IMG.naturalWidth || 240, h = RAW_LOGO_IMG.naturalHeight || 240;
+  let w = rawImg.naturalWidth || 240, h = rawImg.naturalHeight || 240;
   if(w > maxD || h > maxD){ const r = Math.min(maxD/w, maxD/h); w = Math.round(w*r); h = Math.round(h*r); }
   let off = document.createElement('canvas');
   off.width = w; off.height = h;
@@ -906,7 +1715,7 @@ function getProcessedLogoCanvas(cfg){
   ox.save();
   ox.translate(st.logoFlipH ? w : 0, st.logoFlipV ? h : 0);
   ox.scale(st.logoFlipH ? -1 : 1, st.logoFlipV ? -1 : 1);
-  ox.drawImage(RAW_LOGO_IMG, 0, 0, w, h);
+  ox.drawImage(rawImg, 0, 0, w, h);
   ox.restore();
 
   const id = ox.getImageData(0,0,w,h), d = id.data;
@@ -1052,7 +1861,6 @@ function getProcessedLogoCanvas(cfg){
     outCv.width = w + padPx * 2;
     outCv.height = h + padPx * 2;
     const octx = outCv.getContext('2d');
-    // シルエットを作って全方向にオフセット描画
     const silCv = document.createElement('canvas');
     silCv.width = w; silCv.height = h;
     const sctx = silCv.getContext('2d');
@@ -1070,114 +1878,276 @@ function getProcessedLogoCanvas(cfg){
     off = outCv;
   }
 
+  if(PROC_LOGO_MAP.size > 24) PROC_LOGO_MAP.clear();
+  PROC_LOGO_MAP.set(key, off);
   PROC_LOGO_CV = off;
   PROC_LOGO_KEY = key;
   return off;
 }
 
-function drawCustomLogoAndTextMm(x, cfg){
-  const st = cfg || S;
-  // 1. カスタムロゴ画像描画
-  if(st.showLogo){
-    const lcv = getProcessedLogoCanvas(st);
-    if(lcv){
-      const lx = st.W * ((st.logoX ?? 50)/100);
-      const ly = st.H * ((st.logoY ?? 28)/100);
-      const sz = st.logoSize || 85;
-      const ar = lcv.width / Math.max(1, lcv.height);
-      const lw = ar >= 1 ? sz : sz * ar;
-      const lh = ar >= 1 ? sz / ar : sz;
-      x.save();
-      x.translate(lx, ly);
-      x.rotate(((st.logoAngle || 0) * Math.PI) / 180);
-      const pm = st.logoPadMode || 'none';
-      if(pm === 'circle'){
-        x.fillStyle = st.logoPadColor || st.bgColor;
-        x.beginPath();
-        x.arc(0, 0, Math.max(lw, lh)*0.58, 0, Math.PI*2);
-        x.fill();
-      }else if(pm === 'roundRect'){
-        const pw = lw*1.18, ph = lh*1.18;
-        x.fillStyle = st.logoPadColor || st.bgColor;
-        x.fillRect(-pw/2, -ph/2, pw, ph);
+// 1個の文字やロゴを多数ちりばめて手ぬぐいを作る座標・角度・スケール配列ジェネレーター
+function generateScatterPlacementsMm(opts){
+  const W = opts.W || 350, H = opts.H || 900;
+  const mode = opts.mode || 'none';
+  const baseX = opts.baseX ?? (W * 0.5);
+  const baseY = opts.baseY ?? (H * 0.5);
+  if(mode === 'none'){
+    return [{ x: baseX, y: baseY, addAngle: 0, scaleMul: 1 }];
+  }
+  const gx = Math.max(12, opts.gapX || 70);
+  const gy = Math.max(12, opts.gapY || 70);
+  const gridAng = (mode === 'diag' && !opts.gridAngle) ? -30.15 : (opts.gridAngle || 0);
+  const angleVar = opts.angleVar || 0;
+  const sizeVar = Math.max(0, Math.min(85, opts.sizeVar || 0)) / 100;
+  const seed = (opts.seed || 1) * 6151 + 97;
+
+  // 簡易シード付き乱数
+  let s = seed >>> 0;
+  const nextRnd = () => {
+    s = (s + 0x6D2B79F5) >>> 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+
+  const pts = [];
+  if(mode === 'row'){
+    const startX = ((baseX % gx) + gx) % gx;
+    let idx = 0;
+    for(let px = startX - gx; px <= W + gx; px += gx){
+      const addAng = angleVar > 0 ? ((idx % 2 === 1) ? angleVar : -angleVar) : 0;
+      const sc = sizeVar > 0 ? (1 - sizeVar * ((idx % 3) * 0.35)) : 1;
+      pts.push({ x: px, y: baseY, addAngle: addAng, scaleMul: sc });
+      idx++;
+    }
+    return pts;
+  }
+  if(mode === 'col'){
+    const startY = ((baseY % gy) + gy) % gy;
+    let idx = 0;
+    for(let py = startY - gy; py <= H + gy; py += gy){
+      const addAng = angleVar > 0 ? ((idx % 2 === 1) ? angleVar : -angleVar) : 0;
+      const sc = sizeVar > 0 ? (1 - sizeVar * ((idx % 3) * 0.35)) : 1;
+      pts.push({ x: baseX, y: py, addAngle: addAng, scaleMul: sc });
+      idx++;
+    }
+    return pts;
+  }
+  if(mode === 'border'){
+    const m = Math.max(18, Math.min(W, H) * 0.08);
+    const nx = Math.max(2, Math.round((W - m * 2) / gx));
+    const ny = Math.max(2, Math.round((H - m * 2) / gy));
+    let idx = 0;
+    for(let i = 0; i <= nx; i++){
+      const px = m + (W - m * 2) * (i / nx);
+      pts.push({ x: px, y: m, addAngle: (idx++ % 2 ? angleVar : 0), scaleMul: 1 });
+      pts.push({ x: px, y: H - m, addAngle: (idx++ % 2 ? angleVar : 0), scaleMul: 1 });
+    }
+    for(let j = 1; j < ny; j++){
+      const py = m + (H - m * 2) * (j / ny);
+      pts.push({ x: m, y: py, addAngle: (idx++ % 2 ? angleVar : 0), scaleMul: 1 });
+      pts.push({ x: W - m, y: py, addAngle: (idx++ % 2 ? angleVar : 0), scaleMul: 1 });
+    }
+    return pts;
+  }
+  if(mode === 'random'){
+    const targetCount = Math.min(360, Math.max(8, Math.round((W * H) / (gx * gy * 0.78))));
+    const minDist = Math.min(gx, gy) * 0.62;
+    for(let i = 0; i < targetCount; i++){
+      let bestX = 0, bestY = 0, bestD = -1;
+      const tries = 14;
+      for(let t = 0; t < tries; t++){
+        const cx = nextRnd() * W;
+        const cy = nextRnd() * H;
+        let near = Infinity;
+        for(let k = Math.max(0, pts.length - 45); k < pts.length; k++){
+          const d = Math.hypot(pts[k].x - cx, pts[k].y - cy);
+          if(d < near) near = d;
+        }
+        if(near > bestD){ bestD = near; bestX = cx; bestY = cy; }
+        if(near >= minDist) break;
       }
-      x.globalAlpha = Math.max(0.05, Math.min(1, (st.logoOpacity ?? 100) / 100));
-      x.drawImage(lcv, -lw/2, -lh/2, lw, lh);
-      x.restore();
+      const addAng = angleVar > 0 ? (nextRnd() * 2 - 1) * angleVar : 0;
+      const sc = sizeVar > 0 ? Math.max(0.28, 1 - sizeVar * 0.8 * nextRnd()) : 1;
+      pts.push({ x: bestX, y: bestY, addAngle: addAng, scaleMul: sc });
+    }
+    return pts;
+  }
+
+  // 'grid' | 'brick' | 'diag'（回転対応・互い違い市松・斜め格子）
+  const rad = (gridAng * Math.PI) / 180;
+  const cos = Math.cos(rad), sin = Math.sin(rad);
+  const diag = Math.hypot(W, H) * 0.65;
+  const cols = Math.ceil(diag / gx) + 2;
+  const rows = Math.ceil(diag / gy) + 2;
+  const shiftX = (baseX - W * 0.5) % gx;
+  const shiftY = (baseY - H * 0.5) % gy;
+  const isStagger = (mode === 'brick' || mode === 'diag');
+
+  for(let r = -rows; r <= rows; r++){
+    const rowStagger = (isStagger && (Math.abs(r) % 2 === 1)) ? (gx * 0.5) : 0;
+    for(let c = -cols; c <= cols; c++){
+      const lx = c * gx + rowStagger + shiftX;
+      const ly = r * gy + shiftY;
+      const px = W * 0.5 + lx * cos - ly * sin;
+      const py = H * 0.5 + lx * sin + ly * cos;
+      if(px < -gx || px > W + gx || py < -gy || py > H + gy) continue;
+      const parity = Math.abs(c + r) % 2;
+      const sizeStep = Math.abs(c * 3 + r * 5) % 3; // 0, 1, 2 のリズムで大・中・小
+      const addAng = angleVar > 0 ? (parity === 1 ? angleVar : -angleVar * 0.5) : 0;
+      const sc = sizeVar > 0 ? Math.max(0.28, 1 - sizeVar * (sizeStep * 0.36)) : 1;
+      pts.push({ x: px, y: py, addAngle: addAng, scaleMul: sc });
     }
   }
-  // 2. 名入れ文字・千社札描画
+  return pts;
+}
+
+function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
+  const lcv = getProcessedLogoCanvas(slot);
+  if(!lcv) return;
+  const baseX = W * ((slot.logoX ?? 50) / 100);
+  const baseY = H * ((slot.logoY ?? 28) / 100);
+  const baseSz = slot.logoSize || 85;
+  const baseAng = slot.logoAngle || 0;
+  const ar = lcv.width / Math.max(1, lcv.height);
+  const pm = slot.logoPadMode || 'none';
+  const alpha = Math.max(0.05, Math.min(1, (slot.logoOpacity ?? 100) / 100));
+
+  const placements = generateScatterPlacementsMm({
+    W, H,
+    mode: slot.logoRepeatMode || 'none',
+    baseX, baseY,
+    gapX: slot.logoRepeatGapX || 72,
+    gapY: slot.logoRepeatGapY || 72,
+    gridAngle: slot.logoRepeatGridAngle || 0,
+    angleVar: slot.logoRepeatAngleVar || 0,
+    sizeVar: slot.logoRepeatSizeVar || 0,
+    seed: S.seed || 1
+  });
+
+  for(const pt of placements){
+    const sz = baseSz * (pt.scaleMul || 1);
+    const lw = ar >= 1 ? sz : sz * ar;
+    const lh = ar >= 1 ? sz / ar : sz;
+    x.save();
+    x.translate(pt.x, pt.y);
+    x.rotate(((baseAng + (pt.addAngle || 0)) * Math.PI) / 180);
+    if(pm === 'circle'){
+      x.fillStyle = slot.logoPadColor || bgColor;
+      x.beginPath();
+      x.arc(0, 0, Math.max(lw, lh)*0.58, 0, Math.PI*2);
+      x.fill();
+    }else if(pm === 'roundRect'){
+      const pw = lw*1.18, ph = lh*1.18;
+      x.fillStyle = slot.logoPadColor || bgColor;
+      x.fillRect(-pw/2, -ph/2, pw, ph);
+    }
+    x.globalAlpha = alpha;
+    x.drawImage(lcv, -lw/2, -lh/2, lw, lh);
+    x.restore();
+  }
+}
+
+function drawCustomLogoAndTextMm(x, cfg){
+  const st = cfg || S;
+  // 1. カスタムロゴ画像描画（複数スロット＆ちりばめ総柄対応）
+  if(st.showLogo){
+    if(st === S) syncActiveSlotFromS();
+    const slots = (Array.isArray(st.logoSlots) && st.logoSlots.length > 0) ? st.logoSlots : [ st ];
+    slots.forEach((slot, idx) => {
+      const effectiveSlot = (idx === (st.activeLogoSlot || 0)) ? Object.assign({}, slot, extractLogoSlotFromS(st)) : slot;
+      drawSingleLogoSlotMm(x, effectiveSlot, st.W, st.H, st.bgColor);
+    });
+  }
+  // 2. 名入れ文字・千社札・1文字ちりばめ総柄描画
   if(st.showText && (st.customTextStr || '').trim()){
     const txt = (st.customTextStr || '').trim();
     const chars = Array.from(txt);
-    const fs = st.textSize || 44;
-    const sp = (st.textSpacing ?? 6) * (fs / 100);
-    const tx = st.W * ((st.textX ?? 50)/100);
-    const ty = st.H * ((st.textY ?? 75)/100);
+    const baseFs = st.textSize || 44;
+    const baseTx = st.W * ((st.textX ?? 50)/100);
+    const baseTy = st.H * ((st.textY ?? 75)/100);
     const isV = st.customTextVert !== false;
     const frame = st.customTextFrame || 'senjafuda';
     const fg = st.customTextColor || '#046e7e';
     const bg = st.customTextBg || '#ffffff';
-    const ow = (st.textOutlineW ?? 5) * (fs / 44);
+    const baseAng = st.textAngle || 0;
 
-    x.save();
-    x.translate(tx, ty);
-    x.rotate(((st.textAngle || 0) * Math.PI) / 180);
-    x.font = `700 ${fs}px ${st.customTextFont || "'Yuji Syuku', serif"}`;
-    x.textAlign = 'center';
-    x.textBaseline = 'middle';
+    const placements = generateScatterPlacementsMm({
+      W: st.W, H: st.H,
+      mode: st.textRepeatMode || 'none',
+      baseX: baseTx, baseY: baseTy,
+      gapX: st.textRepeatGapX || 68,
+      gapY: st.textRepeatGapY || 68,
+      gridAngle: st.textRepeatGridAngle || 0,
+      angleVar: st.textRepeatAngleVar || 0,
+      sizeVar: st.textRepeatSizeVar || 0,
+      seed: (st.seed || 1) + 17
+    });
 
-    const bw = isV ? fs * 1.38 : chars.length * fs + Math.max(0, chars.length - 1) * sp + fs * 0.5;
-    const bh = isV ? chars.length * fs + Math.max(0, chars.length - 1) * sp + fs * 0.5 : fs * 1.42;
+    for(const pt of placements){
+      const fs = Math.max(4, baseFs * (pt.scaleMul || 1));
+      const sp = (st.textSpacing ?? 6) * (fs / 100);
+      const ow = (st.textOutlineW ?? 5) * (fs / 44);
 
-    if(frame === 'senjafuda'){
-      const pw = bw + fs*0.55, ph = bh + fs*0.6;
-      x.fillStyle = bg;
-      x.fillRect(-pw/2, -ph/2, pw, ph);
-      x.strokeStyle = fg;
-      x.lineWidth = Math.max(1.2, ow * 0.55);
-      x.strokeRect(-pw/2 + ow*0.45, -ph/2 + ow*0.45, pw - ow*0.9, ph - ow*0.9);
-      x.lineWidth = Math.max(0.5, ow * 0.2);
-      x.strokeRect(-pw/2 + ow*1.05, -ph/2 + ow*1.05, pw - ow*2.1, ph - ow*2.1);
-    }else if(frame === 'pad'){
-      const pw = bw + fs*0.45, ph = bh + fs*0.45;
-      x.fillStyle = bg;
-      x.fillRect(-pw/2, -ph/2, pw, ph);
-    }else if(frame === 'circle'){
-      const rad = Math.max(bw, bh) * 0.62;
-      x.fillStyle = bg;
-      x.beginPath(); x.arc(0, 0, rad, 0, Math.PI*2); x.fill();
-      x.strokeStyle = fg; x.lineWidth = Math.max(1, ow * 0.5); x.stroke();
+      x.save();
+      x.translate(pt.x, pt.y);
+      x.rotate(((baseAng + (pt.addAngle || 0)) * Math.PI) / 180);
+      x.font = `700 ${fs}px ${st.customTextFont || "'Yuji Syuku', serif"}`;
+      x.textAlign = 'center';
+      x.textBaseline = 'middle';
+
+      const bw = isV ? fs * 1.38 : chars.length * fs + Math.max(0, chars.length - 1) * sp + fs * 0.5;
+      const bh = isV ? chars.length * fs + Math.max(0, chars.length - 1) * sp + fs * 0.5 : fs * 1.42;
+
+      if(frame === 'senjafuda'){
+        const pw = bw + fs*0.55, ph = bh + fs*0.6;
+        x.fillStyle = bg;
+        x.fillRect(-pw/2, -ph/2, pw, ph);
+        x.strokeStyle = fg;
+        x.lineWidth = Math.max(1.0, ow * 0.55);
+        x.strokeRect(-pw/2 + ow*0.45, -ph/2 + ow*0.45, pw - ow*0.9, ph - ow*0.9);
+        x.lineWidth = Math.max(0.4, ow * 0.2);
+        x.strokeRect(-pw/2 + ow*1.05, -ph/2 + ow*1.05, pw - ow*2.1, ph - ow*2.1);
+      }else if(frame === 'pad'){
+        const pw = bw + fs*0.45, ph = bh + fs*0.45;
+        x.fillStyle = bg;
+        x.fillRect(-pw/2, -ph/2, pw, ph);
+      }else if(frame === 'circle'){
+        const rad = Math.max(bw, bh) * 0.62;
+        x.fillStyle = bg;
+        x.beginPath(); x.arc(0, 0, rad, 0, Math.PI*2); x.fill();
+        x.strokeStyle = fg; x.lineWidth = Math.max(0.8, ow * 0.5); x.stroke();
+      }
+
+      if(isV){
+        const totalH = (chars.length - 1) * (fs + sp);
+        chars.forEach((ch, idx)=>{
+          const cy = -totalH / 2 + idx * (fs + sp);
+          x.save();
+          x.translate(0, cy);
+          if('ー〜～()（）「」『』－-'.includes(ch)) x.rotate(Math.PI/2);
+          if(frame === 'outline'){
+            x.strokeStyle = bg; x.lineWidth = ow; x.lineJoin = 'round';
+            x.strokeText(ch, 0, 0);
+          }
+          x.fillStyle = fg;
+          x.fillText(ch, 0, 0);
+          x.restore();
+        });
+      }else{
+        const totalW = (chars.length - 1) * (fs + sp);
+        chars.forEach((ch, idx)=>{
+          const cx = -totalW / 2 + idx * (fs + sp);
+          if(frame === 'outline'){
+            x.strokeStyle = bg; x.lineWidth = ow; x.lineJoin = 'round';
+            x.strokeText(ch, cx, 0);
+          }
+          x.fillStyle = fg;
+          x.fillText(ch, cx, 0);
+        });
+      }
+      x.restore();
     }
-
-    if(isV){
-      const totalH = (chars.length - 1) * (fs + sp);
-      chars.forEach((ch, idx)=>{
-        const cy = -totalH / 2 + idx * (fs + sp);
-        x.save();
-        x.translate(0, cy);
-        if('ー〜～()（）「」『』－-'.includes(ch)) x.rotate(Math.PI/2);
-        if(frame === 'outline'){
-          x.strokeStyle = bg; x.lineWidth = ow; x.lineJoin = 'round';
-          x.strokeText(ch, 0, 0);
-        }
-        x.fillStyle = fg;
-        x.fillText(ch, 0, 0);
-        x.restore();
-      });
-    }else{
-      const totalW = (chars.length - 1) * (fs + sp);
-      chars.forEach((ch, idx)=>{
-        const cx = -totalW / 2 + idx * (fs + sp);
-        if(frame === 'outline'){
-          x.strokeStyle = bg; x.lineWidth = ow; x.lineJoin = 'round';
-          x.strokeText(ch, cx, 0);
-        }
-        x.fillStyle = fg;
-        x.fillText(ch, cx, 0);
-      });
-    }
-    x.restore();
   }
 }
 
@@ -1309,7 +2279,7 @@ let KAKU_POLYS = []; // 布領域でクリッピング済みの角字ポリゴ�
 let KAKU_META = {pitchMm: 48, strokeMm: 3.3, cellCount: 0, areaMm2: 0};
 
 function layoutKaku(){
-  if(S.mode === 'arare'){
+  if(S.mode === 'arare' || S.mode === 'scatter'){
     KAKU_POLYS = [];
     KAKU_META = {pitchMm: 0, strokeMm: 0, cellCount: 0, areaMm2: 0};
     return;
@@ -1396,7 +2366,7 @@ function makeNoise(rnd,cell){const g=new Map();const v=(i,j)=>{const k=i+','+j;i
 
 let DOTS=[];
 function layoutArare(){
-  if(S.mode === 'haneda'){
+  if(S.mode === 'haneda' || S.mode === 'scatter'){
     DOTS=[];
     return;
   }
@@ -1521,9 +2491,15 @@ function renderArbitraryTenuguiCanvas(st, includeOverlays, pxPerMm, patScaleMul)
   const x = off.getContext('2d');
   x.setTransform(ppm, 0, 0, ppm, 0, 0);
 
-  // 1. 地色
+  // 1. 地色（または手ぬぐい工房ベース生地）
   x.fillStyle = cfg.bgColor || '#046e7e';
   x.fillRect(0, 0, W, H);
+  if(cfg.useKoboBase && cfg.koboBaseDataUrl){
+    if(cfg.koboBaseDataUrl !== KOBO_BASE_URL || !KOBO_BASE_IMG) ensureKoboBaseLoaded(cfg.koboBaseDataUrl);
+    if(KOBO_BASE_IMG){
+      x.drawImage(KOBO_BASE_IMG, 0, 0, W, H);
+    }
+  }
 
   // ポリゴンとあられ粒の準備（現在のSと同じなら計算済みキャッシュを利用して高速描画）
   let polys = KAKU_POLYS;
@@ -3180,7 +4156,7 @@ function draw(){
   }
   const x=cv.getContext('2d'); x.setTransform(baseS*dpr,0,0,baseS*dpr,0,0);
 
-  // 1. 地色（または透過チェッカーボード）
+  // 1. 地色（または透過チェッカーボード・手ぬぐい工房ベース生地）
   if(S.showBg){
     x.fillStyle=S.bgColor;
     x.fillRect(0,0,S.W,S.H);
@@ -3189,6 +4165,12 @@ function draw(){
     for(let j=0;j<S.H/t;j++)for(let i=0;i<S.W/t;i++){
       x.fillStyle=(i+j)%2?'#c9ccd4':'#e4e6eb';
       x.fillRect(i*t,j*t,t,t);
+    }
+  }
+  if(S.useKoboBase && S.koboBaseDataUrl){
+    if(S.koboBaseDataUrl !== KOBO_BASE_URL || !KOBO_BASE_IMG) ensureKoboBaseLoaded(S.koboBaseDataUrl);
+    if(KOBO_BASE_IMG){
+      x.drawImage(KOBO_BASE_IMG, 0, 0, S.W, S.H);
     }
   }
 
@@ -3562,6 +4544,9 @@ function saveHighResPng(){
   const x = off.getContext('2d');
   x.setTransform(s,0,0,s,0,0);
   if(S.showBg){ x.fillStyle=S.bgColor; x.fillRect(0,0,S.W,S.H); }
+  if(S.useKoboBase && S.koboBaseDataUrl && KOBO_BASE_IMG){
+    x.drawImage(KOBO_BASE_IMG, 0, 0, S.W, S.H);
+  }
   const ko = (S.mode === 'both' && S.knockoutMm > 0) ? S.knockoutMm : 0;
   const drawArarePng = (isFront) => {
     if(DOTS.length === 0) return;
@@ -3905,7 +4890,9 @@ const ranges={
   crestSize:v=>v+' mm', crestAngle:v=>(v>0?'+':'')+v+'°', crestWeight:v=>(v>0?'+':'')+v+'%', crestX:v=>v+'%', crestY:v=>v+'%',
   logoThreshold:v=>v+'', logoSoftness:v=>v+'', logoDilate:v=>(v>0?'+':'')+v+' px', logoContrast:v=>(v>0?'+':'')+v, logoOpacity:v=>v+'%', logoOutlineMm:v=>v+' mm',
   logoSize:v=>v+' mm', logoAngle:v=>(v>0?'+':'')+v+'°', logoX:v=>v+'%', logoY:v=>v+'%',
+  logoRepeatGapX:v=>v+' mm', logoRepeatGapY:v=>v+' mm', logoRepeatGridAngle:v=>(v>0?'+':'')+v+'°', logoRepeatAngleVar:v=>v+'°', logoRepeatSizeVar:v=>v+'%',
   textSize:v=>v+' mm', textSpacing:v=>(v>0?'+':'')+v+'%', textOutlineW:v=>v+'', textAngle:v=>(v>0?'+':'')+v+'°', textX:v=>v+'%', textY:v=>v+'%',
+  textRepeatGapX:v=>v+' mm', textRepeatGapY:v=>v+' mm', textRepeatGridAngle:v=>(v>0?'+':'')+v+'°', textRepeatAngleVar:v=>v+'°', textRepeatSizeVar:v=>v+'%',
   daboShiftY:v=>(v>0?'+':'')+v+'%', daboShiftX:v=>(v>0?'+':'')+v+'%', daboSleeveShiftY:v=>(v>0?'+':'')+v+'%', daboPatScale:v=>v+'%',
   bandH:v=>v+' mm',
   count:v=>v+' 粒', gap:v=>v+' mm', spread:v=>v+'', grad:v=>(v>0?'+':'')+v,
@@ -3927,7 +4914,7 @@ function syncUI(){
   if($('daboInteractiveLogo')) $('daboInteractiveLogo').checked=(S.daboInteractiveLogo!==false);
   if($('daboDragItemType')) $('daboDragItemType').value=S.daboDragItemType||'auto';
 
-  // ロゴ・名入れ文字UI同期
+  // ロゴ・名入れ文字・ちりばめ総柄UI同期
   if($('logoRemoveBg')) $('logoRemoveBg').checked=(S.logoRemoveBg!==false);
   if($('logoBgMode')) $('logoBgMode').value=(S.logoRemoveBg===false)?'none':(S.logoBgMode||'white');
   if($('logoKeyColor')) $('logoKeyColor').value=S.logoKeyColor||'#ffffff';
@@ -3938,6 +4925,8 @@ function syncUI(){
   if($('logoMaskShape')) $('logoMaskShape').value=S.logoMaskShape||'none';
   if($('logoPadMode')) $('logoPadMode').value=S.logoPadMode||'none';
   if($('logoPadColor')) $('logoPadColor').value=S.logoPadColor||S.bgColor;
+  if($('logoRepeatMode')) $('logoRepeatMode').value=S.logoRepeatMode||'none';
+  if($('logoRepeatParamsBox')) $('logoRepeatParamsBox').hidden=(!S.logoRepeatMode || S.logoRepeatMode==='none');
   if($('customTextStr') && document.activeElement!==$('customTextStr')) $('customTextStr').value=S.customTextStr||'仲羽田';
   if($('customTextFont')) $('customTextFont').value=S.customTextFont||"'Yuji Syuku', serif";
   if($('customTextFrame')) $('customTextFrame').value=S.customTextFrame||'senjafuda';
@@ -3945,6 +4934,13 @@ function syncUI(){
   if($('customTextBg')) $('customTextBg').value=S.customTextBg||'#ffffff';
   if($('textVertBtn')) $('textVertBtn').setAttribute('aria-pressed',(S.customTextVert!==false)+'');
   if($('textHorizBtn')) $('textHorizBtn').setAttribute('aria-pressed',(S.customTextVert===false)+'');
+  if($('textRepeatMode')) $('textRepeatMode').value=S.textRepeatMode||'none';
+  if($('textRepeatParamsBox')) $('textRepeatParamsBox').hidden=(!S.textRepeatMode || S.textRepeatMode==='none');
+
+  // 複数ロゴ枠・ロゴ保管棚・手ぬぐい工房合体UI同期
+  renderLogoSlotsBar();
+  renderLogoShelf();
+  renderKoboBridgeUI();
 
   // ダボ・表示モードUI同期
   for(const b of document.querySelectorAll('#viewTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.view===(S.viewMode||'fabric'))+'');
@@ -3962,10 +4958,11 @@ function syncUI(){
   // モード別表示切替
   for(const b of document.querySelectorAll('#modeTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.mode===S.mode)+'');
   for(const b of document.querySelectorAll('#layerOrderTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.order===(S.layerOrder||'kakuFront'))+'');
-  $('sec-haneda').hidden = (S.mode === 'arare');
-  $('kakuColorGroup').hidden = (S.mode === 'arare');
-  $('sec-arare').hidden = (S.mode === 'haneda');
-  $('dotColorGroup').hidden = (S.mode === 'haneda');
+  $('sec-haneda').hidden = (S.mode === 'arare' || S.mode === 'scatter');
+  $('kakuColorGroup').hidden = (S.mode === 'arare' || S.mode === 'scatter');
+  $('sec-arare').hidden = (S.mode === 'haneda' || S.mode === 'scatter');
+  $('dotColorGroup').hidden = (S.mode === 'haneda' || S.mode === 'scatter');
+  if($('layerOrderBox')) $('layerOrderBox').hidden = (S.mode === 'scatter');
 
   for(const [hex,key] of [['bgHex','bgColor'],['kakuHex','kakuColor'],['dotHex','dotColor'],['crestFgHex','crestFg'],['crestBgHex','crestBg']]){
     if($(hex) && document.activeElement!==$(hex)){$(hex).value=S[key].toUpperCase();$(hex).setAttribute('aria-invalid','false');}
@@ -3980,6 +4977,7 @@ function syncUI(){
 
 let timer=null;
 function update(relayout){
+  if(S.showLogo) syncActiveSlotFromS();
   persist(); syncUI();
   if(relayout){
     clearTimeout(timer);
@@ -3991,7 +4989,9 @@ const NO_LAYOUT_KEYS = new Set([
   'knockoutMm','crestSize','crestAngle','crestWeight','crestX','crestY',
   'logoThreshold','logoSoftness','logoDilate','logoContrast','logoOpacity','logoOutlineMm',
   'logoSize','logoAngle','logoX','logoY',
+  'logoRepeatGapX','logoRepeatGapY','logoRepeatGridAngle','logoRepeatAngleVar','logoRepeatSizeVar',
   'textSize','textSpacing','textOutlineW','textAngle','textX','textY',
+  'textRepeatGapX','textRepeatGapY','textRepeatGridAngle','textRepeatAngleVar','textRepeatSizeVar',
   'daboShiftY','daboShiftX','daboSleeveShiftY','daboPatScale'
 ]);
 
@@ -4071,11 +5071,93 @@ document.querySelectorAll('#quickStyles .chip').forEach(b=>b.addEventListener('c
 }));
 
 $('showCrest').addEventListener('change',e=>{S.showCrest=e.target.checked; update(false);});
-$('showLogo').addEventListener('change',e=>{S.showLogo=e.target.checked; update(false);});
+$('showLogo').addEventListener('change',e=>{
+  S.showLogo=e.target.checked;
+  if(S.showLogo && (!Array.isArray(S.logoSlots) || S.logoSlots.length===0)){
+    S.logoSlots=[extractLogoSlotFromS(S)];
+    S.activeLogoSlot=0;
+  }
+  update(false);
+});
 $('showText').addEventListener('change',e=>{S.showText=e.target.checked; update(false);});
 $('showBand').addEventListener('change',e=>{S.showBand=e.target.checked; update(true);});
 if($('showDaboZoneGuide')){
   $('showDaboZoneGuide').addEventListener('change',e=>{S.showDaboZoneGuide=e.target.checked; update(false);});
+}
+
+// 🗑️ ワンクリック消去ボタン（入れたロゴ・丸紋・文字をすぐ消せる機能）
+if($('quickClearLogoBtn')) $('quickClearLogoBtn').addEventListener('click',()=>clearAllLogos());
+if($('quickClearCrestBtn')) $('quickClearCrestBtn').addEventListener('click',()=>{ S.showCrest=false; DABO_ACTIVE_REVERSE_HIT=null; update(false); });
+if($('quickClearTextBtn')) $('quickClearTextBtn').addEventListener('click',()=>{ S.showText=false; DABO_ACTIVE_REVERSE_HIT=null; update(false); });
+if($('clearAllOverlaysBtn')) $('clearAllOverlaysBtn').addEventListener('click',()=>{
+  S.showCrest=false; S.showText=false; clearAllLogos();
+});
+if($('hideCrestBtn')) $('hideCrestBtn').addEventListener('click',()=>{ S.showCrest=false; update(false); });
+if($('hideTextBtn')) $('hideTextBtn').addEventListener('click',()=>{ S.showText=false; update(false); });
+if($('daboClearLogoBtn')) $('daboClearLogoBtn').addEventListener('click',()=>{
+  const pref = S.daboDragItemType || 'auto';
+  if(pref === 'crest') S.showCrest = false;
+  else if(pref === 'text') S.showText = false;
+  else if(pref === 'logo') removeLogoSlotAt(S.activeLogoSlot || 0);
+  else { S.showCrest = false; S.showText = false; clearAllLogos(); }
+  DABO_ACTIVE_REVERSE_HIT = null;
+  if($('daboReverseMapInfo')) $('daboReverseMapInfo').textContent = '🗑️ ダボ上のロゴ・丸紋を消去しました。';
+  update(false);
+});
+if($('deleteActiveLogoSlotBtn')) $('deleteActiveLogoSlotBtn').addEventListener('click',()=>removeLogoSlotAt(S.activeLogoSlot || 0));
+if($('addLogoSlotBtn')) $('addLogoSlotBtn').addEventListener('click',()=>addNewLogoSlot());
+if($('dupLogoSlotBtn')) $('dupLogoSlotBtn').addEventListener('click',()=>duplicateActiveLogoSlot());
+if($('clearAllLogosBtn')) $('clearAllLogosBtn').addEventListener('click',()=>clearAllLogos());
+if($('saveToLogoShelfBtn')) $('saveToLogoShelfBtn').addEventListener('click',()=>{
+  const customNm = ($('logoShelfNameInput') && $('logoShelfNameInput').value.trim()) || S.logoName || 'マイロゴ';
+  addOrSaveLogoToShelf(customNm, S);
+  if($('logoShelfNameInput')) $('logoShelfNameInput').value = '';
+  saySave(`📚 「${customNm}」をマイ・ロゴ保管棚に保存しました！いつでも呼び出せます。`);
+});
+
+// 🏯 手ぬぐい工房合体・ベース生地連携イベント
+if($('openEmbeddedKoboBtn')) $('openEmbeddedKoboBtn').addEventListener('click',()=>openEmbeddedKoboModal());
+if($('closeEmbeddedKoboBtn')) $('closeEmbeddedKoboBtn').addEventListener('click',()=>closeEmbeddedKoboModal());
+if($('applyFromEmbeddedKoboBtn')) $('applyFromEmbeddedKoboBtn').addEventListener('click',()=>{
+  if(importLatestFromKobo()) closeEmbeddedKoboModal();
+});
+if($('quickImportLiveKoboBtn')) $('quickImportLiveKoboBtn').addEventListener('click',()=>importLatestFromKobo());
+if($('importLiveKoboBtn')) $('importLiveKoboBtn').addEventListener('click',()=>importLatestFromKobo());
+if($('clearKoboFabricBtn')) $('clearKoboFabricBtn').addEventListener('click',()=>{
+  S.useKoboBase = false;
+  S.koboBaseDataUrl = '';
+  S.koboBaseName = '';
+  KOBO_BASE_IMG = null;
+  KOBO_BASE_URL = '';
+  if(S.mode === 'scatter') S.mode = 'haneda';
+  update(true);
+});
+if($('uploadKoboFileBtn')) $('uploadKoboFileBtn').addEventListener('click',()=>$('uploadKoboFileInput').click());
+if($('uploadKoboFileInput')){
+  $('uploadKoboFileInput').addEventListener('change', async e=>{
+    const f = e.target.files && e.target.files[0]; if(!f) return;
+    const fname = f.name || '外部手ぬぐい';
+    try{
+      if(/\.json$/i.test(fname)){
+        const txt = await f.text();
+        const parsed = JSON.parse(txt);
+        const rendered = renderKoboStateJsonToDataUrl(parsed);
+        if(rendered){
+          applyKoboFabricToStudio(rendered.dataUrl, fname.replace(/\.json$/i,''), rendered.W, rendered.H, rendered.bgColor);
+        }
+      }else if(/\.(ai|pdf|eps)$/i.test(fname)){
+        const dUrl = await loadAiOrPdfFileToDataUrl(f);
+        applyKoboFabricToStudio(dUrl, fname);
+      }else{
+        const r = new FileReader();
+        r.onload = ev => applyKoboFabricToStudio(ev.target.result, fname);
+        r.readAsDataURL(f);
+      }
+    }catch(err){
+      alert('手ぬぐいファイルの読み込みに失敗しました: ' + err.message);
+    }
+    e.target.value = '';
+  });
 }
 document.querySelectorAll('#daboSmartLogoBtns button').forEach(b=>b.addEventListener('click',()=>{
   const sp = b.dataset.spot;
@@ -4133,11 +5215,13 @@ $('uploadLogoBtn').addEventListener('click',()=>$('uploadLogoInput').click());
 if($('useHantenLogoPresetBtn')){
   $('useHantenLogoPresetBtn').addEventListener('click',()=>{
     if(typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64){
+      S.logoName = '仲羽半纏ロゴ';
       S.logoDataUrl = HANTEN_LOGO_B64;
       S.showLogo = true;
       S.logoRemoveBg = true;
       S.logoBgMode = 'white';
       ensureLogoLoaded(S.logoDataUrl);
+      syncActiveSlotFromS();
       if($('logoFileStatus')) $('logoFileStatus').textContent = '仲羽半纏ロゴ (透過済)';
       update(false);
     }
@@ -4146,22 +5230,29 @@ if($('useHantenLogoPresetBtn')){
 $('uploadLogoInput').addEventListener('change', async e=>{
   const f=e.target.files&&e.target.files[0]; if(!f) return;
   const fname = f.name || '';
+  const cleanName = fname.replace(/\.[^.]+$/, '') || '読込ロゴ';
   if($('logoFileStatus')) $('logoFileStatus').textContent = '読込中: ' + fname;
   try{
     if(/\.(ai|pdf|eps)$/i.test(fname) || f.type === 'application/pdf' || f.type === 'application/postscript'){
       const dataUrl = await loadAiOrPdfFileToDataUrl(f);
+      S.logoName = cleanName;
       S.logoDataUrl = dataUrl;
       S.showLogo = true;
       ensureLogoLoaded(S.logoDataUrl);
-      if($('logoFileStatus')) $('logoFileStatus').textContent = fname + ' (AI/PDF変換済)';
+      syncActiveSlotFromS();
+      addOrSaveLogoToShelf(cleanName, S);
+      if($('logoFileStatus')) $('logoFileStatus').textContent = fname + ' (AI/PDF変換＆保管棚に保存済)';
       update(false);
     }else{
       const r=new FileReader();
       r.onload=ev=>{
+        S.logoName = cleanName;
         S.logoDataUrl=ev.target.result;
         S.showLogo=true;
         ensureLogoLoaded(S.logoDataUrl);
-        if($('logoFileStatus')) $('logoFileStatus').textContent = fname;
+        syncActiveSlotFromS();
+        addOrSaveLogoToShelf(cleanName, S);
+        if($('logoFileStatus')) $('logoFileStatus').textContent = fname + ' (保管棚に保存済)';
         update(false);
       };
       r.readAsDataURL(f);
@@ -4174,6 +5265,27 @@ $('uploadLogoInput').addEventListener('change', async e=>{
 });
 document.querySelectorAll('#logoPosPresets button').forEach(b=>b.addEventListener('click',()=>{
   S.logoX=parseFloat(b.dataset.lx); S.logoY=parseFloat(b.dataset.ly); update(false);
+}));
+// ✨ ロゴちりばめ総柄（1個のロゴを多数ちりばめる）イベント
+if($('logoRepeatMode')){
+  $('logoRepeatMode').addEventListener('change',e=>{
+    S.logoRepeatMode = e.target.value;
+    if(S.logoRepeatMode === 'diag' && !S.logoRepeatGridAngle) S.logoRepeatGridAngle = -30;
+    update(false);
+  });
+}
+document.querySelectorAll('#logoScatterQuickBtns button').forEach(b=>b.addEventListener('click',()=>{
+  const m = b.dataset.scmode || 'none';
+  S.logoRepeatMode = m;
+  S.showLogo = true;
+  if(m === 'brick'){
+    S.logoSize = 48; S.logoRepeatGapX = 72; S.logoRepeatGapY = 72; S.logoRepeatGridAngle = 0; S.logoRepeatAngleVar = 0; S.logoRepeatSizeVar = 0;
+  }else if(m === 'diag'){
+    S.logoSize = 46; S.logoRepeatGapX = 70; S.logoRepeatGapY = 70; S.logoRepeatGridAngle = -30; S.logoRepeatAngleVar = 0; S.logoRepeatSizeVar = 0;
+  }else if(m === 'random'){
+    S.logoSize = 52; S.logoRepeatGapX = 78; S.logoRepeatGapY = 78; S.logoRepeatGridAngle = 0; S.logoRepeatAngleVar = 35; S.logoRepeatSizeVar = 40;
+  }
+  update(false);
 }));
 if($('logoBgMode')){
   $('logoBgMode').addEventListener('change',e=>{
@@ -4240,8 +5352,8 @@ $('logoPadColor').addEventListener('input',e=>{S.logoPadColor=e.target.value; up
 $('logoPadMatchBgBtn').addEventListener('click',()=>{S.logoPadColor=S.bgColor; if(S.logoPadMode==='none') S.logoPadMode='circle'; update(false);});
 if($('logoPadWhiteBtn')) $('logoPadWhiteBtn').addEventListener('click',()=>{S.logoPadColor='#ffffff'; if(S.logoPadMode==='none') S.logoPadMode='circle'; update(false);});
 
-// 名入れ文字・フォント・千社札イベント
-document.querySelectorAll('#textPhraseChips button').forEach(b=>b.addEventListener('click',()=>{
+// 名入れ文字・フォント・千社札・1文字ちりばめ総柄イベント
+document.querySelectorAll('#textPhraseChips button[data-txt]').forEach(b=>b.addEventListener('click',()=>{
   S.customTextStr=b.dataset.txt; S.showText=true; update(false);
 }));
 $('customTextStr').addEventListener('input',e=>{S.customTextStr=e.target.value; update(false);});
@@ -4257,6 +5369,33 @@ $('customTextColor').addEventListener('input',e=>{S.customTextColor=e.target.val
 $('customTextBg').addEventListener('input',e=>{S.customTextBg=e.target.value; update(false);});
 $('textSwapColBtn').addEventListener('click',()=>{const t=S.customTextColor; S.customTextColor=S.customTextBg; S.customTextBg=t; update(false);});
 $('textMatchBgBtn').addEventListener('click',()=>{S.customTextBg=S.bgColor; S.customTextColor=(S.mode==='arare'?S.dotColor:S.kakuColor); update(false);});
+if($('textRepeatMode')){
+  $('textRepeatMode').addEventListener('change',e=>{
+    S.textRepeatMode = e.target.value;
+    if(S.textRepeatMode === 'diag' && !S.textRepeatGridAngle) S.textRepeatGridAngle = -30;
+    if(S.textRepeatMode !== 'none' && S.customTextFrame === 'senjafuda') S.customTextFrame = 'none';
+    update(false);
+  });
+}
+document.querySelectorAll('#textScatterQuickBtns button').forEach(b=>b.addEventListener('click',()=>{
+  const m = b.dataset.tsc || 'none';
+  S.textRepeatMode = m;
+  S.showText = true;
+  if(m !== 'none'){
+    if(S.customTextFrame === 'senjafuda'){
+      S.customTextFrame = 'none';
+      S.customTextColor = '#ffffff';
+    }
+    if(m === 'brick'){
+      S.textSize = 28; S.textRepeatGapX = 64; S.textRepeatGapY = 64; S.textRepeatGridAngle = 0; S.textRepeatAngleVar = 0; S.textRepeatSizeVar = 0;
+    }else if(m === 'diag'){
+      S.textSize = 28; S.textRepeatGapX = 64; S.textRepeatGapY = 64; S.textRepeatGridAngle = -30; S.textRepeatAngleVar = 0; S.textRepeatSizeVar = 0;
+    }else if(m === 'random'){
+      S.textSize = 32; S.textRepeatGapX = 70; S.textRepeatGapY = 70; S.textRepeatGridAngle = 0; S.textRepeatAngleVar = 35; S.textRepeatSizeVar = 45;
+    }
+  }
+  update(false);
+}));
 
 // 表示モード＆ダボ仕立てイベント
 document.querySelectorAll('#viewTabs .chip').forEach(b=>b.addEventListener('click',()=>{
@@ -4311,10 +5450,28 @@ box.addEventListener('mousedown', e=>{
       const my = (e.clientY - r.top) / r.height * S.H;
       const candidates = [];
       if(S.showText) candidates.push({ keyX:'textX', keyY:'textY', x:S.W*(S.textX/100), y:S.H*(S.textY/100), rad:Math.max(28, S.textSize*1.1) });
-      if(S.showLogo) candidates.push({ keyX:'logoX', keyY:'logoY', x:S.W*(S.logoX/100), y:S.H*(S.logoY/100), rad:Math.max(28, S.logoSize*0.62) });
+      if(S.showLogo){
+        syncActiveSlotFromS();
+        if(Array.isArray(S.logoSlots) && S.logoSlots.length > 0){
+          // 後ろ（上に重なっている側）のスロットから優先してヒット判定
+          for(let si = S.logoSlots.length - 1; si >= 0; si--){
+            const sl = S.logoSlots[si];
+            candidates.push({
+              keyX:'logoX', keyY:'logoY', slotIdx: si,
+              x:S.W*((sl.logoX ?? 50)/100), y:S.H*((sl.logoY ?? 28)/100),
+              rad:Math.max(28, (sl.logoSize || 85)*0.62)
+            });
+          }
+        }else{
+          candidates.push({ keyX:'logoX', keyY:'logoY', x:S.W*(S.logoX/100), y:S.H*(S.logoY/100), rad:Math.max(28, S.logoSize*0.62) });
+        }
+      }
       if(S.showCrest) candidates.push({ keyX:'crestX', keyY:'crestY', x:S.W*(S.crestX/100), y:S.H*(S.crestY/100), rad:Math.max(24, S.crestSize*0.58) });
       for(const c of candidates){
         if(Math.hypot(mx - c.x, my - c.y) <= c.rad){
+          if(c.slotIdx !== undefined && c.slotIdx !== S.activeLogoSlot){
+            selectLogoSlot(c.slotIdx);
+          }
           dragTarget = c;
           box.classList.add('is-panning');
           e.preventDefault();
@@ -4403,7 +5560,33 @@ box.addEventListener('dblclick', e=>{
   if(e.target && e.target.closest && e.target.closest('.float-zoom-hud')) return;
   setStageZoom(1, true);
 });
+// Delete / Backspace キーで現在選択中のロゴ・丸紋・文字をワンタッチ消去
+window.addEventListener('keydown', e=>{
+  if(e.key !== 'Delete' && e.key !== 'Backspace') return;
+  const tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
+  if(tag === 'input' || tag === 'textarea' || tag === 'select') return;
+  if(S.showLogo){
+    e.preventDefault();
+    removeLogoSlotAt(S.activeLogoSlot || 0);
+  }else if(S.showCrest){
+    e.preventDefault();
+    S.showCrest = false;
+    update(false);
+  }else if(S.showText){
+    e.preventDefault();
+    S.showText = false;
+    update(false);
+  }
+});
+// 別タブの手ぬぐい工房 PRO でデザインが保存・更新されたら自動反映
+window.addEventListener('storage', e=>{
+  if(e.key === KOBO_PRESETS_KEY || e.key === KOBO_LIVE_BRIDGE_KEY){
+    renderKoboBridgeUI();
+  }
+});
+loadLogoShelfFromStorage();
 if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
+if(S.useKoboBase && S.koboBaseDataUrl) ensureKoboBaseLoaded(S.koboBaseDataUrl);
 
 /* ---- colors: traditional palettes, hex entry, swap ---- */
 const BG_PAL=[

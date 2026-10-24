@@ -851,23 +851,115 @@
   function drawItemWithRepeat(targetCtx, item, canvasW, canvasH) {
     const mode = item.repeatMode || 'none';
     if (mode === 'none') {
-      drawSingleItem(targetCtx, item, item.x, item.y);
+      drawSingleItem(targetCtx, item, item.x, item.y, 0, 1);
       return;
     }
 
-    const gap = Math.max(60, item.repeatGap || 180);
+    const gapX = Math.max(40, item.repeatGap || 160);
+    const gapY = Math.max(40, item.repeatGapY || Math.round(gapX * 0.88));
+    const gridAng = (mode === 'diag' && !item.repeatGridAngle) ? -30.15 : (item.repeatGridAngle || 0);
+    const angleVar = item.repeatAngleVar || 0;
+    const sizeVar = Math.max(0, Math.min(80, item.repeatSizeVar || 0)) / 100;
+
+    // シード付き決定的乱数（アイテムIDごとに固定されるため再描画してもチラつかない）
+    let seed = 1337;
+    const idStr = String(item.id || 'seed');
+    for (let i = 0; i < idStr.length; i++) seed = (seed * 31 + idStr.charCodeAt(i)) >>> 0;
+    const nextRnd = () => {
+      seed = (seed + 0x6D2B79F5) >>> 0;
+      let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+
     if (mode === 'row') {
-      for (let x = gap * 0.5; x < canvasW; x += gap) {
-        drawSingleItem(targetCtx, item, x, item.y);
+      let idx = 0;
+      for (let x = gapX * 0.45; x < canvasW + gapX * 0.4; x += gapX) {
+        const addAng = angleVar > 0 ? (idx % 2 === 1 ? angleVar : -angleVar) : 0;
+        const scMul = sizeVar > 0 ? (1 - sizeVar * ((idx % 3) * 0.34)) : 1;
+        drawSingleItem(targetCtx, item, x, item.y, addAng, scMul);
+        idx++;
       }
-    } else if (mode === 'grid' || mode === 'brick') {
-      let rowIdx = 0;
-      for (let y = gap * 0.5; y < canvasH + gap * 0.5; y += gap * 0.85) {
-        const offsetX = mode === 'brick' && rowIdx % 2 === 1 ? gap * 0.5 : 0;
-        for (let x = gap * 0.4 + offsetX; x < canvasW + gap * 0.5; x += gap) {
-          drawSingleItem(targetCtx, item, x, y);
+      return;
+    }
+
+    if (mode === 'col') {
+      let idx = 0;
+      for (let y = gapY * 0.45; y < canvasH + gapY * 0.4; y += gapY) {
+        const addAng = angleVar > 0 ? (idx % 2 === 1 ? angleVar : -angleVar) : 0;
+        const scMul = sizeVar > 0 ? (1 - sizeVar * ((idx % 3) * 0.34)) : 1;
+        drawSingleItem(targetCtx, item, item.x, y, addAng, scMul);
+        idx++;
+      }
+      return;
+    }
+
+    if (mode === 'border') {
+      const m = Math.max(54, Math.min(canvasW, canvasH) * 0.11);
+      const nx = Math.max(2, Math.round((canvasW - m * 2) / gapX));
+      const ny = Math.max(2, Math.round((canvasH - m * 2) / gapY));
+      let idx = 0;
+      for (let i = 0; i <= nx; i++) {
+        const px = m + (canvasW - m * 2) * (i / nx);
+        drawSingleItem(targetCtx, item, px, m, idx++ % 2 ? angleVar : 0, 1);
+        drawSingleItem(targetCtx, item, px, canvasH - m, idx++ % 2 ? angleVar : 0, 1);
+      }
+      for (let j = 1; j < ny; j++) {
+        const py = m + (canvasH - m * 2) * (j / ny);
+        drawSingleItem(targetCtx, item, m, py, idx++ % 2 ? angleVar : 0, 1);
+        drawSingleItem(targetCtx, item, canvasW - m, py, idx++ % 2 ? angleVar : 0, 1);
+      }
+      return;
+    }
+
+    if (mode === 'random') {
+      const count = Math.min(280, Math.max(8, Math.round((canvasW * canvasH) / (gapX * gapY * 0.78))));
+      const minDist = Math.min(gapX, gapY) * 0.62;
+      const placed = [];
+      for (let i = 0; i < count; i++) {
+        let bestX = 0, bestY = 0, bestD = -1;
+        for (let t = 0; t < 14; t++) {
+          const cx = nextRnd() * canvasW;
+          const cy = nextRnd() * canvasH;
+          let near = Infinity;
+          for (let k = Math.max(0, placed.length - 45); k < placed.length; k++) {
+            const d = Math.hypot(placed[k].x - cx, placed[k].y - cy);
+            if (d < near) near = d;
+          }
+          if (near > bestD) { bestD = near; bestX = cx; bestY = cy; }
+          if (near >= minDist) break;
         }
-        rowIdx++;
+        placed.push({ x: bestX, y: bestY });
+        const addAng = angleVar > 0 ? (nextRnd() * 2 - 1) * angleVar : 0;
+        const scMul = sizeVar > 0 ? Math.max(0.28, 1 - sizeVar * 0.8 * nextRnd()) : 1;
+        drawSingleItem(targetCtx, item, bestX, bestY, addAng, scMul);
+      }
+      return;
+    }
+
+    // 'grid' | 'brick' | 'diag'（回転対応・互い違い市松・斜め格子）
+    const rad = (gridAng * Math.PI) / 180;
+    const cos = Math.cos(rad), sin = Math.sin(rad);
+    const diag = Math.hypot(canvasW, canvasH) * 0.65;
+    const cols = Math.ceil(diag / gapX) + 2;
+    const rows = Math.ceil(diag / gapY) + 2;
+    const shiftX = ((item.x || canvasW * 0.5) - canvasW * 0.5) % gapX;
+    const shiftY = ((item.y || canvasH * 0.5) - canvasH * 0.5) % gapY;
+    const isStagger = (mode === 'brick' || mode === 'diag');
+
+    for (let r = -rows; r <= rows; r++) {
+      const rowStagger = (isStagger && Math.abs(r) % 2 === 1) ? gapX * 0.5 : 0;
+      for (let c = -cols; c <= cols; c++) {
+        const lx = c * gapX + rowStagger + shiftX;
+        const ly = r * gapY + shiftY;
+        const px = canvasW * 0.5 + lx * cos - ly * sin;
+        const py = canvasH * 0.5 + lx * sin + ly * cos;
+        if (px < -gapX || px > canvasW + gapX || py < -gapY || py > canvasH + gapY) continue;
+        const parity = Math.abs(c + r) % 2;
+        const sizeStep = Math.abs(c * 3 + r * 5) % 3;
+        const addAng = angleVar > 0 ? (parity === 1 ? angleVar : -angleVar * 0.5) : 0;
+        const scMul = sizeVar > 0 ? Math.max(0.28, 1 - sizeVar * (sizeStep * 0.36)) : 1;
+        drawSingleItem(targetCtx, item, px, py, addAng, scMul);
       }
     }
   }
@@ -912,11 +1004,11 @@
     return { w: 120, h: 120 };
   }
 
-  function drawSingleItem(targetCtx, item, posX, posY) {
+  function drawSingleItem(targetCtx, item, posX, posY, extraAngleDeg = 0, extraScaleMul = 1) {
     targetCtx.save();
     targetCtx.translate(posX, posY);
-    targetCtx.rotate(((item.rotation || 0) * Math.PI) / 180);
-    const sc = (item.scale || 100) / 100;
+    targetCtx.rotate((((item.rotation || 0) + (extraAngleDeg || 0)) * Math.PI) / 180);
+    const sc = ((item.scale || 100) / 100) * (extraScaleMul || 1);
     targetCtx.scale(sc, sc);
     targetCtx.globalAlpha = (item.opacity ?? 100) / 100;
 
@@ -1075,6 +1167,47 @@
     targetCtx.restore();
   }
 
+  // 🏯 統合スタジオ (arare_app.html) とのライブブリッジ連携
+  const LIVE_BRIDGE_KEY = 'tenugui-studio-live-bridge-v1';
+  let liveBridgeTimer = null;
+
+  function buildBridgePayload(customName) {
+    const dim = getDimensions();
+    const flat = document.createElement('canvas');
+    flat.width = dim.trimW_px;
+    flat.height = dim.trimH_px;
+    drawTenuguiScene(flat.getContext('2d'), {
+      scaleFactor: 1.0,
+      includeBleed: false,
+      showGuides: false,
+      showTexture: false,
+      showSelection: false
+    });
+    return {
+      name: customName || '手ぬぐい工房デザイン',
+      dataUrl: flat.toDataURL('image/png'),
+      widthMm: dim.trimW_mm,
+      heightMm: dim.trimH_mm,
+      bgColor: state.bgColor,
+      savedAt: Date.now()
+    };
+  }
+
+  function saveLiveBridgeToStorage(customName) {
+    try {
+      const payload = buildBridgePayload(customName);
+      localStorage.setItem(LIVE_BRIDGE_KEY, JSON.stringify(payload));
+      return payload;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // 親ウィンドウ（arare_app.html の合体モーダル）から直接呼び出せるグローバル関数を公開
+  window.exportCurrentTenuguiForBridge = function () {
+    return saveLiveBridgeToStorage('手ぬぐい工房(編集中)');
+  };
+
   function renderCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawTenuguiScene(ctx, {
@@ -1087,6 +1220,8 @@
       showTrimMarks: false
     });
     updateUsedColorsBadge();
+    clearTimeout(liveBridgeTimer);
+    liveBridgeTimer = setTimeout(() => saveLiveBridgeToStorage(), 450);
   }
 
   // 使用色数カウント（本染め・注染の版数目安）
@@ -1383,8 +1518,28 @@
 
     document.getElementById('propRepeatMode').value = sel.repeatMode || 'none';
     document.getElementById('propRepeatGapRow').classList.toggle('hidden', (sel.repeatMode || 'none') === 'none');
-    document.getElementById('propRepeatGap').value = sel.repeatGap || 180;
-    document.getElementById('propRepeatGapVal').textContent = `${sel.repeatGap || 180}px`;
+    document.getElementById('propRepeatGap').value = sel.repeatGap || 160;
+    document.getElementById('propRepeatGapVal').textContent = `${sel.repeatGap || 160}px`;
+    if (document.getElementById('propRepeatGapY')) {
+      const gy = sel.repeatGapY || sel.repeatGap || 150;
+      document.getElementById('propRepeatGapY').value = gy;
+      document.getElementById('propRepeatGapYVal').textContent = `${gy}px`;
+    }
+    if (document.getElementById('propRepeatGridAngle')) {
+      const ga = sel.repeatGridAngle || 0;
+      document.getElementById('propRepeatGridAngle').value = ga;
+      document.getElementById('propRepeatGridAngleVal').textContent = `${ga}°`;
+    }
+    if (document.getElementById('propRepeatAngleVar')) {
+      const av = sel.repeatAngleVar || 0;
+      document.getElementById('propRepeatAngleVar').value = av;
+      document.getElementById('propRepeatAngleVarVal').textContent = `${av}°`;
+    }
+    if (document.getElementById('propRepeatSizeVar')) {
+      const sv = sel.repeatSizeVar || 0;
+      document.getElementById('propRepeatSizeVar').value = sv;
+      document.getElementById('propRepeatSizeVarVal').textContent = `${sv}%`;
+    }
   }
 
   function updateSelectedItemProp(prop, value, recordHistory = false) {
@@ -2866,7 +3021,7 @@
       }
     });
 
-    // 文字追加・定型フレーズ
+    // 文字追加・定型フレーズ・1文字ちりばめ総柄プリセット
     document.getElementById('addVerticalTextBtn').addEventListener('click', () => addTextItem('手ぬぐい工房', true, 110));
     document.getElementById('addHorizontalTextBtn').addEventListener('click', () => addTextItem('TENUGUI STUDIO', false, 72));
     document.querySelectorAll('.phrase-btn').forEach(btn => {
@@ -2874,6 +3029,32 @@
         addTextItem(btn.dataset.text, btn.dataset.vert === 'true', Number(btn.dataset.size) || 110);
       });
     });
+    document.querySelectorAll('[data-scatter-preset]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mode = btn.dataset.scatterPreset || 'brick';
+        addTextItem('仲羽田', true, 56);
+        const sel = state.items.find(it => it.id === state.selectedId);
+        if (sel) {
+          sel.repeatMode = mode;
+          sel.repeatGap = 150;
+          sel.repeatGapY = 145;
+          sel.repeatGridAngle = (mode === 'diag') ? -30 : 0;
+          sel.repeatAngleVar = (mode === 'random') ? 35 : 0;
+          sel.repeatSizeVar = (mode === 'random') ? 45 : 0;
+          syncUIFromState();
+          renderCanvas();
+          pushHistory();
+        }
+      });
+    });
+
+    // 統合スタジオへ送るボタン
+    const sendToArareBtn = document.getElementById('sendToArareStudioBtn');
+    if (sendToArareBtn) {
+      sendToArareBtn.addEventListener('click', () => {
+        saveLiveBridgeToStorage('手ぬぐい工房デザイン');
+      });
+    }
 
     // 落款スタンプ追加
     document.getElementById('addRakkanBtn').addEventListener('click', addRakkanItem);
@@ -2956,9 +3137,48 @@
     });
     document.getElementById('propOpacity').addEventListener('input', e => updateSelectedItemProp('opacity', Number(e.target.value)));
     document.getElementById('propOpacity').addEventListener('change', () => pushHistory());
-    document.getElementById('propRepeatMode').addEventListener('change', e => updateSelectedItemProp('repeatMode', e.target.value, true));
+    document.getElementById('propRepeatMode').addEventListener('change', e => {
+      const m = e.target.value;
+      const sel = state.items.find(it => it.id === state.selectedId);
+      if (sel && m === 'diag' && !sel.repeatGridAngle) sel.repeatGridAngle = -30;
+      updateSelectedItemProp('repeatMode', m, true);
+    });
     document.getElementById('propRepeatGap').addEventListener('input', e => updateSelectedItemProp('repeatGap', Number(e.target.value)));
     document.getElementById('propRepeatGap').addEventListener('change', () => pushHistory());
+    if (document.getElementById('propRepeatGapY')) {
+      document.getElementById('propRepeatGapY').addEventListener('input', e => updateSelectedItemProp('repeatGapY', Number(e.target.value)));
+      document.getElementById('propRepeatGapY').addEventListener('change', () => pushHistory());
+    }
+    if (document.getElementById('propRepeatGridAngle')) {
+      document.getElementById('propRepeatGridAngle').addEventListener('input', e => updateSelectedItemProp('repeatGridAngle', Number(e.target.value)));
+      document.getElementById('propRepeatGridAngle').addEventListener('change', () => pushHistory());
+    }
+    if (document.getElementById('propRepeatAngleVar')) {
+      document.getElementById('propRepeatAngleVar').addEventListener('input', e => updateSelectedItemProp('repeatAngleVar', Number(e.target.value)));
+      document.getElementById('propRepeatAngleVar').addEventListener('change', () => pushHistory());
+    }
+    if (document.getElementById('propRepeatSizeVar')) {
+      document.getElementById('propRepeatSizeVar').addEventListener('input', e => updateSelectedItemProp('repeatSizeVar', Number(e.target.value)));
+      document.getElementById('propRepeatSizeVar').addEventListener('change', () => pushHistory());
+    }
+    document.querySelectorAll('#propScatterQuickBtns button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const sel = state.items.find(it => it.id === state.selectedId);
+        if (!sel) return;
+        const m = btn.dataset.rmode || 'none';
+        sel.repeatMode = m;
+        if (m === 'brick') {
+          sel.repeatGap = 150; sel.repeatGapY = 140; sel.repeatGridAngle = 0; sel.repeatAngleVar = 0; sel.repeatSizeVar = 0;
+        } else if (m === 'diag') {
+          sel.repeatGap = 150; sel.repeatGapY = 140; sel.repeatGridAngle = -30; sel.repeatAngleVar = 0; sel.repeatSizeVar = 0;
+        } else if (m === 'random') {
+          sel.repeatGap = 160; sel.repeatGapY = 155; sel.repeatGridAngle = 0; sel.repeatAngleVar = 35; sel.repeatSizeVar = 40;
+        }
+        syncUIFromState();
+        renderCanvas();
+        pushHistory();
+      });
+    });
 
     // 複製・削除
     document.getElementById('propDuplicateBtn').addEventListener('click', duplicateSelectedItem);
