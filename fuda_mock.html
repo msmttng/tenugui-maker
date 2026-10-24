@@ -533,51 +533,57 @@
           </label>
         </div>
 
-        <!-- Adobe Illustrator風 2Dカラーピッカー ＆ 色マップ -->
-        <div style="background:#090d16;border:1px solid #581c87;border-radius:8px;padding:7px;margin-top:4px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;gap:4px;flex-wrap:wrap">
-            <span style="font-size:10.5px;font-weight:800;color:#e9d5ff;">🎨 イラレ2Dピッカー＆色マップ編集対象:</span>
-            <button type="button" class="mini-chip" id="mockEyeDropperBtn" style="border-color:#0ea5e9;color:#7dd3fc">💉 画面スポイト</button>
-          </div>
-          <div class="chip-row" id="mockAiTargetTabs" style="margin-bottom:6px">
-            <button type="button" class="mini-chip active" data-target="bgColor">🪵 札の地色</button>
-            <button type="button" class="mini-chip" data-target="fgColor">🖋 文字・枠の色</button>
-            <button type="button" class="mini-chip" data-target="cordFillColor">🪢 紐の塗り色</button>
-            <button type="button" class="mini-chip" data-target="cordStrokeColor">🪢 紐のフチ色</button>
-          </div>
-          <div style="display:grid;grid-template-columns:130px 18px 1fr;gap:6px;align-items:stretch">
-            <div style="position:relative;width:130px;height:110px;border:1px solid #64748b;border-radius:4px;overflow:hidden;cursor:crosshair;touch-action:none">
-              <canvas id="mockAiSbCv" width="130" height="110" style="width:130px;height:110px;display:block"></canvas>
-              <div id="mockAiSbCursor" style="position:absolute;width:10px;height:10px;border:2px solid #fff;box-shadow:0 0 2px #000;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;left:0;top:0"></div>
+        <!-- Adobe Illustrator風 2Dカラーピッカー ＆ 色マップ（折りたたみでシンプル表示） -->
+        <details style="background:#090d16;border:1px solid #581c87;border-radius:8px;padding:6px;margin-top:4px;">
+          <summary style="cursor:pointer;font-size:11px;font-weight:800;color:#e9d5ff;display:flex;justify-content:space-between;align-items:center;list-style:none">
+            <span>🎨 イラレ2Dカラーピッカー＆色マップを開く（HSB/RGB/CMYK）</span>
+            <span style="font-size:10px;color:#c084fc">▼ クリックで開閉</span>
+          </summary>
+          <div style="margin-top:6px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;gap:4px;flex-wrap:wrap">
+              <span style="font-size:10.5px;font-weight:800;color:#e9d5ff;">編集対象:</span>
+              <button type="button" class="mini-chip" id="mockEyeDropperBtn" style="border-color:#0ea5e9;color:#7dd3fc">💉 画面スポイト</button>
             </div>
-            <div style="position:relative;width:18px;height:110px;border:1px solid #64748b;border-radius:4px;overflow:hidden;cursor:ns-resize;touch-action:none">
-              <canvas id="mockAiHueCv" width="18" height="110" style="width:18px;height:110px;display:block"></canvas>
-              <div id="mockAiHueCursor" style="position:absolute;left:0;right:0;height:4px;border:1.5px solid #fff;box-shadow:0 0 2px #000;transform:translateY(-50%);pointer-events:none;top:0"></div>
+            <div class="chip-row" id="mockAiTargetTabs" style="margin-bottom:6px">
+              <button type="button" class="mini-chip active" data-target="bgColor">🪵 札の地色</button>
+              <button type="button" class="mini-chip" data-target="fgColor">🖋 文字・枠の色</button>
+              <button type="button" class="mini-chip" data-target="cordFillColor">🪢 紐の塗り色</button>
+              <button type="button" class="mini-chip" data-target="cordStrokeColor">🪢 紐のフチ色</button>
             </div>
-            <div style="display:flex;flex-direction:column;justify-content:space-between;font-size:10px;color:#cbd5e1">
-              <div style="display:flex;align-items:center;gap:5px">
-                <div id="mockAiColorPatch" style="width:26px;height:22px;border:1px solid #94a3b8;border-radius:4px;background:#0f1f3d"></div>
-                <div style="display:flex;align-items:center;background:#1e293b;border:1px solid #475569;border-radius:4px;padding:1px 4px;flex:1">
-                  <span style="color:#94a3b8;font-weight:800;margin-right:2px">#</span>
-                  <input type="text" id="mockAiHexInput" value="0F1F3D" maxlength="7" style="width:100%;background:transparent;border:none;color:#f8fafc;font-family:monospace;font-size:11px;font-weight:800;outline:none">
+            <div style="display:grid;grid-template-columns:130px 18px 1fr;gap:6px;align-items:stretch">
+              <div style="position:relative;width:130px;height:110px;border:1px solid #64748b;border-radius:4px;overflow:hidden;cursor:crosshair;touch-action:none">
+                <canvas id="mockAiSbCv" width="130" height="110" style="width:130px;height:110px;display:block"></canvas>
+                <div id="mockAiSbCursor" style="position:absolute;width:10px;height:10px;border:2px solid #fff;box-shadow:0 0 2px #000;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;left:0;top:0"></div>
+              </div>
+              <div style="position:relative;width:18px;height:110px;border:1px solid #64748b;border-radius:4px;overflow:hidden;cursor:ns-resize;touch-action:none">
+                <canvas id="mockAiHueCv" width="18" height="110" style="width:18px;height:110px;display:block"></canvas>
+                <div id="mockAiHueCursor" style="position:absolute;left:0;right:0;height:4px;border:1.5px solid #fff;box-shadow:0 0 2px #000;transform:translateY(-50%);pointer-events:none;top:0"></div>
+              </div>
+              <div style="display:flex;flex-direction:column;justify-content:space-between;font-size:10px;color:#cbd5e1">
+                <div style="display:flex;align-items:center;gap:5px">
+                  <div id="mockAiColorPatch" style="width:26px;height:22px;border:1px solid #94a3b8;border-radius:4px;background:#0f1f3d"></div>
+                  <div style="display:flex;align-items:center;background:#1e293b;border:1px solid #475569;border-radius:4px;padding:1px 4px;flex:1">
+                    <span style="color:#94a3b8;font-weight:800;margin-right:2px">#</span>
+                    <input type="text" id="mockAiHexInput" value="0F1F3D" maxlength="7" style="width:100%;background:transparent;border:none;color:#f8fafc;font-family:monospace;font-size:11px;font-weight:800;outline:none">
+                  </div>
+                </div>
+                <div id="mockAiHsbRgbReadout" style="font-family:monospace;font-size:9.5px;color:#93c5fd;line-height:1.35">
+                  HSB: 219° 75% 24%<br>RGB: 15, 31, 61
+                </div>
+                <div id="mockAiCmykReadout" style="font-family:monospace;font-size:9.5px;color:#fcd34d;background:#1e293b;padding:2px 4px;border-radius:3px">
+                  CMYK: C75 M49 Y0 K76
                 </div>
               </div>
-              <div id="mockAiHsbRgbReadout" style="font-family:monospace;font-size:9.5px;color:#93c5fd;line-height:1.35">
-                HSB: 219° 75% 24%<br>RGB: 15, 31, 61
+            </div>
+            <div style="margin-top:6px">
+              <div style="font-size:9.5px;color:#cbd5e1;margin-bottom:2px;display:flex;justify-content:space-between">
+                <span>🗺️ <b>色マップ（18色相×6段明暗＋和色・木札色）</b></span>
+                <span style="color:#a7f3d0">クリック/なぞって即変更</span>
               </div>
-              <div id="mockAiCmykReadout" style="font-family:monospace;font-size:9.5px;color:#fcd34d;background:#1e293b;padding:2px 4px;border-radius:3px">
-                CMYK: C75 M49 Y0 K76
-              </div>
+              <canvas id="mockAiMapCv" width="288" height="66" style="width:100%;height:66px;display:block;border:1px solid #475569;border-radius:4px;cursor:pointer;touch-action:none"></canvas>
             </div>
           </div>
-          <div style="margin-top:6px">
-            <div style="font-size:9.5px;color:#cbd5e1;margin-bottom:2px;display:flex;justify-content:space-between">
-              <span>🗺️ <b>色マップ（18色相×6段明暗＋和色・木札色）</b></span>
-              <span style="color:#a7f3d0">クリック/なぞって即変更</span>
-            </div>
-            <canvas id="mockAiMapCv" width="288" height="66" style="width:100%;height:66px;display:block;border:1px solid #475569;border-radius:4px;cursor:pointer;touch-action:none"></canvas>
-          </div>
-        </div>
+        </details>
 
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;padding:4px 6px;background:#1e293b;border-radius:6px;font-size:11.5px">
           <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#7dd3fc;font-weight:800" title="ONにすると札の塗りつぶしを無くし、背後の手ぬぐい柄が透けて見えるようになります">
@@ -645,14 +651,17 @@
             <button type="button" class="toggle-btn" id="previewBgToggle">背景：手ぬぐい柄 ON/OFF</button>
           </div>
         </div>
-        <div style="font-size:11px;color:#38bdf8;background:#091526;border:1px solid #1e3a8a;border-radius:6px;padding:5px 8px;line-height:1.4">
-          🖱️ <b>キャンバス上で直接マウス操作：</b>
-          <span style="color:#fdba74">●オレンジ丸(🪢上紐・脇紐)</span>をドラッグで<b>紐を自由移動</b> ／
-          <span style="color:#7dd3fc">■水色角(↘・↔・↕)</span>で<b>札のサイズ・幅・長さを変更</b> ／
-          <span style="color:#d8b4fe">●紫丸(↻)</span>で<b>回転</b> ／ 札の中央ドラッグで<b>位置移動</b>
+        <div style="font-size:11px;color:#38bdf8;background:#091526;border:1px solid #1e3a8a;border-radius:6px;padding:5px 8px;line-height:1.4;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+          <span>🖱️ <b>直接操作：</b><span style="color:#fdba74">●紐</span>・<span style="color:#86efac">●下札</span>・<span style="color:#7dd3fc">■サイズ</span>・<span style="color:#d8b4fe">●回転</span>をドラッグで調整</span>
+          <div style="display:flex;align-items:center;gap:4px">
+            <span style="color:#fde047;font-weight:800">🔍 高画質ズーム:</span>
+            <input type="range" id="previewZoomRange" min="100" max="600" step="25" value="100" style="width:84px;accent-color:#38bdf8">
+            <output id="previewZoomOut" style="font-family:monospace;font-weight:800;color:#fff;min-width:38px">100%</output>
+            <button type="button" class="mini-chip" id="previewZoomResetBtn">100%</button>
+          </div>
         </div>
-        <div class="canvas-holder" style="position:relative">
-          <canvas id="mainPreviewCanvas" width="400" height="400" style="cursor:grab;max-width:100%"></canvas>
+        <div class="canvas-holder" id="mainCanvasHolder" style="position:relative;overflow:auto;max-height:460px">
+          <canvas id="mainPreviewCanvas" width="400" height="400" style="cursor:grab;display:block;margin:0 auto"></canvas>
         </div>
         <div class="desc-text" id="selectedFudaDesc">
           ご提示の写真2（「同志會」木札）を再現した、厚みのある立体木札にねじり組紐（江戸打紐）を添えた粋なスタイルです。
@@ -1914,55 +1923,56 @@
         ctx.stroke();
         ctx.setLineDash([]);
 
-        const drawHandleBadge = (pt, col, borderCol, label, isRect) => {
+        const drawHandleBadge = (pt, col, borderCol, label, isRect, labelDy) => {
           ctx.save();
           ctx.fillStyle = col;
           ctx.strokeStyle = borderCol;
           ctx.lineWidth = 2;
           if (isRect) {
             ctx.beginPath();
-            ctx.rect(pt[0] - 7, pt[1] - 7, 14, 14);
+            ctx.rect(pt[0] - 6.5, pt[1] - 6.5, 13, 13);
             ctx.fill();
             ctx.stroke();
           } else {
             ctx.beginPath();
-            ctx.arc(pt[0], pt[1], 8, 0, Math.PI * 2);
+            ctx.arc(pt[0], pt[1], 7.5, 0, Math.PI * 2);
             ctx.fill();
             ctx.stroke();
           }
           if (label) {
-            ctx.font = '800 10px sans-serif';
-            const tw = ctx.measureText(label).width + 8;
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-            ctx.fillRect(pt[0] - tw / 2, pt[1] - 22, tw, 13);
+            const dy = labelDy !== undefined ? labelDy : -16;
+            ctx.font = '800 9.5px sans-serif';
+            const tw = ctx.measureText(label).width + 7;
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.90)';
+            ctx.fillRect(pt[0] - tw / 2, pt[1] + dy - 6.5, tw, 13);
             ctx.fillStyle = '#ffffff';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(label, pt[0], pt[1] - 15.5);
+            ctx.fillText(label, pt[0], pt[1] + dy);
           }
           ctx.restore();
         };
 
-        // 2枚目（下の札）の移動・角度ハンドル
+        // 2枚目（下の札）の移動・角度ハンドル（ラベル位置を上下に振り分けて重なり防止）
         if (subMovePt) {
-          drawHandleBadge(subMovePt, '#16a34a', '#dcfce7', '🎴下札移動', false);
+          drawHandleBadge(subMovePt, '#16a34a', '#dcfce7', '🎴下札移動', false, 16);
         }
         if (subRotPt) {
-          drawHandleBadge(subRotPt, '#ca8a04', '#fef9c3', '↻下札角度', false);
+          drawHandleBadge(subRotPt, '#ca8a04', '#fef9c3', '↻下札角', false, -15);
         }
 
         // サイズ変更・横幅・縦長・回転ハンドルを描画
-        drawHandleBadge(cBR, '#0284c7', '#e0f2fe', '↘サイズ', true);
-        drawHandleBadge(edgeRight, '#2563eb', '#dbeafe', '↔幅', true);
-        drawHandleBadge(edgeBot, '#2563eb', '#dbeafe', '↕縦', true);
-        drawHandleBadge(rotPt, '#9333ea', '#f3e8ff', '↻回転', false);
+        drawHandleBadge(cBR, '#0284c7', '#e0f2fe', '↘サイズ', true, 16);
+        drawHandleBadge(edgeRight, '#2563eb', '#dbeafe', '↔幅', true, -15);
+        drawHandleBadge(edgeBot, '#2563eb', '#dbeafe', '↕縦', true, 16);
+        drawHandleBadge(rotPt, '#9333ea', '#f3e8ff', '↻回転', false, -15);
 
         // 紐のドラッグハンドル（上結び・脇/房）を描画
         if (knotHandlePt) {
-          drawHandleBadge(knotHandlePt, '#ea580c', '#ffedd5', '🪢上紐移動', false);
+          drawHandleBadge(knotHandlePt, '#ea580c', '#ffedd5', '🪢上紐', false, -15);
         }
         if (tailHandlePt) {
-          drawHandleBadge(tailHandlePt, '#d97706', '#fef3c7', '🪢脇・房紐', false);
+          drawHandleBadge(tailHandlePt, '#d97706', '#fef3c7', '🪢脇・房', false, 16);
         }
         ctx.restore();
       }
@@ -2010,15 +2020,30 @@
       if (typeof syncMockAiPickerUI === 'function') syncMockAiPickerUI();
     }
 
+    let previewZoomPct = 100;
+
     function renderAll() {
       syncControlSlidersFromState();
       const mainCv = document.getElementById('mainPreviewCanvas');
+      const zoomMul = Math.max(1, (previewZoomPct || 100) / 100);
+      const dpr = Math.min(4.5, (window.devicePixelRatio || 1) * zoomMul * 1.35);
+      const logicalW = 400, logicalH = 400;
+      mainCv.style.width = Math.round(logicalW * zoomMul) + 'px';
+      mainCv.style.height = Math.round(logicalH * zoomMul) + 'px';
+      mainCv.width = Math.round(logicalW * dpr);
+      mainCv.height = Math.round(logicalH * dpr);
       const mCtx = mainCv.getContext('2d');
-      drawTenuguiBackground(mCtx, mainCv.width, mainCv.height);
+      mCtx.imageSmoothingEnabled = true;
+      mCtx.imageSmoothingQuality = 'high';
+      mCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      drawTenuguiBackground(mCtx, logicalW, logicalH);
 
       const mainTags = drawFudaLogo(mCtx, state.selectedId, state.mainCx, state.mainCy, 108, 276, state, state.fudaAngle || 0);
-      drawFudaLogo(mCtx, state.selectedId, 322, 114, 52, 134, state, (state.fudaAngle || 0) - 18);
-      drawFudaLogo(mCtx, state.selectedId, 324, 286, 52, 134, state, (state.fudaAngle || 0) + 14);
+      // メイン札が大きく拡大されている時や二枚重ね時は右のミニ見本札が重ならないよう自動退避
+      if (state.scalePct <= 115 && state.selectedId !== 'twin_kifuda') {
+        drawFudaLogo(mCtx, state.selectedId, 340, 110, 46, 120, state, (state.fudaAngle || 0) - 18);
+        drawFudaLogo(mCtx, state.selectedId, 342, 290, 46, 120, state, (state.fudaAngle || 0) + 14);
+      }
 
       if (mainTags && mainTags.length > 0) {
         const primaryTag = mainTags[mainTags.length - 1];
@@ -2030,13 +2055,20 @@
       document.getElementById('selectedFudaTitle').textContent = activeObj.name;
       document.getElementById('selectedFudaDesc').textContent = activeObj.desc;
 
+      const cardDpr = Math.min(2.5, (window.devicePixelRatio || 1) * 1.5);
       FUDA_TYPES.forEach(f => {
         const cv = document.getElementById('fuda-cv-' + f.id);
         if (!cv) return;
+        const cw = 128, ch = 206;
+        cv.style.width = cw + 'px';
+        cv.style.height = ch + 'px';
+        cv.width = Math.round(cw * cardDpr);
+        cv.height = Math.round(ch * cardDpr);
         const ctx = cv.getContext('2d');
+        ctx.setTransform(cardDpr, 0, 0, cardDpr, 0, 0);
         ctx.fillStyle = '#090f1d';
-        ctx.fillRect(0, 0, cv.width, cv.height);
-        drawFudaLogo(ctx, f.id, cv.width / 2, cv.height / 2 + 4, 62, 162, state, state.fudaAngle || 0);
+        ctx.fillRect(0, 0, cw, ch);
+        drawFudaLogo(ctx, f.id, cw / 2, ch / 2 + 4, 60, 156, state, state.fudaAngle || 0);
 
         const card = document.getElementById('fuda-card-' + f.id);
         if (card) card.classList.toggle('active', f.id === state.selectedId);
@@ -2094,9 +2126,25 @@
     function getCanvasMouseXY(e) {
       const r = mainCvEl.getBoundingClientRect();
       return [
-        ((e.clientX - r.left) / Math.max(1, r.width)) * mainCvEl.width,
-        ((e.clientY - r.top) / Math.max(1, r.height)) * mainCvEl.height
+        ((e.clientX - r.left) / Math.max(1, r.width)) * 400,
+        ((e.clientY - r.top) / Math.max(1, r.height)) * 400
       ];
+    }
+
+    if (document.getElementById('previewZoomRange')) {
+      document.getElementById('previewZoomRange').addEventListener('input', e => {
+        previewZoomPct = parseInt(e.target.value, 10) || 100;
+        if (document.getElementById('previewZoomOut')) document.getElementById('previewZoomOut').textContent = previewZoomPct + '%';
+        renderAll();
+      });
+    }
+    if (document.getElementById('previewZoomResetBtn')) {
+      document.getElementById('previewZoomResetBtn').addEventListener('click', () => {
+        previewZoomPct = 100;
+        if (document.getElementById('previewZoomRange')) document.getElementById('previewZoomRange').value = 100;
+        if (document.getElementById('previewZoomOut')) document.getElementById('previewZoomOut').textContent = '100%';
+        renderAll();
+      });
     }
 
     mainCvEl.addEventListener('mousedown', e => {
