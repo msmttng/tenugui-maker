@@ -200,23 +200,96 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
       </div>
     </section>
 
-    <!-- 3. 色（地色・仲羽田の文字色・あられ色） -->
-    <section aria-labelledby="h-color">
-      <h2 id="h-color">色（背景色・仲羽田の文字色）</h2>
+    <!-- 3. 色（地色・仲羽田の文字色・あられ色・全箇所対応 イラレ式カラーピッカー＆色マップ） -->
+    <section aria-labelledby="h-color" id="sec-color-main">
+      <h2 id="h-color">
+        <span>🎨 色（背景色・仲羽田の文字色・札・全箇所）</span>
+        <button type="button" class="mini-btn" id="toggleAiPickerPanelBtn" style="background:#1e293b;color:#38bdf8;border-color:#0284c7;font-weight:700">🎨 イラレ色ピッカー表示中</button>
+      </h2>
+
+      <!-- ✨ Illustrator風 2Dカラーピッカー ＆ 色マップ（全カラー項目をここから自由自在に選択・微調整可能） -->
+      <div id="aiColorPickerDock" style="background:#1e293b;color:#f8fafc;border:1.5px solid #334155;border-radius:9px;padding:9px;display:grid;gap:7px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+          <span style="font-size:11.5px;font-weight:700;color:#38bdf8">🎯 色を変える箇所を選ぶ（下の色ボタンをクリックでも自動切替）:</span>
+          <button type="button" class="mini-btn" id="aiEyedropperBtn" style="background:#0f172a;color:#fde047;border-color:#475569;font-size:10.5px" title="画面上の好きな場所の色をスポイトで吸い取ります">💉 画面スポイト</button>
+        </div>
+        <!-- 対象箇所切替タブ（アプリのすべての色項目を網羅） -->
+        <div class="chips" id="aiColorTargetTabs" style="gap:4px">
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="bgColor" style="background:#0284c7;color:#fff;border-color:#7dd3fc;font-weight:700"><span class="ai-dot" data-dot="bgColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>① 地色(背景)</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="kakuColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569;font-weight:700"><span class="ai-dot" data-dot="kakuColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>② 仲羽田の文字</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="dotColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="dotColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>③ あられ粒</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>④ 札の文字・枠</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑤ 札の地色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑥ 札の紐塗り</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordStroke" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordStroke" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑦ 札の紐フチ</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestFg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestFg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑧ 丸紋の色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑨ 丸紋の背景</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑩ ロゴ単色</button>
+        </div>
+
+        <!-- Illustrator式 2D 彩度×明度フィールド ＋ 縦色相バー ＋ 数値＆新旧比較 -->
+        <div style="display:grid;grid-template-columns:168px 22px 1fr;gap:8px;align-items:start">
+          <div style="position:relative;width:168px;height:142px;border:1px solid #64748b;border-radius:4px;overflow:hidden;cursor:crosshair;touch-action:none">
+            <canvas id="aiSbCanvas" width="168" height="142" style="display:block;width:168px;height:142px"></canvas>
+          </div>
+          <div style="position:relative;width:22px;height:142px;border:1px solid #64748b;border-radius:4px;overflow:hidden;cursor:ns-resize;touch-action:none">
+            <canvas id="aiHueCanvas" width="22" height="142" style="display:block;width:22px;height:142px"></canvas>
+          </div>
+          <!-- 右側：新色/元の色 比較ボックス ＆ HSB / RGB / CMYK / HEX 数値入力 -->
+          <div style="display:grid;gap:4px;font-size:10.5px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;align-items:center">
+              <div style="border:1px solid #94a3b8;border-radius:4px;overflow:hidden;height:30px;display:grid;grid-template-rows:1fr 1fr" title="上：現在の色 ／ 下：変更前の色（クリックで元の色に戻す）">
+                <div id="aiNewColorPatch" style="background:#046e7e"></div>
+                <div id="aiOldColorPatch" style="background:#046e7e;cursor:pointer" title="クリックで変更前の色に戻します"></div>
+              </div>
+              <div style="display:grid;gap:2px">
+                <span id="aiTargetNameLabel" style="font-weight:700;color:#fde047;font-size:10.5px;line-height:1.1">① 地色(背景)</span>
+                <input type="text" id="aiHexInput" value="#046E7E" maxlength="7" style="background:#0f172a;color:#fff;border:1px solid #475569;border-radius:4px;padding:2px 4px;font-family:monospace;font-size:11.5px;font-weight:700;width:100%">
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px">
+              <label style="display:flex;align-items:center;gap:2px;color:#cbd5e1">H<input type="number" id="aiHInput" min="0" max="360" value="188" style="width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:3px;padding:1px 2px;font-size:10.5px"></label>
+              <label style="display:flex;align-items:center;gap:2px;color:#cbd5e1">S<input type="number" id="aiSInput" min="0" max="100" value="95" style="width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:3px;padding:1px 2px;font-size:10.5px"></label>
+              <label style="display:flex;align-items:center;gap:2px;color:#cbd5e1">B<input type="number" id="aiBInput" min="0" max="100" value="49" style="width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:3px;padding:1px 2px;font-size:10.5px"></label>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px">
+              <label style="display:flex;align-items:center;gap:2px;color:#cbd5e1">R<input type="number" id="aiRInput" min="0" max="255" value="4" style="width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:3px;padding:1px 2px;font-size:10.5px"></label>
+              <label style="display:flex;align-items:center;gap:2px;color:#cbd5e1">G<input type="number" id="aiGInput" min="0" max="255" value="110" style="width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:3px;padding:1px 2px;font-size:10.5px"></label>
+              <label style="display:flex;align-items:center;gap:2px;color:#cbd5e1">B<input type="number" id="aiRgbBInput" min="0" max="255" value="126" style="width:100%;background:#0f172a;color:#fff;border:1px solid #475569;border-radius:3px;padding:1px 2px;font-size:10.5px"></label>
+            </div>
+            <div id="aiCmykReadout" style="background:#0f172a;border:1px solid #334155;border-radius:4px;padding:2px 5px;color:#93c5fd;font-family:monospace;font-size:10px;text-align:center">
+              CMYK: C97% M13% Y0% K51%
+            </div>
+          </div>
+        </div>
+
+        <!-- 🗺️ 2D 色マップ（色相×明度スペクトラム 120色＋グレースケール12段階） -->
+        <div style="display:grid;gap:3px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:10.5px;font-weight:700;color:#cbd5e1">🗺️ 色マップ（クリックで即反映・ドラッグで連続色選び）</span>
+            <span id="aiMapHoverHex" style="font-size:10px;font-family:monospace;color:#fde047">#046E7E</span>
+          </div>
+          <canvas id="aiColorMapCanvas" width="340" height="84" style="width:100%;height:84px;border-radius:5px;border:1px solid #475569;cursor:pointer;display:block"></canvas>
+        </div>
+      </div>
+
       <div class="cgroup">
         <div class="chead"><span class="clabel">地色（背景の色）</span>
+          <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="bgColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップで選ぶ</button>
           <input type="color" id="bgColor" value="#046e7e" aria-label="地色を選ぶ">
           <input type="text" id="bgHex" class="hex" maxlength="7" spellcheck="false" aria-label="地色のカラーコード"></div>
         <div class="sw" id="bgSw"></div>
       </div>
       <div class="cgroup" id="kakuColorGroup">
         <div class="chead"><span class="clabel">仲羽田の文字色</span>
+          <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="kakuColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップで選ぶ</button>
           <input type="color" id="kakuColor" value="#ffffff" aria-label="仲羽田の文字色を選ぶ">
           <input type="text" id="kakuHex" class="hex" maxlength="7" spellcheck="false" aria-label="仲羽田の文字色カラーコード"></div>
         <div class="sw" id="kakuSw"></div>
       </div>
       <div class="cgroup" id="dotColorGroup" hidden>
         <div class="chead"><span class="clabel">あられ（粒）の色</span>
+          <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="dotColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップで選ぶ</button>
           <input type="color" id="dotColor" value="#ffffff" aria-label="粒の色を選ぶ">
           <input type="text" id="dotHex" class="hex" maxlength="7" spellcheck="false" aria-label="粒のカラーコード"></div>
         <div class="sw" id="dotSw"></div>
@@ -302,9 +375,11 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         <div class="row"><label for="crestX">丸紋の横位置</label><input type="range" id="crestX" min="5" max="95" step="0.5" value="50"><output for="crestX" id="crestX-o"></output></div>
         <div class="row"><label for="crestY">丸紋の縦位置</label><input type="range" id="crestY" min="5" max="95" step="0.5" value="80"><output for="crestY" id="crestY-o"></output></div>
         <div class="chead"><span class="clabel">丸紋の文字・枠色</span>
+          <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="crestFg" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           <input type="color" id="crestFg" value="#877028">
           <input type="text" id="crestFgHex" class="hex" maxlength="7" value="#877028"></div>
         <div class="chead"><span class="clabel">丸紋の中抜き背景</span>
+          <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="crestBg" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           <input type="color" id="crestBg" value="#ffffff">
           <input type="text" id="crestBgHex" class="hex" maxlength="7" value="#FFFFFF"></div>
       </div>
@@ -402,6 +477,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         <div class="crow2">
           <label class="chk"><input type="checkbox" id="logoMono">単色染め(色変更)</label>
           <input type="color" id="logoColor" value="#ffffff" title="単色染め時のロゴ色">
+          <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           <button type="button" class="mini-btn" id="logoColorToBgBtn" title="地色と同じ色にして白抜き・型抜き風にします">地色と同色</button>
           <button type="button" class="mini-btn" id="logoColorToFgBtn" title="柄の文字色と同じ色にします">柄と同色</button>
           <button type="button" class="mini-btn" id="logoColorGoldBtn" style="background:#877028;color:#fff;border-color:#877028">羽田金</button>
@@ -641,6 +717,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
               <input type="color" id="customTextBg" value="#046e7e" title="札本体の地色・袋文字フチの色">
               <input type="color" id="fudaCordColor" value="#046e7e" title="紐（組紐）の塗り色">
               <input type="color" id="fudaCordStroke" value="#ffffff" title="紐（組紐）のフチ線色">
+              <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="customTextColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700" title="イラレ式カラーピッカー＆色マップで札や紐の色を選びます">🎨 色マップ</button>
               <button type="button" class="mini-btn" id="textSwapColBtn" title="文字色と札背景色を入れ替え（白札⇄色札）">白札⇄色札</button>
               <button type="button" class="mini-btn" id="textMatchBgBtn" title="札背景色を地色と同じにして白抜きにします">地色抜</button>
             </div>
@@ -7078,6 +7155,263 @@ $('swap').addEventListener('click',()=>{
   }
   update(false);
 });
+/* ---- ✨ Illustrator式 2Dカラーピッカー ＆ 色マップ（全箇所の色選択に連動） ---- */
+const AI_COLOR_TARGETS = {
+  bgColor:         { label: '① 地色(背景)',       inputId: 'bgColor' },
+  kakuColor:       { label: '② 仲羽田の文字',     inputId: 'kakuColor' },
+  dotColor:        { label: '③ あられ粒の色',     inputId: 'dotColor' },
+  customTextColor: { label: '④ 札の文字・枠',     inputId: 'customTextColor', autoShow: 'showText' },
+  customTextBg:    { label: '⑤ 札本体の地色',     inputId: 'customTextBg',    autoShow: 'showText' },
+  fudaCordColor:   { label: '⑥ 札の組紐塗り',     inputId: 'fudaCordColor',   autoShow: 'showText' },
+  fudaCordStroke:  { label: '⑦ 札の組紐フチ',     inputId: 'fudaCordStroke',  autoShow: 'showText' },
+  crestFg:         { label: '⑧ 丸紋の文字・枠',   inputId: 'crestFg',         autoShow: 'showCrest' },
+  crestBg:         { label: '⑨ 丸紋の背景',       inputId: 'crestBg',         autoShow: 'showCrest' },
+  logoColor:       { label: '⑩ ロゴ単色染め',     inputId: 'logoColor',       autoShow: 'showLogo', isLogoMono: true },
+  logoOutlineColor:{ label: 'ロゴ外フチ色',       inputId: 'logoOutlineColor',autoShow: 'showLogo' },
+  logoPadColor:    { label: 'ロゴ座布団色',       inputId: 'logoPadColor',    autoShow: 'showLogo' },
+  logoKeyColor:    { label: 'ロゴ透過指定色',     inputId: 'logoKeyColor',    autoShow: 'showLogo' }
+};
+
+let activeAiColorKey = 'bgColor';
+let aiCurH = 188, aiCurS = 97, aiCurB = 49;
+let aiPrevHex = '#046e7e';
+
+function hexToRgbArr(hex){
+  const h = (normHex(hex) || '#000000').slice(1);
+  return [parseInt(h.slice(0,2),16)||0, parseInt(h.slice(2,4),16)||0, parseInt(h.slice(4,6),16)||0];
+}
+function rgbToHexStr(r, g, b){
+  const cl = v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0');
+  return '#' + cl(r) + cl(g) + cl(b);
+}
+function rgbToHsb(r, g, b){
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+  let h = 0;
+  const s = max === 0 ? 0 : d / max;
+  const v = max;
+  if(max !== min){
+    switch(max){
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+    h /= 6;
+  }
+  return [Math.round(h * 360), Math.round(s * 100), Math.round(v * 100)];
+}
+function hsbToRgb(h, s, b){
+  h = ((h % 360) + 360) % 360;
+  s = Math.max(0, Math.min(100, s)) / 100;
+  b = Math.max(0, Math.min(100, b)) / 100;
+  const c = b * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = b - c;
+  let r1 = 0, g1 = 0, b1 = 0;
+  if(h < 60){ r1 = c; g1 = x; b1 = 0; }
+  else if(h < 120){ r1 = x; g1 = c; b1 = 0; }
+  else if(h < 180){ r1 = 0; g1 = c; b1 = x; }
+  else if(h < 240){ r1 = 0; g1 = x; b1 = c; }
+  else if(h < 300){ r1 = x; g1 = 0; b1 = c; }
+  else { r1 = c; g1 = 0; b1 = x; }
+  return [Math.round((r1 + m) * 255), Math.round((g1 + m) * 255), Math.round((b1 + m) * 255)];
+}
+
+// 2D 色マップ（18列×6行：伝統祭礼色行＋スペクトラム明度階調＋グレースケール）のセルデータ生成
+const AI_MAP_COLS = 18, AI_MAP_ROWS = 6;
+const AI_MAP_GRID = (()=>{
+  const rows = [];
+  // 1行目：日本の伝統色・江戸祭礼特選カラー18色
+  rows.push([
+    '#046e7e','#0f1f3d','#183574','#223a70','#17184b','#2a83a2',
+    '#00a3af','#877028','#c89932','#f8b500','#b7282e','#c93a40',
+    '#9e3d3f','#9f563a','#6c6a2d','#5b21b6','#f3ecd8','#ffffff'
+  ]);
+  // 2〜5行目：18色相 × 彩度/明度グラデーション（パステル〜鮮やか〜濃色〜極濃色）
+  const sbLevels = [[42, 98], [85, 96], [95, 76], [96, 46]];
+  for(const [s, b] of sbLevels){
+    const r = [];
+    for(let c = 0; c < AI_MAP_COLS; c++){
+      const hue = Math.round((c / AI_MAP_COLS) * 360);
+      const [rr, gg, bb] = hsbToRgb(hue, s, b);
+      r.push(rgbToHexStr(rr, gg, bb));
+    }
+    rows.push(r);
+  }
+  // 6行目：白〜漆黒の18段階グレースケール＆木札・生成りトーン
+  const grays = [];
+  for(let c = 0; c < 14; c++){
+    const v = Math.round(255 * (1 - c / 13));
+    grays.push(rgbToHexStr(v, v, v));
+  }
+  grays.push('#dfc18b', '#c69c6d', '#8c6239', '#42210b');
+  rows.push(grays);
+  return rows;
+})();
+
+function renderAiColorMapCanvas(){
+  const cvMap = $('aiColorMapCanvas');
+  if(!cvMap) return;
+  const ctx = cvMap.getContext('2d');
+  const W = cvMap.width, H = cvMap.height;
+  const cw = W / AI_MAP_COLS, ch = H / AI_MAP_ROWS;
+  const curHex = (S[activeAiColorKey] || '#046e7e').toLowerCase();
+  ctx.clearRect(0, 0, W, H);
+  for(let r = 0; r < AI_MAP_ROWS; r++){
+    for(let c = 0; c < AI_MAP_COLS; c++){
+      const hex = AI_MAP_GRID[r][c];
+      ctx.fillStyle = hex;
+      ctx.fillRect(c * cw, r * ch, Math.ceil(cw), Math.ceil(ch));
+      if(hex.toLowerCase() === curHex){
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(c * cw + 1, r * ch + 1, cw - 2, ch - 2);
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(c * cw + 2.5, r * ch + 2.5, cw - 5, ch - 5);
+      }
+    }
+  }
+}
+
+function renderAiPickerCanvases(){
+  const sbCv = $('aiSbCanvas'), hueCv = $('aiHueCanvas');
+  if(!sbCv || !hueCv) return;
+  const sCtx = sbCv.getContext('2d');
+  const sw = sbCv.width, sh = sbCv.height;
+
+  // 1. ベース色相塗り
+  const [hr, hg, hb] = hsbToRgb(aiCurH, 100, 100);
+  sCtx.fillStyle = `rgb(${hr},${hg},${hb})`;
+  sCtx.fillRect(0, 0, sw, sh);
+
+  // 2. 左→右 白グラデーション（彩度 S）
+  const gWhite = sCtx.createLinearGradient(0, 0, sw, 0);
+  gWhite.addColorStop(0, 'rgba(255,255,255,1)');
+  gWhite.addColorStop(1, 'rgba(255,255,255,0)');
+  sCtx.fillStyle = gWhite;
+  sCtx.fillRect(0, 0, sw, sh);
+
+  // 3. 上→下 黒グラデーション（明度 B）
+  const gBlack = sCtx.createLinearGradient(0, 0, 0, sh);
+  gBlack.addColorStop(0, 'rgba(0,0,0,0)');
+  gBlack.addColorStop(1, 'rgba(0,0,0,1)');
+  sCtx.fillStyle = gBlack;
+  sCtx.fillRect(0, 0, sw, sh);
+
+  // 4. 現在の S, B 位置に丸カーソルを描画
+  const cx = (aiCurS / 100) * sw;
+  const cy = (1 - aiCurB / 100) * sh;
+  sCtx.save();
+  sCtx.beginPath();
+  sCtx.arc(cx, cy, 6.5, 0, Math.PI * 2);
+  sCtx.strokeStyle = aiCurB > 55 && aiCurS < 50 ? '#000000' : '#ffffff';
+  sCtx.lineWidth = 2.2;
+  sCtx.stroke();
+  sCtx.beginPath();
+  sCtx.arc(cx, cy, 4.5, 0, Math.PI * 2);
+  sCtx.strokeStyle = '#0f172a';
+  sCtx.lineWidth = 1;
+  sCtx.stroke();
+  sCtx.restore();
+
+  // 5. 縦レインボー色相バー（Illustrator準拠：上=0°〜下=360°）
+  const hCtx = hueCv.getContext('2d');
+  const hw = hueCv.width, hh = hueCv.height;
+  const hGrad = hCtx.createLinearGradient(0, 0, 0, hh);
+  hGrad.addColorStop(0,    '#ff0000');
+  hGrad.addColorStop(0.17, '#ffff00');
+  hGrad.addColorStop(0.33, '#00ff00');
+  hGrad.addColorStop(0.50, '#00ffff');
+  hGrad.addColorStop(0.67, '#0000ff');
+  hGrad.addColorStop(0.83, '#ff00ff');
+  hGrad.addColorStop(1,    '#ff0000');
+  hCtx.fillStyle = hGrad;
+  hCtx.fillRect(0, 0, hw, hh);
+
+  const hy = (aiCurH / 360) * hh;
+  hCtx.fillStyle = '#0f172a';
+  hCtx.fillRect(0, Math.max(0, hy - 2.5), hw, 5);
+  hCtx.strokeStyle = '#ffffff';
+  hCtx.lineWidth = 1.5;
+  hCtx.strokeRect(0.5, Math.max(0.5, hy - 2), hw - 1, 4);
+
+  renderAiColorMapCanvas();
+}
+
+function syncAiPickerUIFromState(keepHsb){
+  const curHex = normHex(S[activeAiColorKey]) || '#046e7e';
+  const [r, g, b] = hexToRgbArr(curHex);
+  if(!keepHsb){
+    const [h, s, v] = rgbToHsb(r, g, b);
+    if(s > 0) aiCurH = h;
+    aiCurS = s;
+    aiCurB = v;
+  }
+  if($('aiNewColorPatch')) $('aiNewColorPatch').style.background = curHex;
+  if($('aiOldColorPatch')) $('aiOldColorPatch').style.background = aiPrevHex || curHex;
+  const meta = AI_COLOR_TARGETS[activeAiColorKey] || { label: activeAiColorKey };
+  if($('aiTargetNameLabel')) $('aiTargetNameLabel').textContent = meta.label;
+  if($('aiHexInput') && document.activeElement !== $('aiHexInput')) $('aiHexInput').value = curHex.toUpperCase();
+  if($('aiHInput') && document.activeElement !== $('aiHInput')) $('aiHInput').value = aiCurH;
+  if($('aiSInput') && document.activeElement !== $('aiSInput')) $('aiSInput').value = aiCurS;
+  if($('aiBInput') && document.activeElement !== $('aiBInput')) $('aiBInput').value = aiCurB;
+  if($('aiRInput') && document.activeElement !== $('aiRInput')) $('aiRInput').value = r;
+  if($('aiGInput') && document.activeElement !== $('aiGInput')) $('aiGInput').value = g;
+  if($('aiRgbBInput') && document.activeElement !== $('aiRgbBInput')) $('aiRgbBInput').value = b;
+
+  const cmyk = hexCmyk(curHex).map(v => Math.round(v * 100));
+  if($('aiCmykReadout')) $('aiCmykReadout').textContent = `CMYK: C${cmyk[0]}% M${cmyk[1]}% Y${cmyk[2]}% K${cmyk[3]}%`;
+  if($('aiMapHoverHex')) $('aiMapHoverHex').textContent = curHex.toUpperCase();
+
+  // 各タブの色ドットとアクティブ枠を更新
+  document.querySelectorAll('#aiColorTargetTabs .ai-target-chip').forEach(btn => {
+    const k = btn.dataset.ckey;
+    const isAct = (k === activeAiColorKey);
+    btn.style.background = isAct ? '#0284c7' : '#0f172a';
+    btn.style.color = isAct ? '#ffffff' : '#e2e8f0';
+    btn.style.borderColor = isAct ? '#7dd3fc' : '#475569';
+    const dot = btn.querySelector('.ai-dot');
+    if(dot && S[k]) dot.style.background = S[k];
+  });
+
+  renderAiPickerCanvases();
+}
+
+function applyHexToActiveAiTarget(hexStr, keepHsb){
+  const h = normHex(hexStr);
+  if(!h) return;
+  const meta = AI_COLOR_TARGETS[activeAiColorKey];
+  S[activeAiColorKey] = h;
+  if(activeAiColorKey === 'kakuColor' && S.mode === 'haneda') S.dotColor = h;
+  if(meta){
+    if(meta.autoShow && !S[meta.autoShow]) S[meta.autoShow] = true;
+    if(meta.isLogoMono){ S.logoMono = true; PROC_LOGO_KEY = ''; }
+    if(activeAiColorKey === 'logoOutlineColor'){ if(!S.logoOutlineMm) S.logoOutlineMm = 2.5; PROC_LOGO_KEY = ''; }
+    if(activeAiColorKey === 'logoKeyColor'){ S.logoRemoveBg = true; S.logoBgMode = 'picked'; PROC_LOGO_KEY = ''; }
+  }
+  update(false);
+  syncAiPickerUIFromState(keepHsb);
+}
+
+function selectAiColorTarget(ckey, scrollIntoViewIfFar){
+  if(!AI_COLOR_TARGETS[ckey]) return;
+  activeAiColorKey = ckey;
+  aiPrevHex = normHex(S[ckey]) || '#046e7e';
+  const dock = $('aiColorPickerDock');
+  if(dock && dock.hidden){
+    dock.hidden = false;
+    if($('toggleAiPickerPanelBtn')) $('toggleAiPickerPanelBtn').textContent = '🎨 イラレ色ピッカー表示中';
+  }
+  syncAiPickerUIFromState(false);
+  if(scrollIntoViewIfFar && dock){
+    const r = dock.getBoundingClientRect();
+    if(r.top < 0 || r.bottom > window.innerHeight){
+      dock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+}
+
 function markSw(){
   for(const b of $('bgSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===S.bgColor.toLowerCase())+'');
   for(const b of $('kakuSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===S.kakuColor.toLowerCase())+'');
@@ -7086,6 +7420,132 @@ function markSw(){
   const fgHex = S.mode==='arare' ? S.dotColor : S.kakuColor;
   const d=hexCmyk(fgHex).map(v=>Math.round(v*100));
   $('cmyk-note').textContent='.ai書き出し時のCMYK（目安）　地色 C'+c[0]+' M'+c[1]+' Y'+c[2]+' K'+c[3]+' ／ 文字・柄 C'+d[0]+' M'+d[1]+' Y'+d[2]+' K'+d[3];
+  syncAiPickerUIFromState(false);
+}
+
+// Illustratorピッカーのイベント配線
+if($('toggleAiPickerPanelBtn')){
+  $('toggleAiPickerPanelBtn').addEventListener('click', ()=>{
+    const dock = $('aiColorPickerDock');
+    if(!dock) return;
+    dock.hidden = !dock.hidden;
+    $('toggleAiPickerPanelBtn').textContent = dock.hidden ? '🎨 イラレ色ピッカーを開く' : '🎨 イラレ色ピッカー表示中';
+    if(!dock.hidden) syncAiPickerUIFromState(false);
+  });
+}
+document.querySelectorAll('#aiColorTargetTabs .ai-target-chip').forEach(btn => {
+  btn.addEventListener('click', () => selectAiColorTarget(btn.dataset.ckey, false));
+});
+document.querySelectorAll('.open-ai-picker-btn').forEach(btn => {
+  btn.addEventListener('click', () => selectAiColorTarget(btn.dataset.ckey, true));
+});
+// アプリ内のすべての <input type="color"> をクリックしたときにもイラレピッカーの対象をその項目に自動切替
+Object.keys(AI_COLOR_TARGETS).forEach(ckey => {
+  const el = $(AI_COLOR_TARGETS[ckey].inputId);
+  if(el){
+    el.addEventListener('focus', () => selectAiColorTarget(ckey, false));
+    el.addEventListener('click', () => selectAiColorTarget(ckey, false));
+  }
+});
+
+// 2D 彩度×明度キャンバスのドラッグ処理
+(function(){
+  const sbCv = $('aiSbCanvas');
+  if(!sbCv) return;
+  let draggingSb = false;
+  const pickSb = e => {
+    const r = sbCv.getBoundingClientRect();
+    const x = Math.max(0, Math.min(r.width, e.clientX - r.left));
+    const y = Math.max(0, Math.min(r.height, e.clientY - r.top));
+    aiCurS = Math.round((x / Math.max(1, r.width)) * 100);
+    aiCurB = Math.round((1 - y / Math.max(1, r.height)) * 100);
+    const [rr, gg, bb] = hsbToRgb(aiCurH, aiCurS, aiCurB);
+    applyHexToActiveAiTarget(rgbToHexStr(rr, gg, bb), true);
+  };
+  sbCv.addEventListener('mousedown', e => { draggingSb = true; pickSb(e); });
+  window.addEventListener('mousemove', e => { if(draggingSb) pickSb(e); });
+  window.addEventListener('mouseup', () => { draggingSb = false; });
+})();
+
+// 縦レインボー色相バーのドラッグ処理
+(function(){
+  const hueCv = $('aiHueCanvas');
+  if(!hueCv) return;
+  let draggingHue = false;
+  const pickHue = e => {
+    const r = hueCv.getBoundingClientRect();
+    const y = Math.max(0, Math.min(r.height, e.clientY - r.top));
+    aiCurH = Math.round((y / Math.max(1, r.height)) * 360) % 360;
+    const [rr, gg, bb] = hsbToRgb(aiCurH, aiCurS, aiCurB);
+    applyHexToActiveAiTarget(rgbToHexStr(rr, gg, bb), true);
+  };
+  hueCv.addEventListener('mousedown', e => { draggingHue = true; pickHue(e); });
+  window.addEventListener('mousemove', e => { if(draggingHue) pickHue(e); });
+  window.addEventListener('mouseup', () => { draggingHue = false; });
+})();
+
+// 2D 色マップキャンバスのクリック＆ドラッグ処理
+(function(){
+  const mapCv = $('aiColorMapCanvas');
+  if(!mapCv) return;
+  let draggingMap = false;
+  const getMapHexAt = e => {
+    const r = mapCv.getBoundingClientRect();
+    const col = Math.max(0, Math.min(AI_MAP_COLS - 1, Math.floor(((e.clientX - r.left) / Math.max(1, r.width)) * AI_MAP_COLS)));
+    const row = Math.max(0, Math.min(AI_MAP_ROWS - 1, Math.floor(((e.clientY - r.top) / Math.max(1, r.height)) * AI_MAP_ROWS)));
+    return AI_MAP_GRID[row][col];
+  };
+  mapCv.addEventListener('mousedown', e => { draggingMap = true; applyHexToActiveAiTarget(getMapHexAt(e), false); });
+  mapCv.addEventListener('mousemove', e => {
+    const h = getMapHexAt(e);
+    if($('aiMapHoverHex')) $('aiMapHoverHex').textContent = h.toUpperCase();
+    if(draggingMap) applyHexToActiveAiTarget(h, false);
+  });
+  window.addEventListener('mouseup', () => { draggingMap = false; });
+})();
+
+// HSB / RGB / HEX 数値入力欄の連動
+if($('aiHexInput')){
+  $('aiHexInput').addEventListener('input', e => {
+    const h = normHex(e.target.value);
+    if(h) applyHexToActiveAiTarget(h, false);
+  });
+}
+['aiHInput', 'aiSInput', 'aiBInput'].forEach(id => {
+  if($(id)) $(id).addEventListener('input', () => {
+    aiCurH = Math.max(0, Math.min(360, parseInt($('aiHInput').value, 10) || 0));
+    aiCurS = Math.max(0, Math.min(100, parseInt($('aiSInput').value, 10) || 0));
+    aiCurB = Math.max(0, Math.min(100, parseInt($('aiBInput').value, 10) || 0));
+    const [rr, gg, bb] = hsbToRgb(aiCurH, aiCurS, aiCurB);
+    applyHexToActiveAiTarget(rgbToHexStr(rr, gg, bb), true);
+  });
+});
+['aiRInput', 'aiGInput', 'aiRgbBInput'].forEach(id => {
+  if($(id)) $(id).addEventListener('input', () => {
+    const rr = Math.max(0, Math.min(255, parseInt($('aiRInput').value, 10) || 0));
+    const gg = Math.max(0, Math.min(255, parseInt($('aiGInput').value, 10) || 0));
+    const bb = Math.max(0, Math.min(255, parseInt($('aiRgbBInput').value, 10) || 0));
+    applyHexToActiveAiTarget(rgbToHexStr(rr, gg, bb), false);
+  });
+});
+if($('aiOldColorPatch')){
+  $('aiOldColorPatch').addEventListener('click', () => {
+    if(aiPrevHex) applyHexToActiveAiTarget(aiPrevHex, false);
+  });
+}
+if($('aiEyedropperBtn')){
+  $('aiEyedropperBtn').addEventListener('click', async () => {
+    if(window.EyeDropper){
+      try{
+        const ed = new EyeDropper();
+        const res = await ed.open();
+        if(res && res.sRGBHex) applyHexToActiveAiTarget(res.sRGBHex, false);
+      }catch(e){}
+    }else{
+      const el = $(AI_COLOR_TARGETS[activeAiColorKey]?.inputId || 'bgColor');
+      if(el) el.click();
+    }
+  });
 }
 $('showBg').addEventListener('change',e=>{S.showBg=e.target.checked;update(false);});
 $('reroll').addEventListener('click',()=>{

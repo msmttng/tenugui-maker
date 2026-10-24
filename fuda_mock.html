@@ -508,10 +508,10 @@
         </select>
       </div>
 
-      <!-- ④ 🎨 色の変更・背景透過（中抜き）・不透明度 -->
+      <!-- ④ 🎨 色の変更・背景透過（中抜き）・不透明度・Illustratorカラーピッカー＆色マップ -->
       <div class="ctrl-box" style="border-color:#a855f7;">
         <div class="ctrl-label" style="color:#e9d5ff;">
-          <span>④ 🎨 色変更 ＆ 透過（中抜き・半透明）</span>
+          <span>④ 🎨 色変更（イラレピッカー・色マップ）＆ 透過</span>
           <button type="button" class="mini-chip" id="swapColorsBtn" title="札の地色と文字・枠色を入れ替えます">色反転⇄</button>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11.5px;align-items:center">
@@ -532,6 +532,53 @@
             <span>紐のフチ線色</span>
           </label>
         </div>
+
+        <!-- Adobe Illustrator風 2Dカラーピッカー ＆ 色マップ -->
+        <div style="background:#090d16;border:1px solid #581c87;border-radius:8px;padding:7px;margin-top:4px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;gap:4px;flex-wrap:wrap">
+            <span style="font-size:10.5px;font-weight:800;color:#e9d5ff;">🎨 イラレ2Dピッカー＆色マップ編集対象:</span>
+            <button type="button" class="mini-chip" id="mockEyeDropperBtn" style="border-color:#0ea5e9;color:#7dd3fc">💉 画面スポイト</button>
+          </div>
+          <div class="chip-row" id="mockAiTargetTabs" style="margin-bottom:6px">
+            <button type="button" class="mini-chip active" data-target="bgColor">🪵 札の地色</button>
+            <button type="button" class="mini-chip" data-target="fgColor">🖋 文字・枠の色</button>
+            <button type="button" class="mini-chip" data-target="cordFillColor">🪢 紐の塗り色</button>
+            <button type="button" class="mini-chip" data-target="cordStrokeColor">🪢 紐のフチ色</button>
+          </div>
+          <div style="display:grid;grid-template-columns:130px 18px 1fr;gap:6px;align-items:stretch">
+            <div style="position:relative;width:130px;height:110px;border:1px solid #64748b;border-radius:4px;overflow:hidden;cursor:crosshair;touch-action:none">
+              <canvas id="mockAiSbCv" width="130" height="110" style="width:130px;height:110px;display:block"></canvas>
+              <div id="mockAiSbCursor" style="position:absolute;width:10px;height:10px;border:2px solid #fff;box-shadow:0 0 2px #000;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;left:0;top:0"></div>
+            </div>
+            <div style="position:relative;width:18px;height:110px;border:1px solid #64748b;border-radius:4px;overflow:hidden;cursor:ns-resize;touch-action:none">
+              <canvas id="mockAiHueCv" width="18" height="110" style="width:18px;height:110px;display:block"></canvas>
+              <div id="mockAiHueCursor" style="position:absolute;left:0;right:0;height:4px;border:1.5px solid #fff;box-shadow:0 0 2px #000;transform:translateY(-50%);pointer-events:none;top:0"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;justify-content:space-between;font-size:10px;color:#cbd5e1">
+              <div style="display:flex;align-items:center;gap:5px">
+                <div id="mockAiColorPatch" style="width:26px;height:22px;border:1px solid #94a3b8;border-radius:4px;background:#0f1f3d"></div>
+                <div style="display:flex;align-items:center;background:#1e293b;border:1px solid #475569;border-radius:4px;padding:1px 4px;flex:1">
+                  <span style="color:#94a3b8;font-weight:800;margin-right:2px">#</span>
+                  <input type="text" id="mockAiHexInput" value="0F1F3D" maxlength="7" style="width:100%;background:transparent;border:none;color:#f8fafc;font-family:monospace;font-size:11px;font-weight:800;outline:none">
+                </div>
+              </div>
+              <div id="mockAiHsbRgbReadout" style="font-family:monospace;font-size:9.5px;color:#93c5fd;line-height:1.35">
+                HSB: 219° 75% 24%<br>RGB: 15, 31, 61
+              </div>
+              <div id="mockAiCmykReadout" style="font-family:monospace;font-size:9.5px;color:#fcd34d;background:#1e293b;padding:2px 4px;border-radius:3px">
+                CMYK: C75 M49 Y0 K76
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:6px">
+            <div style="font-size:9.5px;color:#cbd5e1;margin-bottom:2px;display:flex;justify-content:space-between">
+              <span>🗺️ <b>色マップ（18色相×6段明暗＋和色・木札色）</b></span>
+              <span style="color:#a7f3d0">クリック/なぞって即変更</span>
+            </div>
+            <canvas id="mockAiMapCv" width="288" height="66" style="width:100%;height:66px;display:block;border:1px solid #475569;border-radius:4px;cursor:pointer;touch-action:none"></canvas>
+          </div>
+        </div>
+
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;padding:4px 6px;background:#1e293b;border-radius:6px;font-size:11.5px">
           <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#7dd3fc;font-weight:800" title="ONにすると札の塗りつぶしを無くし、背後の手ぬぐい柄が透けて見えるようになります">
             <input type="checkbox" id="bgTransparentToggle"> ✨札の背景を透過(中抜き)
@@ -1960,6 +2007,7 @@
       document.querySelectorAll('#fudaShapeChips button').forEach(b => {
         b.classList.toggle('active', b.dataset.shape === (state.fudaShape || 'auto'));
       });
+      if (typeof syncMockAiPickerUI === 'function') syncMockAiPickerUI();
     }
 
     function renderAll() {
@@ -2365,6 +2413,251 @@
         renderAll();
       });
     });
+
+    // =========================================================================
+    // Adobe Illustrator風 2Dカラーピッカー ＆ 18×6 色マップ（fuda_mock用）
+    // =========================================================================
+    let mockAiTarget = 'bgColor';
+    let mockAiH = 219, mockAiS = 75, mockAiB = 24;
+    let mockAiInternalUpdating = false;
+
+    function mockHexToRgb(hex) {
+      const m = String(hex || '#000000').trim().replace(/^#/, '');
+      const full = m.length === 3 ? m.split('').map(c => c + c).join('') : m.padEnd(6, '0').slice(0, 6);
+      const n = parseInt(full, 16);
+      if (isNaN(n)) return [0, 0, 0];
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+    function mockRgbToHex(r, g, b) {
+      const clamp = v => Math.max(0, Math.min(255, Math.round(v)));
+      return '#' + [clamp(r), clamp(g), clamp(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+    }
+    function mockRgbToHsb(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+      let h = 0;
+      const s = max === 0 ? 0 : d / max, v = max;
+      if (max !== min) {
+        switch (max) {
+          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+          case g: h = (b - r) / d + 2; break;
+          case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+      }
+      return [Math.round(h * 360) % 360, Math.round(s * 100), Math.round(v * 100)];
+    }
+    function mockHsbToRgb(h, s, v) {
+      h = ((Number(h) || 0) % 360 + 360) % 360;
+      s = Math.max(0, Math.min(100, Number(s) || 0)) / 100;
+      v = Math.max(0, Math.min(100, Number(v) || 0)) / 100;
+      const c = v * s, x = c * (1 - Math.abs(((h / 60) % 2) - 1)), m = v - c;
+      let r1 = 0, g1 = 0, b1 = 0;
+      if (h < 60) { r1 = c; g1 = x; }
+      else if (h < 120) { r1 = x; g1 = c; }
+      else if (h < 180) { g1 = c; b1 = x; }
+      else if (h < 240) { g1 = x; b1 = c; }
+      else if (h < 300) { r1 = x; b1 = c; }
+      else { r1 = c; b1 = x; }
+      return [Math.round((r1 + m) * 255), Math.round((g1 + m) * 255), Math.round((b1 + m) * 255)];
+    }
+
+    const MOCK_COLOR_MAP_ROWS = [
+      ['#0f1f3d','#1a2744','#0b3152','#1e3a8a','#2b4c7e','#4361ee','#7c2d12','#9b1c1c','#c53030','#dc2626','#ea580c','#d97706','#ca8a04','#1b4332','#15803d','#4c1d95','#701a75','#be185d'],
+      ['#deb887','#d2b48c','#c19a6b','#b5651d','#8b5a2b','#5c3a21','#ffffff','#fafafa','#f4f1ea','#e2e8f0','#cbd5e1','#94a3b8','#64748b','#475569','#334155','#1e293b','#111827','#000000']
+    ];
+    for (let r = 0; r < 4; r++) {
+      const row = [];
+      const s = [45, 85, 100, 95][r];
+      const b = [98, 92, 75, 45][r];
+      for (let c = 0; c < 18; c++) {
+        const rgb = mockHsbToRgb(c * 20, s, b);
+        row.push(mockRgbToHex(rgb[0], rgb[1], rgb[2]));
+      }
+      MOCK_COLOR_MAP_ROWS.push(row);
+    }
+
+    function drawMockAiCanvases() {
+      const sbCv = document.getElementById('mockAiSbCv');
+      const hueCv = document.getElementById('mockAiHueCv');
+      const mapCv = document.getElementById('mockAiMapCv');
+      if (sbCv) {
+        const ctx = sbCv.getContext('2d');
+        const w = sbCv.width, h = sbCv.height;
+        const pure = mockHsbToRgb(mockAiH, 100, 100);
+        ctx.fillStyle = `rgb(${pure[0]},${pure[1]},${pure[2]})`;
+        ctx.fillRect(0, 0, w, h);
+        const gW = ctx.createLinearGradient(0, 0, w, 0);
+        gW.addColorStop(0, 'rgba(255,255,255,1)');
+        gW.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = gW;
+        ctx.fillRect(0, 0, w, h);
+        const gB = ctx.createLinearGradient(0, 0, 0, h);
+        gB.addColorStop(0, 'rgba(0,0,0,0)');
+        gB.addColorStop(1, 'rgba(0,0,0,1)');
+        ctx.fillStyle = gB;
+        ctx.fillRect(0, 0, w, h);
+      }
+      if (hueCv) {
+        const ctx = hueCv.getContext('2d');
+        const w = hueCv.width, h = hueCv.height;
+        const g = ctx.createLinearGradient(0, 0, 0, h);
+        g.addColorStop(0, '#ff0000');
+        g.addColorStop(0.17, '#ff00ff');
+        g.addColorStop(0.33, '#0000ff');
+        g.addColorStop(0.50, '#00ffff');
+        g.addColorStop(0.67, '#00ff00');
+        g.addColorStop(0.83, '#ffff00');
+        g.addColorStop(1, '#ff0000');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, w, h);
+      }
+      if (mapCv) {
+        const ctx = mapCv.getContext('2d');
+        const cols = 18, rows = MOCK_COLOR_MAP_ROWS.length;
+        const cw = mapCv.width / cols, ch = mapCv.height / rows;
+        const curHex = (state[mockAiTarget] || '#0f1f3d').toLowerCase();
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const hex = MOCK_COLOR_MAP_ROWS[r][c];
+            ctx.fillStyle = hex;
+            ctx.fillRect(c * cw, r * ch, cw + 0.5, ch + 0.5);
+            if (hex.toLowerCase() === curHex) {
+              ctx.strokeStyle = '#ffffff';
+              ctx.lineWidth = 2;
+              ctx.strokeRect(c * cw + 1, r * ch + 1, cw - 2, ch - 2);
+            }
+          }
+        }
+      }
+    }
+
+    function syncMockAiPickerUI() {
+      if (mockAiInternalUpdating) return;
+      const hex = (state[mockAiTarget] || '#0f1f3d').toLowerCase();
+      const [r, g, b] = mockHexToRgb(hex);
+      const [h, s, v] = mockRgbToHsb(r, g, b);
+      if (s > 0) mockAiH = h;
+      mockAiS = s; mockAiB = v;
+      drawMockAiCanvases();
+      const sbCur = document.getElementById('mockAiSbCursor');
+      if (sbCur) {
+        sbCur.style.left = (mockAiS / 100 * 130) + 'px';
+        sbCur.style.top = ((100 - mockAiB) / 100 * 110) + 'px';
+        sbCur.style.borderColor = (mockAiB > 65 && mockAiS < 45) ? '#0f172a' : '#ffffff';
+      }
+      const hueCur = document.getElementById('mockAiHueCursor');
+      if (hueCur) {
+        hueCur.style.top = ((360 - mockAiH) / 360 * 110) + 'px';
+      }
+      const patch = document.getElementById('mockAiColorPatch');
+      if (patch) patch.style.background = hex;
+      const hexIn = document.getElementById('mockAiHexInput');
+      if (hexIn && document.activeElement !== hexIn) hexIn.value = hex.replace('#', '').toUpperCase();
+      const hsbOut = document.getElementById('mockAiHsbRgbReadout');
+      if (hsbOut) hsbOut.innerHTML = `HSB: ${mockAiH}° ${mockAiS}% ${mockAiB}%<br>RGB: ${r}, ${g}, ${b}`;
+      const cmykOut = document.getElementById('mockAiCmykReadout');
+      if (cmykOut) {
+        const k = 1 - Math.max(r / 255, g / 255, b / 255);
+        const c = k >= 1 ? 0 : Math.round(((1 - r / 255 - k) / (1 - k)) * 100);
+        const m = k >= 1 ? 0 : Math.round(((1 - g / 255 - k) / (1 - k)) * 100);
+        const y = k >= 1 ? 0 : Math.round(((1 - b / 255 - k) / (1 - k)) * 100);
+        cmykOut.textContent = `CMYK: C${c} M${m} Y${y} K${Math.round(k * 100)}`;
+      }
+      document.querySelectorAll('#mockAiTargetTabs button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.target === mockAiTarget);
+      });
+    }
+
+    function applyMockAiColor(hex) {
+      mockAiInternalUpdating = true;
+      state[mockAiTarget] = hex;
+      if (mockAiTarget === 'bgColor') state.cordFillColor = hex;
+      if (mockAiTarget === 'fgColor') state.cordStrokeColor = hex;
+      mockAiInternalUpdating = false;
+      renderAll();
+    }
+
+    document.querySelectorAll('#mockAiTargetTabs button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        mockAiTarget = btn.dataset.target;
+        syncMockAiPickerUI();
+      });
+    });
+    ['fgColorPicker', 'bgColorPicker', 'cordFillPicker', 'cordStrokePicker'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('click', () => {
+          const map = { fgColorPicker: 'fgColor', bgColorPicker: 'bgColor', cordFillPicker: 'cordFillColor', cordStrokePicker: 'cordStrokeColor' };
+          mockAiTarget = map[id] || 'bgColor';
+          syncMockAiPickerUI();
+        });
+      }
+    });
+
+    (function bindMockAiInteractions() {
+      const sbCv = document.getElementById('mockAiSbCv');
+      const hueCv = document.getElementById('mockAiHueCv');
+      const mapCv = document.getElementById('mockAiMapCv');
+      let dragSb = false, dragHue = false, dragMap = false;
+      const onSb = e => {
+        const rect = sbCv.getBoundingClientRect();
+        mockAiS = Math.round(Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width)) * 100);
+        mockAiB = Math.round((1 - Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height))) * 100);
+        const rgb = mockHsbToRgb(mockAiH, mockAiS, mockAiB);
+        applyMockAiColor(mockRgbToHex(rgb[0], rgb[1], rgb[2]));
+      };
+      if (sbCv) {
+        sbCv.addEventListener('pointerdown', e => { dragSb = true; sbCv.setPointerCapture(e.pointerId); onSb(e); });
+        sbCv.addEventListener('pointermove', e => { if (dragSb) onSb(e); });
+        sbCv.addEventListener('pointerup', () => { dragSb = false; });
+      }
+      const onHue = e => {
+        const rect = hueCv.getBoundingClientRect();
+        mockAiH = Math.round((1 - Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height))) * 360) % 360;
+        const rgb = mockHsbToRgb(mockAiH, mockAiS, mockAiB);
+        applyMockAiColor(mockRgbToHex(rgb[0], rgb[1], rgb[2]));
+      };
+      if (hueCv) {
+        hueCv.addEventListener('pointerdown', e => { dragHue = true; hueCv.setPointerCapture(e.pointerId); onHue(e); });
+        hueCv.addEventListener('pointermove', e => { if (dragHue) onHue(e); });
+        hueCv.addEventListener('pointerup', () => { dragHue = false; });
+      }
+      const onMap = e => {
+        const rect = mapCv.getBoundingClientRect();
+        const c = Math.min(17, Math.max(0, Math.floor(((e.clientX - rect.left) / rect.width) * 18)));
+        const r = Math.min(MOCK_COLOR_MAP_ROWS.length - 1, Math.max(0, Math.floor(((e.clientY - rect.top) / rect.height) * MOCK_COLOR_MAP_ROWS.length)));
+        applyMockAiColor(MOCK_COLOR_MAP_ROWS[r][c]);
+      };
+      if (mapCv) {
+        mapCv.addEventListener('pointerdown', e => { dragMap = true; mapCv.setPointerCapture(e.pointerId); onMap(e); });
+        mapCv.addEventListener('pointermove', e => { if (dragMap) onMap(e); });
+        mapCv.addEventListener('pointerup', () => { dragMap = false; });
+      }
+      const hexIn = document.getElementById('mockAiHexInput');
+      if (hexIn) {
+        hexIn.addEventListener('change', () => {
+          const clean = hexIn.value.trim().replace(/^#/, '');
+          if (/^[0-9a-fA-F]{3}$|^[0-9a-fA-F]{6}$/.test(clean)) {
+            const full = clean.length === 3 ? clean.split('').map(c => c + c).join('') : clean;
+            applyMockAiColor('#' + full.toLowerCase());
+          }
+        });
+      }
+      const eyeBtn = document.getElementById('mockEyeDropperBtn');
+      if (eyeBtn) {
+        eyeBtn.addEventListener('click', async () => {
+          if (window.EyeDropper) {
+            try {
+              const res = await new window.EyeDropper().open();
+              if (res && res.sRGBHex) applyMockAiColor(res.sRGBHex.toLowerCase());
+            } catch (_) {}
+          } else {
+            showToast('お使いのブラウザは画面スポイトAPIに対応していません');
+          }
+        });
+      }
+    })();
 
     renderAll();
     if (document.fonts && document.fonts.ready) {
