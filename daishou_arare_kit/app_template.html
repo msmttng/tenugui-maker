@@ -826,7 +826,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
           <span class="clabel" style="font-size:11.5px;color:#1e40af;display:flex;justify-content:space-between;align-items:center">
             <span>👆 ダボ完成図の上をドラッグしてロゴを配置（逆算シミュレーション）</span>
             <label style="display:inline-flex;align-items:center;gap:4px;font-weight:700;cursor:pointer;color:#1d4ed8">
-              <input type="checkbox" id="daboInteractiveLogo" checked style="width:14px;height:14px;accent-color:#2563eb">ダボ上で直接配置ON
+              <input type="checkbox" id="daboInteractiveLogo" style="width:14px;height:14px;accent-color:#2563eb">ダボ上で直接移動をONにする
             </label>
           </span>
           <div style="display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap">
@@ -1074,7 +1074,7 @@ const DEF={
   daboSize:'L', // 'S' | 'M' | 'L' | 'LL' | '3L'
   daboShiftY:0, daboShiftX:0, daboSleeveShiftY:0, daboPatScale:100,
   daboBodyPreset:'current', daboSleevePreset:'same', daboCollarMode:'same', daboPocketMode:'match',
-  showDaboZoneGuide:true, daboInteractiveLogo:true, daboDragItemType:'auto',
+  showDaboZoneGuide:true, daboInteractiveLogo:false, daboDragItemType:'auto',
   // 大小あられパラメーター
   count:1220, gap:2.5, spread:15, grad:0, dmin:3.5, dmax:11, bigratio:32, scale:100, shape:'orig',
   // 共通
@@ -1082,6 +1082,15 @@ const DEF={
 };
 let S=Object.assign({},DEF);
 try{const s=JSON.parse(localStorage.getItem('haneda-arare-settings')||'null'); if(s) S=Object.assign({},DEF,s);}catch(e){}
+// プレビュークリックで意図せずロゴが入るのを防ぐため、起動時はダボ直接配置モードを常にOFFにする
+S.daboInteractiveLogo = false;
+try{
+  if(!localStorage.getItem('haneda-fix-autologo-v185')){
+    S.showLogo = false;
+    localStorage.setItem('haneda-fix-autologo-v185', '1');
+    localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
+  }
+}catch(e){}
 function persist(){try{localStorage.setItem('haneda-arare-settings',JSON.stringify(S));}catch(e){}}
 
 /* ---- 1. 大小あられ形状ライブラリ (16点スプライン) ---- */
@@ -4973,14 +4982,17 @@ function updateDaboSpecBox(plan){
     `<br><b>📜 反物で染める場合の用尺目安</b>：小幅反物（巾${S.W/10}cm） <b>約 ${totalTan} m</b>`;
 }
 
-// 現在ダボ上でのドラッグ操作の対象となっている要素種別 ('logo' | 'crest' | 'text') を返す
+// 現在ダボ上でのドラッグ操作の対象となっている要素種別 ('logo' | 'crest' | 'text' | null) を返す
+// ※ 何も表示ONになっていない場合は null を返し、勝手にロゴがONにならないようにする
 function getActiveLogoTypeKey(){
   const pref = S.daboDragItemType || 'auto';
-  if(pref === 'logo' || pref === 'crest' || pref === 'text') return pref;
+  if(pref === 'logo') return S.showLogo ? 'logo' : null;
+  if(pref === 'crest') return S.showCrest ? 'crest' : null;
+  if(pref === 'text') return S.showText ? 'text' : null;
   if(S.showLogo) return 'logo';
   if(S.showCrest) return 'crest';
   if(S.showText) return 'text';
-  return 'logo';
+  return null;
 }
 
 // 手ぬぐい座標 (pxPct: 0..100, pyPct: 0..100) ➔ 回転後の縦ストリップ正規化座標 (u: 0..1, v: 0..1)
@@ -5052,14 +5064,13 @@ function applyReverseDaboPlacementAtStageXY(stageX, stageY, isInitialClick){
 
   const { px, py } = stripUVToTenuguiPct(u, v);
   const itemType = getActiveLogoTypeKey();
+  // 現在ONになっているロゴ・丸紋・札がない場合は勝手に追加せず false を返す（通常の画面パン操作へ譲る）
+  if(!itemType) return false;
   if(itemType === 'logo'){
-    S.showLogo = true;
     S.logoX = px; S.logoY = py;
   }else if(itemType === 'crest'){
-    S.showCrest = true;
     S.crestX = px; S.crestY = py;
   }else if(itemType === 'text'){
-    S.showText = true;
     S.textX = px; S.textY = py;
   }
 
@@ -6319,7 +6330,7 @@ function syncUI(){
   $('showText').checked=!!S.showText; $('textBox').hidden=!S.showText;
   $('showBand').checked=!!S.showBand; $('bandBox').hidden=!S.showBand;
   if($('showDaboZoneGuide')) $('showDaboZoneGuide').checked=!!S.showDaboZoneGuide;
-  if($('daboInteractiveLogo')) $('daboInteractiveLogo').checked=(S.daboInteractiveLogo!==false);
+  if($('daboInteractiveLogo')) $('daboInteractiveLogo').checked=!!S.daboInteractiveLogo;
   if($('daboDragItemType')) $('daboDragItemType').value=S.daboDragItemType||'auto';
 
   // ロゴ・名入れ文字・ちりばめ総柄UI同期
@@ -6864,10 +6875,10 @@ $('textMatchBgBtn').addEventListener('click',()=>{
   S.fudaCordColor=S.bgColor; S.fudaCordStroke=fg;
   update(false);
 });
-if($('fudaCordColor')) $('fudaCordColor').addEventListener('input',e=>{S.fudaCordColor=e.target.value; S.showText=true; update(false);});
-if($('fudaCordStroke')) $('fudaCordStroke').addEventListener('input',e=>{S.fudaCordStroke=e.target.value; S.showText=true; update(false);});
-if($('fudaBgTransparent')) $('fudaBgTransparent').addEventListener('change',e=>{S.fudaBgTransparent=e.target.checked; S.showText=true; update(false);});
-if($('fudaCordTransparent')) $('fudaCordTransparent').addEventListener('change',e=>{S.fudaCordTransparent=e.target.checked; S.showText=true; update(false);});
+if($('fudaCordColor')) $('fudaCordColor').addEventListener('input',e=>{S.fudaCordColor=e.target.value; update(false);});
+if($('fudaCordStroke')) $('fudaCordStroke').addEventListener('input',e=>{S.fudaCordStroke=e.target.value; update(false);});
+if($('fudaBgTransparent')) $('fudaBgTransparent').addEventListener('change',e=>{S.fudaBgTransparent=e.target.checked; update(false);});
+if($('fudaCordTransparent')) $('fudaCordTransparent').addEventListener('change',e=>{S.fudaCordTransparent=e.target.checked; update(false);});
 if($('showFudaGizmo')) $('showFudaGizmo').addEventListener('change',e=>{S.showFudaGizmo=e.target.checked; update(false);});
 if($('resetFudaCordPosBtn')){
   $('resetFudaCordPosBtn').addEventListener('click',()=>{
@@ -7014,8 +7025,8 @@ box.addEventListener('mousedown', e=>{
     }
   }
 
-  // 2. ダボ完成図（cut_dabo / dabo モード）で「ダボ上で直接配置ON」のとき、ダボシャツの各部位の上をクリックしたら逆算ロゴ配置を開始
-  if((S.viewMode === 'cut_dabo' || S.viewMode === 'dabo') && S.daboInteractiveLogo !== false && !e.shiftKey && !e.spaceKey){
+  // 2. ダボ完成図（cut_dabo / dabo モード）で「ダボ上で直接移動をONにする」がチェックされており、かつ既にロゴ・丸紋・札のいずれかが表示ONのときのみ逆算移動を行う
+  if((S.viewMode === 'cut_dabo' || S.viewMode === 'dabo') && S.daboInteractiveLogo === true && getActiveLogoTypeKey() && !e.shiftKey && !e.spaceKey){
     const r = cv.getBoundingClientRect();
     if(r.width > 0 && r.height > 0){
       const cw = parseFloat(cv.style.width) || r.width;
