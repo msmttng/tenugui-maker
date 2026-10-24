@@ -132,11 +132,11 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 
     <!-- 🧭 シンプル化カテゴリ切替バー（機能は1つも落とさず、見たい項目だけをすっきり表示） -->
     <nav class="nav-cat-tabs" id="panelCatTabs" aria-label="設定カテゴリ切替">
-      <button type="button" data-cat-filter="all" aria-pressed="true">すべて</button>
-      <button type="button" data-cat-filter="pattern" aria-pressed="false">① 🎨 柄・色</button>
-      <button type="button" data-cat-filter="overlay" aria-pressed="false">② 🏮 文字・札</button>
-      <button type="button" data-cat-filter="dabo" aria-pressed="false">③ 👕 ダボ</button>
-      <button type="button" data-cat-filter="export" aria-pressed="false">④ 💾 保存・出力</button>
+      <button type="button" class="cat-tab" data-cat-filter="all" data-cat="all" aria-pressed="true">すべて</button>
+      <button type="button" class="cat-tab" data-cat-filter="pattern" data-cat="pattern" aria-pressed="false">① 🎨 柄・色</button>
+      <button type="button" class="cat-tab" data-cat-filter="overlay" data-cat="overlay" aria-pressed="false">② 🏮 ロゴ・文字・札</button>
+      <button type="button" class="cat-tab" data-cat-filter="dabo" data-cat="dabo" aria-pressed="false">③ 👕 ダボ</button>
+      <button type="button" class="cat-tab" data-cat-filter="export" data-cat="export" aria-pressed="false">④ 💾 保存・出力</button>
     </nav>
 
     <!-- 1. 柄モード切替 ＆ レイヤー前後順 ＆ 手ぬぐい工房合体パネル -->
@@ -366,10 +366,16 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 
     <!-- 5. 丸紋「仲はねだ」・ロゴ画像・札ロゴ＆名入れ文字・下部帯 -->
     <section id="sec-crest" aria-labelledby="h-crest" data-cat="overlay">
-      <h2 id="h-crest"><span>💮 丸紋・ロゴ画像・🏮札(ふだ)ロゴ・文字</span><span class="badge">ダボ直接文字打ち＆イラレ出力対応</span></h2>
+      <h2 id="h-crest"><span>💮 丸紋・🖼️ロゴ画像登録・🏮札(ふだ)ロゴ・文字</span><span class="badge">ロゴ登録＆直接文字打ち対応</span></h2>
+      <!-- 📁 ワンクリック・ロゴ登録＆文字打ちクイックバー（チェックを入れる前でも一発で登録・起動可能） -->
+      <div style="display:flex;gap:5px;flex-wrap:wrap;background:#eff6ff;padding:6px 8px;border:1.5px solid #60a5fa;border-radius:7px;align-items:center">
+        <button type="button" class="btn" id="quickUploadLogoTopBtn" style="padding:5px 10px;font-size:11.5px;background:#2563eb;border-color:#1d4ed8;color:#fff;font-weight:700" title="パソコン内のロゴ画像（.ai / PDF / PNG / JPG / SVG）を読み込んで手ぬぐい・ダボに配置し、マイ・ロゴ保管棚へ自動登録します">📁 ロゴ画像を登録・読込 (.ai/PDF/PNG/JPG)</button>
+        <button type="button" class="mini-btn" id="quickOpenLogoShelfBtn" style="background:#fff;border-color:#3b82f6;color:#1d4ed8;font-weight:700;padding:5px 8px" title="登録済みのロゴ保管棚とロゴ設定パネルを開きます">📚 登録ロゴ保管棚・設定を開く</button>
+        <button type="button" class="mini-btn" id="openDirectDaboTextFromPanelBtn" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700;padding:5px 8px;margin-left:auto">✍️ ダボに直接文字を打つ →</button>
+      </div>
       <div class="crow2">
         <label class="chk"><input type="checkbox" id="showCrest">丸紋「仲はねだ」</label>
-        <label class="chk"><input type="checkbox" id="showLogo">ロゴ画像を追加</label>
+        <label class="chk"><input type="checkbox" id="showLogo">🖼️ ロゴ画像を表示・編集</label>
         <label class="chk"><input type="checkbox" id="showText">🏮札ロゴ・文字を追加</label>
         <label class="chk"><input type="checkbox" id="showBand">下部に無地帯</label>
       </div>
@@ -381,9 +387,8 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         <button type="button" class="mini-btn" id="quickClearTextBtn" style="background:#ffe4e6;border-color:#fda4af;color:#9f1239">🏮 札・文字を消す</button>
         <button type="button" class="mini-btn" id="clearAllOverlaysBtn" style="background:#e11d48;border-color:#be123c;color:#fff;font-weight:700;margin-left:auto" title="丸紋・ロゴ・文字をすべて一括で消します">🧹 すべて消す</button>
       </div>
-      <div class="crow2" style="background:#eff6ff;padding:5px 8px;border:1px solid #bfdbfe;border-radius:6px;margin-top:2px;justify-content:space-between">
+      <div class="crow2" style="background:#f8fafc;padding:4px 8px;border:1px solid #cbd5e1;border-radius:6px;margin-top:2px;justify-content:space-between">
         <label class="chk" style="color:#1e40af;font-weight:700"><input type="checkbox" id="showDaboZoneGuide">📐 手ぬぐい上にダボ部位ガイド枠を表示</label>
-        <button type="button" class="mini-btn" id="openDirectDaboTextFromPanelBtn" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700">✍️ ダボに直接文字を打つ →</button>
       </div>
       <div id="logoDaboWhereBadge" hidden style="background:#fef9c3;border:1px solid #facc15;border-radius:6px;padding:6px 8px;font-size:11px;line-height:1.45;color:#713f12"></div>
 
@@ -416,13 +421,26 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
       <!-- 5-B. カスタムロゴ画像（PNG/JPG/SVG/.ai/PDF）追加・複数保持・透過・画像編集設定 -->
       <div class="subbox" id="logoBox" hidden>
         <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
-          <b style="font-size:12px">② ロゴ画像（.ai / PDF / PNG / JPG / SVG）</b>
+          <b style="font-size:12px">② ロゴ画像登録・編集（.ai / PDF / PNG / JPG / SVG）</b>
           <div style="display:flex;gap:4px;flex-wrap:wrap">
             <button type="button" class="mini-btn" id="useHantenLogoPresetBtn" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">🏮 仲羽半纏ロゴ</button>
-            <button type="button" class="btn" id="uploadLogoBtn" style="padding:4px 9px;font-size:11.5px">📁 ファイル読込 (.ai/画像)</button>
+            <button type="button" class="btn" id="uploadLogoBtn" style="padding:4px 9px;font-size:11.5px;background:#2563eb;border-color:#1d4ed8">📁 ロゴファイル読込・登録 (.ai/画像)</button>
             <button type="button" class="mini-btn del" id="deleteActiveLogoSlotBtn" style="font-weight:700" title="現在選択しているロゴをキャンバスから消します">🗑️ 消す</button>
           </div>
           <input type="file" id="uploadLogoInput" accept=".ai,.pdf,.eps,image/png,image/jpeg,image/webp,image/svg+xml,application/pdf,application/postscript" hidden>
+        </div>
+
+        <!-- 📚 マイ・ロゴ保管棚（常時表示：読み込んだロゴや好きな名前で登録したロゴをいつでもワンクリック呼び出し） -->
+        <div style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+            <span style="font-size:11px;font-weight:700;color:#1e40af">📚 マイ・ロゴ保管棚（登録済みロゴ一覧）</span>
+            <span id="logoShelfCountBadge" class="badge" style="background:#dbeafe;color:#1e40af">0個</span>
+          </div>
+          <div style="display:flex;gap:4px;align-items:center">
+            <input type="text" id="logoShelfNameInput" class="save-input" placeholder="登録するロゴ名（例：仲羽半纏ロゴ）" style="font-size:11.5px;padding:4px 7px">
+            <button type="button" class="mini-btn" id="saveToLogoShelfBtn" style="background:#2563eb;color:#fff;border-color:#1d4ed8;font-weight:700;white-space:nowrap">📌 今のロゴを保管棚に登録</button>
+          </div>
+          <div id="logoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:5px;max-height:150px;overflow-y:auto;padding:2px"></div>
         </div>
 
         <!-- 🔢 1. キャンバス上に配置中のロゴ一覧 -->
@@ -459,18 +477,10 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         <div class="row"><label for="logoX">ロゴの横位置</label><input type="range" id="logoX" min="5" max="95" step="0.5" value="50"><output for="logoX" id="logoX-o"></output></div>
         <div class="row"><label for="logoY">ロゴの縦位置</label><input type="range" id="logoY" min="5" max="95" step="0.5" value="28"><output for="logoY" id="logoY-o"></output></div>
 
-        <!-- 折りたたみ①：背景透過・輪郭補正・座布団・保管棚 -->
+        <!-- 折りたたみ①：背景透過・輪郭補正・座布団 -->
         <details class="adv-details">
-          <summary>🛠️ ロゴ背景透過・フチ取り・座布団・保管棚 <span id="logoShelfCountBadge" class="badge" style="margin-left:auto;margin-right:6px">0個</span></summary>
+          <summary>🛠️ ロゴ背景透過・スポイト透過・フチ取り・座布団</summary>
           <div class="adv-body">
-            <!-- 📚 マイ・ロゴ保管棚 -->
-            <div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px">
-              <div style="display:flex;gap:4px;align-items:center">
-                <input type="text" id="logoShelfNameInput" class="save-input" placeholder="保管するロゴ名（例：仲羽半纏ロゴ）" style="font-size:11.5px;padding:4px 7px">
-                <button type="button" class="mini-btn" id="saveToLogoShelfBtn" style="background:#2563eb;color:#fff;border-color:#1d4ed8;font-weight:700;white-space:nowrap">📌 保管棚に保存</button>
-              </div>
-              <div id="logoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:5px;max-height:150px;overflow-y:auto;padding:2px"></div>
-            </div>
             <!-- ロゴ元画像 ➔ 編集・透過後 リアルタイム比較プレビュー -->
             <div style="background:#0f172a;border:1px solid #334155;border-radius:6px;padding:7px;display:flex;gap:8px;align-items:center">
               <div style="position:relative;width:76px;height:76px;flex-shrink:0;border-radius:5px;overflow:hidden;border:1px solid #475569;background:repeating-conic-gradient(#cbd5e1 0% 25%, #f8fafc 0% 50%) 50% / 12px 12px;cursor:crosshair" title="クリックした色の背景を自動透過します（スポイト透過）">
@@ -1094,6 +1104,9 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
           <button type="button" id="toggleStageDirectTextBtn" style="background:linear-gradient(135deg,#0284c7 0%,#1d4ed8 100%);color:#fff;border:1.5px solid #7dd3fc;border-radius:999px;padding:6px 14px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);display:inline-flex;align-items:center;gap:6px">
             <span>✍️ ダボシャツ・手ぬぐいに直接文字を打つ（手ぬぐいへ自動反映）</span>
+          </button>
+          <button type="button" id="stageTopUploadLogoBtn" style="background:linear-gradient(135deg,#2563eb 0%,#4f46e5 100%);color:#fff;border:1.5px solid #93c5fd;border-radius:999px;padding:6px 13px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);display:inline-flex;align-items:center;gap:5px" title="パソコン内のロゴ画像（.ai / PDF / PNG / JPG / SVG）を読み込んで登録・配置します">
+            <span>📁 ロゴ画像を登録・読込 (.ai/画像)</span>
           </button>
           <span id="stageDirectReflectionBadge" hidden style="background:rgba(15,23,42,.88);color:#fde047;border:1px solid #f59e0b;border-radius:999px;padding:4px 11px;font-size:11px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.3)"></span>
         </div>
@@ -7226,6 +7239,31 @@ document.querySelectorAll('#crestPosPresets button').forEach(b=>b.addEventListen
 
 // ロゴ画像（.ai / PDF / PNG / JPG / SVG）アップロード・透過・画像編集イベント
 $('uploadLogoBtn').addEventListener('click',()=>$('uploadLogoInput').click());
+if($('quickUploadLogoTopBtn')){
+  $('quickUploadLogoTopBtn').addEventListener('click',()=>{
+    S.showLogo = true;
+    update(false);
+    $('uploadLogoInput').click();
+  });
+}
+if($('stageTopUploadLogoBtn')){
+  $('stageTopUploadLogoBtn').addEventListener('click',()=>{
+    S.showLogo = true;
+    update(false);
+    $('uploadLogoInput').click();
+  });
+}
+if($('quickOpenLogoShelfBtn')){
+  $('quickOpenLogoShelfBtn').addEventListener('click',()=>{
+    S.showLogo = true;
+    if(!Array.isArray(S.logoSlots) || S.logoSlots.length===0){
+      S.logoSlots=[extractLogoSlotFromS(S)];
+      S.activeLogoSlot=0;
+    }
+    update(false);
+    if($('logoBox')) $('logoBox').scrollIntoView({ behavior:'smooth', block:'nearest' });
+  });
+}
 if($('useHantenLogoPresetBtn')){
   $('useHantenLogoPresetBtn').addEventListener('click',()=>{
     if(typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64){
@@ -7551,10 +7589,10 @@ document.querySelectorAll('#textScatterQuickBtns button').forEach(b=>b.addEventL
 }));
 
 // 🗂️ 左パネルのシンプル・カテゴリタブ切替（機能は100%残したまま表示を整理）
-document.querySelectorAll('#panelCatTabs .cat-tab').forEach(tab=>{
+document.querySelectorAll('#panelCatTabs button').forEach(tab=>{
   tab.addEventListener('click',()=>{
-    const cat = tab.dataset.cat || 'all';
-    document.querySelectorAll('#panelCatTabs .cat-tab').forEach(t=>t.setAttribute('aria-pressed', (t===tab)+''));
+    const cat = tab.dataset.cat || tab.dataset.catFilter || 'all';
+    document.querySelectorAll('#panelCatTabs button').forEach(t=>t.setAttribute('aria-pressed', (t===tab)+''));
     document.querySelectorAll('.panel > section[data-cat]').forEach(sec=>{
       if(cat === 'all'){
         sec.classList.remove('cat-hidden');
@@ -7563,8 +7601,8 @@ document.querySelectorAll('#panelCatTabs .cat-tab').forEach(tab=>{
       }
     });
     // 選んだカテゴリでよく使うセクションが閉じていたら自動で開く
-    if(cat === 'text_logo'){
-      if(!S.showText && !S.showLogo && !S.showCrest){ S.showText = true; update(false); }
+    if(cat === 'overlay' || cat === 'text_logo'){
+      if(!S.showText && !S.showLogo && !S.showCrest){ S.showLogo = true; S.showText = true; update(false); }
     }else if(cat === 'dabo'){
       if(S.viewMode === 'fabric'){ S.viewMode = 'cut_dabo'; update(false); }
     }
