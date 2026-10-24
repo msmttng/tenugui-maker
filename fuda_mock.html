@@ -515,21 +515,30 @@
           <button type="button" class="mini-chip" id="swapColorsBtn" title="札の地色と文字・枠色を入れ替えます">色反転⇄</button>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11.5px;align-items:center">
-          <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer" title="文字・ロゴ本体の色を変更します（枠線とは独立して変更可能）">
             <input type="color" id="fgColorPicker" value="#ffffff" style="width:26px;height:24px;border:none;background:none;cursor:pointer">
-            <span>文字・枠の色</span>
+            <span>🖋 文字・ロゴ色</span>
           </label>
-          <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer" title="札の外枠・内枠・立体側面の線の色を変更します">
+            <input type="color" id="frameColorPicker" value="#ffffff" style="width:26px;height:24px;border:none;background:none;cursor:pointer">
+            <span>🖼️ 枠線の色</span>
+            <button type="button" class="mini-chip" id="syncFrameToFgBtn" style="padding:1px 5px;font-size:9.5px" title="枠線色を文字色と同じに揃えます">=文字</button>
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer" title="札本体の背景塗りの色を変更します">
             <input type="color" id="bgColorPicker" value="#0f1f3d" style="width:26px;height:24px;border:none;background:none;cursor:pointer">
-            <span>札本体の地色</span>
+            <span>🪵 札本体の地色</span>
           </label>
-          <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer" title="天丸の赤丸紋や差し札のアクセント色を変更します">
+            <input type="color" id="accentColorPicker" value="#c93a40" style="width:26px;height:24px;border:none;background:none;cursor:pointer">
+            <span>🔴 丸紋・差札色</span>
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer" title="組紐の内部塗りの色を変更します">
             <input type="color" id="cordFillPicker" value="#0f1f3d" style="width:26px;height:24px;border:none;background:none;cursor:pointer">
-            <span>紐(ひも)の塗り色</span>
+            <span>🪢 紐の塗り色</span>
           </label>
-          <label style="display:flex;align-items:center;gap:5px;cursor:pointer">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer" title="組紐の輪郭線の色を変更します">
             <input type="color" id="cordStrokePicker" value="#ffffff" style="width:26px;height:24px;border:none;background:none;cursor:pointer">
-            <span>紐のフチ線色</span>
+            <span>🪢 紐のフチ線色</span>
           </label>
         </div>
 
@@ -546,9 +555,11 @@
             </div>
             <div class="chip-row" id="mockAiTargetTabs" style="margin-bottom:6px">
               <button type="button" class="mini-chip active" data-target="bgColor">🪵 札の地色</button>
-              <button type="button" class="mini-chip" data-target="fgColor">🖋 文字・枠の色</button>
+              <button type="button" class="mini-chip" data-target="fgColor">🖋 文字の色</button>
+              <button type="button" class="mini-chip" data-target="frameColor">🖼️ 枠線の色</button>
               <button type="button" class="mini-chip" data-target="cordFillColor">🪢 紐の塗り色</button>
               <button type="button" class="mini-chip" data-target="cordStrokeColor">🪢 紐のフチ色</button>
+              <button type="button" class="mini-chip" data-target="accentColor">🔴 丸紋色</button>
             </div>
             <div style="display:grid;grid-template-columns:130px 18px 1fr;gap:6px;align-items:stretch">
               <div style="position:relative;width:130px;height:110px;border:1px solid #64748b;border-radius:4px;overflow:hidden;cursor:crosshair;touch-action:none">
@@ -585,22 +596,41 @@
           </div>
         </details>
 
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;padding:4px 6px;background:#1e293b;border-radius:6px;font-size:11.5px">
-          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#7dd3fc;font-weight:800" title="ONにすると札の塗りつぶしを無くし、背後の手ぬぐい柄が透けて見えるようになります">
-            <input type="checkbox" id="bgTransparentToggle"> ✨札の背景を透過(中抜き)
+        <!-- ✨ 文字・ロゴ以外の透過ワンクリックボタン ＆ 個別透過チェック -->
+        <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">
+          <button type="button" class="mini-chip" id="onlyTextTransparentBtn" style="border-color:#0ea5e9;color:#7dd3fc;font-weight:800" title="文字だけを残して、札の背景・枠線・紐をすべて一発で透過します">✨文字以外すべて透過(文字のみ)</button>
+          <button type="button" class="mini-chip" id="hollowFrameOnlyBtn" style="border-color:#38bdf8;color:#bae6fd;font-weight:800" title="札の背景塗りと紐の塗りを透過し、枠線と文字だけ残します">✨背景だけ透過(中抜き枠)</button>
+          <button type="button" class="mini-chip" id="bgOnlyBtn" style="border-color:#a855f7;color:#e9d5ff;font-weight:800" title="枠線と紐を透過し、札の背景塗りと文字だけ残します">✨枠・紐を透過</button>
+          <button type="button" class="mini-chip" id="restoreSolidFudaBtn" title="透過を解除して通常の塗り＋枠線＋紐に戻します">🔄塗りと枠を戻す</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px;padding:5px 7px;background:#1e293b;border-radius:6px;font-size:11px">
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#7dd3fc;font-weight:800" title="ONにすると札の背景塗りつぶしを無くし、背後の手ぬぐい柄が透けて見えるようになります">
+            <input type="checkbox" id="bgTransparentToggle"> ✨札背景を透過
+          </label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#93c5fd;font-weight:800" title="ONにすると札の外枠・内枠・立体枠線を透過（非表示）にします">
+            <input type="checkbox" id="frameTransparentToggle"> ✨枠線を透過
           </label>
           <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#fcd34d;font-weight:800" title="ONにすると紐の内部塗りを透過し、線のみで表現します">
             <input type="checkbox" id="cordTransparentToggle"> ✨紐の中を透過
           </label>
+          <label style="display:flex;align-items:center;gap:4px;cursor:pointer;color:#fde68a;font-weight:800" title="ONにすると紐（塗り＋フチ線）をすべて透過します">
+            <input type="checkbox" id="cordAllTransparentToggle"> ✨紐全体を透過
+          </label>
+        </div>
+        <div class="slider-row" title="文字は100%くっきり残したまま、札の背景・枠線・紐（文字以外すべて）の透け具合を0〜100%で調整します">
+          <label for="nonTextOpacityRange" style="color:#7dd3fc;font-weight:800">文字以外の不透明度</label>
+          <input type="range" id="nonTextOpacityRange" min="0" max="100" step="5" value="100">
+          <output id="nonTextOpacityOut">100%</output>
         </div>
         <div class="slider-row">
-          <label for="fudaOpacityRange">札の不透明度</label>
+          <label for="fudaOpacityRange">札全体の不透明度</label>
           <input type="range" id="fudaOpacityRange" min="15" max="100" step="5" value="100">
           <output id="fudaOpacityOut">100%</output>
         </div>
         <div class="slider-row">
           <label for="cordOpacityRange">紐の不透明度</label>
-          <input type="range" id="cordOpacityRange" min="15" max="100" step="5" value="100">
+          <input type="range" id="cordOpacityRange" min="0" max="100" step="5" value="100">
           <output id="cordOpacityOut">100%</output>
         </div>
       </div>
@@ -728,13 +758,18 @@
       fontKey: 'reggae',
       themeKey: 'navy-fill',
       fgColor: '#ffffff',
+      frameColor: '#ffffff',
       bgColor: '#0f1f3d',
+      accentColor: '#c93a40',
       cordFillColor: '#0f1f3d',
       cordStrokeColor: '#ffffff',
-      bgTransparent: false,   // 札本体の背景を透過（中抜き）
-      cordTransparent: false, // 紐の塗りを透過（線のみ）
-      fudaOpacity: 100,       // 札全体の不透明度 (%)
-      cordOpacity: 100,       // 紐の不透明度 (%)
+      bgTransparent: false,      // 札本体の背景を透過（中抜き）
+      frameTransparent: false,   // 札の枠線・立体枠を透過
+      cordTransparent: false,    // 紐の塗りを透過（線のみ）
+      cordAllTransparent: false, // 紐全体（塗り＋線）を透過
+      nonTextOpacity: 100,       // 文字以外の不透明度 (%)
+      fudaOpacity: 100,          // 札全体の不透明度 (%)
+      cordOpacity: 100,          // 紐の不透明度 (%)
       outline: false,
       showTenuguiBg: true,
       showGizmo: true         // マウス操作ハンドル表示
@@ -870,14 +905,20 @@
     function buildCordVectorItems(cordStyle, tr, hw, hh, holeX, holeY, beadR, fillCol, strokeCol, strokeW, stateObj) {
       const backCordItems = [];
       const frontCordItems = [];
-      if (!cordStyle || cordStyle === 'none') return { backCordItems, frontCordItems, knotHandlePt: null, tailHandlePt: null };
+      if (!cordStyle || cordStyle === 'none' || (stateObj && stateObj.cordAllTransparent)) {
+        return { backCordItems, frontCordItems, knotHandlePt: null, tailHandlePt: null };
+      }
 
       const kx = (stateObj && stateObj.cordKnotOffX) || 0;
       const ky = (stateObj && stateObj.cordKnotOffY) || 0;
       const tx = (stateObj && stateObj.cordTailOffX) || 0;
       const ty = (stateObj && stateObj.cordTailOffY) || 0;
       const effFill = (stateObj && stateObj.cordTransparent) ? null : fillCol;
-      const cordOp = ((stateObj && stateObj.cordOpacity) ?? 100) / 100;
+      const nonTextOp = ((stateObj && stateObj.nonTextOpacity) ?? 100) / 100;
+      const cordOp = (((stateObj && stateObj.cordOpacity) ?? 100) / 100) * nonTextOp;
+      if (cordOp <= 0.001) {
+        return { backCordItems, frontCordItems, knotHandlePt: null, tailHandlePt: null };
+      }
 
       const sampleBezier = (p0, p1, p2, p3, n = 18) => {
         const pts = [];
@@ -1142,12 +1183,16 @@
     function buildSingleTagPrimitives(fudaId, cx, cy, baseW, baseH, deg, charsList, subTextStr, state, cordOverride, depthOverride) {
       const themeBase = THEMES[state.themeKey] || THEMES['navy-fill'];
       const fgCol = state.fgColor || themeBase.fg;
+      const frameCol = state.frameColor || fgCol;
       const bgCol = state.bgColor || themeBase.bg;
+      const accentCol = state.accentColor || themeBase.accent || '#c93a40';
       const isBgHollow = !!state.bgTransparent;
+      const isFrameHollow = !!state.frameTransparent;
       const bodyFill = isBgHollow ? null : bgCol;
       const fudaOp = (state.fudaOpacity ?? 100) / 100;
+      const nonTextOp = fudaOp * ((state.nonTextOpacity ?? 100) / 100);
       const cordFill = state.cordFillColor || bgCol;
-      const cordStroke = state.cordStrokeColor || fgCol;
+      const cordStroke = state.cordStrokeColor || frameCol;
 
       const w = baseW * ((state.widthPct || 100) / 100);
       const h = baseH * ((state.heightPct || 100) / 100);
@@ -1260,14 +1305,14 @@
         return [[-iw, -ih], [iw, -ih], [iw, ih], [-iw, ih]];
       };
 
-      const outerStrokeCol = fgCol;
+      const outerStrokeCol = isFrameHollow ? null : frameCol;
       const strokeW = Math.max(2.2, w * 0.048);
       const holeY = -hh + h * 0.115;
       const holeR = Math.max(3.5, w * 0.068);
       const beadR = Math.max(3.2, w * 0.058);
 
       // 紐の決定
-      const effectiveCord = cordOverride !== undefined ? cordOverride : state.cordStyle;
+      const effectiveCord = (state.cordAllTransparent || nonTextOp <= 0.001) ? 'none' : (cordOverride !== undefined ? cordOverride : state.cordStyle);
       const { backCordItems, frontCordItems, knotHandlePt, tailHandlePt } = buildCordVectorItems(
         effectiveCord, tr, hw, hh, 0, holeY, beadR, cordFill, cordStroke, Math.max(1.8, strokeW * 0.68), state
       );
@@ -1277,48 +1322,50 @@
 
       // 1. 外座布団（2D千社札系のみ）または 3D立体木札の側面・底面押し出し
       const localV = getLocalOuterVertices(0);
-      if (depthPx > 0.5) {
-        const dx = depthPx * 0.85;
-        const dy = depthPx * 0.65;
-        for (let i = 0; i < localV.length; i++) {
-          const pA = localV[i];
-          const pB = localV[(i + 1) % localV.length];
-          const ex = pB[0] - pA[0], ey = pB[1] - pA[1];
-          const nx = ey, ny = -ex;
-          if (nx * dx + ny * dy > -0.01) {
-            frameItems.push({
-              type: 'poly',
-              fill: bodyFill,
-              stroke: outerStrokeCol,
-              strokeWidth: strokeW * 0.85,
-              opacity: fudaOp,
-              pts: [tr(pA[0], pA[1]), tr(pB[0], pB[1]), tr(pB[0] + dx, pB[1] + dy), tr(pA[0] + dx, pA[1] + dy)]
-            });
+      if (nonTextOp > 0.001 && (bodyFill || outerStrokeCol)) {
+        if (depthPx > 0.5) {
+          const dx = depthPx * 0.85;
+          const dy = depthPx * 0.65;
+          for (let i = 0; i < localV.length; i++) {
+            const pA = localV[i];
+            const pB = localV[(i + 1) % localV.length];
+            const ex = pB[0] - pA[0], ey = pB[1] - pA[1];
+            const nx = ey, ny = -ex;
+            if (nx * dx + ny * dy > -0.01) {
+              frameItems.push({
+                type: 'poly',
+                fill: bodyFill,
+                stroke: outerStrokeCol,
+                strokeWidth: strokeW * 0.85,
+                opacity: nonTextOp,
+                pts: [tr(pA[0], pA[1]), tr(pB[0], pB[1]), tr(pB[0] + dx, pB[1] + dy), tr(pA[0] + dx, pA[1] + dy)]
+              });
+            }
           }
+        } else if (!isBgHollow && outerStrokeCol) {
+          const pad = Math.max(3, w * 0.048);
+          frameItems.push({
+            type: 'poly', fill: outerStrokeCol, stroke: null, opacity: nonTextOp,
+            pts: getLocalOuterVertices(-pad).map(([x, y]) => tr(x, y))
+          });
         }
-      } else if (!isBgHollow) {
-        const pad = Math.max(3, w * 0.048);
+
+        // 2. 札の表面塗り＋太枠ストローク
         frameItems.push({
-          type: 'poly', fill: outerStrokeCol, stroke: null, opacity: fudaOp,
-          pts: getLocalOuterVertices(-pad).map(([x, y]) => tr(x, y))
+          type: 'poly',
+          fill: bodyFill,
+          stroke: outerStrokeCol,
+          strokeWidth: strokeW,
+          opacity: nonTextOp,
+          pts: localV.map(([x, y]) => tr(x, y))
         });
       }
-
-      // 2. 札の表面塗り＋太枠ストローク
-      frameItems.push({
-        type: 'poly',
-        fill: bodyFill,
-        stroke: outerStrokeCol,
-        strokeWidth: strokeW,
-        opacity: fudaOp,
-        pts: localV.map(([x, y]) => tr(x, y))
-      });
 
       // 3. 内細枠（立体喧嘩札以外、または二重枠系）
       const inGap = Math.max(5.5, w * 0.105);
       const innerLw = Math.max(1.5, w * 0.024);
 
-      if (fudaId !== 'kifuda_3d_rope' && fudaId !== 'twin_kifuda') {
+      if (nonTextOp > 0.001 && !isFrameHollow && fudaId !== 'kifuda_3d_rope' && fudaId !== 'twin_kifuda') {
         if (fudaId === 'sumiiri') {
           const iw = hw - inGap, ih = hh - inGap;
           const r = Math.min(iw, ih) * 0.26;
@@ -1333,19 +1380,19 @@
           addArc(iw, ih, Math.PI * 1.5, Math.PI);
           addArc(-iw, ih, 0, Math.PI * 1.5);
           addArc(-iw, -ih, Math.PI * 0.5, 0);
-          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts });
+          frameItems.push({ type: 'poly', fill: null, stroke: frameCol, strokeWidth: innerLw, opacity: nonTextOp, pts });
         } else if (fudaId === 'ukibori') {
           const iw = hw - inGap, ih = hh - inGap;
           const c = w * 0.12;
-          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(-iw, -ih, iw * 2, ih * 2) });
-          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(-iw, -ih, c, c) });
-          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(iw - c, -ih, c, c) });
-          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(-iw, ih - c, c, c) });
-          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(iw - c, ih - c, c, c) });
+          frameItems.push({ type: 'poly', fill: null, stroke: frameCol, strokeWidth: innerLw, opacity: nonTextOp, pts: rectToPts(-iw, -ih, iw * 2, ih * 2) });
+          frameItems.push({ type: 'poly', fill: null, stroke: frameCol, strokeWidth: innerLw, opacity: nonTextOp, pts: rectToPts(-iw, -ih, c, c) });
+          frameItems.push({ type: 'poly', fill: null, stroke: frameCol, strokeWidth: innerLw, opacity: nonTextOp, pts: rectToPts(iw - c, -ih, c, c) });
+          frameItems.push({ type: 'poly', fill: null, stroke: frameCol, strokeWidth: innerLw, opacity: nonTextOp, pts: rectToPts(-iw, ih - c, c, c) });
+          frameItems.push({ type: 'poly', fill: null, stroke: frameCol, strokeWidth: innerLw, opacity: nonTextOp, pts: rectToPts(iw - c, ih - c, c, c) });
         } else {
-          frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: getLocalOuterVertices(inGap).map(([x, y]) => tr(x, y)) });
+          frameItems.push({ type: 'poly', fill: null, stroke: frameCol, strokeWidth: innerLw, opacity: nonTextOp, pts: getLocalOuterVertices(inGap).map(([x, y]) => tr(x, y)) });
           if (fudaId === 'kakuji_box') {
-            frameItems.push({ type: 'poly', fill: null, stroke: fgCol, strokeWidth: innerLw, opacity: fudaOp, pts: getLocalOuterVertices(inGap * 1.55).map(([x, y]) => tr(x, y)) });
+            frameItems.push({ type: 'poly', fill: null, stroke: frameCol, strokeWidth: innerLw, opacity: nonTextOp, pts: getLocalOuterVertices(inGap * 1.55).map(([x, y]) => tr(x, y)) });
           }
         }
       }
@@ -1356,10 +1403,12 @@
       let textCenterX = 0;
 
       if (fudaId === 'kifuda' || fudaId === 'kifuda_3d_rope' || fudaId === 'twin_kifuda' || effectiveCord !== 'none') {
-        frameItems.push({
-          type: 'poly', fill: isBgHollow ? null : '#0b1324', stroke: fgCol,
-          strokeWidth: Math.max(1.8, w * 0.028), opacity: fudaOp, pts: circleToPts(0, holeY, holeR, 22)
-        });
+        if (nonTextOp > 0.001 && (!isBgHollow || !isFrameHollow)) {
+          frameItems.push({
+            type: 'poly', fill: isBgHollow ? null : '#0b1324', stroke: outerStrokeCol,
+            strokeWidth: Math.max(1.8, w * 0.028), opacity: nonTextOp, pts: circleToPts(0, holeY, holeR, 22)
+          });
+        }
         textTop = holeY + holeR + h * 0.035;
         textBottom = hh - h * 0.065;
       }
@@ -1367,31 +1416,39 @@
       if (fudaId === 'tenmaru') {
         const maruR = w * 0.235;
         const maruY = -hh + inGap + maruR + h * 0.025;
-        frameItems.push({
-          type: 'poly', fill: isBgHollow ? null : themeBase.accent, stroke: fgCol,
-          strokeWidth: Math.max(1.8, w * 0.026), opacity: fudaOp, pts: circleToPts(0, maruY, maruR, 28)
-        });
+        if (nonTextOp > 0.001 && (!isBgHollow || !isFrameHollow)) {
+          frameItems.push({
+            type: 'poly', fill: isBgHollow ? null : accentCol, stroke: outerStrokeCol,
+            strokeWidth: Math.max(1.8, w * 0.026), opacity: nonTextOp, pts: circleToPts(0, maruY, maruR, 28)
+          });
+        }
         const subChars = Array.from((subTextStr || '祭').slice(0, 2));
         const subSz = maruR * (subChars.length > 1 ? 0.82 : 1.15);
+        const subCharCol = (isBgHollow || nonTextOp <= 0.05) ? fgCol : '#ffffff';
         if (subChars.length === 1) {
-          addCharacterVector(subChars[0], 0, maruY + 1, subSz, '#ffffff', themeBase.accent, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
+          addCharacterVector(subChars[0], 0, maruY + 1, subSz, subCharCol, accentCol, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
         } else {
           subChars.forEach((sc, si) => {
-            addCharacterVector(sc, (si - 0.5) * subSz * 0.85, maruY + 1, subSz * 0.9, '#ffffff', themeBase.accent, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
+            addCharacterVector(sc, (si - 0.5) * subSz * 0.85, maruY + 1, subSz * 0.9, subCharCol, accentCol, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
           });
         }
         const sepY = maruY + maruR + h * 0.028;
-        frameItems.push({ type: 'poly', fill: fgCol, stroke: null, opacity: fudaOp, pts: rectToPts(-hw + inGap * 1.4, sepY - 0.8, (hw - inGap * 1.4) * 2, 1.6) });
+        if (nonTextOp > 0.001 && !isFrameHollow) {
+          frameItems.push({ type: 'poly', fill: frameCol, stroke: null, opacity: nonTextOp, pts: rectToPts(-hw + inGap * 1.4, sepY - 0.8, (hw - inGap * 1.4) * 2, 1.6) });
+        }
         textTop = sepY + h * 0.03;
       } else if (fudaId === 'sashifuda') {
         const sw = w * 0.27, sh = h * 0.36;
         const sx = hw - inGap * 1.35 - sw, sy = -hh + inGap * 1.35;
-        frameItems.push({ type: 'poly', fill: isBgHollow ? null : fgCol, stroke: isBgHollow ? fgCol : null, strokeWidth: innerLw, opacity: fudaOp, pts: rectToPts(sx, sy, sw, sh) });
+        if (nonTextOp > 0.001 && (!isBgHollow || !isFrameHollow)) {
+          frameItems.push({ type: 'poly', fill: isBgHollow ? null : frameCol, stroke: isBgHollow ? outerStrokeCol : null, strokeWidth: innerLw, opacity: nonTextOp, pts: rectToPts(sx, sy, sw, sh) });
+        }
         const sChars = Array.from(subTextStr || '青年会').slice(0, 4);
         const sStep = sh / (sChars.length + 0.5);
         const sSize = Math.min(sw * 0.74, sStep * 0.85);
+        const sCharCol = (isBgHollow || nonTextOp <= 0.05) ? fgCol : bgCol;
         sChars.forEach((c, idx) => {
-          addCharacterVector(c, sx + sw / 2, sy + sStep * (idx + 0.75), sSize, isBgHollow ? fgCol : bgCol, fgCol, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
+          addCharacterVector(c, sx + sw / 2, sy + sStep * (idx + 0.75), sSize, sCharCol, frameCol, false, state.fontKey === 'kakuji' ? 'dela' : state.fontKey);
         });
         textCenterX = -w * 0.09;
       }
@@ -2004,16 +2061,21 @@
       setVal('fudaDepthRange', 'fudaDepthOut', Math.round(state.depth3d), 'mm');
       setVal('fudaAngleRange', 'fudaAngleOut', Math.round(state.fudaAngle), '°');
       setVal('fudaOpacityRange', 'fudaOpacityOut', Math.round(state.fudaOpacity), '%');
+      setVal('nonTextOpacityRange', 'nonTextOpacityOut', Math.round(state.nonTextOpacity ?? 100), '%');
       setVal('cordOpacityRange', 'cordOpacityOut', Math.round(state.cordOpacity), '%');
       setVal('subTagOffXRange', 'subTagOffXOut', Math.round(state.subTagOffX ?? 54), '', true);
       setVal('subTagOffYRange', 'subTagOffYOut', Math.round(state.subTagOffY ?? 6), '', true);
       setVal('subTagAngleRange', 'subTagAngleOut', Math.round(state.subTagAngle ?? 18), '°', true);
       if (document.getElementById('fgColorPicker')) document.getElementById('fgColorPicker').value = state.fgColor;
+      if (document.getElementById('frameColorPicker')) document.getElementById('frameColorPicker').value = state.frameColor || state.fgColor;
       if (document.getElementById('bgColorPicker')) document.getElementById('bgColorPicker').value = state.bgColor;
+      if (document.getElementById('accentColorPicker')) document.getElementById('accentColorPicker').value = state.accentColor || '#c93a40';
       if (document.getElementById('cordFillPicker')) document.getElementById('cordFillPicker').value = state.cordFillColor;
       if (document.getElementById('cordStrokePicker')) document.getElementById('cordStrokePicker').value = state.cordStrokeColor;
       if (document.getElementById('bgTransparentToggle')) document.getElementById('bgTransparentToggle').checked = !!state.bgTransparent;
+      if (document.getElementById('frameTransparentToggle')) document.getElementById('frameTransparentToggle').checked = !!state.frameTransparent;
       if (document.getElementById('cordTransparentToggle')) document.getElementById('cordTransparentToggle').checked = !!state.cordTransparent;
+      if (document.getElementById('cordAllTransparentToggle')) document.getElementById('cordAllTransparentToggle').checked = !!state.cordAllTransparent;
       document.querySelectorAll('#fudaShapeChips button').forEach(b => {
         b.classList.toggle('active', b.dataset.shape === (state.fudaShape || 'auto'));
       });
@@ -2325,34 +2387,117 @@
     // 色変更＆透過コントロール
     document.getElementById('fgColorPicker').addEventListener('input', e => {
       state.fgColor = e.target.value;
-      state.cordStrokeColor = e.target.value;
       renderAll();
     });
+    if (document.getElementById('frameColorPicker')) {
+      document.getElementById('frameColorPicker').addEventListener('input', e => {
+        state.frameColor = e.target.value;
+        state.frameTransparent = false;
+        if ((state.nonTextOpacity ?? 100) === 0) state.nonTextOpacity = 100;
+        renderAll();
+      });
+    }
+    if (document.getElementById('syncFrameToFgBtn')) {
+      document.getElementById('syncFrameToFgBtn').addEventListener('click', () => {
+        state.frameColor = state.fgColor;
+        state.cordStrokeColor = state.fgColor;
+        state.frameTransparent = false;
+        renderAll();
+      });
+    }
     document.getElementById('bgColorPicker').addEventListener('input', e => {
       state.bgColor = e.target.value;
-      state.cordFillColor = e.target.value;
+      state.bgTransparent = false;
+      if ((state.nonTextOpacity ?? 100) === 0) state.nonTextOpacity = 100;
       renderAll();
     });
+    if (document.getElementById('accentColorPicker')) {
+      document.getElementById('accentColorPicker').addEventListener('input', e => {
+        state.accentColor = e.target.value;
+        renderAll();
+      });
+    }
     document.getElementById('cordFillPicker').addEventListener('input', e => {
       state.cordFillColor = e.target.value;
+      state.cordTransparent = false;
+      state.cordAllTransparent = false;
+      if ((state.nonTextOpacity ?? 100) === 0) state.nonTextOpacity = 100;
       renderAll();
     });
     document.getElementById('cordStrokePicker').addEventListener('input', e => {
       state.cordStrokeColor = e.target.value;
+      state.cordAllTransparent = false;
+      if ((state.nonTextOpacity ?? 100) === 0) state.nonTextOpacity = 100;
       renderAll();
     });
     document.getElementById('bgTransparentToggle').addEventListener('change', e => {
       state.bgTransparent = e.target.checked;
       renderAll();
     });
+    if (document.getElementById('frameTransparentToggle')) {
+      document.getElementById('frameTransparentToggle').addEventListener('change', e => {
+        state.frameTransparent = e.target.checked;
+        renderAll();
+      });
+    }
     document.getElementById('cordTransparentToggle').addEventListener('change', e => {
       state.cordTransparent = e.target.checked;
       renderAll();
     });
+    if (document.getElementById('cordAllTransparentToggle')) {
+      document.getElementById('cordAllTransparentToggle').addEventListener('change', e => {
+        state.cordAllTransparent = e.target.checked;
+        renderAll();
+      });
+    }
+    if (document.getElementById('onlyTextTransparentBtn')) {
+      document.getElementById('onlyTextTransparentBtn').addEventListener('click', () => {
+        state.bgTransparent = true;
+        state.frameTransparent = true;
+        state.cordAllTransparent = true;
+        state.outline = false;
+        state.nonTextOpacity = 0;
+        renderAll();
+        showToast('✨ 文字・ロゴ以外（札の背景・枠線・紐）をすべて透過しました！');
+      });
+    }
+    if (document.getElementById('hollowFrameOnlyBtn')) {
+      document.getElementById('hollowFrameOnlyBtn').addEventListener('click', () => {
+        state.bgTransparent = true;
+        state.cordTransparent = true;
+        state.frameTransparent = false;
+        state.cordAllTransparent = false;
+        if ((state.nonTextOpacity ?? 100) < 20) state.nonTextOpacity = 100;
+        renderAll();
+        showToast('✨ 札の背景塗りを透過（中抜き枠）にしました！');
+      });
+    }
+    if (document.getElementById('bgOnlyBtn')) {
+      document.getElementById('bgOnlyBtn').addEventListener('click', () => {
+        state.bgTransparent = false;
+        state.frameTransparent = true;
+        state.cordAllTransparent = true;
+        if ((state.nonTextOpacity ?? 100) < 20) state.nonTextOpacity = 100;
+        renderAll();
+        showToast('✨ 枠線と紐を透過し、札の背景塗りと文字だけにしました！');
+      });
+    }
+    if (document.getElementById('restoreSolidFudaBtn')) {
+      document.getElementById('restoreSolidFudaBtn').addEventListener('click', () => {
+        state.bgTransparent = false;
+        state.frameTransparent = false;
+        state.cordTransparent = false;
+        state.cordAllTransparent = false;
+        state.nonTextOpacity = 100;
+        renderAll();
+        showToast('🔄 札の塗りと枠線・紐をすべて表示に戻しました！');
+      });
+    }
     document.getElementById('swapColorsBtn').addEventListener('click', () => {
       const tmp = state.fgColor;
       state.fgColor = state.bgColor;
       state.bgColor = tmp;
+      state.frameColor = state.fgColor;
       const tmpC = state.cordStrokeColor;
       state.cordStrokeColor = state.cordFillColor;
       state.cordFillColor = tmpC;
@@ -2393,6 +2538,7 @@
     bindSlider('fudaDepthRange', 'fudaDepthOut', 'depth3d', 'mm');
     bindSlider('fudaAngleRange', 'fudaAngleOut', 'fudaAngle', '°');
     bindSlider('fudaOpacityRange', 'fudaOpacityOut', 'fudaOpacity', '%');
+    bindSlider('nonTextOpacityRange', 'nonTextOpacityOut', 'nonTextOpacity', '%');
     bindSlider('cordOpacityRange', 'cordOpacityOut', 'cordOpacity', '%');
     bindSlider('subTagOffXRange', 'subTagOffXOut', 'subTagOffX', '', true);
     bindSlider('subTagOffYRange', 'subTagOffYOut', 'subTagOffY', '', true);
@@ -2437,11 +2583,16 @@
         state.themeKey = b.dataset.theme;
         const th = THEMES[state.themeKey] || THEMES['navy-fill'];
         state.fgColor = th.fg;
+        state.frameColor = th.frameOuter || th.fg;
         state.bgColor = th.bg;
+        state.accentColor = th.accent || '#c93a40';
         state.cordFillColor = th.bg;
         state.cordStrokeColor = th.fg;
         state.bgTransparent = !!th.hollow;
+        state.frameTransparent = false;
         state.cordTransparent = !!th.hollow;
+        state.cordAllTransparent = false;
+        state.nonTextOpacity = 100;
         renderAll();
       });
     });
@@ -2620,8 +2771,8 @@
     function applyMockAiColor(hex) {
       mockAiInternalUpdating = true;
       state[mockAiTarget] = hex;
-      if (mockAiTarget === 'bgColor') state.cordFillColor = hex;
-      if (mockAiTarget === 'fgColor') state.cordStrokeColor = hex;
+      if (mockAiTarget === 'bgColor') state.bgTransparent = false;
+      if (mockAiTarget === 'frameColor') state.frameTransparent = false;
       mockAiInternalUpdating = false;
       renderAll();
     }
@@ -2632,11 +2783,11 @@
         syncMockAiPickerUI();
       });
     });
-    ['fgColorPicker', 'bgColorPicker', 'cordFillPicker', 'cordStrokePicker'].forEach(id => {
+    ['fgColorPicker', 'frameColorPicker', 'bgColorPicker', 'accentColorPicker', 'cordFillPicker', 'cordStrokePicker'].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
         el.addEventListener('click', () => {
-          const map = { fgColorPicker: 'fgColor', bgColorPicker: 'bgColor', cordFillPicker: 'cordFillColor', cordStrokePicker: 'cordStrokeColor' };
+          const map = { fgColorPicker: 'fgColor', frameColorPicker: 'frameColor', bgColorPicker: 'bgColor', accentColorPicker: 'accentColor', cordFillPicker: 'cordFillColor', cordStrokePicker: 'cordStrokeColor' };
           mockAiTarget = map[id] || 'bgColor';
           syncMockAiPickerUI();
         });
