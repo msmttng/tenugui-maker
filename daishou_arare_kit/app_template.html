@@ -3675,6 +3675,19 @@ function renderArbitraryTenuguiCanvas(st, includeOverlays, pxPerMm, patScaleMul)
       x.fill('evenodd');
     }
     drawCustomLogoAndTextMm(x, cfg);
+  } else {
+    // 総柄リピート（ちりばめモード）の場合は、ロゴなし総柄ストリップにも同じリピート文字・ロゴを描画する
+    const hasTextScatter = !!(cfg.showText && cfg.textRepeatMode && cfg.textRepeatMode !== 'none');
+    const hasLogoScatter = !!(cfg.showLogo && cfg.logoRepeatMode && cfg.logoRepeatMode !== 'none');
+    if(hasTextScatter || hasLogoScatter){
+      const scatterCfg = Object.assign({}, cfg, {
+        showCrest: false,
+        showLogo: hasLogoScatter,
+        showText: hasTextScatter,
+        logoSlots: []
+      });
+      drawCustomLogoAndTextMm(x, scatterCfg);
+    }
   }
   return off;
 }
@@ -3945,8 +3958,8 @@ function drawDaboAndCutScene(targetCv, viewMode, exportMode){
     scv.width = stripBodyPlain.width; scv.height = stripBodyPlain.height;
     const sx = scv.getContext('2d'); sx.fillStyle = bodyCfg.bgColor || '#046e7e'; sx.fillRect(0,0,scv.width,scv.height);
     stripSleeveLogo = scv; stripSleevePlain = scv;
-  }else if(sleeveCfg !== bodyCfg || sleeveRotExtra){
-    const rMode = sleeveRotExtra ? '90' : (S.daboStripRot || 'auto');
+  }else if(sleeveCfg !== bodyCfg){
+    const rMode = S.daboStripRot || 'auto';
     stripSleeveLogo = orientStripCanvas(renderArbitraryTenuguiCanvas(sleeveCfg, true, 1.15, patMul), rMode);
     stripSleevePlain = orientStripCanvas(renderArbitraryTenuguiCanvas(sleeveCfg, false, 1.15, patMul), rMode);
   }
@@ -3957,9 +3970,19 @@ function drawDaboAndCutScene(targetCv, viewMode, exportMode){
     const srcCv = st.isSleeve
       ? (st.hasLogo ? stripSleeveLogo : stripSleevePlain)
       : (st.hasLogo ? stripBodyLogo : stripBodyPlain);
+    const plainCv = st.isSleeve ? stripSleevePlain : stripBodyPlain;
     st.canvas = srcCv;
     st.stripIndex = sIdx;
-    st.parts.forEach(p => { partMap[p.id] = { part: p, cv: srcCv, stripTitle: st.title, stripIndex: sIdx }; });
+    st.parts.forEach(p => {
+      partMap[p.id] = {
+        part: p,
+        cv: srcCv,
+        plainCv,
+        rotExtraDeg: (st.isSleeve && sleeveRotExtra) ? 90 : 0,
+        stripTitle: st.title,
+        stripIndex: sIdx
+      };
+    });
   });
 
   // 1. 右側（または全面）：👕 ダボ完成プレビュー（前面・背面・ダボズボン）を先に描画してヒット領域を記録
@@ -4162,12 +4185,13 @@ function drawDaboGarmentsPanel(x, px, py, pw, ph, plan, partMap, bodyCfg, export
     const shirtAreaH = innerH * 0.57;
     const pantsAreaH = innerH * 0.43;
     const colW = pw / 2;
+    const shirtSUnit = Math.min((colW * 0.95) / 350, (shirtAreaH * 0.94) / 265);
     drawSingleDaboShirt(x, px + colW * 0.5, innerY + shirtAreaH * 0.52, colW * 0.95, shirtAreaH * 0.94, 'front', partMap, bodyCfg, exportMode);
     drawSingleDaboShirt(x, px + colW * 1.5, innerY + shirtAreaH * 0.52, colW * 0.95, shirtAreaH * 0.94, 'back', partMap, bodyCfg, exportMode);
 
     const pantsY = innerY + shirtAreaH + pantsAreaH * 0.52;
-    drawSingleDaboPants(x, px + colW * 0.5, pantsY, colW * 0.88, pantsAreaH * 0.92, 'front', partMap, bodyCfg);
-    drawSingleDaboPants(x, px + colW * 1.5, pantsY, colW * 0.88, pantsAreaH * 0.92, 'back', partMap, bodyCfg);
+    drawSingleDaboPants(x, px + colW * 0.5, pantsY, colW * 0.88, pantsAreaH * 0.92, 'front', partMap, bodyCfg, shirtSUnit);
+    drawSingleDaboPants(x, px + colW * 1.5, pantsY, colW * 0.88, pantsAreaH * 0.92, 'back', partMap, bodyCfg, shirtSUnit);
   }else if(stackShirtsVert){
     const rowH = innerH / 2;
     drawSingleDaboShirt(x, px + pw * 0.5, innerY + rowH * 0.51, pw * 0.94, rowH * 0.94, 'front', partMap, bodyCfg, exportMode);
@@ -4180,37 +4204,58 @@ function drawDaboGarmentsPanel(x, px, py, pw, ph, plan, partMap, bodyCfg, export
   x.restore();
 }
 
-// 切り出しパーツ画像を【手ぬぐいの縦横比を一切歪めずに（aspect-preserving cover）】指定領域 [dx, dy, dw, dh] にマッピング描画
-function drawCroppedPiece(x, entry, dx, dy, dw, dh, rotDeg, alignY){
+// 切り出しパーツ画像を【手ぬぐいの実寸スケール（1pxあたりのサイズ）を身頃・袖・ポケット・襟・背面すべてで100%完全統一】して指定領域 [dx, dy, dw, dh] にマッピング描画
+function drawCroppedPiece(x, entry, dx, dy, dw, dh, rotDeg, alignY, fixedScale){
   if(!entry || !entry.cv) return;
-  const cv = entry.cv, p = entry.part;
-  const sx = p.u * cv.width, sy = p.v * cv.height;
-  const sw = Math.max(1, p.uw * cv.width), sh = Math.max(1, p.vh * cv.height);
+  const cv = entry.cv, plainCv = entry.plainCv || cv, p = entry.part;
+  // 身頃基準の統一生地スケール（手ぬぐい長辺90cmの86%＝身頃丈206単位）。部位ごとの拡大率差をゼロにし、「仲羽田」や「あられ」の文字・粒サイズを全パーツで完全一致させる
+  const longPx = Math.max(1, Math.max(cv.width, cv.height));
+  const scale = (fixedScale && fixedScale > 0) ? fixedScale : (206 / (0.86 * longPx));
+  const rw = cv.width * scale;
+  const rh = cv.height * scale;
+  const srcCx = (p.u + p.uw * 0.5) * cv.width;
+  const srcCy = (p.v + p.vh * 0.5) * cv.height;
+  const dstCx = dx + dw * 0.5;
+  const dstCy = dy + dh * 0.5;
+  const totalRot = (rotDeg || 0) + (entry.rotExtraDeg || 0);
 
-  if(rotDeg){
+  if(totalRot){
     x.save();
-    x.translate(dx + dw/2, dy + dh/2);
-    x.rotate((rotDeg * Math.PI) / 180);
-    const diag = Math.hypot(dw, dh);
-    const scale = Math.max(diag / sw, diag / sh);
-    const rw = sw * scale, rh = sh * scale;
-    x.drawImage(cv, sx, sy, sw, sh, -rw/2, -rh/2, rw, rh);
+    x.beginPath();
+    x.rect(dx, dy, dw, dh);
+    x.clip();
+    x.translate(dstCx, dstCy);
+    x.rotate((totalRot * Math.PI) / 180);
+    const halfDiag = Math.hypot(dw, dh) * 0.5 + 2;
+    const ox = -srcCx * scale;
+    const oy = -srcCy * scale;
+    for(let ty = -1; ty <= 1; ty++){
+      for(let tx = -1; tx <= 1; tx++){
+        const tileX = ox + tx * rw, tileY = oy + ty * rh;
+        if(tileX + rw < -halfDiag || tileX > halfDiag || tileY + rh < -halfDiag || tileY > halfDiag) continue;
+        const img = (tx === 0 && ty === 0) ? cv : plainCv;
+        x.drawImage(img, 0, 0, img.width, img.height, tileX, tileY, rw, rh);
+      }
+    }
     x.restore();
     return;
   }
 
-  // アスペクト比を完全維持したままターゲット矩形 (dw, dh) を隙間なくカバーする
-  const scale = Math.max(dw / sw, dh / sh);
-  const rw = sw * scale;
-  const rh = sh * scale;
-  const ox = dx + (dw - rw) * 0.5;
-  const oy = (alignY === 'top') ? dy : (dx !== undefined ? dy + (dh - rh) * 0.5 : dy);
+  const ox = dstCx - srcCx * scale;
+  const oy = (alignY === 'top') ? (dy - p.v * cv.height * scale) : (dstCy - srcCy * scale);
 
   x.save();
   x.beginPath();
   x.rect(dx, dy, dw, dh);
   x.clip();
-  x.drawImage(cv, sx, sy, sw, sh, ox, oy, rw, rh);
+  for(let ty = -1; ty <= 1; ty++){
+    for(let tx = -1; tx <= 1; tx++){
+      const tileX = ox + tx * rw, tileY = oy + ty * rh;
+      if(tileX + rw < dx - 1 || tileX > dx + dw + 1 || tileY + rh < dy - 1 || tileY > dy + dh + 1) continue;
+      const img = (tx === 0 && ty === 0) ? cv : plainCv;
+      x.drawImage(img, 0, 0, img.width, img.height, tileX, tileY, rw, rh);
+    }
+  }
   x.restore();
 }
 
@@ -4812,12 +4857,18 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
       }
     }
     // 左右の袖ヒット領域
+    const slvAngL = (Math.atan2(shldrY - (shldrY + slvDropTop), -(shldrW - 1) - (-(shldrW + slvSpanX))) * 180) / Math.PI;
+    const slvAngR = (Math.atan2((shldrY + slvDropTop) - shldrY, (shldrW + slvSpanX) - (shldrW - 1)) * 180) / Math.PI;
+    const slvMidXL = (-(shldrW - 1) - (shldrW + slvSpanX) - (shldrW - 1) - (shldrW + slvSpanX - (isKoi ? 9 : 5))) * 0.25;
+    const slvMidXR = ((shldrW - 1) + (shldrW + slvSpanX) + (shldrW - 1) + (shldrW + slvSpanX - (isKoi ? 9 : 5))) * 0.25;
+    const slvMidY = (shldrY + (shldrY + slvDropTop) + armPitY + (shldrY + slvDropTop + cuffH)) * 0.25;
     DABO_HIT_ZONES.push({
       priority: 3, side, partId: side === 'front' ? 'sleeveR' : 'sleeveL',
       label: (side === 'front' ? '前面・右袖（向かって左）' : '背面・左袖（向かって左）'),
       entry: leftSideEntry,
       cx, cy: centerStageY, S_unit,
       dx: -(shldrW + slvSpanX), dy: shldrY, dw: slvSpanX, dh: Math.max(armDrop, cuffH + slvDropTop),
+      midX: slvMidXL, midY: slvMidY, rotDeg: slvAngL,
       suggestedTarget: 'sleevesOnly'
     });
     DABO_HIT_ZONES.push({
@@ -4826,6 +4877,7 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
       entry: rightSideEntry,
       cx, cy: centerStageY, S_unit,
       dx: shldrW, dy: shldrY, dw: slvSpanX, dh: Math.max(armDrop, cuffH + slvDropTop),
+      midX: slvMidXR, midY: slvMidY, rotDeg: slvAngR,
       suggestedTarget: 'sleevesOnly'
     });
   }
@@ -4834,7 +4886,7 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
 }
 
 // ダボズボン（上下セット時）の描画
-function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
+function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shirtSUnit){
   const S_unit = Math.min(maxW / 180, maxH / 180);
   x.save();
   x.translate(cx, cy);
@@ -4866,9 +4918,15 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg){
   x.save();
   tracePants();
   x.clip();
+  // ダボシャツと画面上の柄スケールが100%一致するようにズボン用の固定スケールを算出
+  const refEntry = partMap.frontR || partMap.backCenter;
+  const refCv = refEntry && refEntry.cv ? refEntry.cv : null;
+  const longPx = refCv ? Math.max(1, Math.max(refCv.width, refCv.height)) : 1035;
+  const baseShirtScale = 206 / (0.86 * longPx);
+  const pantsFixedScale = shirtSUnit ? (baseShirtScale * (shirtSUnit / S_unit)) : baseShirtScale;
   // 左右の脚に身頃ストリップをマッピング
-  drawCroppedPiece(x, partMap.frontR || partMap.backCenter, -hipW, topY, hipW, botY - topY, 0);
-  drawCroppedPiece(x, partMap.frontL || partMap.backCenter, 0, topY, hipW, botY - topY, 0);
+  drawCroppedPiece(x, partMap.frontR || partMap.backCenter, -hipW, topY, hipW, botY - topY, 0, undefined, pantsFixedScale);
+  drawCroppedPiece(x, partMap.frontL || partMap.backCenter, 0, topY, hipW, botY - topY, 0, undefined, pantsFixedScale);
 
   // ウエストゴム帯＆陰影
   x.fillStyle = 'rgba(0,0,0,0.22)';
@@ -4969,17 +5027,26 @@ function applyReverseDaboPlacementAtStageXY(stageX, stageY, isInitialClick){
   }
   if(!hit || !hit.entry || !hit.entry.cv || !hit.entry.part) return false;
 
-  // drawCroppedPiece のアスペクト比維持マッピング (scale, ox, oy) を正確に逆算
+  // drawCroppedPiece の統一生地スケールマッピング (scale, srcCx, srcCy) を正確に逆算
   const cv = hit.entry.cv, p = hit.entry.part;
-  const sx = p.u * cv.width, sy = p.v * cv.height;
-  const sw = Math.max(1, p.uw * cv.width), sh = Math.max(1, p.vh * cv.height);
-  const scale = Math.max(hit.dw / sw, hit.dh / sh);
-  const rw = sw * scale, rh = sh * scale;
-  const ox = hit.dx + (hit.dw - rw) * 0.5;
-  const oy = hit.dy + (hit.dh - rh) * 0.5;
-
-  const srcPxX = sx + ((localX - ox) / Math.max(1, rw)) * sw;
-  const srcPxY = sy + ((localY - oy) / Math.max(1, rh)) * sh;
+  const longPx = Math.max(1, Math.max(cv.width, cv.height));
+  const scale = 206 / (0.86 * longPx);
+  const srcCx = (p.u + p.uw * 0.5) * cv.width;
+  const srcCy = (p.v + p.vh * 0.5) * cv.height;
+  const dstCx = (hit.midX !== undefined) ? hit.midX : (hit.dx + hit.dw * 0.5);
+  const dstCy = (hit.midY !== undefined) ? hit.midY : (hit.dy + hit.dh * 0.5);
+  let dLocalX = localX - dstCx;
+  let dLocalY = localY - dstCy;
+  const totalRot = (hit.rotDeg || 0) + (hit.entry.rotExtraDeg || 0);
+  if(totalRot){
+    const rad = (-totalRot * Math.PI) / 180;
+    const rx = dLocalX * Math.cos(rad) - dLocalY * Math.sin(rad);
+    const ry = dLocalX * Math.sin(rad) + dLocalY * Math.cos(rad);
+    dLocalX = rx;
+    dLocalY = ry;
+  }
+  const srcPxX = srcCx + dLocalX / scale;
+  const srcPxY = srcCy + dLocalY / scale;
   const u = Math.max(0.02, Math.min(0.98, srcPxX / Math.max(1, cv.width)));
   const v = Math.max(0.02, Math.min(0.98, srcPxY / Math.max(1, cv.height)));
 

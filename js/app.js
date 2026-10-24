@@ -2153,35 +2153,53 @@
     const drawPiece = (pieceId, destX, destY, destW, destH, fallbackStrip, rotDeg = 0) => {
       const entry = cutMap[pieceId];
       const strip = entry ? entry.strip : fallbackStrip;
-      const sx = entry ? entry.cut.x * strip.width : 0;
-      const sy = entry ? entry.cut.y * strip.height : 0;
-      const sw = Math.max(1, entry ? entry.cut.w * strip.width : strip.width);
-      const sh = Math.max(1, entry ? entry.cut.h * strip.height : strip.height);
+      // 身頃・袖・胸ポケ・襟・背面すべてで手ぬぐい1pxあたりの描画スケールを完全統一する
+      const longPx = Math.max(1, Math.max(strip.width, strip.height));
+      const scale = 206 / (0.86 * longPx);
+      const rw = strip.width * scale;
+      const rh = strip.height * scale;
+      const srcCx = (entry ? (entry.cut.x + entry.cut.w * 0.5) : 0.5) * strip.width;
+      const srcCy = (entry ? (entry.cut.y + entry.cut.h * 0.5) : 0.5) * strip.height;
+      const dstCx = destX + destW * 0.5;
+      const dstCy = destY + destH * 0.5;
 
       if (rotDeg) {
         dctx.save();
-        dctx.translate(destX + destW / 2, destY + destH / 2);
+        dctx.beginPath();
+        dctx.rect(destX, destY, destW, destH);
+        dctx.clip();
+        dctx.translate(dstCx, dstCy);
         dctx.rotate(rotDeg * Math.PI / 180);
-        const diag = Math.hypot(destW, destH);
-        const scale = Math.max(diag / sw, diag / sh);
-        const rw = sw * scale, rh = sh * scale;
-        dctx.drawImage(strip, sx, sy, sw, sh, -rw / 2, -rh / 2, rw, rh);
+        const halfDiag = Math.hypot(destW, destH) * 0.5 + 2;
+        const ox = -srcCx * scale;
+        const oy = -srcCy * scale;
+        for (let ty = -1; ty <= 1; ty++) {
+          for (let tx = -1; tx <= 1; tx++) {
+            const tileX = ox + tx * rw, tileY = oy + ty * rh;
+            if (tileX + rw < -halfDiag || tileX > halfDiag || tileY + rh < -halfDiag || tileY > halfDiag) continue;
+            const img = (tx === 0 && ty === 0) ? strip : stripPlain;
+            dctx.drawImage(img, 0, 0, img.width, img.height, tileX, tileY, rw, rh);
+          }
+        }
         dctx.restore();
         return;
       }
 
-      // 手ぬぐいの縦横比を一切歪めずに（aspect-preserving cover）指定領域にマッピング
-      const scale = Math.max(destW / sw, destH / sh);
-      const rw = sw * scale;
-      const rh = sh * scale;
-      const ox = destX + (destW - rw) * 0.5;
-      const oy = destY + (destH - rh) * 0.5;
+      const ox = dstCx - srcCx * scale;
+      const oy = dstCy - srcCy * scale;
 
       dctx.save();
       dctx.beginPath();
       dctx.rect(destX, destY, destW, destH);
       dctx.clip();
-      dctx.drawImage(strip, sx, sy, sw, sh, ox, oy, rw, rh);
+      for (let ty = -1; ty <= 1; ty++) {
+        for (let tx = -1; tx <= 1; tx++) {
+          const tileX = ox + tx * rw, tileY = oy + ty * rh;
+          if (tileX + rw < destX - 1 || tileX > destX + destW + 1 || tileY + rh < destY - 1 || tileY > destY + destH + 1) continue;
+          const img = (tx === 0 && ty === 0) ? strip : stripPlain;
+          dctx.drawImage(img, 0, 0, img.width, img.height, tileX, tileY, rw, rh);
+        }
+      }
       dctx.restore();
     };
 
