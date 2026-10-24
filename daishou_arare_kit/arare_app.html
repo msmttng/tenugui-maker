@@ -495,12 +495,14 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         <!-- 札ロゴの型 ワンクリック切替チップ -->
         <div style="background:#f0f9ff;border:1px solid #7dd3fc;border-radius:6px;padding:6px 7px;display:grid;gap:5px">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px">
-            <b style="font-size:11.5px;color:#0369a1">🏮 札(ふだ)ロゴの形を選ぶ（全8種の祭り札＋文字のみ）</b>
-            <a href="../fuda_mock.html" target="_blank" class="mini-btn" style="background:#0284c7;color:#fff;border-color:#0369a1;text-decoration:none;font-weight:700">🔍 全8種比較モックを開く ↗</a>
+            <b style="font-size:11.5px;color:#0369a1">🏮 札(ふだ)ロゴの形を選ぶ（立体組紐札・二枚重ね札など全10種＋文字のみ）</b>
+            <a href="../fuda_mock.html" target="_blank" class="mini-btn" style="background:#0284c7;color:#fff;border-color:#0369a1;text-decoration:none;font-weight:700">🔍 全10種比較モックを開く ↗</a>
           </div>
           <div class="chips" id="fudaStyleQuickChips">
+            <button type="button" class="mini-btn" data-fstyle="kifuda_3d_rope" style="border-color:#ea580c;color:#9a3412;font-weight:800">⑨ 立体喧嘩札(組紐付)</button>
+            <button type="button" class="mini-btn" data-fstyle="twin_kifuda" style="border-color:#ea580c;color:#9a3412;font-weight:800">⑩ 二枚重ね夫婦木札</button>
             <button type="button" class="mini-btn" data-fstyle="senjafuda">① 江戸千社札</button>
-            <button type="button" class="mini-btn" data-fstyle="kifuda">② 山形木札(喧嘩札)</button>
+            <button type="button" class="mini-btn" data-fstyle="kifuda">② 山形木札(平面)</button>
             <button type="button" class="mini-btn" data-fstyle="tenmaru">③ 頭文字(丸紋)札</button>
             <button type="button" class="mini-btn" data-fstyle="sashifuda">④ 差し札(肩文字)札</button>
             <button type="button" class="mini-btn" data-fstyle="sumikiri">⑤ 隅切り(八角)札</button>
@@ -512,23 +514,51 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         </div>
 
         <div class="save-bar">
-          <input type="text" id="customTextStr" class="save-input" value="仲羽田" placeholder="札の中のメイン文字（例：仲羽田）">
+          <input type="text" id="customTextStr" class="save-input" value="仲羽田" placeholder="札の中のメイン文字（例：仲羽田 / 同志會 / 濱松）">
           <div class="chips">
             <button type="button" class="chip" id="textVertBtn" aria-pressed="true" style="padding:4px 9px">縦書き</button>
             <button type="button" class="chip" id="textHorizBtn" aria-pressed="false" style="padding:4px 9px">横書き</button>
           </div>
         </div>
 
-        <!-- 頭文字(丸紋) / 差し札(肩文字) 用のサブ文字入力欄 -->
-        <div id="fudaSubTextRow" style="display:flex;gap:5px;align-items:center;background:#f8fafc;padding:5px 7px;border:1px solid #cbd5e1;border-radius:6px">
-          <span style="font-size:11px;font-weight:700;color:#334155;white-space:nowrap">頭文字・差し札:</span>
-          <input type="text" id="customTextSubStr" class="save-input" value="青年会" maxlength="6" placeholder="例：祭 / 青年会 / 仲羽" style="padding:4px 7px;font-size:12px">
-          <div class="chips" id="subTextQuickChips">
-            <button type="button" class="mini-btn" data-sub="祭">祭</button>
-            <button type="button" class="mini-btn" data-sub="仲羽">仲羽</button>
-            <button type="button" class="mini-btn" data-sub="青年会">青年会</button>
+        <!-- 🔢 文字数の選択（1文字〜6文字・自動） -->
+        <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;background:#f8fafc;padding:4px 7px;border:1px solid #cbd5e1;border-radius:6px">
+          <span style="font-size:11px;font-weight:700;color:#334155;white-space:nowrap">🔢 札の文字数:</span>
+          <div class="chips" id="fudaCharLimitChips">
+            <button type="button" class="mini-btn" data-climit="0">自動(全文)</button>
+            <button type="button" class="mini-btn" data-climit="1">1字</button>
+            <button type="button" class="mini-btn" data-climit="2">2字</button>
+            <button type="button" class="mini-btn" data-climit="3">3字</button>
+            <button type="button" class="mini-btn" data-climit="4">4字</button>
+            <button type="button" class="mini-btn" data-climit="5">5字</button>
+            <button type="button" class="mini-btn" data-climit="6">6字</button>
           </div>
         </div>
+
+        <!-- 2枚目の札(⑩二枚重ね札) / 頭文字(丸紋) / 差し札(肩文字) 用のサブ文字入力欄 -->
+        <div id="fudaSubTextRow" style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;background:#f8fafc;padding:5px 7px;border:1px solid #cbd5e1;border-radius:6px">
+          <span style="font-size:11px;font-weight:700;color:#334155;white-space:nowrap">2枚目札・頭文字・差札:</span>
+          <input type="text" id="customTextSubStr" class="save-input" value="青年会" maxlength="8" placeholder="例：遠州 / 羽田 / 青年会 / 祭" style="padding:4px 7px;font-size:12px;flex:1;min-width:90px">
+          <div class="chips" id="subTextQuickChips">
+            <button type="button" class="mini-btn" data-sub="遠州">遠州</button>
+            <button type="button" class="mini-btn" data-sub="羽田">羽田</button>
+            <button type="button" class="mini-btn" data-sub="青年会">青年会</button>
+            <button type="button" class="mini-btn" data-sub="祭">祭</button>
+          </div>
+        </div>
+
+        <!-- 🪢 紐（ひも・組紐・根付）の形を選ぶ -->
+        <label class="field"><span>🪢 札の紐（ひも・江戸打組紐・根付）の形</span>
+          <select id="fudaCordStyle" style="font-size:12px;font-weight:700">
+            <option value="auto">自動（⑨立体札は脇組紐、⑩二枚札は上輪結び、他は紐なし）</option>
+            <option value="side_loop">① 脇添えねじり組紐＋房（写真2「同志會」風・木札の脇を巡る組紐）</option>
+            <option value="top_knot">② 上結び輪っか紐＋垂れ紐（写真1「濱松・遠州」風・穴通し輪結び）</option>
+            <option value="double_bow">③ 祭り叶結び（かのうむすび・左右対称の縁起飾り結び）</option>
+            <option value="tassel">④ 房付き根付紐（上輪っか＋下部の飾り房タッセル）</option>
+            <option value="neck_cord">⑤ 首掛け長紐（V字の首下げ祭り紐）</option>
+            <option value="none">⑥ 紐なし（札の枠のみ）</option>
+          </select>
+        </label>
 
         <label class="field"><span>書体（フォント選択・江戸角字／勘亭流／毛筆 等 12種）</span>
           <select id="customTextFont" style="font-size:12.5px;font-weight:600">
@@ -555,7 +585,9 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         <div class="pair">
           <label class="field"><span>札・枠・座布団スタイル</span>
             <select id="customTextFrame" style="font-size:12px;font-weight:700">
-              <optgroup label="🏮 伝統の祭り札ロゴ（全8種）">
+              <optgroup label="🏮 伝統の祭り札ロゴ（全10種）">
+                <option value="kifuda_3d_rope">⑨ 立体喧嘩札（3D木札＋ねじり組紐・写真2風）</option>
+                <option value="twin_kifuda">⑩ 二枚重ね夫婦木札（3D木札2枚重ね＋輪紐・写真1風）</option>
                 <option value="senjafuda">① 江戸千社札（二重太枠＋座布団）</option>
                 <option value="kifuda">② 山形木札・喧嘩札（将棋駒型＋紐穴）</option>
                 <option value="tenmaru">③ 頭文字(丸紋)入り木札（上部丸紋＋親文字）</option>
@@ -593,12 +625,15 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
             <button type="button" class="mini-btn" id="saveFudaToLogoShelfBtn" style="background:#2563eb;color:#fff;border-color:#1d4ed8;font-weight:700" title="この札ロゴをマイ・ロゴ保管棚に登録し、他のロゴと並べて複数配置できるようにします">📌 保管棚に登録</button>
           </div>
         </div>
-        <div class="row"><label for="textSize">文字サイズ</label><input type="range" id="textSize" min="6" max="180" step="1" value="44"><output for="textSize" id="textSize-o"></output></div>
+        <div class="row"><label for="textSize">札・文字の大きさ</label><input type="range" id="textSize" min="6" max="180" step="1" value="44"><output for="textSize" id="textSize-o"></output></div>
+        <div class="row"><label for="fudaWidthPct">札の横幅(細⇄太)</label><input type="range" id="fudaWidthPct" min="65" max="155" step="1" value="100"><output for="fudaWidthPct" id="fudaWidthPct-o"></output></div>
+        <div class="row"><label for="fudaHeightPct">札の縦長(短⇄長)</label><input type="range" id="fudaHeightPct" min="65" max="145" step="1" value="100"><output for="fudaHeightPct" id="fudaHeightPct-o"></output></div>
+        <div class="row"><label for="fudaDepth3d">3D木札の厚み</label><input type="range" id="fudaDepth3d" min="0" max="16" step="0.5" value="0"><output for="fudaDepth3d" id="fudaDepth3d-o"></output></div>
         <div class="row"><label for="textSpacing">文字の間隔(字間)</label><input type="range" id="textSpacing" min="-15" max="60" step="1" value="6"><output for="textSpacing" id="textSpacing-o"></output></div>
         <div class="row"><label for="textOutlineW">フチ・枠の太さ</label><input type="range" id="textOutlineW" min="1" max="25" step="0.5" value="5"><output for="textOutlineW" id="textOutlineW-o"></output></div>
-        <div class="row"><label for="textAngle">文字の回転角度</label><input type="range" id="textAngle" min="-180" max="180" step="1" value="0"><output for="textAngle" id="textAngle-o"></output></div>
-        <div class="row"><label for="textX">文字の横位置</label><input type="range" id="textX" min="5" max="95" step="0.5" value="50"><output for="textX" id="textX-o"></output></div>
-        <div class="row"><label for="textY">文字の縦位置</label><input type="range" id="textY" min="5" max="95" step="0.5" value="75"><output for="textY" id="textY-o"></output></div>
+        <div class="row"><label for="textAngle">札・文字の回転角度</label><input type="range" id="textAngle" min="-180" max="180" step="1" value="0"><output for="textAngle" id="textAngle-o"></output></div>
+        <div class="row"><label for="textX">札・文字の横位置</label><input type="range" id="textX" min="5" max="95" step="0.5" value="50"><output for="textX" id="textX-o"></output></div>
+        <div class="row"><label for="textY">札・文字の縦位置</label><input type="range" id="textY" min="5" max="95" step="0.5" value="75"><output for="textY" id="textY-o"></output></div>
 
         <!-- ✨ 1個の文字（または単語）を多数ちりばめて総柄手ぬぐいを作る機能 -->
         <div style="background:#faf5ff;border:1.5px solid #c084fc;border-radius:6px;padding:7px 8px;display:grid;gap:6px;margin-top:2px">
@@ -902,8 +937,9 @@ const DEF={
   logoRepeatMode:'none', logoRepeatGapX:72, logoRepeatGapY:72, logoRepeatGridAngle:0, logoRepeatAngleVar:0, logoRepeatSizeVar:0,
   logoSlots:[], activeLogoSlot:0,
   // 名入れ文字・札(ふだ)ロゴ・1文字ちりばめ総柄パラメーター
-  showText:false, customTextStr:'仲羽田', customTextSubStr:'青年会', customTextFont:"'Reggae One', sans-serif",
+  showText:false, customTextStr:'仲羽田', customTextSubStr:'遠州', customTextFont:"'Reggae One', sans-serif",
   customTextVert:true, customTextFrame:'senjafuda', customTextColor:'#ffffff', customTextBg:'#046e7e', customTextOutline:true,
+  fudaCharLimit:0, fudaCordStyle:'auto', fudaWidthPct:100, fudaHeightPct:100, fudaDepth3d:0,
   textSize:44, textSpacing:6, textOutlineW:5, textAngle:0, textX:50, textY:75,
   textRepeatMode:'none', textRepeatGapX:68, textRepeatGapY:68, textRepeatGridAngle:0, textRepeatAngleVar:0, textRepeatSizeVar:0,
   showBand:false, bandH:52,
@@ -2367,22 +2403,158 @@ function getKakujiCharRectsMm(ch, size){
   return { rects, boxS: s };
 }
 
-const FUDA_FRAME_SET = new Set(['senjafuda', 'kifuda', 'tenmaru', 'sashifuda', 'sumikiri', 'sumiiri', 'kakuji_box', 'ukibori']);
+const FUDA_FRAME_SET = new Set([
+  'kifuda_3d_rope', 'twin_kifuda',
+  'senjafuda', 'kifuda', 'tenmaru', 'sashifuda', 'sumikiri', 'sumiiri', 'kakuji_box', 'ukibori'
+]);
 
-// 1箇所の「札ロゴ（全8種）または文字」のベクタープリミティブ＆描画データを生成（CanvasとIllustrator出力で100%共通）
+function getEffectiveFudaChars(rawStr, limit, fallback){
+  const arr = Array.from((rawStr || fallback || '仲羽田').trim() || fallback);
+  if(!limit || limit <= 0) return arr;
+  if(arr.length >= limit) return arr.slice(0, limit);
+  const out = arr.slice();
+  const pool = ['祭', '粋', '會', '連', '睦', '若'];
+  while(out.length < limit) out.push(pool[(out.length - 1) % pool.length]);
+  return out;
+}
+
+// 点列に沿って江戸打ねじり組紐（楕円ビーズの連なり）を frameItems に追加するヘルパー
+function addTwistedRopeBeadsMm(frameItems, tr, pathPts, beadR, fillCol, strokeCol, strokeW){
+  if(pathPts.length < 2) return;
+  const dists = [0];
+  for(let i = 1; i < pathPts.length; i++){
+    dists.push(dists[i - 1] + Math.hypot(pathPts[i][0] - pathPts[i - 1][0], pathPts[i][1] - pathPts[i - 1][1]));
+  }
+  const totalLen = dists[dists.length - 1];
+  if(totalLen < 0.5) return;
+  const step = Math.max(0.8, beadR * 1.32);
+  const count = Math.max(2, Math.floor(totalLen / step));
+  for(let k = 0; k <= count; k++){
+    const targetD = (k / count) * totalLen;
+    let idx = 0;
+    while(idx < dists.length - 2 && dists[idx + 1] < targetD) idx++;
+    const segLen = Math.max(0.001, dists[idx + 1] - dists[idx]);
+    const t = (targetD - dists[idx]) / segLen;
+    const bx = pathPts[idx][0] + (pathPts[idx + 1][0] - pathPts[idx][0]) * t;
+    const by = pathPts[idx][1] + (pathPts[idx + 1][1] - pathPts[idx][1]) * t;
+    const tanAng = Math.atan2(pathPts[idx + 1][1] - pathPts[idx][1], pathPts[idx + 1][0] - pathPts[idx][0]) + 0.52;
+    const rx = beadR * 1.15, ry = beadR * 0.72;
+    const c = Math.cos(tanAng), s = Math.sin(tanAng);
+    const pts = [];
+    for(let i = 0; i < 12; i++){
+      const a = (i / 12) * Math.PI * 2;
+      const ex = Math.cos(a) * rx, ey = Math.sin(a) * ry;
+      pts.push(tr(bx + ex * c - ey * s, by + ex * s + ey * c));
+    }
+    frameItems.push({ type: 'poly', fill: fillCol, stroke: strokeCol, strokeWidth: strokeW, pts });
+  }
+}
+
+function buildFudaCordItemsMm(cordStyle, tr, hw, hh, holeX, holeY, beadR, fillCol, strokeCol, strokeW){
+  const backCord = [], frontCord = [];
+  if(!cordStyle || cordStyle === 'none') return { backCord, frontCord };
+  const sampleBez = (p0, p1, p2, p3, n = 16) => {
+    const pts = [];
+    for(let i = 0; i <= n; i++){
+      const t = i / n, mt = 1 - t;
+      pts.push([
+        mt*mt*mt*p0[0] + 3*mt*mt*t*p1[0] + 3*mt*t*t*p2[0] + t*t*t*p3[0],
+        mt*mt*mt*p0[1] + 3*mt*mt*t*p1[1] + 3*mt*t*t*p2[1] + t*t*t*p3[1]
+      ]);
+    }
+    return pts;
+  };
+  if(cordStyle === 'side_loop'){
+    const leftArc = sampleBez([-hw*0.65, -hh*0.55], [-hw*1.48, -hh*0.15], [-hw*1.35, hh*0.35], [hw*0.55, hh*0.45], 20);
+    const tail1 = sampleBez([hw*0.35, hh*0.35], [hw*1.25, hh*0.58], [hw*1.10, hh*0.82], [hw*0.62, hh*0.98], 12);
+    const tail2 = sampleBez([hw*0.52, hh*0.25], [hw*1.42, hh*0.48], [hw*1.38, hh*0.78], [hw*1.08, hh*0.96], 12);
+    const topKnot = sampleBez([holeX, holeY], [holeX + hw*0.22, -hh*1.12], [hw*0.95, -hh*1.05], [hw*0.72, -hh*0.72], 12);
+    addTwistedRopeBeadsMm(backCord, tr, leftArc, beadR, fillCol, strokeCol, strokeW);
+    addTwistedRopeBeadsMm(backCord, tr, tail1, beadR * 0.92, fillCol, strokeCol, strokeW);
+    addTwistedRopeBeadsMm(backCord, tr, tail2, beadR * 0.92, fillCol, strokeCol, strokeW);
+    addTwistedRopeBeadsMm(frontCord, tr, topKnot, beadR * 0.95, fillCol, strokeCol, strokeW);
+  }else if(cordStyle === 'top_knot'){
+    const loopPts = sampleBez([holeX - beadR*0.5, holeY], [holeX - hw*0.52, -hh*1.28], [holeX + hw*0.52, -hh*1.28], [holeX + beadR*0.5, holeY], 16);
+    const side1 = sampleBez([-hw*0.85, -hh*0.22], [-hw*1.32, hh*0.02], [-hw*1.22, hh*0.28], [-hw*1.10, hh*0.48], 10);
+    const side2 = sampleBez([-hw*0.85, -hh*0.05], [-hw*1.18, hh*0.15], [-hw*1.12, hh*0.35], [-hw*0.95, hh*0.55], 10);
+    addTwistedRopeBeadsMm(frontCord, tr, loopPts, beadR * 0.9, fillCol, strokeCol, strokeW);
+    addTwistedRopeBeadsMm(backCord, tr, side1, beadR * 0.82, fillCol, strokeCol, strokeW);
+    addTwistedRopeBeadsMm(backCord, tr, side2, beadR * 0.82, fillCol, strokeCol, strokeW);
+  }else if(cordStyle === 'double_bow'){
+    const leftEar = sampleBez([holeX, holeY - hh*0.12], [-hw*0.95, -hh*1.18], [-hw*1.05, -hh*0.65], [holeX, holeY - hh*0.08], 14);
+    const rightEar = sampleBez([holeX, holeY - hh*0.12], [hw*0.95, -hh*1.18], [hw*1.05, -hh*0.65], [holeX, holeY - hh*0.08], 14);
+    const topRing = sampleBez([holeX - hw*0.22, holeY - hh*0.12], [holeX - hw*0.32, -hh*1.35], [holeX + hw*0.32, -hh*1.35], [holeX + hw*0.22, holeY - hh*0.12], 12);
+    addTwistedRopeBeadsMm(frontCord, tr, leftEar, beadR * 0.88, fillCol, strokeCol, strokeW);
+    addTwistedRopeBeadsMm(frontCord, tr, rightEar, beadR * 0.88, fillCol, strokeCol, strokeW);
+    addTwistedRopeBeadsMm(frontCord, tr, topRing, beadR * 0.88, fillCol, strokeCol, strokeW);
+  }else if(cordStyle === 'tassel'){
+    const topLoop = sampleBez([holeX, holeY], [-hw*0.45, -hh*1.25], [hw*0.45, -hh*1.25], [holeX, holeY], 14);
+    addTwistedRopeBeadsMm(frontCord, tr, topLoop, beadR * 0.9, fillCol, strokeCol, strokeW);
+    const by = hh * 1.04, spread = hw * 0.48;
+    backCord.push({
+      type: 'poly', fill: fillCol, stroke: strokeCol, strokeWidth: strokeW,
+      pts: [tr(-beadR*1.2, hh*0.98), tr(beadR*1.2, hh*0.98), tr(spread, by + hh*0.22), tr(-spread, by + hh*0.22)]
+    });
+  }else if(cordStyle === 'neck_cord'){
+    const leftV = sampleBez([holeX, holeY], [-hw*0.55, -hh*1.05], [-hw*0.95, -hh*1.25], [-hw*1.25, -hh*1.42], 12);
+    const rightV = sampleBez([holeX, holeY], [hw*0.55, -hh*1.05], [hw*0.95, -hh*1.25], [hw*1.25, -hh*1.42], 12);
+    addTwistedRopeBeadsMm(frontCord, tr, leftV, beadR * 0.9, fillCol, strokeCol, strokeW);
+    addTwistedRopeBeadsMm(frontCord, tr, rightV, beadR * 0.9, fillCol, strokeCol, strokeW);
+  }
+  return { backCord, frontCord };
+}
+
+// 1箇所の「札ロゴ（全10種・立体3D木札・二枚重ね木札・組紐6種対応）または文字」のベクタープリミティブ＆描画データを生成
 function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTextVector){
-  const txt = (st.customTextStr || '仲羽田').trim();
-  const subTxt = (st.customTextSubStr || '青年会').trim();
-  const chars = Array.from(txt);
-  const isV = st.customTextVert !== false;
   const frame = st.customTextFrame || 'senjafuda';
+  const mainChars = getEffectiveFudaChars(st.customTextStr, st.fudaCharLimit || 0, '仲羽田');
+  const subTxt = (st.customTextSubStr || '遠州').trim();
+  const isV = st.customTextVert !== false;
   const fg = st.customTextColor || '#ffffff';
   const bg = st.customTextBg || '#046e7e';
   const fontVal = st.customTextFont || "'Reggae One', sans-serif";
   const useOutline = (st.customTextOutline !== false) || frame === 'outline';
   const sp = (st.textSpacing ?? 6) * (fs / 100);
   const ow = (st.textOutlineW ?? 5) * (fs / 44);
+  const wScale = (st.fudaWidthPct || 100) / 100;
+  const hScale = (st.fudaHeightPct || 100) / 100;
 
+  // ⑩ 二枚重ね夫婦木札（濱松・遠州風）の場合は、奥の札と手前の札の2枚を扇状に重ねて合成する
+  if(frame === 'twin_kifuda'){
+    const subChars = getEffectiveFudaChars(subTxt, 0, '遠州');
+    const cordChoice = (!st.fudaCordStyle || st.fudaCordStyle === 'auto') ? 'top_knot' : st.fudaCordStyle;
+    const rad0 = (deg * Math.PI) / 180;
+    const cos0 = Math.cos(rad0), sin0 = Math.sin(rad0);
+    const rotOff = (ox, oy) => [cx + ox * cos0 - oy * sin0, cy + ox * sin0 + oy * cos0];
+
+    const [bx, by] = rotOff(fs * 0.44 * wScale, -fs * 0.08 * hScale);
+    const [fx, fy] = rotOff(-fs * 0.30 * wScale, fs * 0.08 * hScale);
+
+    const stBack = Object.assign({}, st, {
+      customTextFrame: 'kifuda_3d_rope',
+      customTextStr: subChars.join(''),
+      fudaCharLimit: 0,
+      fudaCordStyle: cordChoice,
+      fudaDepth3d: Math.max(4.5, st.fudaDepth3d || 5.5)
+    });
+    const stFront = Object.assign({}, st, {
+      customTextFrame: 'kifuda_3d_rope',
+      customTextStr: mainChars.join(''),
+      fudaCharLimit: 0,
+      fudaCordStyle: cordChoice,
+      fudaDepth3d: Math.max(4.5, st.fudaDepth3d || 5.5)
+    });
+
+    const pBack = buildSingleFudaOrTextPrimitivesMm(bx, by, deg - 32, fs * 0.88, stBack, includeTracedTextVector);
+    const pFront = buildSingleFudaOrTextPrimitivesMm(fx, fy, deg - 14, fs * 0.90, stFront, includeTracedTextVector);
+    return {
+      frameItems: [...pBack.frameItems, ...pFront.frameItems],
+      textItems: [...pBack.textItems, ...pFront.textItems],
+      charDrawList: [...pBack.charDrawList, ...pFront.charDrawList]
+    };
+  }
+
+  const chars = mainChars;
   const rad = (deg * Math.PI) / 180;
   const cos = Math.cos(rad), sin = Math.sin(rad);
   const tr = (lx, ly) => [cx + lx * cos - ly * sin, cy + lx * sin + ly * cos];
@@ -2398,10 +2570,11 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
 
   const frameItems = [];
   const textItems = [];
-  const charDrawList = []; // Canvas直接描画用 [{ ch, lx, ly, sz, fgCol, outCol, useOut, fontVal, rot90 }]
+  const charDrawList = []; // Canvas直接描画用 [{ ch, gx, gy, deg, sz, fgCol, outCol, useOut, fontVal, rot90 }]
 
   const addCharItem = (ch, lx, ly, sz, fgCol, outCol, useOut, fVal, rot90) => {
-    charDrawList.push({ ch, lx, ly, sz, fgCol, outCol, useOut, fontVal: fVal, rot90: !!rot90 });
+    const [gx, gy] = tr(lx, ly);
+    charDrawList.push({ ch, lx, ly, gx, gy, deg, sz, fgCol, outCol, useOut, fontVal: fVal, rot90: !!rot90 });
     if(!includeTracedTextVector) return;
     if(fVal === 'kakuji'){
       const kData = getKakujiCharRectsMm(ch, sz);
@@ -2445,26 +2618,37 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
   };
 
   if(FUDA_FRAME_SET.has(frame)){
-    // 伝統8種の札ロゴレイアウト
+    // 伝統10種の札ロゴレイアウト（札のサイズ・幅比率・縦長比率・3D厚み・組紐対応）
     const nChars = Math.max(1, chars.length);
-    const extraTopRatio = (frame === 'kifuda') ? 0.42 : (frame === 'tenmaru' ? 0.95 : (frame === 'sashifuda' ? 0.18 : 0.10));
-    const w = isV ? (fs * (frame === 'sashifuda' ? 1.82 : 1.56)) : (nChars * (fs + sp) + fs * 0.95);
-    const h = isV ? (nChars * (fs + sp * 0.8) + fs * (0.72 + extraTopRatio)) : (fs * 1.62);
+    const rawCord = st.fudaCordStyle || 'auto';
+    const effCord = (rawCord === 'auto') ? (frame === 'kifuda_3d_rope' ? 'side_loop' : 'none') : rawCord;
+    const hasTopHole = (frame === 'kifuda' || frame === 'kifuda_3d_rope' || effCord !== 'none');
+    const extraTopRatio = hasTopHole ? 0.44 : (frame === 'tenmaru' ? 0.95 : (frame === 'sashifuda' ? 0.18 : 0.10));
+    const baseW = isV ? (fs * (frame === 'sashifuda' ? 1.82 : 1.56)) : (nChars * (fs + sp) + fs * 0.95);
+    const baseH = isV ? (Math.max(2.2, nChars) * (fs + sp * 0.8) + fs * (0.72 + extraTopRatio)) : (fs * 1.62);
+    const w = baseW * wScale;
+    const h = baseH * hScale;
     const hw = w / 2, hh = h / 2;
     const pad = Math.max(1.2, w * 0.048);
 
-    const getOuterPolyPts = (inset = 0) => {
+    const getLocalOuterVertices = (inset = 0) => {
       const iw = hw - inset, ih = hh - inset;
+      if(frame === 'kifuda_3d_rope'){
+        // 写真1・写真2のような上部台形削ぎ（6角形）の喧嘩札
+        const topFlat = iw * 0.36;
+        const shoulderY = -ih + (ih * 2) * 0.125;
+        return [[-topFlat, -ih], [topFlat, -ih], [iw, shoulderY], [iw, ih], [-iw, ih], [-iw, shoulderY]];
+      }
       if(frame === 'kifuda'){
         const shoulderY = -ih + (ih * 2) * 0.13;
-        return [[0, -ih], [iw, shoulderY], [iw, ih], [-iw, ih], [-iw, shoulderY]].map(([x, y]) => tr(x, y));
+        return [[0, -ih], [iw, shoulderY], [iw, ih], [-iw, ih], [-iw, shoulderY]];
       }
       if(frame === 'sumikiri'){
         const c = Math.min(iw, ih) * 0.28;
         return [
           [-iw + c, -ih], [iw - c, -ih], [iw, -ih + c], [iw, ih - c],
           [iw - c, ih], [-iw + c, ih], [-iw, ih - c], [-iw, -ih + c]
-        ].map(([x, y]) => tr(x, y));
+        ];
       }
       if(frame === 'tenmaru'){
         const r = Math.min(iw, ih, w * 0.08);
@@ -2478,69 +2662,97 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
         for(const [ccx, ccy, a0, a1] of corners){
           for(let s = 0; s <= 3; s++){
             const a = a0 + (a1 - a0) * (s / 3);
-            pts.push(tr(ccx + Math.cos(a) * r, ccy + Math.sin(a) * r));
+            pts.push([ccx + Math.cos(a) * r, ccy + Math.sin(a) * r]);
           }
         }
         return pts;
       }
-      return [[-iw, -ih], [iw, -ih], [iw, ih], [-iw, ih]].map(([x, y]) => tr(x, y));
+      return [[-iw, -ih], [iw, -ih], [iw, ih], [-iw, ih]];
     };
 
-    // 1. 外座布団塗り（文字・枠色で外フチを作る）
-    frameItems.push({ type: 'poly', fill: fg, stroke: null, pts: getOuterPolyPts(-pad) });
-    // 2. 札本体塗り
-    frameItems.push({ type: 'poly', fill: bg, stroke: null, pts: getOuterPolyPts(0) });
-    // 3. 外太枠ストローク
-    const outerLw = Math.max(1.2, (ow * 0.52) || (w * 0.06));
-    frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: outerLw, pts: getOuterPolyPts(0) });
+    const getOuterPolyPts = (inset = 0) => getLocalOuterVertices(inset).map(([x, y]) => tr(x, y));
 
-    // 4. 内細枠
+    const outerLw = Math.max(1.2, (ow * 0.52) || (w * 0.055));
+    const holeY = -hh + h * 0.112;
+    const holeR = Math.max(1.5, w * 0.068);
+    const beadR = Math.max(1.4, w * 0.058);
+
+    // 0. 組紐（背後レイヤー＆手前レイヤー）を生成
+    const { backCord, frontCord } = buildFudaCordItemsMm(effCord, tr, hw, hh, 0, holeY, beadR, bg, fg, Math.max(0.9, outerLw * 0.72));
+    frameItems.push(...backCord);
+
+    // 1. 3D木札の厚み側面 または 2D外座布団
+    const depthMm = (frame === 'kifuda_3d_rope') ? Math.max(4.5, st.fudaDepth3d || 5.5) : (st.fudaDepth3d || 0);
+    const localV = getLocalOuterVertices(0);
+    if(depthMm > 0.2){
+      const dx = depthMm * 0.85, dy = depthMm * 0.65;
+      for(let i = 0; i < localV.length; i++){
+        const pA = localV[i], pB = localV[(i + 1) % localV.length];
+        const ex = pB[0] - pA[0], ey = pB[1] - pA[1];
+        const nx = ey, ny = -ex;
+        if(nx * dx + ny * dy > -0.01){
+          frameItems.push({
+            type: 'poly', fill: bg, stroke: fg, strokeWidth: outerLw * 0.85,
+            pts: [tr(pA[0], pA[1]), tr(pB[0], pB[1]), tr(pB[0] + dx, pB[1] + dy), tr(pA[0] + dx, pA[1] + dy)]
+          });
+        }
+      }
+    }else{
+      frameItems.push({ type: 'poly', fill: fg, stroke: null, pts: getOuterPolyPts(-pad) });
+    }
+
+    // 2. 札本体塗り＋外太枠ストローク
+    frameItems.push({ type: 'poly', fill: bg, stroke: fg, strokeWidth: outerLw, pts: getOuterPolyPts(0) });
+
+    // 3. 内細枠（立体喧嘩札は写真見本に合わせてすっきり一重太枠、他は内枠あり）
     const inGap = Math.max(2.2, w * 0.105);
     const innerLw = Math.max(0.6, outerLw * 0.38);
-    if(frame === 'sumiiri'){
-      const iw = hw - inGap, ih = hh - inGap;
-      const r = Math.min(iw, ih) * 0.26;
-      const pts = [];
-      const addArc = (acx, acy, aStart, aEnd) => {
-        for(let s = 0; s <= 6; s++){
-          const a = aStart + (aEnd - aStart) * (s / 6);
-          pts.push(tr(acx + Math.cos(a) * r, acy + Math.sin(a) * r));
+    if(frame !== 'kifuda_3d_rope'){
+      if(frame === 'sumiiri'){
+        const iw = hw - inGap, ih = hh - inGap;
+        const r = Math.min(iw, ih) * 0.26;
+        const pts = [];
+        const addArc = (acx, acy, aStart, aEnd) => {
+          for(let s = 0; s <= 6; s++){
+            const a = aStart + (aEnd - aStart) * (s / 6);
+            pts.push(tr(acx + Math.cos(a) * r, acy + Math.sin(a) * r));
+          }
+        };
+        addArc(iw, -ih, Math.PI, Math.PI * 0.5);
+        addArc(iw, ih, Math.PI * 1.5, Math.PI);
+        addArc(-iw, ih, 0, Math.PI * 1.5);
+        addArc(-iw, -ih, Math.PI * 0.5, 0);
+        frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts });
+      }else if(frame === 'ukibori'){
+        const iw = hw - inGap, ih = hh - inGap;
+        const c = w * 0.12;
+        frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: rectToPts(-iw, -ih, iw * 2, ih * 2) });
+        frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: rectToPts(-iw, -ih, c, c) });
+        frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: rectToPts(iw - c, -ih, c, c) });
+        frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: rectToPts(-iw, ih - c, c, c) });
+        frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: rectToPts(iw - c, ih - c, c, c) });
+      }else{
+        frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: getOuterPolyPts(inGap) });
+        if(frame === 'kakuji_box'){
+          frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: getOuterPolyPts(inGap * 1.55) });
         }
-      };
-      addArc(iw, -ih, Math.PI, Math.PI * 0.5);
-      addArc(iw, ih, Math.PI * 1.5, Math.PI);
-      addArc(-iw, ih, 0, Math.PI * 1.5);
-      addArc(-iw, -ih, Math.PI * 0.5, 0);
-      frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts });
-    }else if(frame === 'ukibori'){
-      const iw = hw - inGap, ih = hh - inGap;
-      const c = w * 0.12;
-      frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: rectToPts(-iw, -ih, iw * 2, ih * 2) });
-      frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: rectToPts(-iw, -ih, c, c) });
-      frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: rectToPts(iw - c, -ih, c, c) });
-      frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: rectToPts(-iw, ih - c, c, c) });
-      frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: rectToPts(iw - c, ih - c, c, c) });
-    }else{
-      frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: getOuterPolyPts(inGap) });
-      if(frame === 'kakuji_box'){
-        frameItems.push({ type: 'poly', fill: null, stroke: fg, strokeWidth: innerLw, pts: getOuterPolyPts(inGap * 1.55) });
       }
     }
 
-    // 5. 札固有の装飾＆頭文字・差し札
+    // 4. 札固有の装飾＆通し穴＆頭文字・差し札
     let textTop = -hh + inGap * 1.75;
-    let textBottom = hh - inGap * 1.55;
+    let textBottom = hh - inGap * 1.45;
     let textCenterX = 0;
 
-    if(frame === 'kifuda' && isV){
-      const holeY = -hh + h * 0.105;
-      const holeR = Math.max(1.5, w * 0.068);
+    if(hasTopHole && isV){
       frameItems.push({
         type: 'poly', fill: st.bgColor || '#046e7e', stroke: fg,
-        strokeWidth: Math.max(0.8, innerLw), pts: circleToPts(0, holeY, holeR, 20)
+        strokeWidth: Math.max(0.8, innerLw * 1.15), pts: circleToPts(0, holeY, holeR, 20)
       });
-      textTop = holeY + holeR + h * 0.04;
-    }else if(frame === 'tenmaru' && isV){
+      textTop = holeY + holeR + h * 0.038;
+      textBottom = hh - h * 0.068;
+    }
+    if(frame === 'tenmaru' && isV){
       const maruR = w * 0.24;
       const maruY = -hh + inGap + maruR + h * 0.025;
       frameItems.push({
@@ -2573,11 +2785,15 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
       textCenterX = -w * 0.09;
     }
 
+    // 5. 手前に重なる組紐（穴から出る輪結び等）を追加
+    frameItems.push(...frontCord);
+
     // 6. 親文字配置
     if(isV){
       const availH = textBottom - textTop;
       const step = availH / Math.max(1, chars.length);
-      const charSize = Math.min(w * (frame === 'sashifuda' ? 0.45 : 0.55), step * 0.88);
+      const wFactor = (frame === 'kifuda_3d_rope') ? 0.68 : (frame === 'sashifuda' ? 0.45 : 0.56);
+      const charSize = Math.min(w * wFactor, step * 0.90);
       chars.forEach((ch, idx) => {
         const cyChar = textTop + step * (idx + 0.5);
         const cxChar = (frame === 'sashifuda' && idx * step < h * 0.34) ? textCenterX : 0;
@@ -2776,16 +2992,21 @@ function drawCustomLogoAndTextMm(x, cfg){
       }
       x.restore();
 
-      // 札の中の文字（江戸角字またはフォント文字）を描画
+      // 札の中の文字（江戸角字またはフォント文字・二枚重ね札の個別角度にも対応）を描画
       x.save();
-      x.translate(pt.x, pt.y);
-      x.rotate((deg * Math.PI) / 180);
       x.textAlign = 'center';
       x.textBaseline = 'middle';
 
       for(const cd of charDrawList){
         x.save();
-        x.translate(cd.lx, cd.ly);
+        if(cd.gx !== undefined && cd.gy !== undefined){
+          x.translate(cd.gx, cd.gy);
+          x.rotate(((cd.deg || 0) * Math.PI) / 180);
+        }else{
+          x.translate(pt.x, pt.y);
+          x.rotate((deg * Math.PI) / 180);
+          x.translate(cd.lx, cd.ly);
+        }
         if(cd.rot90) x.rotate(Math.PI / 2);
         if(cd.fontVal === 'kakuji'){
           const kData = getKakujiCharRectsMm(cd.ch, cd.sz);
@@ -5339,15 +5560,16 @@ alert("完了：手ぬぐいデータ (仲羽田 " + POLYS.length + " パス / �
 
 // 🏷️ 現在作成中の「札ロゴ単体」を Illustrator (.ai / .svg) で直接書き出す機能
 function exportSingleFudaVector(format){
-  const Wf = 120, Hf = 260;
+  const isWide = (S.customTextFrame === 'twin_kifuda' || S.customTextFrame === 'kifuda_3d_rope');
+  const Wf = isWide ? 200 : 140, Hf = 290;
   const cx = Wf / 2, cy = Hf / 2;
-  const fs = 54;
+  const fs = 50;
   const { frameItems, textItems } = buildSingleFudaOrTextPrimitivesMm(cx, cy, 0, fs, S, true);
   const safeTxt = ((S.customTextStr || '仲羽田') + '_' + (S.customTextFrame || 'senjafuda')).replace(/[\\/:*?"<>|\s]+/g, '_');
 
   if(format === 'svg'){
     let s = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="${Wf}mm" height="${Hf}mm" viewBox="0 0 ${Wf} ${Hf}">\n`;
-    if(frameItems.length > 0) s += `<g id="Fuda_Frame_Vector">\n` + renderVectorItemsToSvgPaths(frameItems) + `</g>\n`;
+    if(frameItems.length > 0) s += `<g id="Fuda_Frame_And_Cord_Vector">\n` + renderVectorItemsToSvgPaths(frameItems) + `</g>\n`;
     if(textItems.length > 0) s += `<g id="Fuda_Text_Outlines_Vector">\n` + renderVectorItemsToSvgPaths(textItems) + `</g>\n`;
     s += `</svg>\n`;
     save(`札ロゴ_${safeTxt}.svg`, new Blob([s], {type:'image/svg+xml'}), `札ロゴ_${safeTxt}.svg`);
@@ -5368,7 +5590,7 @@ function exportSingleFudaVector(format){
     '%%EndComments','%%BeginProlog','%%EndProlog','%%BeginSetup','%%EndSetup');
 
   if(frameItems.length > 0){
-    L.push('%AI5_BeginLayer','1 1 1 1 0 0 1 240 130 50 Lb','(Fuda_Frame_Vector) Ln','0 A','0 O','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
+    L.push('%AI5_BeginLayer','1 1 1 1 0 0 1 240 130 50 Lb','(Fuda_Frame_And_Cord_Vector) Ln','0 A','0 O','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
     writeVectorItemsToAiLines(L, frameItems, P, MM);
     L.push('LB','%AI5_EndLayer--');
   }
@@ -5384,14 +5606,14 @@ function exportSingleFudaVector(format){
 
 // 作成した札ロゴを「マイ・ロゴ保管棚」へ画像登録して複数配置やちりばめに使えるようにする
 function saveCurrentFudaToLogoShelf(){
-  const Wf = 360, Hf = 760;
+  const Wf = 540, Hf = 760;
   const off = document.createElement('canvas');
   off.width = Wf; off.height = Hf;
   const x = off.getContext('2d');
   const tempCfg = Object.assign({}, S, {
-    W: 120, H: 253,
+    W: 180, H: 253,
     showLogo: false, showText: true,
-    textX: 50, textY: 50, textAngle: 0, textSize: 54, textRepeatMode: 'none'
+    textX: 50, textY: 50, textAngle: 0, textSize: 50, textRepeatMode: 'none'
   });
   x.save();
   x.scale(3, 3);
@@ -5790,7 +6012,8 @@ const ranges={
   logoThreshold:v=>v+'', logoSoftness:v=>v+'', logoDilate:v=>(v>0?'+':'')+v+' px', logoContrast:v=>(v>0?'+':'')+v, logoOpacity:v=>v+'%', logoOutlineMm:v=>v+' mm',
   logoSize:v=>v+' mm', logoAngle:v=>(v>0?'+':'')+v+'°', logoX:v=>v+'%', logoY:v=>v+'%',
   logoRepeatGapX:v=>v+' mm', logoRepeatGapY:v=>v+' mm', logoRepeatGridAngle:v=>(v>0?'+':'')+v+'°', logoRepeatAngleVar:v=>v+'°', logoRepeatSizeVar:v=>v+'%',
-  textSize:v=>v+' mm', textSpacing:v=>(v>0?'+':'')+v+'%', textOutlineW:v=>v+'', textAngle:v=>(v>0?'+':'')+v+'°', textX:v=>v+'%', textY:v=>v+'%',
+  textSize:v=>v+' mm', fudaWidthPct:v=>v+'%', fudaHeightPct:v=>v+'%', fudaDepth3d:v=>v+' mm',
+  textSpacing:v=>(v>0?'+':'')+v+'%', textOutlineW:v=>v+'', textAngle:v=>(v>0?'+':'')+v+'°', textX:v=>v+'%', textY:v=>v+'%',
   textRepeatGapX:v=>v+' mm', textRepeatGapY:v=>v+' mm', textRepeatGridAngle:v=>(v>0?'+':'')+v+'°', textRepeatAngleVar:v=>v+'°', textRepeatSizeVar:v=>v+'%',
   daboShiftY:v=>(v>0?'+':'')+v+'%', daboShiftX:v=>(v>0?'+':'')+v+'%', daboSleeveShiftY:v=>(v>0?'+':'')+v+'%', daboPatScale:v=>v+'%',
   bandH:v=>v+' mm',
@@ -5827,16 +6050,20 @@ function syncUI(){
   if($('logoRepeatMode')) $('logoRepeatMode').value=S.logoRepeatMode||'none';
   if($('logoRepeatParamsBox')) $('logoRepeatParamsBox').hidden=(!S.logoRepeatMode || S.logoRepeatMode==='none');
   if($('customTextStr') && document.activeElement!==$('customTextStr')) $('customTextStr').value=S.customTextStr||'仲羽田';
-  if($('customTextSubStr') && document.activeElement!==$('customTextSubStr')) $('customTextSubStr').value=S.customTextSubStr||'青年会';
+  if($('customTextSubStr') && document.activeElement!==$('customTextSubStr')) $('customTextSubStr').value=S.customTextSubStr||'遠州';
   if($('customTextFont')) $('customTextFont').value=S.customTextFont||"'Yuji Syuku', serif";
   if($('customTextFrame')) $('customTextFrame').value=S.customTextFrame||'senjafuda';
+  if($('fudaCordStyle')) $('fudaCordStyle').value=S.fudaCordStyle||'auto';
   if($('customTextOutline')) $('customTextOutline').checked=(S.customTextOutline!==false);
   if($('customTextColor')) $('customTextColor').value=S.customTextColor||'#046e7e';
   if($('customTextBg')) $('customTextBg').value=S.customTextBg||'#ffffff';
   if($('textVertBtn')) $('textVertBtn').setAttribute('aria-pressed',(S.customTextVert!==false)+'');
   if($('textHorizBtn')) $('textHorizBtn').setAttribute('aria-pressed',(S.customTextVert===false)+'');
-  for(const b of document.querySelectorAll('#fudaStyleQuickChips button[data-fuda]')){
-    b.setAttribute('aria-pressed', (b.dataset.fuda === (S.customTextFrame || 'senjafuda')) + '');
+  for(const b of document.querySelectorAll('#fudaStyleQuickChips button[data-fstyle]')){
+    b.setAttribute('aria-pressed', (b.dataset.fstyle === (S.customTextFrame || 'senjafuda')) + '');
+  }
+  for(const b of document.querySelectorAll('#fudaCharLimitChips button[data-climit]')){
+    b.setAttribute('aria-pressed', (parseInt(b.dataset.climit,10) === (S.fudaCharLimit || 0)) + '');
   }
   if($('textRepeatMode')) $('textRepeatMode').value=S.textRepeatMode||'none';
   if($('textRepeatParamsBox')) $('textRepeatParamsBox').hidden=(!S.textRepeatMode || S.textRepeatMode==='none');
@@ -5894,7 +6121,7 @@ const NO_LAYOUT_KEYS = new Set([
   'logoThreshold','logoSoftness','logoDilate','logoContrast','logoOpacity','logoOutlineMm',
   'logoSize','logoAngle','logoX','logoY',
   'logoRepeatGapX','logoRepeatGapY','logoRepeatGridAngle','logoRepeatAngleVar','logoRepeatSizeVar',
-  'textSize','textSpacing','textOutlineW','textAngle','textX','textY',
+  'textSize','fudaWidthPct','fudaHeightPct','fudaDepth3d','textSpacing','textOutlineW','textAngle','textX','textY',
   'textRepeatGapX','textRepeatGapY','textRepeatGridAngle','textRepeatAngleVar','textRepeatSizeVar',
   'daboShiftY','daboShiftX','daboSleeveShiftY','daboPatScale'
 ]);
@@ -6256,14 +6483,33 @@ $('logoPadColor').addEventListener('input',e=>{S.logoPadColor=e.target.value; up
 $('logoPadMatchBgBtn').addEventListener('click',()=>{S.logoPadColor=S.bgColor; if(S.logoPadMode==='none') S.logoPadMode='circle'; update(false);});
 if($('logoPadWhiteBtn')) $('logoPadWhiteBtn').addEventListener('click',()=>{S.logoPadColor='#ffffff'; if(S.logoPadMode==='none') S.logoPadMode='circle'; update(false);});
 
-// 名入れ文字・フォント・8種札ロゴ・1文字ちりばめ総柄・単体ベクター書き出しイベント
-document.querySelectorAll('#fudaStyleQuickChips button[data-fuda]').forEach(b=>b.addEventListener('click',()=>{
-  S.customTextFrame = b.dataset.fuda;
+// 名入れ文字・フォント・全10種札ロゴ・組紐・文字数制限・1文字ちりばめ総柄・単体ベクター書き出しイベント
+document.querySelectorAll('#fudaStyleQuickChips button[data-fstyle]').forEach(b=>b.addEventListener('click',()=>{
+  S.customTextFrame = b.dataset.fstyle;
+  if(S.customTextFrame === 'kifuda_3d_rope'){
+    if(!S.fudaDepth3d) S.fudaDepth3d = 5.5;
+    if(!S.fudaCordStyle || S.fudaCordStyle === 'none') S.fudaCordStyle = 'side_loop';
+  }else if(S.customTextFrame === 'twin_kifuda'){
+    if(!S.fudaDepth3d) S.fudaDepth3d = 5.5;
+    if(!S.fudaCordStyle || S.fudaCordStyle === 'none') S.fudaCordStyle = 'top_knot';
+  }
   S.showText = true;
   update(false);
 }));
+document.querySelectorAll('#fudaCharLimitChips button[data-climit]').forEach(b=>b.addEventListener('click',()=>{
+  S.fudaCharLimit = parseInt(b.dataset.climit, 10) || 0;
+  S.showText = true;
+  update(false);
+}));
+if($('fudaCordStyle')){
+  $('fudaCordStyle').addEventListener('change',e=>{
+    S.fudaCordStyle = e.target.value;
+    S.showText = true;
+    update(false);
+  });
+}
 document.querySelectorAll('#textPhraseChips button[data-txt]').forEach(b=>b.addEventListener('click',()=>{
-  S.customTextStr=b.dataset.txt; S.showText=true; update(false);
+  S.customTextStr=b.dataset.txt; S.fudaCharLimit=0; S.showText=true; update(false);
 }));
 $('customTextStr').addEventListener('input',e=>{S.customTextStr=e.target.value; update(false);});
 if($('customTextSubStr')){
@@ -6271,8 +6517,8 @@ if($('customTextSubStr')){
 }
 document.querySelectorAll('#subTextQuickChips button[data-sub]').forEach(b=>b.addEventListener('click',()=>{
   S.customTextSubStr = b.dataset.sub;
-  if(S.customTextFrame !== 'kashirafuda' && S.customTextFrame !== 'sashifuda'){
-    S.customTextFrame = (b.dataset.sub.length >= 2) ? 'sashifuda' : 'kashirafuda';
+  if(S.customTextFrame !== 'tenmaru' && S.customTextFrame !== 'sashifuda' && S.customTextFrame !== 'twin_kifuda'){
+    S.customTextFrame = (b.dataset.sub === '遠州' || b.dataset.sub === '羽田') ? 'twin_kifuda' : ((b.dataset.sub.length >= 2) ? 'sashifuda' : 'tenmaru');
   }
   S.showText = true;
   update(false);
