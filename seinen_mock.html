@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>「仲羽田青年」SVG 新テンプレート6案 比較モック＆カスタムスタジオ</title>
+  <title>「仲羽田青年会」6文字SVG 元柄完全再現＆新テンプレート＆タオル比較スタジオ</title>
   <style>
     :root {
       --bg: #0b1120;
@@ -339,8 +339,8 @@
 
   <header>
     <div>
-      <h1>🏮 「仲羽田青年」角字SVG 新テンプレート 6案 比較モック</h1>
-      <p>ご提供いただいた5文字連結SVG（仲・羽・田・青・年）を元にした6種類の新しい手ぬぐい＆ダボシャツテンプレート案です。クリックで拡大・色変更・イラレ出力できます。</p>
+      <h1>🏮 「仲羽田青年会」6文字SVG 元柄完全再現＆新テンプレート＆タオル比較モック</h1>
+      <p>ご提供いただいた6文字連結SVG（仲・羽・田・青・年・会 / viewBox: 0 0 488.5 86.91）を使い、もとの「仲羽田」と100%同じデザインのシームレス格子やタオル・ダボ仕立てを比較できます。</p>
     </div>
     <div class="top-links">
       <button type="button" class="btn gold" id="exportSvgBtn">📐 選択中の案をSVGベクター保存 (.svg)</button>
@@ -359,29 +359,34 @@
           <span style="font-size:10.5px;color:#94a3b8">クリックで切替</span>
         </div>
         <div class="chip-row" id="tplSelectChips">
-          <button type="button" class="chip active" data-tpl="1">案① 斜め連鎖総柄</button>
+          <button type="button" class="chip active" data-tpl="1">案① もとの仲羽田と同じデザイン(隙間ゼロ格子)</button>
           <button type="button" class="chip" data-tpl="2">案② あられ透かし重ね</button>
-          <button type="button" class="chip" data-tpl="3">案③ 上下連結ボーダー</button>
+          <button type="button" class="chip" data-tpl="3">案③ 🧣 祭りタオル・マフラー仕立て</button>
           <button type="button" class="chip" data-tpl="4">案④ 吉原つなぎ風・縦縞</button>
-          <button type="button" class="chip" data-tpl="5">案⑤ 5文字分解・市松散らし</button>
+          <button type="button" class="chip" data-tpl="5">案⑤ 6文字分解・市松散らし</button>
           <button type="button" class="chip" data-tpl="6">案⑥ 背紋大紋＋元柄</button>
         </div>
       </div>
 
-      <!-- ② 文字構成（「仲羽田青年」5文字 / 「仲羽田青年會」6文字 / 文字間隔） -->
+      <!-- ② 文字構成（「仲羽田青年会」6文字 / 「仲羽田青年」5文字 / 文字間隔） -->
       <div class="ctrl-box">
         <div class="ctrl-title">
           <span>② 🔤 文字構成・連結スタイル</span>
         </div>
         <div class="chip-row" id="charModeChips">
-          <button type="button" class="chip active" data-cmode="5">「仲羽田青年」5文字(元SVG忠実)</button>
-          <button type="button" class="chip" data-cmode="6_kai">＋「會」6文字(仲羽田青年會)</button>
-          <button type="button" class="chip" data-cmode="6_kan">＋「会」6文字(仲羽田青年会)</button>
+          <button type="button" class="chip active" data-cmode="6_user">「仲羽田青年会」6文字(新SVG完全忠実)</button>
+          <button type="button" class="chip" data-cmode="5">「仲羽田青年」5文字</button>
+          <button type="button" class="chip" data-cmode="6_kai">「仲羽田青年會」旧字</button>
         </div>
-        <div class="slider-row" title="0で元SVGの通り隣り合う文字の縦線がピタッと1本に重なって連結します。プラスにすると1文字ずつ離れます">
+        <div class="slider-row" title="0で元SVGの通り隣り合う文字の枠線がピタッと重なって一体連結します。プラスにすると1文字ずつ離れます">
           <label for="charJoinGapRange">文字同士の間隔</label>
           <input type="range" id="charJoinGapRange" min="0" max="28" step="1" value="0">
           <output id="charJoinGapOut">0 (連結)</output>
+        </div>
+        <div class="slider-row" title="0でもとの仲羽田元柄と同じく上下の段の枠線がピタッと1本に直結します">
+          <label for="rowGapRange">段の縦間隔</label>
+          <input type="range" id="rowGapRange" min="0" max="60" step="1" value="0">
+          <output id="rowGapOut">0 (直結)</output>
         </div>
         <div class="slider-row" title="元SVGの線幅(5.8)を基準に、角字の線を細く/太く調整できます">
           <label for="strokeBoldRange">角字の線の太さ</label>
@@ -440,13 +445,8 @@
         </div>
         <div class="slider-row">
           <label for="angleRange">斜め角度</label>
-          <input type="range" id="angleRange" min="-90" max="90" step="0.5" value="-30">
-          <output id="angleOut">-30°</output>
-        </div>
-        <div class="slider-row">
-          <label for="rowGapRange">列・行の間隔</label>
-          <input type="range" id="rowGapRange" min="-15" max="60" step="2" value="12">
-          <output id="rowGapOut">12</output>
+          <input type="range" id="angleRange" min="-90" max="90" step="0.05" value="-30.15">
+          <output id="angleOut">-30.15°</output>
         </div>
         <div class="slider-row" title="あられ重ね時などに角字の周りに地色のフチ（型抜き）を付けます">
           <label for="knockoutRange">文字のフチ抜き</label>
@@ -461,27 +461,27 @@
       <!-- ご提供いただいた元SVGデータの確認バー -->
       <div class="svg-source-banner">
         <div>
-          <div style="font-size:12.5px;font-weight:800;color:#38bdf8">📌 読み込んだ元SVGデータ（viewBox: 0 0 421.2 86.91 / 5文字連結パス）</div>
-          <div style="font-size:11px;color:#cbd5e1">1文字 86.91角・線幅 5.8・隣り合う文字の縦線が x=81.2 / 162.4 / 243.6 / 324.8 で一体連結した江戸角字データ</div>
+          <div style="font-size:12.5px;font-weight:800;color:#38bdf8">📌 読み込んだ6文字SVGデータ（viewBox: 0 0 488.5 86.91 / 「仲羽田青年会」6文字連結パス）</div>
+          <div style="font-size:11px;color:#cbd5e1">1文字 86.91角・線幅 5.8・隣り合う文字の縦線が一体連結し、上下の段も高さ81.11ピッチで隙間ゼロ直結する江戸角字データ</div>
         </div>
         <div class="svg-source-preview" id="rawSvgPreviewBox"></div>
       </div>
 
-      <!-- 現在選択中の案：大きく見られる手ぬぐい反物 ＆ ダボシャツ仕上がりプレビュー -->
+      <!-- 現在選択中の案：大きく見られる手ぬぐい・タオル反物 ＆ ダボシャツ仕上がりプレビュー -->
       <section class="hero-stage">
         <div class="hero-header">
           <div>
-            <div class="hero-title" id="heroTitle">案①：【王道・斜め連鎖総柄】「仲羽田青年」エンドレス斜め帯</div>
-            <div class="hero-desc" id="heroDesc">元柄の斜め（-30°）配列をベースに、5文字連結の「仲羽田青年」をレンガ積みで敷き詰めた王道テンプレートです。</div>
+            <div class="hero-title" id="heroTitle">案①：【もとの仲羽田と同じデザイン】「仲羽田青年会」隙間ゼロ・シームレス斜め格子</div>
+            <div class="hero-desc" id="heroDesc">もとの「仲羽田」元柄と100%同じ構造（角度-30.15°・上下の段の枠線がピタッと重なって隙間ゼロでつながるエンドレス斜め格子）で6文字「仲羽田青年会」を敷き詰めた本命デザインです。</div>
           </div>
           <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <button type="button" class="chip" id="toggleOrientBtn">🔄 手ぬぐい 横向き/縦向き 切替</button>
+            <button type="button" class="chip" id="toggleOrientBtn">🔄 手ぬぐい/タオル 横向き/縦向き 切替</button>
           </div>
         </div>
         <div class="hero-canvases">
           <div class="cv-card">
             <div class="cv-card-label">
-              <span>📜 手ぬぐい反物プレビュー（90cm × 35cm）</span>
+              <span>📜 手ぬぐい・🧣タオル反物プレビュー</span>
               <span style="font-size:11px;color:#38bdf8">100%ベクター描画</span>
             </div>
             <canvas id="heroTenuguiCv" width="720" height="280"></canvas>
@@ -508,84 +508,84 @@
 
   <script>
     // =========================================================================
-    // 1. ユーザー提供SVGの5文字パスデータ（0..421.2 × 86.91）＋ 同じ法則で作った6文字目「會」「会」
+    // 1. ユーザー提供SVGの6文字パスデータ（viewBox="0 0 488.5 86.91"：仲・羽・田・青・年・会）
     // =========================================================================
-    // 各文字をローカル座標 (0..86.91 × 0..86.91) に正規化したPath文字列と、元SVGそのままのPath文字列
-    const CHAR_PATHS_LOCAL = {
+    // 各文字のローカルPath文字列（元SVGの座標と100%一致するよう x基準オフセットを保持）
+    const CHAR_DEFS = {
       // ① 仲 (元 x: 0 .. 86.8)
-      naka: 'M8.2,38.3H0v-5.8h16.3V0h5.9v38.3h-8.1v48.6h-5.9v-48.6ZM56.8,70.7h-24.3V8.1h24.3V0h5.9v8.1h24.1v62.6h-24.1v16.2h-5.9v-16.2ZM56.8,64.9V14.1h-18.5v50.8h18.5ZM81,64.9V14.1h-18.3v50.8h18.3Z',
-      // ② 羽 (元 x: 81.2 .. 168.11 -> x - 81.2)
-      ha: 'M32.6,5.9H0V0h38.4v86.91h-5.8V5.9ZM0,24.4h22.2v5.8H0v-5.8ZM0,56.8h22.2v5.8H0v-5.8ZM81.11,5.9h-32.4V0h38.2v86.91h-5.8V5.9ZM48.7,24.4h22v5.8h-22v-5.8ZM48.7,56.8h22v5.8h-22v-5.8Z',
-      // ③ 田 (元 x: 162.4 .. 249.31 -> x - 162.4)
-      da: 'M0,0h86.91v86.91H0V0ZM40.6,81.1v-34.7h-24.3v-5.8h24.3V5.9H5.9v75.2h34.7ZM81.1,81.1V5.9h-34.7v34.7h24.3v5.8h-24.3v34.7h34.7Z',
-      // ④ 青 (元 x: 243.6 .. 330.5 -> x - 243.6)
-      sei: 'M8.2,46.4H0v-5.8h40.6v-10.4H8.2v-5.8h32.4v-10.3H0v-6h40.6V0h5.8v8.1h40.5v6h-40.5v10.3h32.4v5.8h-32.4v10.4h40.5v5.8h-8.1v40.5h-5.8v-40.5H14.1v10.4h48.6v5.8H14.1v10.3h48.6v5.8H14.1v8.2h-5.9v-40.5Z',
-      // ⑤ 年 (元 x: 324.8 .. 411.7 -> x - 324.8)
-      nen: 'M48.7,70.7H0v-5.8h16.3v-32.4h32.4V14.1H14.1v16.1H0v-5.8h8.2V0h5.9v8.1h72.8v6h-32.4v18.4h24.3v5.8h-24.3v26.6h32.4v5.8h-32.4v16.2h-5.8v-16.2ZM48.7,64.9v-26.6h-26.5v26.6h26.5Z',
-      // ⑥ 會（オプション6文字目：同じ 86.91角・線幅5.8の江戸角字ルールで設計）
-      kai_old: 'M0,0h86.91v20.2h-5.8V5.8H5.8v14.4H0V0ZM40.5,5.8h5.8v20.4h-5.8V5.8ZM14.1,20.2h58.7v20.2H14.1V20.2ZM19.9,34.6h20.6v-8.6H19.9v8.6ZM46.3,34.6h20.7v-8.6H46.3v8.6ZM8.2,46.2h70.5v40.71H8.2V46.2ZM14.0,81.11h58.9v-8.6H14.0v8.6ZM14.0,66.7h58.9v-5.8H14.0v5.8ZM14.0,55.1h58.9v-3.1H14.0v3.1Z',
-      // ⑥ 会（オプション6文字目：新字体版）
-      kai_new: 'M0,14.1V8.3h40.5V0h5.9v8.3h40.51v5.8H0ZM14.1,26.2h58.7v5.8H14.1v-5.8ZM0,40.6h86.91v5.8H46.4l-14.2,34.7h40.7v-16.2h5.8v22.01H8.2v-5.8h17.8l14.2-34.7H0v-5.8Z'
+      naka: { origX: 0, d: 'M8.2,38.3H0v-5.8h16.3V0h5.9v38.3h-8.1v48.6h-5.9v-48.6ZM56.8,70.7h-24.3V8.1h24.3V0h5.9v8.1h24.1v62.6h-24.1v16.2h-5.9v-16.2ZM56.8,64.9V14.1h-18.5v50.8h18.5ZM81,64.9V14.1h-18.3v50.8h18.3Z' },
+      // ② 羽 (元 x: 81.2 .. 168.11)
+      ha:   { origX: 81.2, d: 'M32.6,5.9H0V0h38.4v86.91h-5.8V5.9ZM0,24.4h22.2v5.8H0v-5.8ZM0,56.8h22.2v5.8H0v-5.8ZM81.11,5.9h-32.4V0h38.2v86.91h-5.8V5.9ZM48.7,24.4h22v5.8h-22v-5.8ZM48.7,56.8h22v5.8h-22v-5.8Z' },
+      // ③ 田 (元 x: 162.4 .. 249.31)
+      da:   { origX: 162.4, d: 'M0,0h86.91v86.91H0V0ZM40.6,81.1v-34.7h-24.3v-5.8h24.3V5.9H5.9v75.2h34.7ZM81.1,81.1V5.9h-34.7v34.7h24.3v5.8h-24.3v34.7h34.7Z' },
+      // ④ 青 (元 x: 243.6 .. 330.5)
+      sei:  { origX: 243.6, d: 'M8.2,46.4H0v-5.8h40.6v-10.4H8.2v-5.8h32.4v-10.3H0v-6h40.6V0h5.8v8.1h40.5v6h-40.5v10.3h32.4v5.8h-32.4v10.4h40.5v5.8h-8.1v40.5h-5.8v-40.5H14.1v10.4h48.6v5.8H14.1v10.3h48.6v5.8H14.1v8.2h-5.9v-40.5Z' },
+      // ⑤ 年 (元 x: 322.6 .. 409.5) ※ユーザー提供新SVGの座標(371.3基準)を完全収録
+      nen:  { origX: 322.6, d: 'M48.7,70.7H0v-5.8h16.3v-32.4h32.4V14.1H14.1v16.1H0v-5.8h8.2V0h5.9v8.1h72.8v6h-32.4v18.4h24.3v5.8h-24.3v26.6h32.4v5.8h-32.4v16.2h-5.8v-16.2ZM48.7,64.9v-26.6h-26.5v26.6h26.5Z' },
+      // ⑥ 会 (元 x: 401.6 .. 488.51) ※ユーザー提供新SVGの6文字目パスを100%そのまま収録！
+      kai_user: { origX: 401.6, d: 'M0,32.5h8.2V0h70.6v32.5h8.1v5.8h-13.9V5.9H14.1v32.4H0v-5.8ZM16.3,54.5H0v-5.9h86.91v5.9H22.2v26.6h50.8v-16.2h5.8v22H16.3v-32.4ZM24.4,24.4h38.3v5.8H24.4v-5.8Z' },
+      // 旧字体オプション 會
+      kai_old:  { origX: 401.6, d: 'M0,0h86.91v20.2h-5.8V5.8H5.8v14.4H0V0ZM40.5,5.8h5.8v20.4h-5.8V5.8ZM14.1,20.2h58.7v20.2H14.1V20.2ZM19.9,34.6h20.6v-8.6H19.9v8.6ZM46.3,34.6h20.7v-8.6H46.3v8.6ZM8.2,46.2h70.5v40.71H8.2V46.2ZM14.0,81.11h58.9v-8.6H14.0v8.6ZM14.0,66.7h58.9v-5.8H14.0v5.8ZM14.0,55.1h58.9v-3.1H14.0v3.1Z' }
     };
 
     const TEMPLATES = [
       {
         id: 1,
-        badge: '人気No.1 王道',
-        name: '案①：【斜め連鎖総柄】「仲羽田青年」エンドレス斜め帯',
-        short: '斜め（-30°）レンガ積み連鎖総柄',
-        desc: '今の「仲羽田」元柄と同じ斜め角度（-30°）で、5文字連結の「仲羽田青年」を互い違いに敷き詰めた王道デザインです。隣り合う文字の縦線が繋がっているため、ダボシャツ全体に粋な幾何学ラインが走ります。'
+        badge: '★元柄完全再現 本命',
+        name: '案①：【もとの仲羽田と同じデザイン】「仲羽田青年会」シームレス斜め格子',
+        short: '角度-30.15°・上下左右が隙間ゼロで直結する元柄構造',
+        desc: 'もとの「仲羽田」元柄と100%同じ構造（角度-30.15°・上下の段の枠線がピタッと重なって隙間ゼロでつながるエンドレス斜め格子）で、ご提供いただいた6文字「仲羽田青年会」を敷き詰めた本命デザインです。'
       },
       {
         id: 2,
-        badge: '高級感・立体感',
-        name: '案②：【二重織り透かし】「大小あられ」＋「仲羽田青年」重ね',
-        short: '背景の大小あられ＋フチ抜き角字重ね',
-        desc: '江戸小紋の「大小あられ」を背景に敷き、その上に地色のフチ抜き（型抜き）を付けた「仲羽田青年」を重ねた二重柄です。今回のSVGは線が繊細（5.8）なため、文字の隙間からあられが綺麗に透けて見えます。'
+        badge: '高級感・二重柄',
+        name: '案②：【二重織り透かし】「大小あられ」＋「仲羽田青年会」元柄格子重ね',
+        short: '背景の大小あられ＋フチ抜きシームレス角字重ね',
+        desc: '江戸小紋の「大小あられ」を背景に敷き、その上に地色のフチ抜き（型抜き）を付けた「仲羽田青年会」シームレス格子を重ねた二重柄です。'
       },
       {
         id: 3,
-        badge: '半纏・祭礼風',
-        name: '案③：【上下連結ボーダー】「仲羽田青年」帯ライン＋中央あられ/角字',
-        short: '上下に切れ目ない連結角字ボーダー帯',
-        desc: 'SVGの文字同士が横にピタッと連結する特性を活かし、手ぬぐいの上下（およびダボシャツの裾・袖口・胸元ライン）にエンドレスの角字ボーダー帯を通し、中央に大小あられ＆大紋を配した粋な半纏腰柄風デザインです。'
+        badge: '🧣 タオル＆半纏特化',
+        name: '案③：【祭りタオル・マフラー仕立て】両端ヘムライン＋外周二重枠＋中央箱文字',
+        short: 'フェイスタオル・マフラータオル用の枠＆ヘム帯付き',
+        desc: 'タオルの両端ヘム帯（平織りライン）と外周二重枠を配し、背景に「仲羽田青年会」元柄格子、中央に白抜き枠の「仲羽田青年会」を据えた祭りタオル・手ぬぐい兼用テンプレートです。'
       },
       {
         id: 4,
         badge: 'スマート縦ライン',
-        name: '案④：【吉原つなぎ風・縦縞】「仲羽田青年」縦ストライプ鎖配列',
+        name: '案④：【吉原つなぎ風・縦縞】「仲羽田青年会」縦ストライプ鎖配列',
         short: '縦方向に鎖のように連なるストライプ柄',
-        desc: '「仲・羽・田・青・年」を縦の鎖のように連結させたストライプ（吉原つなぎ風）総柄です。ダボシャツや鯉口シャツに仕立てた際、縦のラインが強調されて非常にスマートで粋な着姿になります。'
+        desc: '「仲・羽・田・青・年・会」の6文字を縦の鎖のようにシームレス連結させたストライプ（吉原つなぎ風）総柄です。ダボシャツに仕立てた際、縦のラインが際立ちます。'
       },
       {
         id: 5,
         badge: 'モダン江戸小紋',
-        name: '案⑤：【5文字分解・市松千鳥】「仲・羽・田・青・年」ブロック散らし',
-        short: '1文字ずつ正方形ブロックに分解して市松配置',
-        desc: '5文字すべてが同じ高さ（86.91角）の正方形グリッドで作られていることを活かし、1文字ずつ独立した角字ブロックとして市松模様（千鳥格子）にリズミカルに散らしたモダンな総柄です。'
+        name: '案⑤：【6文字分解・市松千鳥】「仲・羽・田・青・年・会」ブロック散らし',
+        short: '6文字を正方形ブロックに分解して市松配置',
+        desc: '6文字すべてが同じ高さ（86.91角）で作られていることを活かし、1文字ずつ独立した角字ブロックとして市松模様にリズミカルに散らしたモダンな総柄です。'
       },
       {
         id: 6,
-        badge: '背紋・主役特化',
-        name: '案⑥：【背紋・角字大紋】背中ド真ん中に「仲羽田青年」＋元柄総柄',
-        short: '背紋・胸に大きく「仲羽田青年」角字紋を配置',
-        desc: '地紋には「仲羽田」または「大小あられ」を敷き、ダボシャツの背中（背紋）や手ぬぐい中央に、この「仲羽田青年（または2段組・枠付き）」を主役の大紋ロゴとして大きく据えたテンプレートです。'
+        badge: '背紋・タオル中央特化',
+        name: '案⑥：【背紋・角字大紋】中央に「仲羽田 / 青年会」2段組大紋＋元柄格子',
+        short: '背紋・タオル中央に大きく2段角字紋を配置',
+        desc: '地紋には「仲羽田青年会」の元柄シームレス格子を敷き、ダボシャツの背中（背紋）やタオル中央に「仲羽田 / 青年会」の二重枠大紋を大きく据えたテンプレートです。'
       }
     ];
 
     const state = {
       tplId: 1,
-      charMode: '5',        // '5' | '6_kai' | '6_kan'
-      charJoinGap: 0,       // 0 = 連結(step 81.2), >0 = 離す
+      charMode: '6_user',   // '6_user' (仲羽田青年会) | '5' | '6_kai'
+      charJoinGap: 0,       // 0 = 元SVG通り完全連結, >0 = 離す
       strokeBold: 0,        // 線幅補正
-      twoTone: false,       // trueなら「仲羽田」=mainCol、「青年(會)」=subCol
+      twoTone: false,       // trueなら「仲羽田」=mainCol、「青年会」=subCol
       bgCol: '#046e7e',
       mainCol: '#ffffff',
       subCol: '#f59e0b',
       dotCol: '#ffffff',
       scalePct: 100,
-      angleDeg: -30,
-      rowGap: 12,
+      angleDeg: -30.15,
+      rowGap: 0,            // 0 = もとの仲羽田と同じく上下の段が隙間ゼロで直結！
       knockoutPx: 4,
       verticalTenugui: false
     };
@@ -601,8 +601,23 @@
 
     // Path2D キャッシュ
     const PATH2D_MAP = {};
-    for (const [k, d] of Object.entries(CHAR_PATHS_LOCAL)) {
-      PATH2D_MAP[k] = new Path2D(d);
+    for (const [k, obj] of Object.entries(CHAR_DEFS)) {
+      PATH2D_MAP[k] = new Path2D(obj.d);
+    }
+
+    function getActiveCharKeys() {
+      if (state.charMode === '5') return ['naka', 'ha', 'da', 'sei', 'nen'];
+      if (state.charMode === '6_kai') return ['naka', 'ha', 'da', 'sei', 'nen', 'kai_old'];
+      return ['naka', 'ha', 'da', 'sei', 'nen', 'kai_user'];
+    }
+
+    function getWordTotalSvgW(keys) {
+      const lastKey = keys[keys.length - 1];
+      return CHAR_DEFS[lastKey].origX + (keys.length - 1) * state.charJoinGap + 86.91;
+    }
+
+    function getCharSvgX(key, idx) {
+      return CHAR_DEFS[key].origX + idx * state.charJoinGap;
     }
 
     // 元SVG確認バーにSVGを表示
@@ -610,29 +625,21 @@
       const box = document.getElementById('rawSvgPreviewBox');
       if (!box) return;
       const keys = getActiveCharKeys();
-      const step = 81.2 + state.charJoinGap;
-      const totalW = (keys.length - 1) * step + 86.91;
+      const totalW = getWordTotalSvgW(keys);
       let pathsHtml = '';
       keys.forEach((k, idx) => {
-        const xOff = idx * step;
+        const xOff = getCharSvgX(k, idx);
         const col = (state.twoTone && idx >= 3) ? state.subCol : '#231815';
-        pathsHtml += `<g transform="translate(${xOff.toFixed(2)}, 0)"><path d="${CHAR_PATHS_LOCAL[k]}" fill="${col}"/></g>`;
+        pathsHtml += `<g transform="translate(${xOff.toFixed(2)}, 0)"><path d="${CHAR_DEFS[k].d}" fill="${col}"/></g>`;
       });
       box.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalW.toFixed(2)} 86.91" style="width:100%;max-height:46px;display:block">${pathsHtml}</svg>`;
     }
 
-    function getActiveCharKeys() {
-      if (state.charMode === '6_kai') return ['naka', 'ha', 'da', 'sei', 'nen', 'kai_old'];
-      if (state.charMode === '6_kan') return ['naka', 'ha', 'da', 'sei', 'nen', 'kai_new'];
-      return ['naka', 'ha', 'da', 'sei', 'nen'];
-    }
-
-    // 1ブロック（「仲羽田青年(會)」連文字）を描画するヘルパー（原点＝ブロック中心）
+    // 1ブロック（「仲羽田青年会」6文字連結）を描画するヘルパー（原点＝ブロック中心）
     function drawSeinenWordBlock(ctx, unitH, isKnockoutPass, knockoutWidth) {
       const keys = getActiveCharKeys();
       const scale = unitH / 86.91;
-      const stepSvg = 81.2 + state.charJoinGap;
-      const totalSvgW = (keys.length - 1) * stepSvg + 86.91;
+      const totalSvgW = getWordTotalSvgW(keys);
 
       ctx.save();
       ctx.scale(scale, scale);
@@ -640,7 +647,7 @@
 
       for (let i = 0; i < keys.length; i++) {
         const p = PATH2D_MAP[keys[i]];
-        const xOff = i * stepSvg;
+        const xOff = getCharSvgX(keys[i], i);
         ctx.save();
         ctx.translate(xOff, 0);
         if (isKnockoutPass) {
@@ -734,23 +741,26 @@
 
       const sMul = (state.scalePct / 100) * mul;
       const keys = getActiveCharKeys();
-      const stepSvg = 81.2 + state.charJoinGap;
-      const totalSvgW = (keys.length - 1) * stepSvg + 86.91;
-      const aspect = totalSvgW / 86.91;
+      const totalSvgW = getWordTotalSvgW(keys);
+      // 横周期（隙間0のときは右端の線幅5.8を重ねて 482.7 周期でシームレス連結）
+      const periodSvgX = (state.charJoinGap === 0) ? (totalSvgW - 5.8) : (totalSvgW + state.charJoinGap);
+      // 縦周期（段間隔0のときは元柄「仲羽田」と同じく上下の枠線5.8を重ねて 81.11 ピッチで隙間ゼロ直結！）
+      const periodSvgY = 81.11 + state.rowGap * 2.2;
+      // 1段ごとの横シフト量（元柄「仲羽田」と同じ階段格子リズム＝2文字分シフト）
+      const shiftSvgX = (periodSvgX / keys.length) * 2;
 
       if (tplId === 1 || tplId === 2) {
-        // 案① 斜め連鎖総柄 / 案② 大小あられ＋斜め連鎖透かし重ね
+        // 案① もとの仲羽田と同じデザインの隙間ゼロ斜め格子 / 案② 大小あられ＋斜め格子重ね
         if (tplId === 2) {
           drawArareBackground(ctx, w, h, 0.9 * mul, 0.88);
         }
-        const unitH = 34 * sMul;
-        const unitW = unitH * aspect;
-        const gapX = Math.max(4 * sMul, (state.rowGap * 0.9) * sMul);
-        const gapY = (14 + state.rowGap) * sMul;
-        const pitchX = unitW + gapX;
-        const pitchY = unitH + gapY;
+        const unitH = 42 * sMul;
+        const svgToPx = unitH / 86.91;
+        const pitchX = periodSvgX * svgToPx;
+        const pitchY = periodSvgY * svgToPx;
+        const dxRow = shiftSvgX * svgToPx;
         const rad = (state.angleDeg * Math.PI) / 180;
-        const diag = Math.hypot(w, h);
+        const diag = Math.hypot(w, h) + pitchX;
         const cols = Math.ceil(diag / pitchX) + 2;
         const rows = Math.ceil(diag / pitchY) + 2;
 
@@ -761,7 +771,7 @@
         const passes = (tplId === 2 && state.knockoutPx > 0) ? [true, false] : [false];
         for (const isKo of passes) {
           for (let r = -rows; r <= rows; r++) {
-            const xOffset = (Math.abs(r) % 2 === 1) ? pitchX * 0.5 : 0;
+            const xOffset = r * dxRow;
             const cy = r * pitchY;
             for (let c = -cols; c <= cols; c++) {
               const cx = c * pitchX + xOffset;
@@ -775,60 +785,79 @@
         ctx.restore();
 
       } else if (tplId === 3) {
-        // 案③ 上下連結ボーダー（半纏・手ぬぐい腰柄風）＋ 中央あられ＆角字紋
-        drawArareBackground(ctx, w, h, 0.85 * mul, 0.42);
+        // 案③ 🧣 祭りタオル・マフラータオル仕立て（背景＝元柄シームレス格子 ＋ 両端ヘムライン ＋ 外周二重枠 ＋ 中央白抜き箱文字）
+        const unitH = 38 * sMul;
+        const svgToPx = unitH / 86.91;
+        const pitchX = periodSvgX * svgToPx;
+        const pitchY = periodSvgY * svgToPx;
+        const dxRow = shiftSvgX * svgToPx;
+        const rad = (state.angleDeg * Math.PI) / 180;
+        const diag = Math.hypot(w, h) + pitchX;
+        const cols = Math.ceil(diag / pitchX) + 2;
+        const rows = Math.ceil(diag / pitchY) + 2;
 
-        const isVert = h > w * 1.3;
-        const bandH = Math.min(w, h) * 0.165 * (state.scalePct / 100);
-        const blockStepW = bandH * ((keys.length * stepSvg) / 86.91);
-
-        // 上下（または左右）の連結ボーダー帯を描画する関数
-        const drawEndlessBorderStrip = (stripY, flipDir) => {
-          ctx.save();
-          // 帯の背景座布団
-          ctx.fillStyle = state.bgCol;
-          ctx.fillRect(0, stripY - bandH * 0.68, isVert ? h : w, bandH * 1.36);
-          // 帯の上下飾り罫線
-          ctx.strokeStyle = state.twoTone ? state.subCol : state.mainCol;
-          ctx.lineWidth = Math.max(1.5, 2 * mul);
-          ctx.beginPath();
-          ctx.moveTo(0, stripY - bandH * 0.64);
-          ctx.lineTo(isVert ? h : w, stripY - bandH * 0.64);
-          ctx.moveTo(0, stripY + bandH * 0.64);
-          ctx.lineTo(isVert ? h : w, stripY + bandH * 0.64);
-          ctx.stroke();
-
-          const spanW = isVert ? h : w;
-          const numBlocks = Math.ceil(spanW / blockStepW) + 2;
-          for (let i = -1; i <= numBlocks; i++) {
-            ctx.save();
-            ctx.translate(i * blockStepW + blockStepW * 0.5, stripY);
-            if (flipDir) ctx.scale(1, 1);
-            drawSeinenWordBlock(ctx, bandH, false, 0);
-            ctx.restore();
-          }
-          ctx.restore();
-        };
-
-        if (isVert) {
-          ctx.save();
-          ctx.translate(w / 2, h / 2);
-          ctx.rotate(Math.PI / 2);
-          ctx.translate(-h / 2, -w / 2);
-          drawEndlessBorderStrip(bandH * 0.82, false);
-          drawEndlessBorderStrip(w - bandH * 0.82, true);
-          ctx.restore();
-        } else {
-          drawEndlessBorderStrip(bandH * 0.82, false);
-          drawEndlessBorderStrip(h - bandH * 0.82, true);
-        }
-
-        // 中央に大きく「仲羽田青年」角字ブロックを配置
         ctx.save();
         ctx.translate(w / 2, h / 2);
-        if (isVert) ctx.rotate(-Math.PI / 2);
+        ctx.rotate(rad);
+        for (let r = -rows; r <= rows; r++) {
+          const xOffset = r * dxRow;
+          const cy = r * pitchY;
+          for (let c = -cols; c <= cols; c++) {
+            ctx.save();
+            ctx.translate(c * pitchX + xOffset, cy);
+            drawSeinenWordBlock(ctx, unitH, false, 0);
+            ctx.restore();
+          }
+        }
+        ctx.restore();
+
+        // タオル両端のヘム帯（平織りライン）と外周二重ボーダー枠
+        const isVert = h > w * 1.2;
+        const hemW = Math.min(w, h) * 0.12;
+        ctx.save();
+        ctx.fillStyle = state.bgCol;
+        if (isVert) {
+          ctx.fillRect(0, 0, w, hemW);
+          ctx.fillRect(0, h - hemW, w, hemW);
+          ctx.fillStyle = state.mainCol;
+          ctx.fillRect(0, hemW - 4 * mul, w, 4 * mul);
+          ctx.fillRect(0, hemW - 8 * mul, w, 1.8 * mul);
+          ctx.fillRect(0, h - hemW, w, 4 * mul);
+          ctx.fillRect(0, h - hemW + 6.2 * mul, w, 1.8 * mul);
+        } else {
+          ctx.fillRect(0, 0, hemW, h);
+          ctx.fillRect(w - hemW, 0, hemW, h);
+          ctx.fillStyle = state.mainCol;
+          ctx.fillRect(hemW - 4 * mul, 0, 4 * mul, h);
+          ctx.fillRect(hemW - 8 * mul, 0, 1.8 * mul, h);
+          ctx.fillRect(w - hemW, 0, 4 * mul, h);
+          ctx.fillRect(w - hemW + 6.2 * mul, 0, 1.8 * mul, h);
+        }
+        // 外周二重枠
+        const mg = 11 * mul;
+        ctx.strokeStyle = state.bgCol;
+        ctx.lineWidth = 8 * mul;
+        ctx.strokeRect(mg, mg, w - mg * 2, h - mg * 2);
+        ctx.strokeStyle = state.mainCol;
+        ctx.lineWidth = 3.2 * mul;
+        ctx.strokeRect(mg, mg, w - mg * 2, h - mg * 2);
+        ctx.lineWidth = 1.2 * mul;
+        ctx.strokeRect(mg + 5 * mul, mg + 5 * mul, w - (mg + 5 * mul) * 2, h - (mg + 5 * mul) * 2);
+
+        // 中央の抜き座布団ボックス＋「仲羽田青年会」大文字
         const centerH = Math.min(w, h) * 0.25 * (state.scalePct / 100);
-        if (state.knockoutPx > 0) drawSeinenWordBlock(ctx, centerH, true, state.knockoutPx * 1.5 * mul);
+        const centerW = centerH * (totalSvgW / 86.91);
+        const boxPadX = 16 * mul, boxPadY = 12 * mul;
+        ctx.translate(w / 2, h / 2);
+        if (isVert) ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = state.bgCol;
+        ctx.fillRect(-centerW / 2 - boxPadX - 4 * mul, -centerH / 2 - boxPadY - 4 * mul, centerW + (boxPadX + 4 * mul) * 2, centerH + (boxPadY + 4 * mul) * 2);
+        ctx.strokeStyle = state.mainCol;
+        ctx.lineWidth = 3 * mul;
+        ctx.strokeRect(-centerW / 2 - boxPadX, -centerH / 2 - boxPadY, centerW + boxPadX * 2, centerH + boxPadY * 2);
+        ctx.strokeStyle = state.twoTone ? state.subCol : state.mainCol;
+        ctx.lineWidth = 1.2 * mul;
+        ctx.strokeRect(-centerW / 2 - boxPadX + 4.5 * mul, -centerH / 2 - boxPadY + 4.5 * mul, centerW + (boxPadX - 4.5 * mul) * 2, centerH + (boxPadY - 4.5 * mul) * 2);
         drawSeinenWordBlock(ctx, centerH, false, 0);
         ctx.restore();
 
@@ -898,13 +927,14 @@
         }
 
       } else if (tplId === 6) {
-        // 案⑥ 背紋・大紋特化型：背景は斜め連鎖総柄（薄めor細線）＋ 中央・背紋位置に角字二重枠の大紋
-        const bgUnitH = 22 * sMul;
-        const bgUnitW = bgUnitH * aspect;
-        const pitchX = bgUnitW + 14 * sMul;
-        const pitchY = bgUnitH + 16 * sMul;
+        // 案⑥ 背紋・大紋特化型：背景は元柄シームレス斜め格子（薄め）＋ 中央・背紋位置に角字二重枠の大紋
+        const bgUnitH = 28 * sMul;
+        const svgToPx = bgUnitH / 86.91;
+        const pitchX = periodSvgX * svgToPx;
+        const pitchY = periodSvgY * svgToPx;
+        const dxRow = shiftSvgX * svgToPx;
         const rad = (state.angleDeg * Math.PI) / 180;
-        const diag = Math.hypot(w, h);
+        const diag = Math.hypot(w, h) + pitchX;
         const cols = Math.ceil(diag / pitchX) + 2;
         const rows = Math.ceil(diag / pitchY) + 2;
 
@@ -913,7 +943,7 @@
         ctx.translate(w / 2, h / 2);
         ctx.rotate(rad);
         for (let r = -rows; r <= rows; r++) {
-          const xOffset = (Math.abs(r) % 2 === 1) ? pitchX * 0.5 : 0;
+          const xOffset = r * dxRow;
           for (let c = -cols; c <= cols; c++) {
             ctx.save();
             ctx.translate(c * pitchX + xOffset, r * pitchY);
@@ -1225,14 +1255,14 @@
       state.charJoinGap = 0;
       state.strokeBold = 0;
       state.scalePct = 100;
-      state.angleDeg = -30;
-      state.rowGap = 12;
+      state.angleDeg = -30.15;
+      state.rowGap = 0;
       state.knockoutPx = 4;
       document.getElementById('charJoinGapRange').value = 0;
       document.getElementById('strokeBoldRange').value = 0;
       document.getElementById('scaleRange').value = 100;
-      document.getElementById('angleRange').value = -30;
-      document.getElementById('rowGapRange').value = 12;
+      document.getElementById('angleRange').value = -30.15;
+      document.getElementById('rowGapRange').value = 0;
       document.getElementById('knockoutRange').value = 4;
       renderAll();
     });
@@ -1245,12 +1275,11 @@
     // ベクターSVG書き出し
     document.getElementById('exportSvgBtn').addEventListener('click', () => {
       const keys = getActiveCharKeys();
-      const stepSvg = 81.2 + state.charJoinGap;
-      const totalSvgW = (keys.length - 1) * stepSvg + 86.91;
+      const totalSvgW = getWordTotalSvgW(keys);
       let defsHtml = '';
       keys.forEach((k, i) => {
         const col = (state.twoTone && i >= 3) ? state.subCol : state.mainCol;
-        defsHtml += `<g id="ch_${i}" transform="translate(${(i * stepSvg).toFixed(2)},0)"><path d="${CHAR_PATHS_LOCAL[k]}" fill="${col}"/></g>`;
+        defsHtml += `<g id="ch_${i}" transform="translate(${getCharSvgX(k, i).toFixed(2)},0)"><path d="${CHAR_DEFS[k].d}" fill="${col}"/></g>`;
       });
       const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalSvgW.toFixed(2)} 86.91">
@@ -1260,27 +1289,34 @@
       const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `仲羽田青年_テンプレート案${state.tplId}.svg`;
+      a.download = `仲羽田青年会_テンプレート案${state.tplId}.svg`;
       a.click();
     });
 
-    // メイン画面（統合スタジオ arare_app.html）へ現在のテンプレート生地を送って開く
+    // メイン画面（統合スタジオ arare_app.html）へ現在のテンプレート設定を送って開く
     document.getElementById('sendToMainAppBtn').addEventListener('click', () => {
-      const expCv = document.createElement('canvas');
-      expCv.width = 1800;
-      expCv.height = 700;
-      const eCtx = expCv.getContext('2d');
-      renderTemplatePattern(eCtx, expCv.width, expCv.height, state.tplId, 2.5);
-      const dataUrl = expCv.toDataURL('image/png');
       try {
-        localStorage.setItem('tenugui_kobo_live_bridge_v1', JSON.stringify({
-          name: `仲羽田青年・新テンプレート案${state.tplId}`,
-          W: 900,
-          H: 350,
-          bgColor: state.bgCol,
-          dataUrl,
-          updatedAt: Date.now()
-        }));
+        const cur = JSON.parse(localStorage.getItem('haneda-arare-settings') || '{}');
+        cur.kakuMotif = 'seinenkai';
+        cur.bgColor = state.bgCol;
+        cur.kakuColor = state.mainCol;
+        cur.dotColor = state.dotCol;
+        cur.kakuAngle = state.angleDeg;
+        cur.kakuRowGap = state.rowGap;
+        if (state.tplId === 2) {
+          cur.mode = 'both';
+          cur.knockoutMm = 1.6;
+        } else if (state.tplId === 3) {
+          cur.mode = 'haneda';
+          cur.W = 840;
+          cur.H = 340;
+          cur.towelHem = true;
+          cur.towelBorder = true;
+          cur.towelCenterBox = true;
+        } else {
+          cur.mode = 'haneda';
+        }
+        localStorage.setItem('haneda-arare-settings', JSON.stringify(cur));
       } catch (e) {}
       window.location.href = 'arare_app.html';
     });

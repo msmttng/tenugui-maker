@@ -23,7 +23,7 @@ body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:13
 header{padding:13px 16px 10px;border-bottom:1px solid var(--line)}
 h1{font-family:var(--f-disp);font-weight:600;font-size:18.5px;margin:0;letter-spacing:.04em;text-wrap:balance}
 header p{margin:3px 0 0;color:var(--muted);font-size:11.5px}
-.nav-cat-tabs{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:7px 12px;background:var(--panel);border-bottom:1.5px solid var(--line);box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.nav-cat-tabs{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:repeat(6,1fr);gap:3px;padding:7px 10px;background:var(--panel);border-bottom:1.5px solid var(--line);box-shadow:0 2px 6px rgba(0,0,0,.05)}
 .nav-cat-tabs button{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:6px;padding:5px 2px;font:inherit;font-size:11px;font-weight:700;cursor:pointer;text-align:center;white-space:nowrap;transition:all .12s}
 .nav-cat-tabs button[aria-pressed=true]{background:var(--ai);border-color:var(--ai);color:#fff}
 section{padding:11px 15px;border-bottom:1px solid var(--line);display:grid;gap:8px}
@@ -126,19 +126,31 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
     <nav class="nav-cat-tabs" id="panelCatTabs" aria-label="設定カテゴリ切替">
       <button type="button" class="cat-tab" data-cat-filter="all" data-cat="all" aria-pressed="true">すべて</button>
       <button type="button" class="cat-tab" data-cat-filter="pattern" data-cat="pattern" aria-pressed="false">① 🎨 柄・色</button>
-      <button type="button" class="cat-tab" data-cat-filter="overlay" data-cat="overlay" aria-pressed="false">② 🏮 ロゴ・文字・札</button>
-      <button type="button" class="cat-tab" data-cat-filter="dabo" data-cat="dabo" aria-pressed="false">③ 👕 ダボ</button>
-      <button type="button" class="cat-tab" data-cat-filter="export" data-cat="export" aria-pressed="false">④ 💾 保存・出力</button>
+      <button type="button" class="cat-tab" data-cat-filter="towel" data-cat="towel" aria-pressed="false">② 🧣 タオル</button>
+      <button type="button" class="cat-tab" data-cat-filter="overlay" data-cat="overlay" aria-pressed="false">③ 🏮 札・ロゴ</button>
+      <button type="button" class="cat-tab" data-cat-filter="dabo" data-cat="dabo" aria-pressed="false">④ 👕 ダボ</button>
+      <button type="button" class="cat-tab" data-cat-filter="export" data-cat="export" aria-pressed="false">⑤ 💾 保存・出力</button>
     </nav>
 
     <!-- 1. 柄モード切替 ＆ レイヤー前後順 ＆ 手ぬぐい工房合体パネル -->
     <section aria-labelledby="h-mode" data-cat="pattern">
-      <h2 id="h-mode"><span>文様モード・手ぬぐい工房合体</span><div style="display:flex;gap:6px;align-items:center"><a href="seinen_mock.html" target="_blank" style="font-size:11px;background:#0284c7;color:#fff;padding:2px 8px;border-radius:999px;text-decoration:none;font-weight:700">🆕「仲羽田青年」6案モック ↗</a><a href="index.html" style="font-size:11px;color:var(--ai);text-decoration:none;font-weight:600">🖌️ 手ぬぐい工房 ↗</a></div></h2>
+      <h2 id="h-mode"><span>文様モード・手ぬぐい工房合体</span><div style="display:flex;gap:6px;align-items:center"><a href="seinen_mock.html" target="_blank" style="font-size:11px;background:#0284c7;color:#fff;padding:2px 8px;border-radius:999px;text-decoration:none;font-weight:700">🆕「仲羽田青年会」モック ↗</a><a href="index.html" style="font-size:11px;color:var(--ai);text-decoration:none;font-weight:600">🖌️ 手ぬぐい工房 ↗</a></div></h2>
       <div class="mode-tabs" id="modeTabs" style="grid-template-columns:1fr 1fr">
-        <button class="chip" data-mode="haneda" aria-pressed="true">① 仲羽田（江戸角字）</button>
+        <button class="chip" data-mode="haneda" aria-pressed="true">① 江戸角字（仲羽田 / 青年会）</button>
         <button class="chip" data-mode="arare" aria-pressed="false">② 大小あられ</button>
         <button class="chip" data-mode="both" aria-pressed="false">③ 角字＋あられ重ね</button>
         <button class="chip" data-mode="scatter" aria-pressed="false" title="背景の角字やあられを消し、1個のロゴや1文字を多数ちりばめた総柄手ぬぐいや、手ぬぐい工房の生地をベースにします">④ 1文字/ロゴ散らし・工房生地</button>
+      </div>
+      <!-- 🆕 角字モチーフ切替：「仲羽田（元柄3文字）」⇄「仲羽田青年会（新6文字・元柄完全再現）」 -->
+      <div class="cgroup" id="kakuMotifBox" style="background:#eff6ff;border:1.5px solid #60a5fa;padding:6px 8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+          <span class="clabel" style="font-size:11.5px;color:#1e40af">🎌 江戸角字の柄を選ぶ（元柄と同じシームレス斜め格子）</span>
+          <a href="seinen_mock.html" target="_blank" style="font-size:10.5px;color:#0284c7;font-weight:700;text-decoration:none">🔍 6案比較モックを見る ↗</a>
+        </div>
+        <div class="pair" id="kakuMotifTabs" style="gap:5px">
+          <button type="button" class="chip" data-motif="haneda" aria-pressed="true" style="padding:6px 6px;border-radius:7px;font-size:11.5px;font-weight:700;text-align:center">① 仲羽田（元柄 3文字）<br><span style="font-size:10px;opacity:.85">伝統の3文字エンドレス角字</span></button>
+          <button type="button" class="chip" data-motif="seinenkai" aria-pressed="false" style="padding:6px 6px;border-radius:7px;font-size:11.5px;font-weight:700;text-align:center">🆕 ② 仲羽田青年会（新 6文字）<br><span style="font-size:10px;opacity:.85">元柄と同デザインの6文字連結</span></button>
+        </div>
       </div>
 
       <!-- 🏯 手ぬぐい工房で作った手ぬぐいを入れる・合体連携ボックス（折りたたみでスッキリ） -->
@@ -196,20 +208,97 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
       <p class="msg" id="saveMsg" role="status" style="min-height:0"></p>
     </section>
 
-    <!-- 2. 布の大きさ -->
+    <!-- 2. 布・タオルの大きさ ＆ 🧣 タオル制作設定 -->
     <section aria-labelledby="h-size" data-cat="pattern">
-      <h2 id="h-size"><span>布の大きさ</span><button class="chip" id="flipOrient" style="padding:2px 8px;font-size:11px">縦横入替 ⇄</button></h2>
+      <h2 id="h-size"><span>布・タオルの大きさ</span><button class="chip" id="flipOrient" style="padding:2px 8px;font-size:11px">縦横入替 ⇄</button></h2>
+      <div style="font-size:11px;font-weight:700;color:var(--muted)">📜 手ぬぐい規格サイズ:</div>
       <div class="chips" id="presets">
-        <button class="chip" data-w="350" data-h="900" aria-pressed="true">縦 35×90</button>
-        <button class="chip" data-w="900" data-h="350" aria-pressed="false">横 90×35</button>
+        <button class="chip" data-w="350" data-h="900" aria-pressed="true">手ぬぐい縦 35×90</button>
+        <button class="chip" data-w="900" data-h="350" aria-pressed="false">手ぬぐい横 90×35</button>
         <button class="chip" data-w="330" data-h="900" aria-pressed="false">33×90</button>
         <button class="chip" data-w="350" data-h="1000" aria-pressed="false">面手ぬぐい 35×100</button>
         <button class="chip" data-w="350" data-h="450" aria-pressed="false">ハーフ 35×45</button>
         <button class="chip" data-w="450" data-h="450" aria-pressed="false">ハンカチ 45×45</button>
+        <button class="chip" data-w="840" data-h="340" data-towel="face_h" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 フェイスタオル横 84×34</button>
+        <button class="chip" data-w="340" data-h="840" data-towel="face_v" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 フェイスタオル縦 34×84</button>
+        <button class="chip" data-w="1100" data-h="200" data-towel="muffler" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 マフラースリム 110×20</button>
+        <button class="chip" data-w="1100" data-h="400" data-towel="sports" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 スポーツタオル 110×40</button>
+        <button class="chip" data-w="1200" data-h="600" data-towel="bath" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 バスタオル 120×60</button>
+        <button class="chip" data-w="250" data-h="250" data-towel="hand" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 ハンドタオル 25×25</button>
       </div>
       <div class="pair">
         <label class="field"><span>幅 mm</span><input type="number" id="W" min="50" max="2000" step="1" value="350"></label>
         <label class="field"><span>丈 mm</span><input type="number" id="H" min="50" max="3000" step="1" value="900"></label>
+      </div>
+    </section>
+
+    <!-- 2-B. 🧣 タオル制作・タオル専用デザイン設定（新規追加） -->
+    <section id="sec-towel" aria-labelledby="h-towel" data-cat="towel">
+      <h2 id="h-towel"><span>🧣 タオルを作る（祭りタオル・マフラー・今治風）</span><span class="badge">Illustrator .ai 完全対応</span></h2>
+      <div class="cgroup" style="background:#f0f9ff;border:1.5px solid #38bdf8">
+        <span class="clabel" style="font-size:12px;color:#0369a1">① 🧣 タオルの種類・サイズ規格を選ぶ（ワンクリック設定）</span>
+        <div class="chips" id="towelTypeChips">
+          <button type="button" class="chip" data-twtype="face_h" style="font-weight:700">① フェイスタオル(横 84×34cm)</button>
+          <button type="button" class="chip" data-twtype="face_v" style="font-weight:700">② フェイスタオル(縦 34×84cm)</button>
+          <button type="button" class="chip" data-twtype="muffler" style="font-weight:700">③ マフラースリム(首掛け 110×20cm)</button>
+          <button type="button" class="chip" data-twtype="sports" style="font-weight:700">④ スポーツタオル(大判 110×40cm)</button>
+          <button type="button" class="chip" data-twtype="bath" style="font-weight:700">⑤ バスタオル(特大 120×60cm)</button>
+          <button type="button" class="chip" data-twtype="hand" style="font-weight:700">⑥ ハンドタオル(25×25cm)</button>
+          <button type="button" class="chip" data-twtype="tenugui" style="font-size:11px">📜 手ぬぐい(35×90cm)に戻す</button>
+        </div>
+
+        <span class="clabel" style="font-size:12px;color:#0369a1;margin-top:4px">② ✨ 祭りタオル定番デザイン・一発テンプレート</span>
+        <div class="chips" id="towelQuickTemplates">
+          <button type="button" class="mini-btn" data-twtpl="seinenkai_muffler" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700">🎌「仲羽田青年会」マフラータオル</button>
+          <button type="button" class="mini-btn" data-twtpl="seinenkai_face" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700">🎌「仲羽田青年会」フェイスタオル</button>
+          <button type="button" class="mini-btn" data-twtpl="center_box_face" style="background:#fef3c7;color:#78350f;border-color:#f59e0b;font-weight:700">🏮 中央白抜き箱文字＋角字タオル</button>
+          <button type="button" class="mini-btn" data-twtpl="hemi_band_face" style="background:#dcfce7;color:#14532d;border-color:#16a34a;font-weight:700">🧣 両端ヘムライン＋二重枠タオル</button>
+          <button type="button" class="mini-btn" data-twtpl="crest_sports" style="background:#f3e8ff;color:#581c87;border-color:#a855f7;font-weight:700">💮 丸紋＋角字スポーツタオル</button>
+          <button type="button" class="mini-btn" data-twtpl="clear_towel_deco" style="background:#f1f5f9;color:#475569;border-color:#cbd5e1">🔄 タオル枠・ヘムをOFF</button>
+        </div>
+      </div>
+
+      <div class="cgroup">
+        <span class="clabel" style="font-size:12px">③ タオル専用枠・両端ヘム（平織り帯）・パイル地プレビュー</span>
+        <div class="crow2">
+          <label class="chk" style="font-weight:700;color:#0369a1"><input type="checkbox" id="towelHem">両端ヘムライン（タオル端帯）</label>
+          <label class="chk" style="font-weight:700;color:#0369a1"><input type="checkbox" id="towelBorder">タオル外周ボーダー枠</label>
+          <label class="chk" style="font-weight:700;color:#0369a1"><input type="checkbox" id="towelCenterBox">中央ロゴ・文字用の抜き座布団枠</label>
+          <label class="chk"><input type="checkbox" id="towelPile">パイル織り質感プレビュー</label>
+        </div>
+
+        <div class="pair" style="margin-top:2px">
+          <label class="field"><span>外周ボーダー枠のスタイル</span>
+            <select id="towelBorderStyle" style="font-size:11.5px;font-weight:600">
+              <option value="double">二重太細枠（祭りタオル定番）</option>
+              <option value="bold">極太一重枠（スポーツ・マフラー風）</option>
+              <option value="corner">隅切り飾り枠（伝統木札風）</option>
+            </select>
+          </label>
+          <label class="field"><span>両端ヘム・枠線の色</span>
+            <div style="display:flex;gap:5px;align-items:center">
+              <input type="color" id="towelHemColor" value="#ffffff">
+              <button type="button" class="mini-btn" id="towelHemSyncFgBtn" style="font-size:10.5px">文字色に合わせる</button>
+            </div>
+          </label>
+        </div>
+
+        <div class="row"><label for="towelHemWidth">両端ヘム帯の幅</label><input type="range" id="towelHemWidth" min="10" max="140" step="2" value="42"><output for="towelHemWidth" id="towelHemWidth-o">42 mm</output></div>
+        <div class="row"><label for="towelBorderMargin">外周枠の余白(内側)</label><input type="range" id="towelBorderMargin" min="5" max="60" step="1" value="18"><output for="towelBorderMargin" id="towelBorderMargin-o">18 mm</output></div>
+        <div class="row"><label for="towelBorderWidth">外周枠の太さ</label><input type="range" id="towelBorderWidth" min="1.5" max="20" step="0.5" value="5"><output for="towelBorderWidth" id="towelBorderWidth-o">5 mm</output></div>
+
+        <details class="adv-details" id="towelCenterBoxDetails">
+          <summary>⚙️ 中央抜き座布団枠（タオル中央の横文字・会名ボックス）詳細</summary>
+          <div class="adv-body">
+            <div class="row"><label for="towelCenterBoxW">中央枠の横幅(%)</label><input type="range" id="towelCenterBoxW" min="20" max="92" step="1" value="58"><output for="towelCenterBoxW" id="towelCenterBoxW-o">58%</output></div>
+            <div class="row"><label for="towelCenterBoxH">中央枠の高さ(%)</label><input type="range" id="towelCenterBoxH" min="18" max="88" step="1" value="46"><output for="towelCenterBoxH" id="towelCenterBoxH-o">46%</output></div>
+            <div class="pair">
+              <label class="field"><span>中央枠の塗り色</span><input type="color" id="towelCenterBoxBg" value="#046e7e"></label>
+              <label class="field"><span>中央枠のフチ色</span><input type="color" id="towelCenterBoxStroke" value="#ffffff"></label>
+            </div>
+          </div>
+        </details>
+        <p class="note">💡 タオルの両端ヘム帯・外周枠・中央座布団枠もすべて<b>Illustrator (.ai / .svg) に完全ベクターレイヤー（Towel_Frame_Vector）として出力</b>されます。</p>
       </div>
     </section>
 
@@ -1238,10 +1327,16 @@ const DEF={
   bgColor:'#046e7e', kakuColor:'#ffffff', dotColor:'#ffffff', showBg:true,
   // 手ぬぐい工房で作った手ぬぐい・外部手ぬぐい画像のベース生地連携
   useKoboBase:false, koboBaseName:'', koboBaseDataUrl:'',
-  // 仲羽田（江戸角字）パラメーター
+  // 仲羽田 / 仲羽田青年会（江戸角字）パラメーター
+  kakuMotif:'haneda', // 'haneda' (元柄3文字「仲羽田」) | 'seinenkai' (新6文字「仲羽田青年会」)
   kakuSize:48, kakuScale:100, kakuDensity:100, kakuWeight:100,
   kakuInnerGap:100, kakuColGap:0, kakuRowGap:0,
   kakuAngle:-30.15, kakuOffX:0, kakuOffY:0,
+  // 🧣 タオル制作・タオル専用枠・ヘム設定パラメーター
+  towelHem:false, towelHemWidth:42, towelHemColor:'#ffffff',
+  towelBorder:false, towelBorderStyle:'double', towelBorderMargin:18, towelBorderWidth:5,
+  towelCenterBox:false, towelCenterBoxW:58, towelCenterBoxH:46, towelCenterBoxBg:'#046e7e', towelCenterBoxStroke:'#ffffff',
+  towelPile:false,
   // 丸紋「仲はねだ」＆下部帯パラメーター
   showCrest:false, crestSize:62, crestAngle:0, crestWeight:0, crestX:50, crestY:80,
   crestFg:'#877028', crestBg:'#ffffff',
@@ -3380,7 +3475,98 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
     }
   }
 
+  // 3. 🧣 タオル専用枠・両端ヘムライン・中央抜き座布団枠のベクタープリミティブを追加
+  const towelItems = buildTowelDecoVectorItemsMm(st);
+  if(towelItems.length > 0){
+    fudaFrameItems.unshift(...towelItems);
+  }
+
   return { logoVectorItems, logoSvgImages, fudaFrameItems, fudaTextItems };
+}
+
+// 🧣 タオル専用装飾（両端ヘム帯・外周ボーダー枠・中央座布団枠）のベクターポリゴン群をmm座標で生成
+function buildTowelDecoVectorItemsMm(cfg){
+  const st = cfg || S;
+  const W = st.W || 350, H = st.H || 900;
+  const items = [];
+  const rectPts = (x0, y0, w, h) => [[x0, y0], [x0 + w, y0], [x0 + w, y0 + h], [x0, y0 + h]];
+  const hemCol = st.towelHemColor || st.kakuColor || '#ffffff';
+  const bgCol = st.bgColor || '#046e7e';
+  const isHoriz = W >= H;
+
+  // 1. 両端ヘムライン（タオルの左右端または上下端の平織り帯＆飾りライン）
+  if(st.towelHem){
+    const hw = Math.max(8, Math.min((isHoriz ? W : H) * 0.28, st.towelHemWidth || 42));
+    const lineT = Math.max(2, hw * 0.14);
+    const gapT = Math.max(2, hw * 0.10);
+    if(isHoriz){
+      // 左端・右端のヘム地色マスク＋太細二重ライン
+      items.push({ type: 'poly', fill: bgCol, stroke: null, pts: rectPts(0, 0, hw, H) });
+      items.push({ type: 'poly', fill: bgCol, stroke: null, pts: rectPts(W - hw, 0, hw, H) });
+      items.push({ type: 'poly', fill: hemCol, stroke: null, pts: rectPts(hw - lineT, 0, lineT, H) });
+      items.push({ type: 'poly', fill: hemCol, stroke: null, pts: rectPts(hw - lineT - gapT - lineT * 0.5, 0, lineT * 0.5, H) });
+      items.push({ type: 'poly', fill: hemCol, stroke: null, pts: rectPts(W - hw, 0, lineT, H) });
+      items.push({ type: 'poly', fill: hemCol, stroke: null, pts: rectPts(W - hw + lineT + gapT, 0, lineT * 0.5, H) });
+    }else{
+      // 上端・下端のヘム地色マスク＋太細二重ライン
+      items.push({ type: 'poly', fill: bgCol, stroke: null, pts: rectPts(0, 0, W, hw) });
+      items.push({ type: 'poly', fill: bgCol, stroke: null, pts: rectPts(0, H - hw, W, hw) });
+      items.push({ type: 'poly', fill: hemCol, stroke: null, pts: rectPts(0, hw - lineT, W, lineT) });
+      items.push({ type: 'poly', fill: hemCol, stroke: null, pts: rectPts(0, hw - lineT - gapT - lineT * 0.5, W, lineT * 0.5) });
+      items.push({ type: 'poly', fill: hemCol, stroke: null, pts: rectPts(0, H - hw, W, lineT) });
+      items.push({ type: 'poly', fill: hemCol, stroke: null, pts: rectPts(0, H - hw + lineT + gapT, W, lineT * 0.5) });
+    }
+  }
+
+  // 2. タオル外周ボーダー枠（二重太細枠 / 極太一重枠 / 隅切り飾り枠）
+  if(st.towelBorder){
+    const mg = Math.max(3, st.towelBorderMargin || 18);
+    const bw = Math.max(1, st.towelBorderWidth || 5);
+    const bStyle = st.towelBorderStyle || 'double';
+    const x0 = mg, y0 = mg, rw = Math.max(10, W - mg * 2), rh = Math.max(10, H - mg * 2);
+    // 外周の余白帯を地色で抜いてすっきり見せる
+    items.push({ type: 'poly', fill: null, stroke: bgCol, strokeWidth: bw * 2.2, pts: rectPts(x0, y0, rw, rh) });
+    if(bStyle === 'corner'){
+      const c = Math.min(rw, rh) * 0.08;
+      const oct = [
+        [x0 + c, y0], [x0 + rw - c, y0], [x0 + rw, y0 + c], [x0 + rw, y0 + rh - c],
+        [x0 + rw - c, y0 + rh], [x0 + c, y0 + rh], [x0, y0 + rh - c], [x0, y0 + c]
+      ];
+      items.push({ type: 'poly', fill: null, stroke: hemCol, strokeWidth: bw, pts: oct });
+      const g = bw * 1.4;
+      const octIn = [
+        [x0 + c + g*0.5, y0 + g], [x0 + rw - c - g*0.5, y0 + g], [x0 + rw - g, y0 + c + g*0.5], [x0 + rw - g, y0 + rh - c - g*0.5],
+        [x0 + rw - c - g*0.5, y0 + rh - g], [x0 + c + g*0.5, y0 + rh - g], [x0 + g, y0 + rh - c - g*0.5], [x0 + g, y0 + c + g*0.5]
+      ];
+      items.push({ type: 'poly', fill: null, stroke: hemCol, strokeWidth: Math.max(0.8, bw * 0.38), pts: octIn });
+    }else{
+      items.push({ type: 'poly', fill: null, stroke: hemCol, strokeWidth: bw, pts: rectPts(x0, y0, rw, rh) });
+      if(bStyle === 'double'){
+        const inGap = bw * 1.35;
+        if(rw > inGap * 2 && rh > inGap * 2){
+          items.push({ type: 'poly', fill: null, stroke: hemCol, strokeWidth: Math.max(0.8, bw * 0.38), pts: rectPts(x0 + inGap, y0 + inGap, rw - inGap * 2, rh - inGap * 2) });
+        }
+      }
+    }
+  }
+
+  // 3. 中央ロゴ・文字用の抜き座布団枠（タオル中央の会名ボックス）
+  if(st.towelCenterBox){
+    const cw = W * ((st.towelCenterBoxW || 58) / 100);
+    const ch = H * ((st.towelCenterBoxH || 46) / 100);
+    const cx0 = (W - cw) / 2, cy0 = (H - ch) / 2;
+    const bw = Math.max(1.5, (st.towelBorderWidth || 5) * 0.85);
+    const boxBg = st.towelCenterBoxBg || bgCol;
+    const boxSt = st.towelCenterBoxStroke || hemCol;
+    const pad = bw * 1.2;
+    items.push({ type: 'poly', fill: boxBg, stroke: null, pts: rectPts(cx0 - pad, cy0 - pad, cw + pad * 2, ch + pad * 2) });
+    items.push({ type: 'poly', fill: boxBg, stroke: boxSt, strokeWidth: bw, pts: rectPts(cx0, cy0, cw, ch) });
+    const inG = bw * 1.4;
+    if(cw > inG * 3 && ch > inG * 3){
+      items.push({ type: 'poly', fill: null, stroke: boxSt, strokeWidth: Math.max(0.8, bw * 0.38), pts: rectPts(cx0 + inG, cy0 + inG, cw - inG * 2, ch - inG * 2) });
+    }
+  }
+  return items;
 }
 
 let FUDA_STAGE_GIZMOS = [];
@@ -3388,6 +3574,34 @@ let FUDA_STAGE_GIZMOS = [];
 function drawCustomLogoAndTextMm(x, cfg){
   const st = cfg || S;
   if(st === S) FUDA_STAGE_GIZMOS = [];
+  // 0. 🧣 タオル専用枠・両端ヘムライン・中央抜き座布団枠・パイル地質感を描画
+  const towelItems = buildTowelDecoVectorItemsMm(st);
+  if(towelItems.length > 0){
+    x.save();
+    for(const it of towelItems){
+      if(it.type === 'poly' && it.pts && it.pts.length >= 3){
+        x.beginPath();
+        x.moveTo(it.pts[0][0], it.pts[0][1]);
+        for(let i = 1; i < it.pts.length; i++) x.lineTo(it.pts[i][0], it.pts[i][1]);
+        x.closePath();
+        if(it.fill){ x.fillStyle = it.fill; x.fill(); }
+        if(it.stroke){ x.strokeStyle = it.stroke; x.lineWidth = it.strokeWidth || 1; x.lineJoin = 'miter'; x.stroke(); }
+      }
+    }
+    x.restore();
+  }
+  if(st.towelPile){
+    x.save();
+    x.strokeStyle = 'rgba(255,255,255,0.09)';
+    x.lineWidth = 0.45;
+    const step = 3.2;
+    x.beginPath();
+    for(let py = step; py < st.H; py += step){
+      x.moveTo(0, py); x.lineTo(st.W, py);
+    }
+    x.stroke();
+    x.restore();
+  }
   // 1. カスタムロゴ画像描画（複数スロット＆ちりばめ総柄対応）
   if(st.showLogo){
     if(st === S) syncActiveSlotFromS();
@@ -3592,6 +3806,71 @@ function buildKakuCellRects(t, colAdd, rowAdd, gapRatio){
   return {H_ROW, DX_ROW, PX, rects};
 }
 
+// 🆕 ユーザー提供「仲羽田青年会」6文字SVG（viewBox="0 0 488.5 86.91"）の完全非重複矩形リストとシームレス格子定義
+const SEINENKAI_CHAR_RECTS = [
+  // 0: 仲 (x: 0 .. 86.8)
+  [[16.3,0,5.9,32.5],[56.8,0,5.9,8.1],[32.5,8.1,54.3,6],[32.5,14.1,5.8,50.8],[56.8,14.1,5.9,50.8],[81,14.1,5.8,50.8],[0,32.5,22.2,5.8],[8.2,38.3,5.9,48.6],[32.5,64.9,54.3,5.8],[56.8,70.7,5.9,16.2]],
+  // 1: 羽 (x: 81.2 .. 168.11)
+  [[81.2,0,38.4,5.9],[129.91,0,38.2,5.9],[113.8,5.9,5.8,81.01],[162.31,5.9,5.8,81.01],[81.2,24.4,22.2,5.8],[129.9,24.4,22,5.8],[81.2,56.8,22.2,5.8],[129.9,56.8,22,5.8]],
+  // 2: 田 (x: 162.4 .. 249.31)
+  [[162.4,0,86.91,5.9],[162.4,5.9,5.9,75.2],[203,5.9,5.8,34.7],[243.5,5.9,5.81,75.2],[178.7,40.6,54.4,5.8],[203,46.4,5.8,34.7],[162.4,81.1,86.91,5.81]],
+  // 3: 青 (x: 243.6 .. 330.5)
+  [[284.2,0,5.8,8.1],[243.6,8.1,86.9,6],[284.2,14.1,5.8,10.3],[251.8,24.4,70.6,5.8],[284.2,30.2,5.8,10.4],[243.6,40.6,86.9,5.8],[251.8,46.4,5.9,10.4],[316.6,46.4,5.8,40.5],[251.8,56.8,54.5,5.8],[251.8,62.6,5.9,10.3],[251.8,72.9,54.5,5.8],[251.8,78.7,5.9,8.2]],
+  // 4: 年 (x: 322.6 .. 409.5)
+  [[330.8,0,5.9,8.1],[330.8,8.1,78.7,6],[330.8,14.1,5.9,10.3],[371.3,14.1,5.8,18.4],[322.6,24.4,14.1,5.8],[338.9,32.5,62.5,5.8],[338.9,38.3,5.9,26.6],[371.3,38.3,5.8,26.6],[322.6,64.9,86.9,5.8],[371.3,70.7,5.8,16.2]],
+  // 5: 会 (x: 401.6 .. 488.51)
+  [[409.8,0,70.6,5.9],[409.8,5.9,5.9,26.6],[474.6,5.9,5.8,26.6],[426,24.4,38.3,5.8],[401.6,32.5,14.1,5.8],[474.6,32.5,13.9,5.8],[401.6,48.6,86.91,5.9],[417.91,54.5,5.9,26.6],[474.61,64.9,5.8,16.2],[417.91,81.1,62.5,5.8]]
+];
+
+function buildSeinenkaiCellRects(t, colAdd, rowAdd){
+  // 元柄（216単位）と同じスケール感に合わせるため 216 / 81.11 倍に正規化
+  const S_U = 216 / 81.11;
+  // 段間隔0のときは元柄「仲羽田」と同様に上下の段がシームレス直結（81.11単位＝216）、段間隔プラスで段間が開く
+  const H_ROW = 216 + rowAdd;
+  const charPitch = 80.45 * S_U + colAdd * 0.5;
+  // 1段ごとに2文字分（仲羽田と同じ階段リズム）シフトして斜め格子を形成
+  const DX_ROW = charPitch * 2;
+  const PX = 482.7 * S_U + colAdd * 3.0;
+  // 線の太さスライダー（標準 t=15 で元SVG通りの 5.85 単位）
+  const weightRatio = t / 15;
+  const baseStroke = 5.85 * S_U;
+  const deltaT = baseStroke * (weightRatio - 1);
+
+  const rects = [];
+  for(let cIdx = 0; cIdx < SEINENKAI_CHAR_RECTS.length; cIdx++){
+    const cShiftX = cIdx * (colAdd * 0.5);
+    const charArr = SEINENKAI_CHAR_RECTS[cIdx];
+    for(let i = 0; i < charArr.length; i++){
+      const [rx, ry, rw, rh] = charArr[i];
+      let x = rx * S_U + cShiftX;
+      let y = ry * S_U;
+      let w = rw * S_U;
+      let h = rh * S_U;
+      // 細線・太線スライダーに応じて各ストロークを中心に拡縮
+      if(Math.abs(deltaT) > 0.01){
+        if(rw <= 8.5 && rh > 8.5){
+          const nw = Math.max(1.2, w + deltaT);
+          x -= (nw - w) * 0.5;
+          w = nw;
+        }else if(rh <= 8.5 && rw > 8.5){
+          const nh = Math.max(1.2, h + deltaT);
+          y -= (nh - h) * 0.5;
+          h = nh;
+        }else{
+          const nw = Math.max(1.2, w + deltaT * 0.6);
+          const nh = Math.max(1.2, h + deltaT * 0.6);
+          x -= (nw - w) * 0.5;
+          y -= (nh - h) * 0.5;
+          w = nw;
+          h = nh;
+        }
+      }
+      rects.push([x, y, w, h]);
+    }
+  }
+  return { H_ROW, DX_ROW, PX, rects };
+}
+
 // Sutherland-Hodgman 2D矩形クリッピング（回転した角字ポリゴンを布領域 [xmin,ymin,xmax,ymax] で正確に切り落とす）
 function clipPolyRect(poly, xmin, ymin, xmax, ymax){
   let pts = poly;
@@ -3670,7 +3949,9 @@ function layoutKaku(){
   const rowAdd = S.kakuRowGap * 2.16;
   const gapRatio = S.kakuInnerGap / 100;
 
-  const {H_ROW, DX_ROW, PX, rects} = buildKakuCellRects(t, colAdd, rowAdd, gapRatio);
+  const {H_ROW, DX_ROW, PX, rects} = (S.kakuMotif === 'seinenkai')
+    ? buildSeinenkaiCellRects(t, colAdd, rowAdd)
+    : buildKakuCellRects(t, colAdd, rowAdd, gapRatio);
   const uToMm = effRowMm / H_ROW;
   const strokeMm = t * uToMm;
 
@@ -3907,7 +4188,7 @@ function renderArbitraryTenuguiCanvas(st, includeOverlays, pxPerMm, patScaleMul)
   let polys = KAKU_POLYS;
   let dots = DOTS;
   const isSamePatternAsS = (
-    cfg.W===S.W && cfg.H===S.H && cfg.mode===S.mode &&
+    cfg.W===S.W && cfg.H===S.H && cfg.mode===S.mode && (cfg.kakuMotif||'haneda')===(S.kakuMotif||'haneda') &&
     cfg.kakuSize===S.kakuSize && Math.abs((cfg.kakuScale||100)-(S.kakuScale||100))<0.1 &&
     cfg.kakuDensity===S.kakuDensity && cfg.kakuWeight===S.kakuWeight &&
     cfg.kakuInnerGap===S.kakuInnerGap && cfg.kakuColGap===S.kakuColGap &&
@@ -4043,7 +4324,7 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
   let polys = KAKU_POLYS;
   let dots = DOTS;
   const isSamePatternAsS = (
-    cfg.W===S.W && cfg.H===S.H && cfg.mode===S.mode &&
+    cfg.W===S.W && cfg.H===S.H && cfg.mode===S.mode && (cfg.kakuMotif||'haneda')===(S.kakuMotif||'haneda') &&
     cfg.kakuSize===S.kakuSize && Math.abs((cfg.kakuScale||100)-(S.kakuScale||100))<0.1 &&
     cfg.kakuDensity===S.kakuDensity && cfg.kakuWeight===S.kakuWeight &&
     cfg.kakuInnerGap===S.kakuInnerGap && cfg.kakuColGap===S.kakuColGap &&
@@ -6840,6 +7121,7 @@ const ranges={
   textSpacing:v=>(v>0?'+':'')+v+'%', textOutlineW:v=>v+'', textAngle:v=>(v>0?'+':'')+v+'°', textX:v=>v+'%', textY:v=>v+'%',
   textRepeatGapX:v=>v+' mm', textRepeatGapY:v=>v+' mm', textRepeatGridAngle:v=>(v>0?'+':'')+v+'°', textRepeatAngleVar:v=>v+'°', textRepeatSizeVar:v=>v+'%',
   daboShiftY:v=>(v>0?'+':'')+v+'%', daboShiftX:v=>(v>0?'+':'')+v+'%', daboSleeveShiftY:v=>(v>0?'+':'')+v+'%', daboPatScale:v=>v+'%',
+  towelHemWidth:v=>v+' mm', towelBorderMargin:v=>v+' mm', towelBorderWidth:v=>v+' mm', towelCenterBoxW:v=>v+'%', towelCenterBoxH:v=>v+'%',
   bandH:v=>v+' mm',
   count:v=>v+' 粒', gap:v=>v+' mm', spread:v=>v+'', grad:v=>(v>0?'+':'')+v,
   margin:v=>v+' mm', dmin:v=>v+' mm', dmax:v=>v+' mm', bigratio:v=>v+'%', scale:v=>v+'%'
@@ -6976,12 +7258,36 @@ function syncUI(){
 
   // モード別表示切替
   for(const b of document.querySelectorAll('#modeTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.mode===S.mode)+'');
+  for(const b of document.querySelectorAll('#kakuMotifTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.motif===(S.kakuMotif||'haneda'))+'');
   for(const b of document.querySelectorAll('#layerOrderTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.order===(S.layerOrder||'kakuFront'))+'');
+  if($('kakuMotifBox')) $('kakuMotifBox').hidden = (S.mode === 'arare' || S.mode === 'scatter');
   $('sec-haneda').hidden = (S.mode === 'arare' || S.mode === 'scatter');
   $('kakuColorGroup').hidden = (S.mode === 'arare' || S.mode === 'scatter');
   $('sec-arare').hidden = (S.mode === 'haneda' || S.mode === 'scatter');
   $('dotColorGroup').hidden = (S.mode === 'haneda' || S.mode === 'scatter');
   if($('layerOrderBox')) $('layerOrderBox').hidden = (S.mode === 'scatter');
+
+  // 🧣 タオルUI同期
+  if($('towelHem')) $('towelHem').checked = !!S.towelHem;
+  if($('towelBorder')) $('towelBorder').checked = !!S.towelBorder;
+  if($('towelCenterBox')) $('towelCenterBox').checked = !!S.towelCenterBox;
+  if($('towelPile')) $('towelPile').checked = !!S.towelPile;
+  if($('towelBorderStyle')) $('towelBorderStyle').value = S.towelBorderStyle || 'double';
+  if($('towelHemColor')) $('towelHemColor').value = S.towelHemColor || S.kakuColor || '#ffffff';
+  if($('towelCenterBoxBg')) $('towelCenterBoxBg').value = S.towelCenterBoxBg || S.bgColor || '#046e7e';
+  if($('towelCenterBoxStroke')) $('towelCenterBoxStroke').value = S.towelCenterBoxStroke || S.kakuColor || '#ffffff';
+  for(const b of document.querySelectorAll('#towelTypeChips .chip')){
+    const tp = b.dataset.twtype;
+    let isMatch = false;
+    if(tp==='face_h') isMatch = (S.W===840 && S.H===340);
+    else if(tp==='face_v') isMatch = (S.W===340 && S.H===840);
+    else if(tp==='muffler') isMatch = (S.W===1100 && S.H===200);
+    else if(tp==='sports') isMatch = (S.W===1100 && S.H===400);
+    else if(tp==='bath') isMatch = (S.W===1200 && S.H===600);
+    else if(tp==='hand') isMatch = (S.W===250 && S.H===250);
+    else if(tp==='tenugui') isMatch = (S.W===350 && S.H===900);
+    b.setAttribute('aria-pressed', isMatch+'');
+  }
 
   for(const [hex,key] of [['bgHex','bgColor'],['kakuHex','kakuColor'],['dotHex','dotColor'],['crestFgHex','crestFg'],['crestBgHex','crestBg']]){
     if($(hex) && document.activeElement!==$(hex)){$(hex).value=S[key].toUpperCase();$(hex).setAttribute('aria-invalid','false');}
@@ -7011,7 +7317,8 @@ const NO_LAYOUT_KEYS = new Set([
   'logoRepeatGapX','logoRepeatGapY','logoRepeatGridAngle','logoRepeatAngleVar','logoRepeatSizeVar',
   'textSize','fudaWidthPct','fudaHeightPct','fudaDepth3d','fudaOpacity','fudaNonTextOpacity','fudaSubOffX','fudaSubOffY','fudaSubAngle','textSpacing','textOutlineW','textAngle','textX','textY',
   'textRepeatGapX','textRepeatGapY','textRepeatGridAngle','textRepeatAngleVar','textRepeatSizeVar',
-  'daboShiftY','daboShiftX','daboSleeveShiftY','daboPatScale'
+  'daboShiftY','daboShiftX','daboSleeveShiftY','daboPatScale',
+  'towelHemWidth','towelBorderMargin','towelBorderWidth','towelCenterBoxW','towelCenterBoxH'
 ]);
 
 for(const k in ranges){
@@ -7033,6 +7340,75 @@ if($('kakuAngleNum')){
 for(const k of ['W','H'])$(k).addEventListener('change',e=>{const v=Math.round(parseFloat(e.target.value));if(v>=50){S[k]=Math.min(v,k==='W'?2000:3000);update(true);}else syncUI();});
 $('flipOrient').addEventListener('click',()=>{const tmp=S.W; S.W=S.H; S.H=tmp; update(true);});
 document.querySelectorAll('#modeTabs .chip').forEach(b=>b.addEventListener('click',()=>{S.mode=b.dataset.mode; update(true);}));
+document.querySelectorAll('#kakuMotifTabs .chip').forEach(b=>b.addEventListener('click',()=>{
+  S.kakuMotif = b.dataset.motif || 'haneda';
+  if(S.mode === 'arare' || S.mode === 'scatter') S.mode = 'haneda';
+  update(true);
+}));
+// 🧣 タオル種類チップ・テンプレート・設定イベント配線
+function applyTowelTypeSize(twtype){
+  if(twtype==='face_h'){ S.W=840; S.H=340; S.viewMode='fabric'; }
+  else if(twtype==='face_v'){ S.W=340; S.H=840; S.viewMode='fabric'; }
+  else if(twtype==='muffler'){ S.W=1100; S.H=200; S.viewMode='fabric'; }
+  else if(twtype==='sports'){ S.W=1100; S.H=400; S.viewMode='fabric'; }
+  else if(twtype==='bath'){ S.W=1200; S.H=600; S.viewMode='fabric'; }
+  else if(twtype==='hand'){ S.W=250; S.H=250; S.viewMode='fabric'; }
+  else if(twtype==='tenugui'){ S.W=350; S.H=900; S.towelHem=false; S.towelBorder=false; S.towelCenterBox=false; S.towelPile=false; }
+  update(true);
+}
+document.querySelectorAll('#towelTypeChips .chip').forEach(b=>b.addEventListener('click',()=>applyTowelTypeSize(b.dataset.twtype)));
+document.querySelectorAll('#towelQuickTemplates button').forEach(b=>b.addEventListener('click',()=>{
+  const tpl = b.dataset.twtpl;
+  S.viewMode = 'fabric';
+  if(tpl === 'seinenkai_muffler'){
+    Object.assign(S, {
+      W:1100, H:200, mode:'haneda', kakuMotif:'seinenkai', kakuAngle:-30.15, kakuSize:42,
+      towelHem:true, towelHemWidth:48, towelHemColor:S.kakuColor||'#ffffff',
+      towelBorder:true, towelBorderStyle:'bold', towelBorderMargin:12, towelBorderWidth:4,
+      towelCenterBox:false, towelPile:true
+    });
+  }else if(tpl === 'seinenkai_face'){
+    Object.assign(S, {
+      W:840, H:340, mode:'haneda', kakuMotif:'seinenkai', kakuAngle:-30.15, kakuSize:46,
+      towelHem:true, towelHemWidth:44, towelHemColor:S.kakuColor||'#ffffff',
+      towelBorder:true, towelBorderStyle:'double', towelBorderMargin:16, towelBorderWidth:5,
+      towelCenterBox:false, towelPile:true
+    });
+  }else if(tpl === 'center_box_face'){
+    Object.assign(S, {
+      W:840, H:340, mode:'haneda', kakuMotif:'seinenkai', kakuAngle:-30.15, kakuSize:46,
+      towelHem:true, towelHemWidth:42, towelHemColor:S.kakuColor||'#ffffff',
+      towelBorder:true, towelBorderStyle:'double', towelBorderMargin:16, towelBorderWidth:5,
+      towelCenterBox:true, towelCenterBoxW:56, towelCenterBoxH:46, towelCenterBoxBg:S.bgColor||'#046e7e', towelCenterBoxStroke:S.kakuColor||'#ffffff',
+      showText:true, customTextStr:'仲羽田青年会', customTextVert:false, customTextFrame:'none', textSize:52, textX:50, textY:50, textAngle:0, towelPile:true
+    });
+  }else if(tpl === 'hemi_band_face'){
+    Object.assign(S, {
+      W:840, H:340, mode:'haneda', t:100,
+      towelHem:true, towelHemWidth:52, towelHemColor:S.kakuColor||'#ffffff',
+      towelBorder:true, towelBorderStyle:'corner', towelBorderMargin:18, towelBorderWidth:5,
+      towelCenterBox:false, towelPile:true
+    });
+  }else if(tpl === 'crest_sports'){
+    Object.assign(S, {
+      W:1100, H:400, mode:'haneda', kakuMotif:'seinenkai', kakuAngle:-30.15,
+      towelHem:true, towelHemWidth:55, towelHemColor:S.kakuColor||'#ffffff',
+      towelBorder:true, towelBorderStyle:'double', towelBorderMargin:20, towelBorderWidth:5.5,
+      towelCenterBox:false, showCrest:true, crestSize:140, crestX:50, crestY:50, towelPile:true
+    });
+  }else if(tpl === 'clear_towel_deco'){
+    Object.assign(S, { towelHem:false, towelBorder:false, towelCenterBox:false, towelPile:false });
+  }
+  update(true);
+}));
+['towelHem','towelBorder','towelCenterBox','towelPile'].forEach(id=>{
+  if($(id)) $(id).addEventListener('change',e=>{ S[id]=e.target.checked; S.viewMode='fabric'; update(false); });
+});
+if($('towelBorderStyle')) $('towelBorderStyle').addEventListener('change',e=>{ S.towelBorderStyle=e.target.value; S.towelBorder=true; update(false); });
+if($('towelHemColor')) $('towelHemColor').addEventListener('input',e=>{ S.towelHemColor=e.target.value; update(false); });
+if($('towelHemSyncFgBtn')) $('towelHemSyncFgBtn').addEventListener('click',()=>{ S.towelHemColor=S.kakuColor||'#ffffff'; S.towelCenterBoxStroke=S.kakuColor||'#ffffff'; update(false); });
+if($('towelCenterBoxBg')) $('towelCenterBoxBg').addEventListener('input',e=>{ S.towelCenterBoxBg=e.target.value; S.towelCenterBox=true; update(false); });
+if($('towelCenterBoxStroke')) $('towelCenterBoxStroke').addEventListener('input',e=>{ S.towelCenterBoxStroke=e.target.value; S.towelCenterBox=true; update(false); });
 document.querySelectorAll('#layerOrderTabs .chip').forEach(b=>b.addEventListener('click',()=>{
   S.layerOrder=b.dataset.order;
   const switched=(S.mode!=='both');
@@ -7595,6 +7971,8 @@ document.querySelectorAll('#panelCatTabs button').forEach(tab=>{
     // 選んだカテゴリでよく使うセクションが閉じていたら自動で開く
     if(cat === 'overlay' || cat === 'text_logo'){
       if(!S.showText && !S.showLogo && !S.showCrest){ S.showLogo = true; S.showText = true; update(false); }
+    }else if(cat === 'towel'){
+      if(S.viewMode !== 'fabric'){ S.viewMode = 'fabric'; update(false); }
     }else if(cat === 'dabo'){
       if(S.viewMode === 'fabric'){ S.viewMode = 'cut_dabo'; update(false); }
     }
