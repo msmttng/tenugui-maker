@@ -359,7 +359,8 @@
           <span style="font-size:10.5px;color:#94a3b8">クリックで切替</span>
         </div>
         <div class="chip-row" id="tplSelectChips">
-          <button type="button" class="chip active" data-tpl="1">案① もとの仲羽田と同じデザイン(隙間ゼロ格子)</button>
+          <button type="button" class="chip active" data-tpl="7" style="border-color:#fde047;color:#fde047">🌟 案⑦ 仲羽田の羅列に1個だけ「青年会」を入れる</button>
+          <button type="button" class="chip" data-tpl="1">案① もとの仲羽田と同じデザイン(全6文字格子)</button>
           <button type="button" class="chip" data-tpl="2">案② あられ透かし重ね</button>
           <button type="button" class="chip" data-tpl="3">案③ 🧣 祭りタオル・マフラー仕立て</button>
           <button type="button" class="chip" data-tpl="4">案④ 吉原つなぎ風・縦縞</button>
@@ -530,6 +531,13 @@
 
     const TEMPLATES = [
       {
+        id: 7,
+        badge: '🌟 1箇所だけ青年会',
+        name: '案⑦：【仲羽田の羅列に1個だけ「青年会」】シームレス・ワンポイント青年会',
+        short: '全面「仲羽田」格子のうち1箇所だけが「仲羽田青年会」になる粋な仕掛け',
+        desc: '全面はもとの3文字「仲羽田」シームレス斜め格子のまま、指定したたった1箇所（1セル）だけを「青年会」に置き換え、そこだけ「仲羽田青年会」と読めるようにしたワンポイントデザインです。同色（白の隠し文字）にも差し色（金・赤）にも切り替えられます！'
+      },
+      {
         id: 1,
         badge: '★元柄完全再現 本命',
         name: '案①：【もとの仲羽田と同じデザイン】「仲羽田青年会」シームレス斜め格子',
@@ -574,7 +582,7 @@
     ];
 
     const state = {
-      tplId: 1,
+      tplId: 7,
       charMode: '6_user',   // '6_user' (仲羽田青年会) | '5' | '6_kai'
       charJoinGap: 0,       // 0 = 元SVG通り完全連結, >0 = 離す
       strokeBold: 0,        // 線幅補正
@@ -749,7 +757,69 @@
       // 1段ごとの横シフト量（元柄「仲羽田」と同じ階段格子リズム＝2文字分シフト）
       const shiftSvgX = (periodSvgX / keys.length) * 2;
 
-      if (tplId === 1 || tplId === 2) {
+      if (tplId === 7) {
+        // 🌟 案⑦：「仲羽田」の羅列の中に1個だけ「青年会」を入れる
+        const unitH = 44 * sMul;
+        const svgToPx = unitH / 86.91;
+        // 3文字「仲羽田」1ブロックの横幅（x: 0..249.31、右端線幅5.8を重ねて 243.51 周期）
+        const nakaKeys = ['naka', 'ha', 'da'];
+        const seinenKeys = keys.slice(3); // ['sei', 'nen', 'kai_user']
+        const pitch3SvgX = 243.51 + state.charJoinGap * 3;
+        const pitchX = pitch3SvgX * svgToPx;
+        const pitchY = periodSvgY * svgToPx;
+        const dxRow = (pitch3SvgX / 3) * svgToPx;
+        const rad = (state.angleDeg * Math.PI) / 180;
+        const diag = Math.hypot(w, h) + pitchX;
+        const cols = Math.ceil(diag / pitchX) + 2;
+        const rows = Math.ceil(diag / pitchY) + 2;
+
+        ctx.save();
+        ctx.translate(w / 2, h / 2);
+        ctx.rotate(rad);
+
+        for (let r = -rows; r <= rows; r++) {
+          const xOffset = r * dxRow;
+          const cy = r * pitchY;
+          for (let c = -cols; c <= cols; c++) {
+            const cx = c * pitchX + xOffset;
+            const isOneSpot = (r === 0 && c === 0);
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(svgToPx, svgToPx);
+            ctx.translate(-249.31 / 2, -86.91 / 2);
+            if (isOneSpot) {
+              // この1箇所だけ「青年会」を描画
+              for (let i = 0; i < seinenKeys.length; i++) {
+                const k = seinenKeys[i];
+                const xOff = (CHAR_DEFS[k].origX - 243.6) + i * state.charJoinGap;
+                ctx.save();
+                ctx.translate(xOff, 0);
+                const col = state.twoTone ? state.subCol : state.mainCol;
+                if (state.strokeBold > 0.1) { ctx.strokeStyle = col; ctx.lineWidth = state.strokeBold; ctx.stroke(PATH2D_MAP[k]); }
+                ctx.fillStyle = col;
+                ctx.fill(PATH2D_MAP[k]);
+                ctx.restore();
+              }
+            } else {
+              // それ以外の全セルは「仲羽田」3文字を描画
+              for (let i = 0; i < nakaKeys.length; i++) {
+                const k = nakaKeys[i];
+                const xOff = CHAR_DEFS[k].origX + i * state.charJoinGap;
+                ctx.save();
+                ctx.translate(xOff, 0);
+                const col = state.mainCol;
+                if (state.strokeBold > 0.1) { ctx.strokeStyle = col; ctx.lineWidth = state.strokeBold; ctx.stroke(PATH2D_MAP[k]); }
+                ctx.fillStyle = col;
+                ctx.fill(PATH2D_MAP[k]);
+                ctx.restore();
+              }
+            }
+            ctx.restore();
+          }
+        }
+        ctx.restore();
+
+      } else if (tplId === 1 || tplId === 2) {
         // 案① もとの仲羽田と同じデザインの隙間ゼロ斜め格子 / 案② 大小あられ＋斜め格子重ね
         if (tplId === 2) {
           drawArareBackground(ctx, w, h, 0.9 * mul, 0.88);
@@ -1297,7 +1367,9 @@
     document.getElementById('sendToMainAppBtn').addEventListener('click', () => {
       try {
         const cur = JSON.parse(localStorage.getItem('haneda-arare-settings') || '{}');
-        cur.kakuMotif = 'seinenkai';
+        cur.kakuMotif = (state.tplId === 7) ? 'haneda_one_seinen' : 'seinenkai';
+        cur.seinenSpotMode = state.twoTone ? '3char' : 'same';
+        cur.seinenSpotColor = state.subCol || '#fbbf24';
         cur.bgColor = state.bgCol;
         cur.kakuColor = state.mainCol;
         cur.dotColor = state.dotCol;

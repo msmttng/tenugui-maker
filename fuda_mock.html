@@ -1049,20 +1049,76 @@
        ============================================================================ */
     const f2 = v => (Math.round(v * 100) / 100).toString();
 
+    // Japan Color 2001 Coated 8原色Neugebauerトリリニア補間＋GCR逆算ソルバー
+    const CMYK_JC2001_CACHE = new Map();
+    const JC2001_PRIMARIES = {
+      W:   [1.000, 1.000, 1.000],
+      C:   [0.000, 0.627, 0.914],
+      M:   [0.894, 0.000, 0.498],
+      Y:   [1.000, 0.945, 0.000],
+      CM:  [0.114, 0.125, 0.533],
+      CY:  [0.000, 0.600, 0.267],
+      MY:  [0.898, 0.000, 0.071],
+      CMY: [0.137, 0.094, 0.082]
+    };
+    function jc2001ForwardRgb(c, m, y, k) {
+      const P = JC2001_PRIMARIES;
+      const wW=(1-c)*(1-m)*(1-y), wC=c*(1-m)*(1-y), wM=(1-c)*m*(1-y), wY=(1-c)*(1-m)*y;
+      const wCM=c*m*(1-y), wCY=c*(1-m)*y, wMY=(1-c)*m*y, wCMY=c*m*y;
+      const fk = 1 - k * 0.92;
+      return [0,1,2].map(i => (wW*P.W[i] + wC*P.C[i] + wM*P.M[i] + wY*P.Y[i] + wCM*P.CM[i] + wCY*P.CY[i] + wMY*P.MY[i] + wCMY*P.CMY[i]) * fk);
+    }
     function hexCmyk(h) {
-      h = (h || '#000000').replace('#', '');
+      h = (h || '#000000').replace('#', '').trim().toLowerCase();
+      if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+      if (CMYK_JC2001_CACHE.has(h)) return CMYK_JC2001_CACHE.get(h);
+      const tr = (parseInt(h.slice(0, 2), 16) || 0) / 255;
+      const tg = (parseInt(h.slice(2, 4), 16) || 0) / 255;
+      const tb = (parseInt(h.slice(4, 6), 16) || 0) / 255;
+      if (tr >= 0.995 && tg >= 0.995 && tb >= 0.995) return [0, 0, 0, 0];
+      if (tr <= 0.005 && tg <= 0.005 && tb <= 0.005) return [0, 0, 0, 1];
+      const kRaw = 1 - Math.max(tr, tg, tb);
+      const k = Math.max(0, Math.min(0.95, Math.pow(kRaw, 1.45) * 0.85));
+      let c = Math.max(0, Math.min(1, (1 - tr - k * 0.85) / Math.max(0.05, 1 - k * 0.85)));
+      let m = Math.max(0, Math.min(1, (1 - tg - k * 0.85) / Math.max(0.05, 1 - k * 0.85)));
+      let y = Math.max(0, Math.min(1, (1 - tb - k * 0.85) / Math.max(0.05, 1 - k * 0.85)));
+      for (let it = 0; it < 28; it++) {
+        const [pr, pg, pb] = jc2001ForwardRgb(c, m, y, k);
+        const er = pr - tr, eg = pg - tg, eb = pb - tb;
+        if (er*er + eg*eg + eb*eb < 1e-6) break;
+        c = Math.max(0, Math.min(1, c + (er * 0.72 - eg * 0.12 - eb * 0.05)));
+        m = Math.max(0, Math.min(1, m + (eg * 0.72 - er * 0.05 - eb * 0.15)));
+        y = Math.max(0, Math.min(1, y + (eb * 0.75 - eg * 0.05)));
+      }
+      const out = [c, m, y, k].map(v => Math.round(v * 1000) / 1000);
+      CMYK_JC2001_CACHE.set(h, out);
+      return out;
+    }
+    function hexRgb01(h) {
+      h = (h || '#000000').replace('#', '').trim();
       if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
       const r = (parseInt(h.slice(0, 2), 16) || 0) / 255;
       const g = (parseInt(h.slice(2, 4), 16) || 0) / 255;
       const b = (parseInt(h.slice(4, 6), 16) || 0) / 255;
-      const k = 1 - Math.max(r, g, b);
-      if (k >= 0.999) return [0, 0, 0, 1];
-      return [
-        Math.round(((1 - r - k) / (1 - k)) * 1000) / 1000,
-        Math.round(((1 - g - k) / (1 - k)) * 1000) / 1000,
-        Math.round(((1 - b - k) / (1 - k)) * 1000) / 1000,
-        Math.round(k * 1000) / 1000
-      ];
+      return [r, g, b].map(v => Math.round(v * 10000) / 10000);
+    }
+    function blendHexWithBg(fgHex, bgHex, alpha) {
+      if (alpha === undefined || alpha >= 0.995) return fgHex;
+      const a = Math.max(0, Math.min(1, alpha));
+      const [fr, fg, fb] = hexRgb01(fgHex);
+      const [br, bg, bb] = hexRgb01(bgHex || '#046e7e');
+      const r = Math.round((fr * a + br * (1 - a)) * 255);
+      const g = Math.round((fg * a + bg * (1 - a)) * 255);
+      const b = Math.round((fb * a + bb * (1 - a)) * 255);
+      return '#' + [r, g, b].map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0')).join('');
+    }
+    function pushAiFill(L, hex) {
+      L.push(hexCmyk(hex).join(' ') + ' k');
+      L.push(hexRgb01(hex).join(' ') + ' Xa');
+    }
+    function pushAiStroke(L, hex) {
+      L.push(hexCmyk(hex).join(' ') + ' K');
+      L.push(hexRgb01(hex).join(' ') + ' XA');
     }
 
     const GLYPH_TRACE_CACHE = new Map();
@@ -1701,12 +1757,13 @@
       return svg;
     }
 
-    // Adobe Illustrator 8 (.ai) ネイティブCMYKベクターファイルを生成
+    // Adobe Illustrator 8 (.ai) ネイティブRGB＋Japan Color CMYKベクターファイルを生成
     function buildIllustratorAiDocument(mode) {
       let W = 400, H = 400;
       const allFrameItems = [];
       const allTextItems = [];
       let includeTenuguiBg = false;
+      let solidBgHex = null;
 
       if (mode === 'single') {
         W = 240; H = 380;
@@ -1715,6 +1772,7 @@
         allTextItems.push(...textItems);
       } else if (mode === 'all10') {
         W = 1280; H = 380;
+        solidBgHex = '#0f172a';
         FUDA_TYPES.forEach((f, idx) => {
           const cx = 68 + idx * 126;
           const cy = 190;
@@ -1725,6 +1783,7 @@
       } else {
         W = 400; H = 400;
         includeTenuguiBg = state.showTenuguiBg;
+        if (!includeTenuguiBg) solidBgHex = '#0b1324';
         const pMain = buildFudaVectorPrimitives(state.selectedId, state.mainCx, state.mainCy, 108, 276, state.fudaAngle || 0, state);
         const pSub1 = buildFudaVectorPrimitives(state.selectedId, 322, 114, 52, 134, (state.fudaAngle || 0) - 18, state);
         const pSub2 = buildFudaVectorPrimitives(state.selectedId, 324, 286, 52, 134, (state.fudaAngle || 0) + 14, state);
@@ -1737,7 +1796,8 @@
       const P = (x, y) => (x * MM).toFixed(3) + ' ' + ((H - y) * MM).toFixed(3);
       const nl = '\r\n';
       const L = [];
-      const numLayers = (includeTenuguiBg ? 2 : 0) + 2;
+      const numLayers = (includeTenuguiBg ? 2 : (solidBgHex ? 1 : 0)) + 2;
+      const blendRefBg = includeTenuguiBg ? '#046e7e' : (solidBgHex || state.bgColor || '#0f1f3d');
 
       L.push(
         '%!PS-Adobe-3.0 ',
@@ -1751,6 +1811,7 @@
         '%AI5_FileFormat 4.0',
         '%AI3_ColorUsage: Color',
         '%AI7_ImageSettings: 0',
+        '%AI9_ColorModel: 1',
         '%%CMYKProcessColor: 1 1 1 1 ([Registration])',
         '%AI3_TemplateBox: ' + (Wp / 2).toFixed(3) + ' ' + (Hp / 2).toFixed(3) + ' ' + (Wp / 2).toFixed(3) + ' ' + (Hp / 2).toFixed(3),
         '%AI3_TileBox: 0 0 ' + Wp.toFixed(3) + ' ' + Hp.toFixed(3),
@@ -1772,12 +1833,14 @@
       );
 
       if (includeTenuguiBg) {
-        const bgC = hexCmyk('#046e7e').join(' ');
-        L.push('%AI5_BeginLayer', '1 1 1 1 0 0 0 79 128 255 Lb', '(Background_Tenugui) Ln', '0 A', '0 O', bgC + ' k', '0 R', '0 i 0 J 0 j 1 w 4 M []0 d');
+        L.push('%AI5_BeginLayer', '1 1 1 1 0 0 0 79 128 255 Lb', '(Background_Tenugui) Ln', '0 A', '0 O');
+        pushAiFill(L, '#046e7e');
+        L.push('0 R', '0 i 0 J 0 j 1 w 4 M []0 d');
         L.push(P(0, 0) + ' m', P(W, 0) + ' L', P(W, H) + ' L', P(0, H) + ' L', P(0, 0) + ' L', 'f', 'LB', '%AI5_EndLayer--');
 
-        const dotC = hexCmyk('#ffffff').join(' ');
-        L.push('%AI5_BeginLayer', '1 1 1 1 0 0 1 255 120 120 Lb', '(Arare_Dots) Ln', '0 A', '0 O', dotC + ' k', '0 R', '0 i 0 J 0 j 1 w 4 M []0 d');
+        L.push('%AI5_BeginLayer', '1 1 1 1 0 0 1 255 120 120 Lb', '(Arare_Dots) Ln', '0 A', '0 O');
+        pushAiFill(L, '#ffffff');
+        L.push('0 R', '0 i 0 J 0 j 1 w 4 M []0 d');
         const step = 20;
         for (let y = 10; y < H; y += step) {
           const row = Math.floor(y / step);
@@ -1794,50 +1857,59 @@
           }
         }
         L.push('LB', '%AI5_EndLayer--');
+      } else if (solidBgHex) {
+        L.push('%AI5_BeginLayer', '1 1 1 1 0 0 0 79 128 255 Lb', '(Background_Stage) Ln', '0 A', '0 O');
+        pushAiFill(L, solidBgHex);
+        L.push('0 R', '0 i 0 J 0 j 1 w 4 M []0 d');
+        L.push(P(0, 0) + ' m', P(W, 0) + ' L', P(W, H) + ' L', P(0, H) + ' L', P(0, 0) + ' L', 'f', 'LB', '%AI5_EndLayer--');
       }
 
       const writePrimitivesToAi = (items) => {
         for (const it of items) {
+          if (it.opacity !== undefined && it.opacity <= 0.001) continue;
+          const effFill = it.fill ? blendHexWithBg(it.fill, blendRefBg, it.opacity) : null;
+          const effStroke = it.stroke ? blendHexWithBg(it.stroke, blendRefBg, it.opacity) : null;
           if (it.type === 'poly' && it.pts && it.pts.length >= 3) {
-            if (it.fill && it.stroke) {
-              const fc = hexCmyk(it.fill).join(' ');
-              const sc = hexCmyk(it.stroke).join(' ');
+            if (effFill && effStroke) {
               const lwPt = ((it.strokeWidth || 1) * MM).toFixed(3);
-              L.push(fc + ' k', sc + ' K', `0 i 1 J 1 j ${lwPt} w 4 M []0 d`);
+              pushAiFill(L, effFill);
+              pushAiStroke(L, effStroke);
+              L.push(`0 i 1 J 1 j ${lwPt} w 4 M []0 d`);
               L.push(P(it.pts[0][0], it.pts[0][1]) + ' m');
               for (let i = 1; i < it.pts.length; i++) L.push(P(it.pts[i][0], it.pts[i][1]) + ' L');
               L.push(P(it.pts[0][0], it.pts[0][1]) + ' L', 'b');
-            } else if (it.fill) {
-              const fc = hexCmyk(it.fill).join(' ');
-              L.push(fc + ' k', '0 R', '0 i 0 J 0 j 1 w 4 M []0 d');
+            } else if (effFill) {
+              pushAiFill(L, effFill);
+              L.push('0 R', '0 i 0 J 0 j 1 w 4 M []0 d');
               L.push(P(it.pts[0][0], it.pts[0][1]) + ' m');
               for (let i = 1; i < it.pts.length; i++) L.push(P(it.pts[i][0], it.pts[i][1]) + ' L');
               L.push(P(it.pts[0][0], it.pts[0][1]) + ' L', 'f');
-            } else if (it.stroke) {
-              const sc = hexCmyk(it.stroke).join(' ');
+            } else if (effStroke) {
               const lwPt = ((it.strokeWidth || 1) * MM).toFixed(3);
-              L.push(sc + ' K', `0 i 1 J 1 j ${lwPt} w 4 M []0 d`);
+              pushAiStroke(L, effStroke);
+              L.push(`0 i 1 J 1 j ${lwPt} w 4 M []0 d`);
               L.push(P(it.pts[0][0], it.pts[0][1]) + ' m');
               for (let i = 1; i < it.pts.length; i++) L.push(P(it.pts[i][0], it.pts[i][1]) + ' L');
               L.push(P(it.pts[0][0], it.pts[0][1]) + ' L', 's');
             }
           } else if (it.type === 'compound' && it.loops && it.loops.length > 0) {
-            const fc = hexCmyk(it.fill || '#ffffff').join(' ');
-            L.push('0 O', fc + ' k', '0 R', '0 i 0 J 0 j 1 w 4 M []0 d');
+            L.push('0 O');
+            pushAiFill(L, effFill || '#ffffff');
+            L.push('0 R', '0 i 0 J 0 j 1 w 4 M []0 d');
             if (it.loops.length === 1) {
               const lp = it.loops[0];
               L.push(P(lp[0][0], lp[0][1]) + ' m');
               for (let i = 1; i < lp.length; i++) L.push(P(lp[i][0], lp[i][1]) + ' L');
               L.push(P(lp[0][0], lp[0][1]) + ' L', 'f');
             } else {
-              L.push('*u');
+              L.push('1 D', '*u');
               for (const lp of it.loops) {
                 if (lp.length < 3) continue;
                 L.push(P(lp[0][0], lp[0][1]) + ' m');
                 for (let i = 1; i < lp.length; i++) L.push(P(lp[i][0], lp[i][1]) + ' L');
                 L.push(P(lp[0][0], lp[0][1]) + ' L', 'f');
               }
-              L.push('*U');
+              L.push('*U', '0 D');
             }
           }
         }
@@ -1870,15 +1942,16 @@
   var FRAMES = ${JSON.stringify(frames)};
   var TEXTS = ${JSON.stringify(texts)};
   app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
-  var doc = app.documents.add(DocumentColorSpace.CMYK, W*MM, H*MM);
+  var doc = app.documents.add(DocumentColorSpace.RGB, W*MM, H*MM);
   var ab = doc.artboards[0].artboardRect, L = ab[0], T = ab[1];
   function P(pt){ return [L + pt[0]*MM, T - pt[1]*MM]; }
-  function hexCmykObj(h){
+  function hexColObj(h){
     h = (h || "#000000").replace("#","");
-    var r = parseInt(h.substring(0,2),16)/255, g = parseInt(h.substring(2,4),16)/255, b = parseInt(h.substring(4,6),16)/255;
-    var k = 1 - Math.max(r,g,b), c = 0, m = 0, y = 0;
-    if(k < 0.999){ c = (1-r-k)/(1-k); m = (1-g-k)/(1-k); y = (1-b-k)/(1-k); }
-    var col = new CMYKColor(); col.cyan = c*100; col.magenta = m*100; col.yellow = y*100; col.black = k*100;
+    if(h.length===3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    var col = new RGBColor();
+    col.red = parseInt(h.substring(0,2),16)||0;
+    col.green = parseInt(h.substring(2,4),16)||0;
+    col.blue = parseInt(h.substring(4,6),16)||0;
     return col;
   }
   function drawItems(lay, list){
@@ -1889,12 +1962,12 @@
         var pts = [];
         for(var j=0; j<it.pts.length; j++) pts.push(P(it.pts[j]));
         p.setEntirePath(pts); p.closed = true;
-        p.filled = !!it.fill; if(it.fill) p.fillColor = hexCmykObj(it.fill);
-        p.stroked = !!it.stroke; if(it.stroke){ p.strokeColor = hexCmykObj(it.stroke); p.strokeWidth = (it.strokeWidth||1)*MM; }
+        p.filled = !!it.fill; if(it.fill) p.fillColor = hexColObj(it.fill);
+        p.stroked = !!it.stroke; if(it.stroke){ p.strokeColor = hexColObj(it.stroke); p.strokeWidth = (it.strokeWidth||1)*MM; }
         if(it.opacity !== undefined) p.opacity = it.opacity * 100;
       } else if(it.type === "compound"){
         var cp = lay.compoundPathItems.add();
-        var col = hexCmykObj(it.fill || "#ffffff");
+        var col = hexColObj(it.fill || "#ffffff");
         for(var k=0; k<it.loops.length; k++){
           var lp = it.loops[k], sp = cp.pathItems.add(), pts2 = [];
           for(var m=0; m<lp.length; m++) pts2.push(P(lp[m]));

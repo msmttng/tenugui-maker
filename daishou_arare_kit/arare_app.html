@@ -149,15 +149,56 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         <button class="chip" data-mode="both" aria-pressed="false">③ 角字＋あられ重ね</button>
         <button class="chip" data-mode="scatter" aria-pressed="false" title="背景の角字やあられを消し、1個のロゴや1文字を多数ちりばめた総柄手ぬぐいや、手ぬぐい工房の生地をベースにします">④ 1文字/ロゴ散らし・工房生地</button>
       </div>
-      <!-- 🆕 角字モチーフ切替：「仲羽田（元柄3文字）」⇄「仲羽田青年会（新6文字・元柄完全再現）」 -->
+      <!-- 🆕 角字モチーフ切替：「仲羽田（元柄3文字）」⇄「仲羽田の羅列に1個だけ青年会」⇄「仲羽田青年会（新6文字全面）」 -->
       <div class="cgroup" id="kakuMotifBox" style="background:#eff6ff;border:1.5px solid #60a5fa;padding:6px 8px">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
           <span class="clabel" style="font-size:11.5px;color:#1e40af">🎌 江戸角字の柄を選ぶ（元柄と同じシームレス斜め格子）</span>
-          <a href="seinen_mock.html" target="_blank" style="font-size:10.5px;color:#0284c7;font-weight:700;text-decoration:none">🔍 6案比較モックを見る ↗</a>
+          <a href="seinen_mock.html" target="_blank" style="font-size:10.5px;color:#0284c7;font-weight:700;text-decoration:none">🔍 比較モックを見る ↗</a>
         </div>
-        <div class="pair" id="kakuMotifTabs" style="gap:5px">
+        <div class="chips" id="kakuMotifTabs" style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
           <button type="button" class="chip" data-motif="haneda" aria-pressed="true" style="padding:6px 6px;border-radius:7px;font-size:11.5px;font-weight:700;text-align:center">① 仲羽田（元柄 3文字）<br><span style="font-size:10px;opacity:.85">伝統の3文字エンドレス角字</span></button>
-          <button type="button" class="chip" data-motif="seinenkai" aria-pressed="false" style="padding:6px 6px;border-radius:7px;font-size:11.5px;font-weight:700;text-align:center">🆕 ② 仲羽田青年会（新 6文字）<br><span style="font-size:10px;opacity:.85">元柄と同デザインの6文字連結</span></button>
+          <button type="button" class="chip" data-motif="seinenkai" aria-pressed="false" style="padding:6px 6px;border-radius:7px;font-size:11.5px;font-weight:700;text-align:center">② 仲羽田青年会（全面）<br><span style="font-size:10px;opacity:.85">6文字連結の全面総柄</span></button>
+          <button type="button" class="chip" data-motif="haneda_one_seinen" aria-pressed="false" style="grid-column:1 / -1;padding:7px 8px;border-radius:7px;font-size:12px;font-weight:800;text-align:center;border-color:#d97706;background:#fffbeb;color:#92400e">🌟 ③ 「仲羽田」の羅列に1個だけ「青年会」を入れる<br><span style="font-size:10px;font-weight:600;opacity:.9">全面は元柄「仲羽田」のまま、選んだ1箇所だけがシームレスに「仲羽田青年会」になります</span></button>
+        </div>
+
+        <!-- 🌟 1個だけ青年会（ワンポイント青年会）の詳細設定ボックス -->
+        <div id="onePointSeinenBox" hidden style="margin-top:5px;padding:7px 8px;background:#fffbeb;border:1.5px solid #f59e0b;border-radius:7px;display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+            <span style="font-size:11.5px;font-weight:800;color:#b45309">🌟 1個だけ「青年会」の色・位置設定</span>
+            <button type="button" class="mini-btn" id="randomSeinenSpotBtn" style="background:#f59e0b;color:#fff;border-color:#d97706;font-weight:700">🎲 別の仲羽田枠へ移動</button>
+          </div>
+          <div class="chips" id="seinenSpotModeTabs" style="gap:4px">
+            <button type="button" class="chip" data-spmode="same" aria-pressed="true" style="font-size:11px;padding:4px 7px">① 同じ色（白抜き・隠し青年会）</button>
+            <button type="button" class="chip" data-spmode="3char" aria-pressed="false" style="font-size:11px;padding:4px 7px">②「青年会」3文字だけ別色</button>
+            <button type="button" class="chip" data-spmode="6char" aria-pressed="false" style="font-size:11px;padding:4px 7px">③「仲羽田青年会」6文字を別色</button>
+          </div>
+          <div id="seinenSpotColorRow" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;background:#ffffff;padding:4px 6px;border-radius:5px;border:1px solid #fde68a">
+            <span style="font-size:11px;font-weight:700;color:#92400e">🎨 ワンポイント色:</span>
+            <input type="color" id="seinenSpotColor" value="#fbbf24" style="width:26px;height:24px">
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="seinenSpotColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+            <button type="button" class="mini-btn seinen-col-Preset" data-col="#fbbf24" style="background:#fbbf24;color:#0f172a;font-weight:700">山吹金</button>
+            <button type="button" class="mini-btn seinen-col-Preset" data-col="#877028" style="background:#877028;color:#fff;font-weight:700">羽田金</button>
+            <button type="button" class="mini-btn seinen-col-Preset" data-col="#ef4444" style="background:#ef4444;color:#fff;font-weight:700">朱赤</button>
+            <button type="button" class="mini-btn seinen-col-Preset" data-col="#38bdf8" style="background:#38bdf8;color:#0f172a;font-weight:700">水色</button>
+            <button type="button" class="mini-btn seinen-col-Preset" data-col="#ffffff" style="background:#ffffff;color:#0f172a;border-color:#94a3b8;font-weight:700">白</button>
+          </div>
+          <div class="row" style="grid-template-columns:92px minmax(0,1fr) 46px">
+            <label for="seinenSpotX" style="font-size:11px">入れる横位置(X)</label>
+            <input type="range" id="seinenSpotX" min="8" max="92" step="1" value="50">
+            <output for="seinenSpotX" id="seinenSpotX-o" style="font-size:11px">50%</output>
+          </div>
+          <div class="row" style="grid-template-columns:92px minmax(0,1fr) 46px">
+            <label for="seinenSpotY" style="font-size:11px">入れる縦位置(Y)</label>
+            <input type="range" id="seinenSpotY" min="8" max="92" step="1" value="50">
+            <output for="seinenSpotY" id="seinenSpotY-o" style="font-size:11px">50%</output>
+          </div>
+          <div class="chips" id="seinenSpotPosChips" style="gap:4px">
+            <button type="button" class="chip" data-spx="50" data-spy="50" style="font-size:10.5px;padding:3px 6px">🎯 ど真ん中</button>
+            <button type="button" class="chip" data-spx="50" data-spy="24" style="font-size:10.5px;padding:3px 6px">👕 上部(背紋位置)</button>
+            <button type="button" class="chip" data-spx="50" data-spy="76" style="font-size:10.5px;padding:3px 6px">📜 下部(裾位置)</button>
+            <button type="button" class="chip" data-spx="26" data-spy="26" style="font-size:10.5px;padding:3px 6px">↖ 左上</button>
+            <button type="button" class="chip" data-spx="74" data-spy="74" style="font-size:10.5px;padding:3px 6px">↘ 右下</button>
+          </div>
         </div>
       </div>
 
@@ -337,6 +378,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
           <button type="button" class="mini-btn ai-target-chip" data-ckey="crestFg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestFg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑩ 丸紋の色</button>
           <button type="button" class="mini-btn ai-target-chip" data-ckey="crestBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑪ 丸紋の背景</button>
           <button type="button" class="mini-btn ai-target-chip" data-ckey="logoColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑫ ロゴ単色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="seinenSpotColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="seinenSpotColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>🌟 1個青年会色</button>
         </div>
 
         <!-- Illustrator式 2D 彩度×明度フィールド ＋ 縦色相バー ＋ 数値＆新旧比較 -->
@@ -1144,6 +1186,13 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
     <!-- 8. 配置と書き出し -->
     <section aria-labelledby="h-out" data-cat="export">
       <h2 id="h-out">配置と書き出し（Illustrator / 印刷入稿）</h2>
+      <div class="cgroup" style="background:#f0fdf4;border:1.5px solid #22c55e;padding:6px 8px;margin-bottom:4px">
+        <span class="clabel" style="font-size:11.5px;color:#15803d">🎨 .ai / .jsx 書き出しカラーモード（色ズレ防止）</span>
+        <div class="pair" id="aiColorModeTabs" style="gap:4px">
+          <button type="button" class="chip" data-aimode="rgb" aria-pressed="true" style="font-size:11px;padding:5px 6px;font-weight:700">✨ RGB出力（画面の作った色と100%完全一致・推奨）</button>
+          <button type="button" class="chip" data-aimode="cmyk" aria-pressed="false" style="font-size:11px;padding:5px 6px;font-weight:700">🖨️ CMYK出力（Japan Color 2001 印刷補正）</button>
+        </div>
+      </div>
       <div class="actions">
         <button class="btn ghost" id="reroll">位置を並べ直す</button>
         <button class="btn ghost" id="reset">初期設定に戻す</button>
@@ -1336,7 +1385,10 @@ const DEF={
   // 手ぬぐい工房で作った手ぬぐい・外部手ぬぐい画像のベース生地連携
   useKoboBase:false, koboBaseName:'', koboBaseDataUrl:'',
   // 仲羽田 / 仲羽田青年会（江戸角字）パラメーター
-  kakuMotif:'haneda', // 'haneda' (元柄3文字「仲羽田」) | 'seinenkai' (新6文字「仲羽田青年会」)
+  kakuMotif:'haneda', // 'haneda' (元柄3文字「仲羽田」) | 'seinenkai' (新6文字「仲羽田青年会」) | 'haneda_one_seinen' (仲羽田の羅列に1個だけ青年会)
+  seinenSpotMode:'same', // 'same' (同じ色) | '3char' (青年会3文字だけ別色) | '6char' (仲羽田青年会6文字を別色)
+  seinenSpotColor:'#fbbf24', seinenSpotX:50, seinenSpotY:50,
+  aiColorMode:'rgb', // 'rgb' (画面の作った色と100%完全一致) | 'cmyk' (Japan Color 2001 印刷補正)
   kakuSize:48, kakuScale:100, kakuDensity:100, kakuWeight:100,
   kakuInnerGap:100, kakuColGap:0, kakuRowGap:0,
   kakuAngle:-30.15, kakuOffX:0, kakuOffY:0,
@@ -2714,7 +2766,7 @@ function traceGlyphToVectorLoops(ch, fontCss, isStrokeOutline, strokeRatio){
 }
 
 // 配置されたロゴ画像（仲羽半纏ロゴやアップロード画像）を色別のアウトライン化ベクターパス群に変換
-function traceLogoCanvasToVectorColorLayers(lcv, cacheSig){
+function traceLogoCanvasToVectorColorLayers(lcv, cacheSig, monoHex){
   if(cacheSig && LOGO_TRACE_CACHE.has(cacheSig)) return LOGO_TRACE_CACHE.get(cacheSig);
   const maxDim = 220;
   const sc = Math.min(1, maxDim / Math.max(1, lcv.width, lcv.height));
@@ -2726,34 +2778,52 @@ function traceLogoCanvasToVectorColorLayers(lcv, cacheSig){
   ctx.drawImage(lcv, 0, 0, W, H);
   const d = ctx.getImageData(0, 0, W, H).data;
 
-  // 不透明ピクセルを最大3色の主要カラー（例：赤丸・濃紺文字・白フチなど）に分類してそれぞれベクター輪郭化
+  // 単色染め（フチなし）の場合は、量子化による微妙な色ズレを完全に防ぎ指定色100%でベクター輪郭化
+  if(monoHex){
+    const mask = new Uint8Array(W * H);
+    for(let i = 0; i < W * H; i++){
+      if(d[i * 4 + 3] >= 95) mask[i] = 1;
+    }
+    const loops = traceBinaryMaskToNormalizedLoops(mask, W, H, W, H, 0.65);
+    const layers = loops.length > 0 ? [{ fill: monoHex, loops }] : [];
+    if(cacheSig){
+      if(LOGO_TRACE_CACHE.size > 20) LOGO_TRACE_CACHE.clear();
+      LOGO_TRACE_CACHE.set(cacheSig, layers);
+    }
+    return layers;
+  }
+
+  // 不透明ピクセルを最大6色の主要カラー（例：赤丸・濃紺文字・白フチ・金差し色など）に分類してそれぞれベクター輪郭化
+  // 半透明アンチエイリアス境界で色が濁らないよう、完全不透明付近(a >= 210)を優先して代表色を算出
   const buckets = new Map();
   for(let i = 0; i < W * H; i++){
     const a = d[i * 4 + 3];
     if(a < 95) continue;
     const r = d[i * 4], g = d[i * 4 + 1], b = d[i * 4 + 2];
-    const qr = Math.min(255, Math.round(r / 51) * 51);
-    const qg = Math.min(255, Math.round(g / 51) * 51);
-    const qb = Math.min(255, Math.round(b / 51) * 51);
+    const qr = Math.min(255, Math.round(r / 32) * 32);
+    const qg = Math.min(255, Math.round(g / 32) * 32);
+    const qb = Math.min(255, Math.round(b / 32) * 32);
     const key = (qr << 16) | (qg << 8) | qb;
     let entry = buckets.get(key);
-    if(!entry){ entry = { count: 0, rSum: 0, gSum: 0, bSum: 0, key }; buckets.set(key, entry); }
+    if(!entry){ entry = { count: 0, wSum: 0, rSum: 0, gSum: 0, bSum: 0, key }; buckets.set(key, entry); }
+    const w = a >= 210 ? 4 : 1;
     entry.count++;
-    entry.rSum += r; entry.gSum += g; entry.bSum += b;
+    entry.wSum += w;
+    entry.rSum += r * w; entry.gSum += g * w; entry.bSum += b * w;
   }
-  const sorted = Array.from(buckets.values()).sort((a, b) => b.count - a.count);
+  const sorted = Array.from(buckets.values()).sort((a, b) => b.wSum - a.wSum);
   const clusters = [];
   for(const b of sorted){
-    const mr = Math.round(b.rSum / b.count), mg = Math.round(b.gSum / b.count), mb = Math.round(b.bSum / b.count);
+    const mr = Math.round(b.rSum / b.wSum), mg = Math.round(b.gSum / b.wSum), mb = Math.round(b.bSum / b.wSum);
     let merged = false;
     for(const c of clusters){
-      if(Math.hypot(mr - c.r, mg - c.g, mb - c.b) < 75){
+      if(Math.hypot(mr - c.r, mg - c.g, mb - c.b) < 42){
         c.total += b.count;
         merged = true;
         break;
       }
     }
-    if(!merged && clusters.length < 3){
+    if(!merged && clusters.length < 6){
       const hex = '#' + [mr, mg, mb].map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0')).join('');
       clusters.push({ r: mr, g: mg, b: mb, hex, total: b.count, mask: new Uint8Array(W * H) });
     }
@@ -3403,9 +3473,15 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
       const baseAng = effSlot.logoAngle || 0;
       const ar = lcv.width / Math.max(1, lcv.height);
       const pm = effSlot.logoPadMode || 'none';
-      const dataUrl = lcv.toDataURL('image/png');
-      const sig = (effSlot.logoName || 'lg') + ':' + lcv.width + 'x' + lcv.height + ':' + (effSlot.logoMono ? effSlot.logoColor : 'multi') + ':' + (effSlot.logoOutlineMm || 0);
-      const tracedLayers = traceLogoCanvasToVectorColorLayers(lcv, sig);
+      const sig = [
+        effSlot.logoName || 'lg', lcv.width + 'x' + lcv.height,
+        effSlot.logoMono ? effSlot.logoColor : 'multi',
+        effSlot.logoOutlineMm || 0, effSlot.logoOutlineColor || '#fff',
+        effSlot.logoInvert ? 1 : 0, effSlot.logoBgMode || 'white',
+        effSlot.logoThreshold || 230, effSlot.logoKeyColor || '#fff'
+      ].join(':');
+      const monoHex = (effSlot.logoMono && !(effSlot.logoOutlineMm > 0)) ? (effSlot.logoColor || '#ffffff') : null;
+      const tracedLayers = traceLogoCanvasToVectorColorLayers(lcv, sig, monoHex);
 
       const placements = generateScatterPlacementsMm({
         W: st.W, H: st.H,
@@ -3742,6 +3818,7 @@ function drawCustomLogoAndTextMm(x, cfg){
 
 /* ---- 3. 仲羽田（江戸角字）パラメトリック生成＆ポリゴンクリッピング ---- */
 // 線を極細〜極太、密度を疎〜密に変えても一切の隙間・段差が出ない数理格子セル定義
+// 1セル(r, k)あたり [仲・羽・田] の連続3文字（x: Base .. Base+PX+t）を構成し、任意の1セルを「青年会」にシームレス置換可能
 function buildKakuCellRects(t, colAdd, rowAdd, gapRatio){
   const Base = 216;
   const H_ROW = Base + rowAdd;
@@ -3750,16 +3827,15 @@ function buildKakuCellRects(t, colAdd, rowAdd, gapRatio){
 
   // 「田」の中央浮き横棒の左右スリット幅
   const g_ta = Math.max(4, 28.5 * gapRatio - (t - 15) * 0.25);
-  const w_ta_mid = Math.max(t, Base - t - 2 * g_ta);
 
-  // 「仲」のにんべん (田の右壁 Base+t に隙間ゼロで直結)
+  // 1文字目：「仲」のにんべん (左隣セルの田の右壁 Base+t に隙間ゼロで直結)
   const nin_shift = colAdd * 0.25;
   const x_ta_r = Base + t;
   const cx_nin1 = 284.5 + nin_shift;
   const cx_nin2 = 263.5 + nin_shift;
   const cy_nin = 85.5;
 
-  // 「仲」の「中」
+  // 1文字目：「仲」の「中」
   const chu_shift = colAdd * 0.75;
   const x_chu_l = 321 + chu_shift;
   const w_chu = 144 + colAdd * 0.25;
@@ -3768,50 +3844,107 @@ function buildKakuCellRects(t, colAdd, rowAdd, gapRatio){
   const y_chu_t = Math.max(4, 18 * gapRatio);
   const h_chu = Math.max(3 * t, 166 - (y_chu_t - 18));
 
-  // 「羽」（田の左側 -Base - colAdd*0.5 .. 0 の領域）
-  const x_ha_l = -Base - colAdd * 0.5;
-  const cx_ha = -121.5 - colAdd * 0.25;
+  // 2文字目：「羽」（仲の右側 PX - Base - colAdd*0.5 .. PX の領域）
+  const x_ha_l = PX - Base - colAdd * 0.5;
+  const cx_ha = PX - 121.5 - colAdd * 0.25;
   const g_ha_l = Math.max(4, 29.5 * gapRatio);
   const w_wing_l = Math.max(t, (cx_ha - t / 2) - x_ha_l - g_ha_l);
 
-  const right_space = 0 - (cx_ha + t / 2);
+  const right_space = PX - (cx_ha + t / 2);
   const g_ha_r = Math.max(4, 28 * gapRatio);
   const w_wing_r = Math.max(t, right_space - 2 * g_ha_r);
   const x_wing_r = (cx_ha + t / 2) + (right_space - w_wing_r) / 2;
 
-  // 互いに重ならない（オーバーラップを排除した）クリーンな矩形リスト [x, y, w, h]
+  // 互いに重ならない（オーバーラップを排除した）クリーンな [仲・羽・田] 矩形リスト [x, y, w, h]
   const rects = [
-    // 1. 「羽」〜「田」を貫く上辺横棒
-    [x_ha_l, 0, (Base + t) - x_ha_l, t],
-    // 2. 「田」の左・中・右の縦棒（上辺tから下辺Baseまで）
-    [0, t, t, Base - t],
-    [Base / 2, t, t, Base - t],
-    [Base, t, t, Base - t],
-    // 3. 「田」の中央浮き横棒（左右に分けて中央縦棒との重なりも排除）
-    [t + g_ta, Base / 2, Math.max(1, Base / 2 - (t + g_ta)), t],
-    [Base / 2 + t, Base / 2, Math.max(1, (Base - g_ta) - (Base / 2 + t)), t],
-    // 4. 「仲」の「亻」（にんべん）
+    // 1. 「仲」の「亻」（にんべん）
     [x_ta_r, cy_nin - t / 2, (cx_nin1 + t / 2) - x_ta_r, t],
     [cx_nin1 - t / 2, 0, t, cy_nin - t / 2],
     [cx_nin2 - t / 2, cy_nin + t / 2, t, (H_ROW) - (cy_nin + t / 2)],
-    // 5. 「仲」の「中」
+    // 2. 「仲」の「中」
     [x_chu_l, y_chu_t, w_chu, t],
     [x_chu_l, y_chu_t + h_chu - t, w_chu, t],
     [x_chu_l, y_chu_t + t, t, Math.max(1, h_chu - 2 * t)],
     [x_chu_r - t, y_chu_t + t, t, Math.max(1, h_chu - 2 * t)],
     [cx_chu - t / 2, 0, t, H_ROW],
-    // 6. 「羽」の中央縦棒と左右の羽根横棒4本
+    // 3. 「羽」〜「田」を貫く上辺横棒（上の段の「田」の下辺も兼ねる）
+    [x_ha_l, 0, (PX + Base + t) - x_ha_l, t],
+    // 4. 「羽」の中央縦棒と左右の羽根横棒4本
     [cx_ha - t / 2, t, t, H_ROW - t],
     [x_ha_l, 66.5 - t / 2, w_wing_l, t],
     [x_ha_l, 157.5 - t / 2, w_wing_l, t],
     [x_wing_r, 66.5 - t / 2, w_wing_r, t],
-    [x_wing_r, 157.5 - t / 2, w_wing_r, t]
+    [x_wing_r, 157.5 - t / 2, w_wing_r, t],
+    // 5. 「田」の左・中・右の縦棒（PX .. PX+Base+t）
+    [PX, t, t, Base - t],
+    [PX + Base / 2, t, t, Base - t],
+    [PX + Base, t, t, Base - t],
+    // 6. 「田」の中央浮き横棒
+    [PX + t + g_ta, Base / 2, Math.max(1, Base / 2 - (t + g_ta)), t],
+    [PX + Base / 2 + t, Base / 2, Math.max(1, (Base - g_ta) - (Base / 2 + t)), t]
   ];
   // 段間隔(rowAdd)を空けた場合のみ「田」の下辺を独立描画
   if(rowAdd > 0.5){
-    rects.push([0, Base, Base + t, t]);
+    rects.push([PX, Base, Base + t, t]);
   }
-  return {H_ROW, DX_ROW, PX, rects};
+  // 「青年会」1箇所置換時に上の段の「田」の下辺を閉じるための上辺バー
+  const topClosureRect = [x_ha_l, 0, Base + t + colAdd * 0.5, t];
+  return {H_ROW, DX_ROW, PX, rects, topClosureRect};
+}
+
+// 🌟 「仲羽田」の羅列の1セル(x: Base .. Base+PX+t)にピタリと嵌まる「青年会」3文字矩形生成
+function buildSeinenOneSpotRects(t, colAdd, rowAdd){
+  const Base = 216;
+  const PX = 681 + colAdd * 1.5;
+  const targetX0 = Base;
+  const targetW = PX + t;
+  const svgX0 = 243.6;
+  const svgW = 488.51 - svgX0; // 244.91
+  const sx = targetW / svgW;
+  const sy = Base / 86.91;
+
+  const weightRatio = t / 15;
+  const deltaX = 5.85 * sx * (weightRatio - 1);
+  const deltaY = 5.85 * sy * (weightRatio - 1);
+  const cy_nin = 85.5;
+
+  const rects = [];
+  for(let cIdx = 3; cIdx <= 5; cIdx++){
+    const charArr = SEINENKAI_CHAR_RECTS[cIdx];
+    for(let i = 0; i < charArr.length; i++){
+      const [rx, ry, rw, rh] = charArr[i];
+      let x = targetX0 + (rx - svgX0) * sx;
+      let y = ry * sy;
+      let w = rw * sx;
+      let h = rh * sy;
+      if(Math.abs(weightRatio - 1) > 0.01){
+        if(rw <= 8.5 && rh > 8.5){
+          const nw = Math.max(1.2, w + deltaX);
+          x -= (nw - w) * 0.5;
+          w = nw;
+        }else if(rh <= 8.5 && rw > 8.5){
+          const nh = Math.max(1.2, h + deltaY);
+          y -= (nh - h) * 0.5;
+          h = nh;
+        }else{
+          const nw = Math.max(1.2, w + deltaX * 0.6);
+          const nh = Math.max(1.2, h + deltaY * 0.6);
+          x -= (nw - w) * 0.5;
+          y -= (nh - h) * 0.5;
+          w = nw;
+          h = nh;
+        }
+      }
+      // 「会」の右屋根の軒先（rx≈474.6, ry≈32.5）は右隣の「仲」のにんべん横棒(y = cy_nin - t/2)と隙間ゼロで直結させる
+      if(cIdx === 5 && Math.abs(rx - 474.6) < 1 && Math.abs(ry - 32.5) < 1){
+        y = cy_nin - t * 0.5;
+        h = t;
+        w = (targetX0 + targetW) - x + 0.5;
+      }
+      rects.push([x, y, w, h]);
+    }
+  }
+  return rects;
 }
 
 // 🆕 ユーザー提供「仲羽田青年会」6文字SVG（viewBox="0 0 488.5 86.91"）の完全非重複矩形リストとシームレス格子定義
@@ -3930,23 +4063,27 @@ function polyArea(pts){
 }
 
 let KAKU_POLYS = []; // 布領域でクリッピング済みの角字ポリゴン配列（mm座標）
+let KAKU_SPOT_POLYS = []; // 🌟 1箇所だけ「青年会」モード時のワンポイント角字ポリゴン配列（mm座標）
 let KAKU_META = {pitchMm: 48, strokeMm: 3.3, cellCount: 0, areaMm2: 0};
 
 function layoutKaku(){
   if(S.mode === 'arare' || S.mode === 'scatter'){
     KAKU_POLYS = [];
+    KAKU_SPOT_POLYS = [];
     KAKU_META = {pitchMm: 0, strokeMm: 0, cellCount: 0, areaMm2: 0};
     return;
   }
   const W = S.W, H = S.H;
   const inside = S.edge === 'inside';
   const mg = inside ? S.margin : 0;
-  const xmin = mg, ymin = mg, xmax = W - mg, ymax = H - mg;
+  const xmin = mg, ymin = mg, xmax = W - mg;
+  let ymax = H - mg;
   if(S.showBand){
     ymax = Math.min(ymax, H - S.bandH);
   }
   if(xmax <= xmin || ymax <= ymin){
     KAKU_POLYS = [];
+    KAKU_SPOT_POLYS = [];
     return;
   }
 
@@ -3957,9 +4094,13 @@ function layoutKaku(){
   const rowAdd = S.kakuRowGap * 2.16;
   const gapRatio = S.kakuInnerGap / 100;
 
-  const {H_ROW, DX_ROW, PX, rects} = (S.kakuMotif === 'seinenkai')
+  const isOneSeinen = (S.kakuMotif === 'haneda_one_seinen');
+  const cellData = (S.kakuMotif === 'seinenkai')
     ? buildSeinenkaiCellRects(t, colAdd, rowAdd)
     : buildKakuCellRects(t, colAdd, rowAdd, gapRatio);
+  const {H_ROW, DX_ROW, PX, rects, topClosureRect} = cellData;
+  const seinenSpotRects = isOneSeinen ? buildSeinenOneSpotRects(t, colAdd, rowAdd) : null;
+
   const uToMm = effRowMm / H_ROW;
   const strokeMm = t * uToMm;
 
@@ -3972,9 +4113,82 @@ function layoutKaku(){
   const rMin = Math.floor(-diagU / H_ROW) - 2;
   const rMax = Math.ceil(diagU / H_ROW) + 2;
 
+  // 🌟 1箇所だけ「青年会」を入れるターゲットセル (bestR, bestK) を探索
+  let targetR = null, targetK = null;
+  if(isOneSeinen){
+    const goalX = W * ((S.seinenSpotX ?? 50) / 100);
+    const goalY = H * ((S.seinenSpotY ?? 50) / 100);
+    const Base = 216;
+    let bestInsideDist = Infinity, bestRIn = 0, bestKIn = 0;
+    let bestAnyDist = Infinity, bestRAny = 0, bestKAny = 0;
+
+    for(let r = rMin; r <= rMax; r++){
+      const y0 = r * H_ROW;
+      const xShift = r * DX_ROW;
+      const kMin = Math.floor((-diagU - xShift) / PX) - 1;
+      const kMax = Math.ceil((diagU - xShift) / PX) + 1;
+      for(let k = kMin; k <= kMax; k++){
+        const x0 = xShift + k * PX;
+        const ucx = (x0 + Base + (PX + t) * 0.5) * uToMm;
+        const ucy = (y0 + Base * 0.5) * uToMm;
+        const mcx = cx + ucx * cos - ucy * sin;
+        const mcy = cy + ucx * sin + ucy * cos;
+        const dist = Math.hypot(mcx - goalX, mcy - goalY);
+        if(dist < bestAnyDist){
+          bestAnyDist = dist; bestRAny = r; bestKAny = k;
+        }
+        // 3文字ブロック「青年会」の四隅が布領域内に収まっているセルを優先
+        const ux0 = (x0 + Base) * uToMm, ux1 = (x0 + Base + PX + t) * uToMm;
+        const uy0 = y0 * uToMm, uy1 = (y0 + Base) * uToMm;
+        const corners = [
+          [cx + ux0*cos - uy0*sin, cy + ux0*sin + uy0*cos],
+          [cx + ux1*cos - uy0*sin, cy + ux1*sin + uy0*cos],
+          [cx + ux1*cos - uy1*sin, cy + ux1*sin + uy1*cos],
+          [cx + ux0*cos - uy1*sin, cy + ux0*sin + uy1*cos]
+        ];
+        const pad = 1.5;
+        if(corners.every(p => p[0] >= xmin + pad && p[0] <= xmax - pad && p[1] >= ymin + pad && p[1] <= ymax - pad)){
+          if(dist < bestInsideDist){
+            bestInsideDist = dist; bestRIn = r; bestKIn = k;
+          }
+        }
+      }
+    }
+    targetR = bestInsideDist < Infinity ? bestRIn : bestRAny;
+    targetK = bestInsideDist < Infinity ? bestKIn : bestKAny;
+  }
+
   const polys = [];
+  const spotPolys = [];
   let totalArea = 0;
   let activeCells = 0;
+
+  const pushRectList = (rectArr, x0, y0, destArr) => {
+    let hit = false;
+    for(let i = 0; i < rectArr.length; i++){
+      const rc = rectArr[i];
+      const rx0 = (x0 + rc[0] - 0.08) * uToMm;
+      const ry0 = (y0 + rc[1] - 0.08) * uToMm;
+      const rx1 = (x0 + rc[0] + rc[2] + 0.08) * uToMm;
+      const ry1 = (y0 + rc[1] + rc[3] + 0.08) * uToMm;
+      const quad = [
+        [cx + rx0*cos - ry0*sin, cy + rx0*sin + ry0*cos],
+        [cx + rx1*cos - ry0*sin, cy + rx1*sin + ry0*cos],
+        [cx + rx1*cos - ry1*sin, cy + rx1*sin + ry1*cos],
+        [cx + rx0*cos - ry1*sin, cy + rx0*sin + ry1*cos]
+      ];
+      const clipped = clipPolyRect(quad, xmin, ymin, xmax, ymax);
+      if(clipped){
+        destArr.push(clipped);
+        totalArea += polyArea(clipped);
+        hit = true;
+      }
+    }
+    return hit;
+  };
+
+  const useSpotAccent = isOneSeinen && S.seinenSpotMode && S.seinenSpotMode !== 'same';
+  const use6CharAccent = isOneSeinen && S.seinenSpotMode === '6char';
 
   for(let r = rMin; r <= rMax; r++){
     const y0 = r * H_ROW;
@@ -3984,31 +4198,27 @@ function layoutKaku(){
     for(let k = kMin; k <= kMax; k++){
       const x0 = xShift + k * PX;
       let cellHit = false;
-      for(let i = 0; i < rects.length; i++){
-        const rc = rects[i];
-        // シームの微小隙間を防ぐため接続端を 0.08u オーバーラップ
-        const rx0 = (x0 + rc[0] - 0.08) * uToMm;
-        const ry0 = (y0 + rc[1] - 0.08) * uToMm;
-        const rx1 = (x0 + rc[0] + rc[2] + 0.08) * uToMm;
-        const ry1 = (y0 + rc[1] + rc[3] + 0.08) * uToMm;
-
-        const quad = [
-          [cx + rx0*cos - ry0*sin, cy + rx0*sin + ry0*cos],
-          [cx + rx1*cos - ry0*sin, cy + rx1*sin + ry0*cos],
-          [cx + rx1*cos - ry1*sin, cy + rx1*sin + ry1*cos],
-          [cx + rx0*cos - ry1*sin, cy + rx0*sin + ry1*cos]
-        ];
-        const clipped = clipPolyRect(quad, xmin, ymin, xmax, ymax);
-        if(clipped){
-          polys.push(clipped);
-          totalArea += polyArea(clipped);
-          cellHit = true;
+      if(isOneSeinen && r === targetR && k === targetK){
+        // 上の段 (targetR - 1) の「田」の下辺を閉じる上辺バーを通常色で描画
+        if(topClosureRect){
+          pushRectList([topClosureRect], x0, y0, polys);
         }
+        // この1セルだけ「青年会」を描画（同色モードなら polys、差し色モードなら spotPolys へ）
+        cellHit = pushRectList(seinenSpotRects, x0, y0, useSpotAccent ? spotPolys : polys);
+      }else if(use6CharAccent && r === targetR && k === targetK - 1){
+        // 「仲羽田青年会」6文字まとめて差し色にする場合、左隣セルの「仲羽田」も spotPolys へ
+        if(topClosureRect){
+          pushRectList([topClosureRect], x0, y0, polys);
+        }
+        cellHit = pushRectList(rects, x0, y0, spotPolys);
+      }else{
+        cellHit = pushRectList(rects, x0, y0, polys);
       }
       if(cellHit) activeCells++;
     }
   }
   KAKU_POLYS = polys;
+  KAKU_SPOT_POLYS = spotPolys;
   KAKU_META = {pitchMm: effRowMm, strokeMm, cellCount: activeCells, areaMm2: totalArea};
 }
 
@@ -4194,9 +4404,12 @@ function renderArbitraryTenuguiCanvas(st, includeOverlays, pxPerMm, patScaleMul)
 
   // ポリゴンとあられ粒の準備（現在のSと同じなら計算済みキャッシュを利用して高速描画）
   let polys = KAKU_POLYS;
+  let spotPolys = KAKU_SPOT_POLYS;
   let dots = DOTS;
   const isSamePatternAsS = (
     cfg.W===S.W && cfg.H===S.H && cfg.mode===S.mode && (cfg.kakuMotif||'haneda')===(S.kakuMotif||'haneda') &&
+    (cfg.seinenSpotMode||'same')===(S.seinenSpotMode||'same') &&
+    (cfg.seinenSpotX??50)===(S.seinenSpotX??50) && (cfg.seinenSpotY??50)===(S.seinenSpotY??50) &&
     cfg.kakuSize===S.kakuSize && Math.abs((cfg.kakuScale||100)-(S.kakuScale||100))<0.1 &&
     cfg.kakuDensity===S.kakuDensity && cfg.kakuWeight===S.kakuWeight &&
     cfg.kakuInnerGap===S.kakuInnerGap && cfg.kakuColGap===S.kakuColGap &&
@@ -4210,6 +4423,7 @@ function renderArbitraryTenuguiCanvas(st, includeOverlays, pxPerMm, patScaleMul)
     layoutKaku();
     layoutArare();
     polys = KAKU_POLYS;
+    spotPolys = KAKU_SPOT_POLYS;
     dots = DOTS;
     S = bak;
     layoutKaku();
@@ -4231,17 +4445,26 @@ function renderArbitraryTenuguiCanvas(st, includeOverlays, pxPerMm, patScaleMul)
     x.fill();
   };
   const drawKaku = (isFront) => {
-    if(!polys || polys.length === 0) return;
+    if((!polys || polys.length === 0) && (!spotPolys || spotPolys.length === 0)) return;
     if(isFront && ko > 0){
       x.save(); x.strokeStyle = cfg.bgColor; x.lineWidth = ko * 2; x.lineJoin = 'round'; x.lineCap = 'round';
       x.beginPath();
       for(const poly of polys){ x.moveTo(poly[0][0],poly[0][1]); for(let i=1;i<poly.length;i++) x.lineTo(poly[i][0],poly[i][1]); x.closePath(); }
+      if(spotPolys){ for(const poly of spotPolys){ x.moveTo(poly[0][0],poly[0][1]); for(let i=1;i<poly.length;i++) x.lineTo(poly[i][0],poly[i][1]); x.closePath(); } }
       x.stroke(); x.restore();
     }
-    x.fillStyle = cfg.kakuColor || '#ffffff';
-    x.beginPath();
-    for(const poly of polys){ x.moveTo(poly[0][0],poly[0][1]); for(let i=1;i<poly.length;i++) x.lineTo(poly[i][0],poly[i][1]); x.closePath(); }
-    x.fill();
+    if(polys && polys.length > 0){
+      x.fillStyle = cfg.kakuColor || '#ffffff';
+      x.beginPath();
+      for(const poly of polys){ x.moveTo(poly[0][0],poly[0][1]); for(let i=1;i<poly.length;i++) x.lineTo(poly[i][0],poly[i][1]); x.closePath(); }
+      x.fill();
+    }
+    if(spotPolys && spotPolys.length > 0){
+      x.fillStyle = (cfg.seinenSpotMode && cfg.seinenSpotMode !== 'same') ? (cfg.seinenSpotColor || '#fbbf24') : (cfg.kakuColor || '#ffffff');
+      x.beginPath();
+      for(const poly of spotPolys){ x.moveTo(poly[0][0],poly[0][1]); for(let i=1;i<poly.length;i++) x.lineTo(poly[i][0],poly[i][1]); x.closePath(); }
+      x.fill();
+    }
   };
 
   if(cfg.layerOrder === 'arareFront'){
@@ -4330,9 +4553,12 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
   }
 
   let polys = KAKU_POLYS;
+  let spotPolys = KAKU_SPOT_POLYS;
   let dots = DOTS;
   const isSamePatternAsS = (
     cfg.W===S.W && cfg.H===S.H && cfg.mode===S.mode && (cfg.kakuMotif||'haneda')===(S.kakuMotif||'haneda') &&
+    (cfg.seinenSpotMode||'same')===(S.seinenSpotMode||'same') &&
+    (cfg.seinenSpotX??50)===(S.seinenSpotX??50) && (cfg.seinenSpotY??50)===(S.seinenSpotY??50) &&
     cfg.kakuSize===S.kakuSize && Math.abs((cfg.kakuScale||100)-(S.kakuScale||100))<0.1 &&
     cfg.kakuDensity===S.kakuDensity && cfg.kakuWeight===S.kakuWeight &&
     cfg.kakuInnerGap===S.kakuInnerGap && cfg.kakuColGap===S.kakuColGap &&
@@ -4346,6 +4572,7 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
     layoutKaku();
     layoutArare();
     polys = KAKU_POLYS;
+    spotPolys = KAKU_SPOT_POLYS;
     dots = DOTS;
     S = bak;
     layoutKaku();
@@ -4360,6 +4587,15 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
       kakuPath.moveTo(poly[0][0], poly[0][1]);
       for(let i = 1; i < poly.length; i++) kakuPath.lineTo(poly[i][0], poly[i][1]);
       kakuPath.closePath();
+    }
+  }
+  let kakuSpotPath = null;
+  if(spotPolys && spotPolys.length > 0){
+    kakuSpotPath = new Path2D();
+    for(const poly of spotPolys){
+      kakuSpotPath.moveTo(poly[0][0], poly[0][1]);
+      for(let i = 1; i < poly.length; i++) kakuSpotPath.lineTo(poly[i][0], poly[i][1]);
+      kakuSpotPath.closePath();
     }
   }
   let ararePath = null;
@@ -4418,13 +4654,21 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
       x.fill(ararePath);
     };
     const drawKakuVec = (isFront) => {
-      if(!kakuPath) return;
+      if(!kakuPath && !kakuSpotPath) return;
       if(isFront && ko > 0){
         x.save(); x.strokeStyle = cfg.bgColor; x.lineWidth = ko * 2; x.lineJoin = 'round'; x.lineCap = 'round';
-        x.stroke(kakuPath); x.restore();
+        if(kakuPath) x.stroke(kakuPath);
+        if(kakuSpotPath) x.stroke(kakuSpotPath);
+        x.restore();
       }
-      x.fillStyle = cfg.kakuColor || '#ffffff';
-      x.fill(kakuPath);
+      if(kakuPath){
+        x.fillStyle = cfg.kakuColor || '#ffffff';
+        x.fill(kakuPath);
+      }
+      if(kakuSpotPath){
+        x.fillStyle = (cfg.seinenSpotMode && cfg.seinenSpotMode !== 'same') ? (cfg.seinenSpotColor || '#fbbf24') : (cfg.kakuColor || '#ffffff');
+        x.fill(kakuSpotPath);
+      }
     };
 
     if(cfg.layerOrder === 'arareFront'){
@@ -6203,7 +6447,7 @@ function draw(){
   };
 
   const drawKakuLayer = (isFront) => {
-    if(KAKU_POLYS.length === 0) return;
+    if(KAKU_POLYS.length === 0 && KAKU_SPOT_POLYS.length === 0) return;
     if(isFront && ko > 0){
       x.save();
       x.strokeStyle = S.bgColor;
@@ -6216,17 +6460,34 @@ function draw(){
         for(let i=1; i<poly.length; i++) x.lineTo(poly[i][0], poly[i][1]);
         x.closePath();
       }
+      for(const poly of KAKU_SPOT_POLYS){
+        x.moveTo(poly[0][0], poly[0][1]);
+        for(let i=1; i<poly.length; i++) x.lineTo(poly[i][0], poly[i][1]);
+        x.closePath();
+      }
       x.stroke();
       x.restore();
     }
-    x.fillStyle=S.kakuColor;
-    x.beginPath();
-    for(const poly of KAKU_POLYS){
-      x.moveTo(poly[0][0], poly[0][1]);
-      for(let i=1; i<poly.length; i++) x.lineTo(poly[i][0], poly[i][1]);
-      x.closePath();
+    if(KAKU_POLYS.length > 0){
+      x.fillStyle=S.kakuColor;
+      x.beginPath();
+      for(const poly of KAKU_POLYS){
+        x.moveTo(poly[0][0], poly[0][1]);
+        for(let i=1; i<poly.length; i++) x.lineTo(poly[i][0], poly[i][1]);
+        x.closePath();
+      }
+      x.fill();
     }
-    x.fill();
+    if(KAKU_SPOT_POLYS.length > 0){
+      x.fillStyle = (S.seinenSpotMode && S.seinenSpotMode !== 'same') ? (S.seinenSpotColor || '#fbbf24') : S.kakuColor;
+      x.beginPath();
+      for(const poly of KAKU_SPOT_POLYS){
+        x.moveTo(poly[0][0], poly[0][1]);
+        for(let i=1; i<poly.length; i++) x.lineTo(poly[i][0], poly[i][1]);
+        x.closePath();
+      }
+      x.fill();
+    }
   };
 
   if(S.layerOrder === 'arareFront'){
@@ -6346,7 +6607,7 @@ function svgText(){
     return g;
   };
   const buildKakuSvg=(isFront)=>{
-    if(KAKU_POLYS.length===0) return '';
+    if(KAKU_POLYS.length===0 && KAKU_SPOT_POLYS.length===0) return '';
     let g='';
     if(isFront && ko>0){
       g+='<g id="HanedaNaka_Knockout" fill="none" stroke="'+S.bgColor+'" stroke-width="'+f2(ko*2)+'" stroke-linejoin="round" stroke-linecap="round">\n';
@@ -6355,15 +6616,32 @@ function svgText(){
         for(let i=1;i<poly.length;i++) d+='L'+f2(poly[i][0])+','+f2(poly[i][1]);
         g+='<path d="'+d+'Z"/>\n';
       }
+      for(const poly of KAKU_SPOT_POLYS){
+        let d='M'+f2(poly[0][0])+','+f2(poly[0][1]);
+        for(let i=1;i<poly.length;i++) d+='L'+f2(poly[i][0])+','+f2(poly[i][1]);
+        g+='<path d="'+d+'Z"/>\n';
+      }
       g+='</g>\n';
     }
-    g+='<g id="HanedaNaka_Kakuji" fill="'+S.kakuColor+'">\n';
-    for(const poly of KAKU_POLYS){
-      let d='M'+f2(poly[0][0])+','+f2(poly[0][1]);
-      for(let i=1;i<poly.length;i++) d+='L'+f2(poly[i][0])+','+f2(poly[i][1]);
-      g+='<path d="'+d+'Z"/>\n';
+    if(KAKU_POLYS.length>0){
+      g+='<g id="HanedaNaka_Kakuji" fill="'+S.kakuColor+'">\n';
+      for(const poly of KAKU_POLYS){
+        let d='M'+f2(poly[0][0])+','+f2(poly[0][1]);
+        for(let i=1;i<poly.length;i++) d+='L'+f2(poly[i][0])+','+f2(poly[i][1]);
+        g+='<path d="'+d+'Z"/>\n';
+      }
+      g+='</g>\n';
     }
-    g+='</g>\n';
+    if(KAKU_SPOT_POLYS.length>0){
+      const spotCol = (S.seinenSpotMode && S.seinenSpotMode !== 'same') ? (S.seinenSpotColor || '#fbbf24') : S.kakuColor;
+      g+='<g id="Seinenkai_OnePoint_Spot" fill="'+spotCol+'">\n';
+      for(const poly of KAKU_SPOT_POLYS){
+        let d='M'+f2(poly[0][0])+','+f2(poly[0][1]);
+        for(let i=1;i<poly.length;i++) d+='L'+f2(poly[i][0])+','+f2(poly[i][1]);
+        g+='<path d="'+d+'Z"/>\n';
+      }
+      g+='</g>\n';
+    }
     return g;
   };
   if(S.layerOrder === 'arareFront'){
@@ -6398,24 +6676,88 @@ function svgText(){
   return s+'</svg>\n';
 }
 
-/* ---- 7. 書き出し: Illustrator 8 (.ai) 複数レイヤー・CMYK・札＆ロゴ完全ベクター対応 ---- */
+/* ---- 7. 書き出し: Illustrator 8 (.ai) 複数レイヤー・RGB/JapanColor高精度CMYK・札＆ロゴ完全ベクター対応 ---- */
+// Japan Color 2001 Coated 8原色Neugebauerトリリニア補間＋GCR逆算ソルバー（従来の単純1-max変換による羽田納戸・金茶等の黒濁りを解消）
+const CMYK_JC2001_CACHE = new Map();
+const JC2001_PRIMARIES = {
+  W:   [1.000, 1.000, 1.000],
+  C:   [0.000, 0.627, 0.914],
+  M:   [0.894, 0.000, 0.498],
+  Y:   [1.000, 0.945, 0.000],
+  CM:  [0.114, 0.125, 0.533],
+  CY:  [0.000, 0.600, 0.267],
+  MY:  [0.898, 0.000, 0.071],
+  CMY: [0.137, 0.094, 0.082]
+};
+function jc2001ForwardRgb(c, m, y, k){
+  const P = JC2001_PRIMARIES;
+  const wW=(1-c)*(1-m)*(1-y), wC=c*(1-m)*(1-y), wM=(1-c)*m*(1-y), wY=(1-c)*(1-m)*y;
+  const wCM=c*m*(1-y), wCY=c*(1-m)*y, wMY=(1-c)*m*y, wCMY=c*m*y;
+  const fk = 1 - k * 0.92;
+  return [0,1,2].map(i => (wW*P.W[i] + wC*P.C[i] + wM*P.M[i] + wY*P.Y[i] + wCM*P.CM[i] + wCY*P.CY[i] + wMY*P.MY[i] + wCMY*P.CMY[i]) * fk);
+}
 function hexCmyk(h){
-  h = (h||'#000000').replace('#','');
+  h = (h||'#000000').replace('#','').trim().toLowerCase();
   if(h.length===3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
-  const r=parseInt(h.slice(0,2),16)/255, g=parseInt(h.slice(2,4),16)/255, b=parseInt(h.slice(4,6),16)/255;
-  const k=1-Math.max(r,g,b);
-  if(k>=1) return [0,0,0,1];
-  return [(1-r-k)/(1-k),(1-g-k)/(1-k),(1-b-k)/(1-k),k].map(v=>Math.round(v*1000)/1000);
+  if(CMYK_JC2001_CACHE.has(h)) return CMYK_JC2001_CACHE.get(h);
+  const tr=parseInt(h.slice(0,2),16)/255||0, tg=parseInt(h.slice(2,4),16)/255||0, tb=parseInt(h.slice(4,6),16)/255||0;
+  if(tr >= 0.995 && tg >= 0.995 && tb >= 0.995) return [0,0,0,0];
+  if(tr <= 0.005 && tg <= 0.005 && tb <= 0.005) return [0,0,0,1];
+  const kRaw = 1 - Math.max(tr, tg, tb);
+  const k = Math.max(0, Math.min(0.95, Math.pow(kRaw, 1.45) * 0.85));
+  let c = Math.max(0, Math.min(1, (1 - tr - k * 0.85) / Math.max(0.05, 1 - k * 0.85)));
+  let m = Math.max(0, Math.min(1, (1 - tg - k * 0.85) / Math.max(0.05, 1 - k * 0.85)));
+  let y = Math.max(0, Math.min(1, (1 - tb - k * 0.85) / Math.max(0.05, 1 - k * 0.85)));
+  for(let it = 0; it < 28; it++){
+    const [pr, pg, pb] = jc2001ForwardRgb(c, m, y, k);
+    const er = pr - tr, eg = pg - tg, eb = pb - tb;
+    if(er*er + eg*eg + eb*eb < 1e-6) break;
+    c = Math.max(0, Math.min(1, c + (er * 0.72 - eg * 0.12 - eb * 0.05)));
+    m = Math.max(0, Math.min(1, m + (eg * 0.72 - er * 0.05 - eb * 0.15)));
+    y = Math.max(0, Math.min(1, y + (eb * 0.75 - eg * 0.05)));
+  }
+  const out = [c, m, y, k].map(v => Math.round(v * 1000) / 1000);
+  if(CMYK_JC2001_CACHE.size > 512) CMYK_JC2001_CACHE.clear();
+  CMYK_JC2001_CACHE.set(h, out);
+  return out;
+}
+function hexRgb01(h){
+  h = (h||'#000000').replace('#','').trim();
+  if(h.length===3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  const r=(parseInt(h.slice(0,2),16)||0)/255, g=(parseInt(h.slice(2,4),16)||0)/255, b=(parseInt(h.slice(4,6),16)||0)/255;
+  return [r, g, b].map(v => Math.round(v * 10000) / 10000);
+}
+// 半透明要素をPostScript(.ai)に出力する際、背景色とアルファブレンドして見た目の色を完全維持
+function blendHexWithBg(fgHex, bgHex, alpha){
+  if(alpha === undefined || alpha >= 0.995) return fgHex;
+  const a = Math.max(0, Math.min(1, alpha));
+  const [fr, fg, fb] = hexRgb01(fgHex);
+  const [br, bg, bb] = hexRgb01(bgHex || '#046e7e');
+  const r = Math.round((fr * a + br * (1 - a)) * 255);
+  const g = Math.round((fg * a + bg * (1 - a)) * 255);
+  const b = Math.round((fb * a + bb * (1 - a)) * 255);
+  return '#' + [r, g, b].map(v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0')).join('');
+}
+function pushAiFillColor(L, hex, useRgb){
+  L.push(hexCmyk(hex).join(' ') + ' k');
+  if(useRgb) L.push(hexRgb01(hex).join(' ') + ' Xa');
+}
+function pushAiStrokeColor(L, hex, useRgb){
+  L.push(hexCmyk(hex).join(' ') + ' K');
+  if(useRgb) L.push(hexRgb01(hex).join(' ') + ' XA');
 }
 
-function writeVectorItemsToAiLines(L, items, P, MM){
+function writeVectorItemsToAiLines(L, items, P, MM, useRgb, bgHex){
   for(const it of items){
+    if(it.opacity !== undefined && it.opacity <= 0.001) continue;
+    const effFill = it.fill ? blendHexWithBg(it.fill, bgHex, it.opacity) : null;
+    const effStroke = it.stroke ? blendHexWithBg(it.stroke, bgHex, it.opacity) : null;
     if(it.type === 'poly' && it.pts && it.pts.length >= 3){
-      const hasFill = !!it.fill;
-      const hasStroke = !!it.stroke;
-      if(hasFill) L.push(hexCmyk(it.fill).join(' ') + ' k');
+      const hasFill = !!effFill;
+      const hasStroke = !!effStroke;
+      if(hasFill) pushAiFillColor(L, effFill, useRgb);
       if(hasStroke){
-        L.push(hexCmyk(it.stroke).join(' ') + ' K');
+        pushAiStrokeColor(L, effStroke, useRgb);
         L.push('0 i 1 J 1 j ' + ((it.strokeWidth || 1) * MM).toFixed(3) + ' w 4 M []0 d');
       }
       L.push(P(it.pts[0][0], it.pts[0][1]) + ' m');
@@ -6423,13 +6765,14 @@ function writeVectorItemsToAiLines(L, items, P, MM){
       L.push(P(it.pts[0][0], it.pts[0][1]) + ' L');
       L.push(hasFill && hasStroke ? 'b' : (hasFill ? 'f' : 's'));
     }else if(it.type === 'compound' && it.loops && it.loops.length > 0){
-      const hasFill = !!it.fill;
-      const hasStroke = !!it.stroke;
-      if(hasFill) L.push(hexCmyk(it.fill).join(' ') + ' k');
+      const hasFill = !!effFill;
+      const hasStroke = !!effStroke;
+      if(hasFill) pushAiFillColor(L, effFill, useRgb);
       if(hasStroke){
-        L.push(hexCmyk(it.stroke).join(' ') + ' K');
+        pushAiStrokeColor(L, effStroke, useRgb);
         L.push('0 i 1 J 1 j ' + ((it.strokeWidth || 1) * MM).toFixed(3) + ' w 4 M []0 d');
       }
+      L.push('1 D'); // 奇偶規則（Even-Odd）で文字やロゴの内側の抜き穴を確実に再現
       L.push('*u');
       for(const lp of it.loops){
         if(lp.length < 3) continue;
@@ -6439,6 +6782,7 @@ function writeVectorItemsToAiLines(L, items, P, MM){
         L.push(hasFill && hasStroke ? 'b' : (hasFill ? 'f' : 's'));
       }
       L.push('*U');
+      L.push('0 D');
     }
   }
 }
@@ -6447,12 +6791,15 @@ function aiText(){
   const MM=72/25.4, W=S.W, H=S.H, Wp=W*MM, Hp=H*MM;
   const P=(x,y)=>(x*MM).toFixed(3)+' '+((H-y)*MM).toFixed(3);
   const L=[]; const nl='\r\n';
+  const useRgb = (S.aiColorMode !== 'cmyk');
+  const bgHex = S.bgColor || '#046e7e';
   const ov = buildAllOverlayVectorPrimitivesMm(S);
-  let numLayers = (S.showBg?1:0) + (DOTS.length>0?1:0) + (KAKU_POLYS.length>0?1:0) + (S.showCrest?1:0)
+  let numLayers = (S.showBg?1:0) + (DOTS.length>0?1:0) + ((KAKU_POLYS.length>0||KAKU_SPOT_POLYS.length>0)?1:0) + (S.showCrest?1:0)
     + (ov.logoVectorItems.length>0?1:0) + (ov.fudaFrameItems.length>0?1:0) + (ov.fudaTextItems.length>0?1:0);
   L.push('%!PS-Adobe-3.0 ','%%Creator: Adobe Illustrator(R) 8.0','%%AI8_CreatorVersion: 8.0','%%For: (tenugui) ()','%%Title: (tenugui.ai)',
     '%%BoundingBox: 0 0 '+Math.ceil(Wp)+' '+Math.ceil(Hp),'%%HiResBoundingBox: 0 0 '+Wp.toFixed(4)+' '+Hp.toFixed(4),
     '%%DocumentProcessColors: Cyan Magenta Yellow Black','%AI5_FileFormat 4.0','%AI3_ColorUsage: Color','%AI7_ImageSettings: 0',
+    '%AI9_ColorModel: '+(useRgb ? '1' : '2'),
     '%%CMYKProcessColor: 1 1 1 1 ([Registration])','%AI3_TemplateBox: '+(Wp/2).toFixed(3)+' '+(Hp/2).toFixed(3)+' '+(Wp/2).toFixed(3)+' '+(Hp/2).toFixed(3),
     '%AI3_TileBox: 0 0 '+Wp.toFixed(3)+' '+Hp.toFixed(3),'%AI3_DocumentPreview: None','%AI5_ArtSize: '+Wp.toFixed(4)+' '+Hp.toFixed(4),
     '%AI5_RulerUnits: 1','%AI5_ArtFlags: 0 0 0 1 0 0 1 0 0','%AI5_TargetResolution: 800','%AI5_NumLayers: '+Math.max(1,numLayers),
@@ -6461,19 +6808,19 @@ function aiText(){
 
   // Layer 1: Background
   if(S.showBg){
-    const c=hexCmyk(S.bgColor);
-    L.push('%AI5_BeginLayer','1 1 1 1 0 0 0 79 128 255 Lb','(Background_Navy) Ln','0 A','0 O',c.join(' ')+' k','0 R','0 i 0 J 0 j 1 w 4 M []0 d',
+    L.push('%AI5_BeginLayer','1 1 1 1 0 0 0 79 128 255 Lb','(Background_Navy) Ln','0 A','0 O');
+    pushAiFillColor(L, S.bgColor, useRgb);
+    L.push('0 R','0 i 0 J 0 j 1 w 4 M []0 d',
       P(0,0)+' m',P(W,0)+' L',P(W,H)+' L',P(0,H)+' L',P(0,0)+' L','f','LB','%AI5_EndLayer--');
   }
   // Layer 2 & 3: Arare Dots / HanedaNaka Kakuji (S.layerOrder に従い前後順で出力)
   const koPt = (S.mode==='both' && S.knockoutMm>0) ? (S.knockoutMm * 2 * MM) : 0;
-  const bgCmyk = hexCmyk(S.bgColor).join(' ');
   const writeArareLayer = (isFront) => {
     if(DOTS.length === 0) return;
-    const d=hexCmyk(S.dotColor);
     L.push('%AI5_BeginLayer','1 1 1 1 0 0 1 255 79 79 Lb','(Arare_Dots) Ln','0 A','0 O');
     if(isFront && koPt > 0){
-      L.push(bgCmyk+' K','0 i 1 J 1 j '+koPt.toFixed(3)+' w 4 M []0 d');
+      pushAiStrokeColor(L, S.bgColor, useRgb);
+      L.push('0 i 1 J 1 j '+koPt.toFixed(3)+' w 4 M []0 d');
       for(const o of DOTS){
         const a=anchors(o), b=beziers(a);
         L.push(P(a[0][0],a[0][1])+' m');
@@ -6481,7 +6828,8 @@ function aiText(){
         L.push('s');
       }
     }
-    L.push(d.join(' ')+' k','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
+    pushAiFillColor(L, S.dotColor, useRgb);
+    L.push('0 R','0 i 0 J 0 j 1 w 4 M []0 d');
     for(const o of DOTS){
       const a=anchors(o), b=beziers(a);
       L.push(P(a[0][0],a[0][1])+' m');
@@ -6491,22 +6839,40 @@ function aiText(){
     L.push('LB','%AI5_EndLayer--');
   };
   const writeKakuLayer = (isFront) => {
-    if(KAKU_POLYS.length === 0) return;
-    const kc=hexCmyk(S.kakuColor);
+    if(KAKU_POLYS.length === 0 && KAKU_SPOT_POLYS.length === 0) return;
     L.push('%AI5_BeginLayer','1 1 1 1 0 0 2 79 200 120 Lb','(HanedaNaka_Kakuji) Ln','0 A','0 O');
     if(isFront && koPt > 0){
-      L.push(bgCmyk+' K','0 i 1 J 1 j '+koPt.toFixed(3)+' w 4 M []0 d');
+      pushAiStrokeColor(L, S.bgColor, useRgb);
+      L.push('0 i 1 J 1 j '+koPt.toFixed(3)+' w 4 M []0 d');
       for(const poly of KAKU_POLYS){
         L.push(P(poly[0][0],poly[0][1])+' m');
         for(let i=1;i<poly.length;i++) L.push(P(poly[i][0],poly[i][1])+' L');
         L.push(P(poly[0][0],poly[0][1])+' L','s');
       }
+      for(const poly of KAKU_SPOT_POLYS){
+        L.push(P(poly[0][0],poly[0][1])+' m');
+        for(let i=1;i<poly.length;i++) L.push(P(poly[i][0],poly[i][1])+' L');
+        L.push(P(poly[0][0],poly[0][1])+' L','s');
+      }
     }
-    L.push(kc.join(' ')+' k','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
-    for(const poly of KAKU_POLYS){
-      L.push(P(poly[0][0],poly[0][1])+' m');
-      for(let i=1;i<poly.length;i++) L.push(P(poly[i][0],poly[i][1])+' L');
-      L.push(P(poly[0][0],poly[0][1])+' L','f');
+    if(KAKU_POLYS.length > 0){
+      pushAiFillColor(L, S.kakuColor, useRgb);
+      L.push('0 R','0 i 0 J 0 j 1 w 4 M []0 d');
+      for(const poly of KAKU_POLYS){
+        L.push(P(poly[0][0],poly[0][1])+' m');
+        for(let i=1;i<poly.length;i++) L.push(P(poly[i][0],poly[i][1])+' L');
+        L.push(P(poly[0][0],poly[0][1])+' L','f');
+      }
+    }
+    if(KAKU_SPOT_POLYS.length > 0){
+      const spotCol = (S.seinenSpotMode && S.seinenSpotMode !== 'same') ? (S.seinenSpotColor || '#fbbf24') : S.kakuColor;
+      pushAiFillColor(L, spotCol, useRgb);
+      L.push('0 R','0 i 0 J 0 j 1 w 4 M []0 d');
+      for(const poly of KAKU_SPOT_POLYS){
+        L.push(P(poly[0][0],poly[0][1])+' m');
+        for(let i=1;i<poly.length;i++) L.push(P(poly[i][0],poly[i][1])+' L');
+        L.push(P(poly[0][0],poly[0][1])+' L','f');
+      }
     }
     L.push('LB','%AI5_EndLayer--');
   };
@@ -6520,38 +6886,38 @@ function aiText(){
   // Layer 4: Nakahaneda Crest
   const crest = getCrestBeziersMm();
   if(crest){
-    const cbg=hexCmyk(S.crestBg), cfg=hexCmyk(S.crestFg);
     L.push('%AI5_BeginLayer','1 1 1 1 0 0 3 220 180 40 Lb','(Nakahaneda_Crest) Ln','0 A','0 O');
-    L.push(cbg.join(' ')+' k');
+    pushAiFillColor(L, S.crestBg, useRgb);
     const ca = CIRCLE.p.map(([px,py])=>[crest.cx+px*crest.bgRad, crest.cy+py*crest.bgRad]);
     const cb = beziers(ca);
     L.push(P(ca[0][0],ca[0][1])+' m');
     for(const q of cb) L.push(P(q[0],q[1])+' '+P(q[2],q[3])+' '+P(q[4],q[5])+' c');
     L.push('f');
-    L.push(cfg.join(' ')+' k','*u');
+    pushAiFillColor(L, S.crestFg, useRgb);
+    L.push('1 D','*u');
     for(const lp of crest.loops){
       L.push(P(lp.a[0][0],lp.a[0][1])+' m');
       for(const q of lp.b) L.push(P(q[0],q[1])+' '+P(q[2],q[3])+' '+P(q[4],q[5])+' c');
       L.push('f');
     }
-    L.push('*U','LB','%AI5_EndLayer--');
+    L.push('*U','0 D','LB','%AI5_EndLayer--');
   }
   // Layer 5: Custom_Logos_Vector (仲羽半纏ロゴや読込ロゴのベクターパス)
   if(ov.logoVectorItems.length > 0){
     L.push('%AI5_BeginLayer','1 1 1 1 0 0 4 180 90 250 Lb','(Custom_Logos_Vector) Ln','0 A','0 O','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
-    writeVectorItemsToAiLines(L, ov.logoVectorItems, P, MM);
+    writeVectorItemsToAiLines(L, ov.logoVectorItems, P, MM, useRgb, bgHex);
     L.push('LB','%AI5_EndLayer--');
   }
   // Layer 6: Fuda_Frame_Vector (札の枠・山形・丸紋・差し札・隅切り等のベクターパス)
   if(ov.fudaFrameItems.length > 0){
     L.push('%AI5_BeginLayer','1 1 1 1 0 0 5 240 130 50 Lb','(Fuda_Frame_Vector) Ln','0 A','0 O','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
-    writeVectorItemsToAiLines(L, ov.fudaFrameItems, P, MM);
+    writeVectorItemsToAiLines(L, ov.fudaFrameItems, P, MM, useRgb, bgHex);
     L.push('LB','%AI5_EndLayer--');
   }
   // Layer 7: Fuda_Text_Outlines_Vector (アウトライン化済み文字ベクターパス)
   if(ov.fudaTextItems.length > 0){
     L.push('%AI5_BeginLayer','1 1 1 1 0 0 6 40 200 220 Lb','(Fuda_Text_Outlines_Vector) Ln','0 A','0 O','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
-    writeVectorItemsToAiLines(L, ov.fudaTextItems, P, MM);
+    writeVectorItemsToAiLines(L, ov.fudaTextItems, P, MM, useRgb, bgHex);
     L.push('LB','%AI5_EndLayer--');
   }
 
@@ -6559,21 +6925,30 @@ function aiText(){
   return L.join(nl)+nl;
 }
 
-/* ---- 8. 書き出し: Illustrator用 .jsx スクリプト (全レイヤー完全収録) ---- */
+/* ---- 8. 書き出し: Illustrator用 .jsx スクリプト (全レイヤー完全収録・RGB/CMYK対応) ---- */
 function jsxText(){
   const W=S.W, H=S.H;
-  const bgC=hexCmyk(S.bgColor).map(v=>Math.round(v*100));
-  const kakuC=hexCmyk(S.kakuColor).map(v=>Math.round(v*100));
-  const dotC=hexCmyk(S.dotColor).map(v=>Math.round(v*100));
+  const useRgb = (S.aiColorMode !== 'cmyk');
+  const colArr = (hex) => useRgb
+    ? hexToRgbArr(hex)
+    : hexCmyk(hex).map(v=>Math.round(v*100));
+  const bgC = colArr(S.bgColor);
+  const kakuC = colArr(S.kakuColor);
+  const spotHex = (S.seinenSpotMode && S.seinenSpotMode !== 'same') ? (S.seinenSpotColor || '#fbbf24') : S.kakuColor;
+  const spotC = colArr(spotHex);
+  const dotC = colArr(S.dotColor);
   const polysData = KAKU_POLYS.map(poly=>poly.map(p=>[Math.round(p[0]*100)/100, Math.round(p[1]*100)/100]));
+  const spotPolysData = KAKU_SPOT_POLYS.map(poly=>poly.map(p=>[Math.round(p[0]*100)/100, Math.round(p[1]*100)/100]));
   const dotsData = DOTS.map(o=>{
     const a=anchors(o), b=beziers(a);
     return {a:a.map(p=>[Math.round(p[0]*100)/100,Math.round(p[1]*100)/100]), b:b.map(q=>q.map(v=>Math.round(v*100)/100))};
   });
   const ov = buildAllOverlayVectorPrimitivesMm(S);
   const simplifyVecItems = (arr) => arr.map(it => {
-    const fc = it.fill ? hexCmyk(it.fill).map(v=>Math.round(v*100)) : null;
-    const sc = it.stroke ? hexCmyk(it.stroke).map(v=>Math.round(v*100)) : null;
+    const effFill = it.fill ? blendHexWithBg(it.fill, S.bgColor, it.opacity) : null;
+    const effStroke = it.stroke ? blendHexWithBg(it.stroke, S.bgColor, it.opacity) : null;
+    const fc = effFill ? colArr(effFill) : null;
+    const sc = effStroke ? colArr(effStroke) : null;
     if(it.type === 'poly'){
       return { t:'p', fc, sc, sw:it.strokeWidth||0, pts:it.pts.map(p=>[Math.round(p[0]*100)/100, Math.round(p[1]*100)/100]) };
     }
@@ -6588,23 +6963,28 @@ function jsxText(){
 #target illustrator
 (function(){
 var MM = 72/25.4, W = ${W}, H = ${H};
+var USE_RGB = ${useRgb ? 'true' : 'false'};
 var ORDER = "${S.layerOrder || 'kakuFront'}";
 var POLYS = ${JSON.stringify(polysData)};
+var SPOT_POLYS = ${JSON.stringify(spotPolysData)};
 var DOTS = ${JSON.stringify(dotsData)};
 var OV_LOGOS = ${JSON.stringify(ovLogos)};
 var OV_FUDA_FRAMES = ${JSON.stringify(ovFudaFrames)};
 var OV_FUDA_TEXTS = ${JSON.stringify(ovFudaTexts)};
 app.userInteractionLevel = UserInteractionLevel.DONTDISPLAYALERTS;
-var doc = app.documents.add(DocumentColorSpace.CMYK, W*MM, H*MM);
+var doc = app.documents.add(USE_RGB ? DocumentColorSpace.RGB : DocumentColorSpace.CMYK, W*MM, H*MM);
 var ab = doc.artboards[0].artboardRect, L = ab[0], T = ab[1];
 function P(x, y){ return [L + x*MM, T - y*MM]; }
-function cmyk(c,m,y,k){ var o = new CMYKColor(); o.cyan=c; o.magenta=m; o.yellow=y; o.black=k; return o; }
+function makeCol(arr){
+  if(USE_RGB){ var r = new RGBColor(); r.red=arr[0]; r.green=arr[1]; r.blue=arr[2]; return r; }
+  var o = new CMYKColor(); o.cyan=arr[0]; o.magenta=arr[1]; o.yellow=arr[2]; o.black=arr[3]; return o;
+}
 ${S.showBg ? `var bg = doc.layers[0]; bg.name = "Background_Navy";
-var r = bg.pathItems.rectangle(T, L, W*MM, H*MM); r.filled = true; r.fillColor = cmyk(${bgC.join(',')}); r.stroked = false;` : ''}
+var r = bg.pathItems.rectangle(T, L, W*MM, H*MM); r.filled = true; r.fillColor = makeCol([${bgC.join(',')}]); r.stroked = false;` : ''}
 function addArareLayer(){
   if (DOTS.length === 0) return;
   var lay = doc.layers.add(); lay.name = "Arare_Dots";
-  var fg = cmyk(${dotC.join(',')});
+  var fg = makeCol([${dotC.join(',')}]);
   for (var i = 0; i < DOTS.length; i++) {
     var d = DOTS[i], p = lay.pathItems.add();
     p.filled = true; p.fillColor = fg; p.stroked = false;
@@ -6621,14 +7001,23 @@ function addArareLayer(){
   }
 }
 function addKakuLayer(){
-  if (POLYS.length === 0) return;
+  if (POLYS.length === 0 && SPOT_POLYS.length === 0) return;
   var lay = doc.layers.add(); lay.name = "HanedaNaka_Kakuji";
-  var fg = cmyk(${kakuC.join(',')});
+  var fg = makeCol([${kakuC.join(',')}]);
   for (var i = 0; i < POLYS.length; i++) {
     var poly = POLYS[i], pts = [];
     for (var j = 0; j < poly.length; j++) pts.push(P(poly[j][0], poly[j][1]));
     var p = lay.pathItems.add(); p.setEntirePath(pts);
     p.closed = true; p.filled = true; p.fillColor = fg; p.stroked = false;
+  }
+  if (SPOT_POLYS.length > 0) {
+    var sfg = makeCol([${spotC.join(',')}]);
+    for (var k = 0; k < SPOT_POLYS.length; k++) {
+      var spoly = SPOT_POLYS[k], spts = [];
+      for (var m = 0; m < spoly.length; m++) spts.push(P(spoly[m][0], spoly[m][1]));
+      var sp = lay.pathItems.add(); sp.setEntirePath(spts);
+      sp.closed = true; sp.filled = true; sp.fillColor = sfg; sp.stroked = false;
+    }
   }
 }
 function addVecItemsLayer(name, items){
@@ -6640,16 +7029,16 @@ function addVecItemsLayer(name, items){
       var pts = [];
       for (var j = 0; j < it.pts.length; j++) pts.push(P(it.pts[j][0], it.pts[j][1]));
       var p = lay.pathItems.add(); p.setEntirePath(pts); p.closed = true;
-      p.filled = !!it.fc; if (it.fc) p.fillColor = cmyk(it.fc[0],it.fc[1],it.fc[2],it.fc[3]);
-      p.stroked = !!it.sc; if (it.sc) { p.strokeColor = cmyk(it.sc[0],it.sc[1],it.sc[2],it.sc[3]); p.strokeWidth = it.sw * MM; }
+      p.filled = !!it.fc; if (it.fc) p.fillColor = makeCol(it.fc);
+      p.stroked = !!it.sc; if (it.sc) { p.strokeColor = makeCol(it.sc); p.strokeWidth = it.sw * MM; }
     } else if (it.t === "c") {
       var cp = lay.compoundPathItems.add();
       for (var k = 0; k < it.lps.length; k++) {
         var lp = it.lps[k], pts2 = [];
         for (var m = 0; m < lp.length; m++) pts2.push(P(lp[m][0], lp[m][1]));
-        var sp = cp.pathItems.add(); sp.setEntirePath(pts2); sp.closed = true;
-        sp.filled = !!it.fc; if (it.fc) sp.fillColor = cmyk(it.fc[0],it.fc[1],it.fc[2],it.fc[3]);
-        sp.stroked = !!it.sc; if (it.sc) { sp.strokeColor = cmyk(it.sc[0],it.sc[1],it.sc[2],it.sc[3]); sp.strokeWidth = it.sw * MM; }
+        var sp = cp.pathItems.add(); sp.setEntirePath(pts2); sp.closed = true; sp.evenodd = true;
+        sp.filled = !!it.fc; if (it.fc) sp.fillColor = makeCol(it.fc);
+        sp.stroked = !!it.sc; if (it.sc) { sp.strokeColor = makeCol(it.sc); sp.strokeWidth = it.sw * MM; }
       }
     }
   }
@@ -6665,7 +7054,7 @@ addVecItemsLayer("Custom_Logos_Vector", OV_LOGOS);
 addVecItemsLayer("Fuda_Frame_Vector", OV_FUDA_FRAMES);
 addVecItemsLayer("Fuda_Text_Outlines_Vector", OV_FUDA_TEXTS);
 app.userInteractionLevel = UserInteractionLevel.DISPLAYALERTS;
-alert("完了：手ぬぐいデータ (仲羽田 " + POLYS.length + " パス / あられ " + DOTS.length + " 粒 / 札・ロゴ完全ベクター収録)");
+alert("完了：手ぬぐいデータ (仲羽田 " + (POLYS.length + SPOT_POLYS.length) + " パス / あられ " + DOTS.length + " 粒 / 札・ロゴ完全ベクター収録)");
 })();
 `;
 }
@@ -6691,10 +7080,13 @@ function exportSingleFudaVector(format){
   // Illustrator 8 (.ai) 書き出し
   const MM = 72 / 25.4, Wp = Wf * MM, Hp = Hf * MM;
   const P = (x, y) => (x * MM).toFixed(3) + ' ' + ((Hf - y) * MM).toFixed(3);
+  const useRgb = (S.aiColorMode !== 'cmyk');
+  const bgHex = S.bgColor || '#046e7e';
   const L = [], nl = '\r\n';
   L.push('%!PS-Adobe-3.0 ','%%Creator: Adobe Illustrator(R) 8.0','%%AI8_CreatorVersion: 8.0','%%For: (tenugui_fuda) ()','%%Title: (fuda_logo.ai)',
     '%%BoundingBox: 0 0 '+Math.ceil(Wp)+' '+Math.ceil(Hp),'%%HiResBoundingBox: 0 0 '+Wp.toFixed(4)+' '+Hp.toFixed(4),
     '%%DocumentProcessColors: Cyan Magenta Yellow Black','%AI5_FileFormat 4.0','%AI3_ColorUsage: Color','%AI7_ImageSettings: 0',
+    '%AI9_ColorModel: '+(useRgb ? '1' : '2'),
     '%%CMYKProcessColor: 1 1 1 1 ([Registration])','%AI3_TemplateBox: '+(Wp/2).toFixed(3)+' '+(Hp/2).toFixed(3)+' '+(Wp/2).toFixed(3)+' '+(Hp/2).toFixed(3),
     '%AI3_TileBox: 0 0 '+Wp.toFixed(3)+' '+Hp.toFixed(3),'%AI3_DocumentPreview: None','%AI5_ArtSize: '+Wp.toFixed(4)+' '+Hp.toFixed(4),
     '%AI5_RulerUnits: 1','%AI5_ArtFlags: 0 0 0 1 0 0 1 0 0','%AI5_TargetResolution: 800','%AI5_NumLayers: 2',
@@ -6703,12 +7095,12 @@ function exportSingleFudaVector(format){
 
   if(frameItems.length > 0){
     L.push('%AI5_BeginLayer','1 1 1 1 0 0 1 240 130 50 Lb','(Fuda_Frame_And_Cord_Vector) Ln','0 A','0 O','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
-    writeVectorItemsToAiLines(L, frameItems, P, MM);
+    writeVectorItemsToAiLines(L, frameItems, P, MM, useRgb, bgHex);
     L.push('LB','%AI5_EndLayer--');
   }
   if(textItems.length > 0){
     L.push('%AI5_BeginLayer','1 1 1 1 0 0 2 40 200 220 Lb','(Fuda_Text_Outlines_Vector) Ln','0 A','0 O','0 R','0 i 0 J 0 j 1 w 4 M []0 d');
-    writeVectorItemsToAiLines(L, textItems, P, MM);
+    writeVectorItemsToAiLines(L, textItems, P, MM, useRgb, bgHex);
     L.push('LB','%AI5_EndLayer--');
   }
   L.push('%%PageTrailer','gsave annotatepage grestore showpage','%%Trailer','%%EOF');
@@ -6793,15 +7185,23 @@ function saveHighResPng(){
     x.fill();
   };
   const drawKakuPng = (isFront) => {
-    if(KAKU_POLYS.length === 0) return;
+    if(KAKU_POLYS.length === 0 && KAKU_SPOT_POLYS.length === 0) return;
     if(isFront && ko > 0){
       x.save(); x.strokeStyle=S.bgColor; x.lineWidth=ko*2; x.lineJoin='round'; x.lineCap='round'; x.beginPath();
       for(const poly of KAKU_POLYS){x.moveTo(poly[0][0],poly[0][1]);for(let i=1;i<poly.length;i++)x.lineTo(poly[i][0],poly[i][1]);x.closePath();}
+      for(const poly of KAKU_SPOT_POLYS){x.moveTo(poly[0][0],poly[0][1]);for(let i=1;i<poly.length;i++)x.lineTo(poly[i][0],poly[i][1]);x.closePath();}
       x.stroke(); x.restore();
     }
-    x.fillStyle=S.kakuColor; x.beginPath();
-    for(const poly of KAKU_POLYS){x.moveTo(poly[0][0],poly[0][1]);for(let i=1;i<poly.length;i++)x.lineTo(poly[i][0],poly[i][1]);x.closePath();}
-    x.fill();
+    if(KAKU_POLYS.length > 0){
+      x.fillStyle=S.kakuColor; x.beginPath();
+      for(const poly of KAKU_POLYS){x.moveTo(poly[0][0],poly[0][1]);for(let i=1;i<poly.length;i++)x.lineTo(poly[i][0],poly[i][1]);x.closePath();}
+      x.fill();
+    }
+    if(KAKU_SPOT_POLYS.length > 0){
+      x.fillStyle=(S.seinenSpotMode && S.seinenSpotMode !== 'same') ? (S.seinenSpotColor || '#fbbf24') : S.kakuColor; x.beginPath();
+      for(const poly of KAKU_SPOT_POLYS){x.moveTo(poly[0][0],poly[0][1]);for(let i=1;i<poly.length;i++)x.lineTo(poly[i][0],poly[i][1]);x.closePath();}
+      x.fill();
+    }
   };
   if(S.layerOrder === 'arareFront'){
     drawKakuPng(false); drawArarePng(true);
@@ -7120,6 +7520,7 @@ const ranges={
   kakuSize:v=>v+' mm', kakuScale:v=>v+'%', kakuDensity:v=>v+'%', kakuWeight:v=>v+'%',
   kakuInnerGap:v=>v+'%', kakuColGap:v=>(v>0?'+':'')+v+'%', kakuRowGap:v=>(v>0?'+':'')+v+'%',
   kakuAngle:v=>v+'°', kakuOffX:v=>(v>0?'+':'')+v+' mm', kakuOffY:v=>(v>0?'+':'')+v+' mm',
+  seinenSpotX:v=>v+'%', seinenSpotY:v=>v+'%',
   crestSize:v=>v+' mm', crestAngle:v=>(v>0?'+':'')+v+'°', crestWeight:v=>(v>0?'+':'')+v+'%', crestX:v=>v+'%', crestY:v=>v+'%',
   logoThreshold:v=>v+'', logoSoftness:v=>v+'', logoDilate:v=>(v>0?'+':'')+v+' px', logoContrast:v=>(v>0?'+':'')+v, logoOpacity:v=>v+'%', logoOutlineMm:v=>v+' mm',
   logoSize:v=>v+' mm', logoAngle:v=>(v>0?'+':'')+v+'°', logoX:v=>v+'%', logoY:v=>v+'%',
@@ -7267,8 +7668,13 @@ function syncUI(){
   // モード別表示切替
   for(const b of document.querySelectorAll('#modeTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.mode===S.mode)+'');
   for(const b of document.querySelectorAll('#kakuMotifTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.motif===(S.kakuMotif||'haneda'))+'');
+  for(const b of document.querySelectorAll('#seinenSpotModeTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.smode===(S.seinenSpotMode||'same'))+'');
+  for(const b of document.querySelectorAll('#aiColorModeTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.cmode===(S.aiColorMode||'rgb'))+'');
   for(const b of document.querySelectorAll('#layerOrderTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.order===(S.layerOrder||'kakuFront'))+'');
   if($('kakuMotifBox')) $('kakuMotifBox').hidden = (S.mode === 'arare' || S.mode === 'scatter');
+  if($('onePointSeinenBox')) $('onePointSeinenBox').hidden = (S.kakuMotif !== 'haneda_one_seinen' || S.mode === 'arare' || S.mode === 'scatter');
+  if($('seinenSpotColorRow')) $('seinenSpotColorRow').hidden = (!S.seinenSpotMode || S.seinenSpotMode === 'same');
+  if($('seinenSpotColor')) $('seinenSpotColor').value = S.seinenSpotColor || '#fbbf24';
   $('sec-haneda').hidden = (S.mode === 'arare' || S.mode === 'scatter');
   $('kakuColorGroup').hidden = (S.mode === 'arare' || S.mode === 'scatter');
   $('sec-arare').hidden = (S.mode === 'haneda' || S.mode === 'scatter');
@@ -7352,6 +7758,44 @@ document.querySelectorAll('#kakuMotifTabs .chip').forEach(b=>b.addEventListener(
   S.kakuMotif = b.dataset.motif || 'haneda';
   if(S.mode === 'arare' || S.mode === 'scatter') S.mode = 'haneda';
   update(true);
+}));
+// 🌟 「仲羽田」の羅列に1箇所だけ「青年会」を入れる機能のイベント配線
+document.querySelectorAll('#seinenSpotModeTabs .chip').forEach(b=>b.addEventListener('click',()=>{
+  S.seinenSpotMode = b.dataset.smode || 'same';
+  S.kakuMotif = 'haneda_one_seinen';
+  if(S.mode === 'arare' || S.mode === 'scatter') S.mode = 'haneda';
+  update(true);
+}));
+if($('seinenSpotColor')){
+  $('seinenSpotColor').addEventListener('input',e=>{
+    S.seinenSpotColor = e.target.value;
+    if(!S.seinenSpotMode || S.seinenSpotMode === 'same') S.seinenSpotMode = '3char';
+    update(true);
+  });
+}
+document.querySelectorAll('.seinen-col-Preset').forEach(b=>b.addEventListener('click',()=>{
+  S.seinenSpotColor = b.dataset.col || '#fbbf24';
+  if(!S.seinenSpotMode || S.seinenSpotMode === 'same') S.seinenSpotMode = '3char';
+  S.kakuMotif = 'haneda_one_seinen';
+  update(true);
+}));
+document.querySelectorAll('#seinenSpotPosChips .chip').forEach(b=>b.addEventListener('click',()=>{
+  S.seinenSpotX = parseFloat(b.dataset.sx) || 50;
+  S.seinenSpotY = parseFloat(b.dataset.sy) || 50;
+  S.kakuMotif = 'haneda_one_seinen';
+  update(true);
+}));
+if($('randomSeinenSpotBtn')){
+  $('randomSeinenSpotBtn').addEventListener('click',()=>{
+    S.seinenSpotX = Math.round(15 + Math.random() * 70);
+    S.seinenSpotY = Math.round(12 + Math.random() * 76);
+    S.kakuMotif = 'haneda_one_seinen';
+    update(true);
+  });
+}
+document.querySelectorAll('#aiColorModeTabs .chip').forEach(b=>b.addEventListener('click',()=>{
+  S.aiColorMode = b.dataset.cmode || 'rgb';
+  update(false);
 }));
 // 🧣 タオル種類チップ・テンプレート・設定イベント配線
 function applyTowelTypeSize(twtype){
@@ -8509,6 +8953,7 @@ $('swap').addEventListener('click',()=>{
 const AI_COLOR_TARGETS = {
   bgColor:         { label: '① 地色(背景)',       inputId: 'bgColor' },
   kakuColor:       { label: '② 仲羽田の文字',     inputId: 'kakuColor' },
+  seinenSpotColor: { label: '🌟 青年会1箇所の色', inputId: 'seinenSpotColor' },
   dotColor:        { label: '③ あられ粒の色',     inputId: 'dotColor' },
   customTextColor: { label: '④ 札の文字色',       inputId: 'customTextColor', autoShow: 'showText' },
   fudaFrameColor:  { label: '⑤ 札の枠線色',       inputId: 'fudaFrameColor',  autoShow: 'showText' },
@@ -8736,14 +9181,22 @@ function applyHexToActiveAiTarget(hexStr, keepHsb){
   if(!h) return;
   const meta = AI_COLOR_TARGETS[activeAiColorKey];
   S[activeAiColorKey] = h;
+  let needRelayout = false;
   if(activeAiColorKey === 'kakuColor' && S.mode === 'haneda') S.dotColor = h;
+  if(activeAiColorKey === 'seinenSpotColor'){
+    S.kakuMotif = 'haneda_one_seinen';
+    if(!S.seinenSpotMode || S.seinenSpotMode === 'same'){
+      S.seinenSpotMode = '3char';
+      needRelayout = true;
+    }
+  }
   if(meta){
     if(meta.autoShow && !S[meta.autoShow]) S[meta.autoShow] = true;
     if(meta.isLogoMono){ S.logoMono = true; PROC_LOGO_KEY = ''; }
     if(activeAiColorKey === 'logoOutlineColor'){ if(!S.logoOutlineMm) S.logoOutlineMm = 2.5; PROC_LOGO_KEY = ''; }
     if(activeAiColorKey === 'logoKeyColor'){ S.logoRemoveBg = true; S.logoBgMode = 'picked'; PROC_LOGO_KEY = ''; }
   }
-  update(false);
+  update(needRelayout);
   syncAiPickerUIFromState(keepHsb);
 }
 
@@ -8772,7 +9225,8 @@ function markSw(){
   const c=hexCmyk(S.bgColor).map(v=>Math.round(v*100));
   const fgHex = S.mode==='arare' ? S.dotColor : S.kakuColor;
   const d=hexCmyk(fgHex).map(v=>Math.round(v*100));
-  $('cmyk-note').textContent='.ai書き出し時のCMYK（目安）　地色 C'+c[0]+' M'+c[1]+' Y'+c[2]+' K'+c[3]+' ／ 文字・柄 C'+d[0]+' M'+d[1]+' Y'+d[2]+' K'+d[3];
+  const modeNote = (S.aiColorMode !== 'cmyk') ? '🎨RGB完全一致＋JapanColor CMYK併記' : '🖨️CMYK(Japan Color 2001)';
+  $('cmyk-note').textContent=`.ai色出力［${modeNote}］ 地色 ${S.bgColor.toUpperCase()} (C${c[0]} M${c[1]} Y${c[2]} K${c[3]}) ／ 柄 ${fgHex.toUpperCase()} (C${d[0]} M${d[1]} Y${d[2]} K${d[3]})`;
   syncAiPickerUIFromState(false);
 }
 
