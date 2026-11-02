@@ -492,7 +492,9 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
       <h2 id="h-crest"><span>💮 丸紋・🖼️ロゴ画像登録・🏮札(ふだ)ロゴ・文字</span><span class="badge">ロゴ登録＆直接文字打ち対応</span></h2>
       <!-- 📁 ワンクリック・ロゴ登録＆文字打ちクイックバー（チェックを入れる前でも一発で登録・起動可能） -->
       <div style="display:flex;gap:5px;flex-wrap:wrap;background:#eff6ff;padding:6px 8px;border:1.5px solid #60a5fa;border-radius:7px;align-items:center">
-        <button type="button" class="btn" id="quickUploadLogoTopBtn" style="padding:5px 10px;font-size:11.5px;background:#2563eb;border-color:#1d4ed8;color:#fff;font-weight:700" title="パソコン内のロゴ画像（.ai / PDF / PNG / JPG / SVG）を読み込んで手ぬぐい・ダボに配置し、マイ・ロゴ保管棚へ自動登録します">📁 ロゴ画像を登録・読込 (.ai/PDF/PNG/JPG)</button>
+        <button type="button" class="btn" id="quickUploadLogoTopBtn" style="padding:5px 10px;font-size:11.5px;background:#2563eb;border-color:#1d4ed8;color:#fff;font-weight:700" title="パソコン内のロゴ画像（.ai / PDF / PNG / JPG / SVG）を読み込んで手ぬぐい・ダボに配置し、マイ・ロゴ保管棚へ自動登録します">📁 ロゴ画像を登録・読込 (.ai/PDF/PNG/JPG/SVG)</button>
+        <button type="button" class="mini-btn" id="quickUseFudaTealTopBtn" style="background:#00a3af;border-color:#00808a;color:#fff;font-weight:700;padding:5px 8px" title="仲羽田青年会 札ロゴ (fuda_logo_teal.svg / #00A3AF) をワンクリックで配置します">🏷️ 札ロゴ(ティール)</button>
+        <button type="button" class="mini-btn" id="quickUseFudaWhiteTopBtn" style="background:#0f172a;border-color:#334155;color:#fff;font-weight:700;padding:5px 8px" title="仲羽田青年会 札ロゴ (fuda_logo_white.svg / #FFFFFF 白抜き) をワンクリックで配置します">🏷️ 札ロゴ(白抜き)</button>
         <button type="button" class="mini-btn" id="quickOpenLogoShelfBtn" style="background:#fff;border-color:#3b82f6;color:#1d4ed8;font-weight:700;padding:5px 8px" title="登録済みのロゴ保管棚とロゴ設定パネルを開きます">📚 登録ロゴ保管棚・設定を開く</button>
         <button type="button" class="mini-btn" id="openDirectDaboTextFromPanelBtn" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700;padding:5px 8px;margin-left:auto">✍️ ダボに直接文字を打つ →</button>
       </div>
@@ -546,11 +548,13 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
           <b style="font-size:12px">② ロゴ画像登録・編集（.ai / PDF / PNG / JPG / SVG）</b>
           <div style="display:flex;gap:4px;flex-wrap:wrap">
+            <button type="button" class="mini-btn" id="useFudaLogoTealPresetBtn" style="background:#00a3af;border-color:#00808a;color:#ffffff;font-weight:700" title="fuda_logo_teal.svg (仲羽田青年会 札ロゴ ティール #00A3AF) を配置">🏷️ 札ロゴ(ティール)</button>
+            <button type="button" class="mini-btn" id="useFudaLogoWhitePresetBtn" style="background:#0f172a;border-color:#334155;color:#ffffff;font-weight:700" title="fuda_logo_white.svg (仲羽田青年会 札ロゴ 白抜き #FFFFFF) を配置">🏷️ 札ロゴ(白抜き)</button>
             <button type="button" class="mini-btn" id="useHantenLogoPresetBtn" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">🏮 仲羽半纏ロゴ</button>
-            <button type="button" class="btn" id="uploadLogoBtn" style="padding:4px 9px;font-size:11.5px;background:#2563eb;border-color:#1d4ed8">📁 ロゴファイル読込・登録 (.ai/画像)</button>
+            <button type="button" class="btn" id="uploadLogoBtn" style="padding:4px 9px;font-size:11.5px;background:#2563eb;border-color:#1d4ed8">📁 ロゴファイル読込・登録 (.ai/画像/SVG)</button>
             <button type="button" class="mini-btn del" id="deleteActiveLogoSlotBtn" style="font-weight:700" title="現在選択しているロゴをキャンバスから消します">🗑️ 消す</button>
           </div>
-          <input type="file" id="uploadLogoInput" accept=".ai,.pdf,.eps,image/png,image/jpeg,image/webp,image/svg+xml,application/pdf,application/postscript" hidden>
+          <input type="file" id="uploadLogoInput" accept=".ai,.pdf,.eps,.svg,image/png,image/jpeg,image/webp,image/svg+xml,application/pdf,application/postscript" hidden>
         </div>
 
         <!-- 📚 マイ・ロゴ保管棚（常時表示：読み込んだロゴや好きな名前で登録したロゴをいつでもワンクリック呼び出し） -->
@@ -1238,6 +1242,12 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
           <button type="button" id="stageTopUploadLogoBtn" style="background:linear-gradient(135deg,#2563eb 0%,#4f46e5 100%);color:#fff;border:1.5px solid #93c5fd;border-radius:999px;padding:6px 13px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);display:inline-flex;align-items:center;gap:5px" title="パソコン内のロゴ画像（.ai / PDF / PNG / JPG / SVG）を読み込んで登録・配置します">
             <span>📁 ロゴ画像を登録・読込 (.ai/画像)</span>
           </button>
+          <button type="button" id="stageTopFudaTealBtn" style="background:linear-gradient(135deg,#00a3af 0%,#0284c7 100%);color:#fff;border:1.5px solid #67e8f9;border-radius:999px;padding:6px 12px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);display:inline-flex;align-items:center;gap:4px" title="fuda_logo_teal.svg（仲羽田青年会 札ロゴ ティール #00A3AF）を配置します">
+            <span>🏷️ 札ロゴ(ティール)</span>
+          </button>
+          <button type="button" id="stageTopFudaWhiteBtn" style="background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);color:#fff;border:1.5px solid #94a3b8;border-radius:999px;padding:6px 12px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);display:inline-flex;align-items:center;gap:4px" title="fuda_logo_white.svg（仲羽田青年会 札ロゴ 白抜き #FFFFFF）を配置します">
+            <span>🏷️ 札ロゴ(白抜き)</span>
+          </button>
           <span id="stageDirectReflectionBadge" hidden style="background:rgba(15,23,42,.88);color:#fde047;border:1px solid #f59e0b;border-radius:999px;padding:4px 11px;font-size:11px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.3)"></span>
         </div>
 
@@ -1365,6 +1375,19 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 /*__LIB__*/
 /*__EMBLEM__*/
 /*__HANTEN_LOGO__*/
+/*__FUDA_LOGO__*/
+function buildFudaLogoSvgDataUrl(fillHex){
+  if(typeof FUDA_LOGO_PATH_D === 'undefined' || !FUDA_LOGO_PATH_D) return '';
+  const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 533.14 566.93" width="1066" height="1134"><path fill="${fillHex}" fill-rule="nonzero" d="${FUDA_LOGO_PATH_D}"/></svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svgStr);
+}
+const FUDA_LOGO_TEAL_URL = buildFudaLogoSvgDataUrl('#00A3AF');
+const FUDA_LOGO_WHITE_URL = buildFudaLogoSvgDataUrl('#FFFFFF');
+function resolveLogoDataUrl(url){
+  if(url === '__BUILTIN_FUDA_TEAL__') return FUDA_LOGO_TEAL_URL;
+  if(url === '__BUILTIN_FUDA_WHITE__') return FUDA_LOGO_WHITE_URL;
+  return url || '';
+}
 (function(){
 const $=id=>document.getElementById(id);
 const DEF={
@@ -1692,6 +1715,28 @@ function getDefaultLogoShelfItems(){
   const hUrl = (typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64) ? HANTEN_LOGO_B64 : '';
   return [
     {
+      id: 'shelf_fuda_teal',
+      name: '🏷️ 札ロゴ (ティール/納戸)',
+      savedAt: Date.now() + 2000,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: 'fuda_logo_teal',
+        logoDataUrl: '__BUILTIN_FUDA_TEAL__',
+        logoRemoveBg: false, logoBgMode: 'none', logoThreshold: 225, logoSoftness: 18,
+        logoMono: false, logoColor: '#00a3af', logoOutlineMm: 0
+      })
+    },
+    {
+      id: 'shelf_fuda_white',
+      name: '🏷️ 札ロゴ (白抜き)',
+      savedAt: Date.now() + 1000,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: 'fuda_logo_white',
+        logoDataUrl: '__BUILTIN_FUDA_WHITE__',
+        logoRemoveBg: false, logoBgMode: 'none', logoThreshold: 225, logoSoftness: 18,
+        logoMono: false, logoColor: '#ffffff', logoOutlineMm: 0
+      })
+    },
+    {
       id: 'shelf_hanten_std',
       name: '🏮 仲羽半纏ロゴ (標準)',
       savedAt: Date.now(),
@@ -1737,6 +1782,16 @@ function loadLogoShelfFromStorage(){
       LOGO_SHELF.forEach(item => {
         if(item && item.slot && !item.slot.logoDataUrl && hUrl) item.slot.logoDataUrl = hUrl;
       });
+      // 新規追加された「札ロゴ (ティール / 白抜き)」がまだ保管棚になければ先頭に自動追加
+      const defs = getDefaultLogoShelfItems();
+      const fudaWhiteDef = defs.find(d => d.id === 'shelf_fuda_white');
+      const fudaTealDef = defs.find(d => d.id === 'shelf_fuda_teal');
+      if(fudaWhiteDef && !LOGO_SHELF.some(x => x && (x.id === 'shelf_fuda_white' || (x.slot && x.slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__')))){
+        LOGO_SHELF.unshift(fudaWhiteDef);
+      }
+      if(fudaTealDef && !LOGO_SHELF.some(x => x && (x.id === 'shelf_fuda_teal' || (x.slot && x.slot.logoDataUrl === '__BUILTIN_FUDA_TEAL__')))){
+        LOGO_SHELF.unshift(fudaTealDef);
+      }
       return;
     }
   }catch(e){}
@@ -1758,7 +1813,7 @@ function saveLogoShelfToStorage(){
 // 大きなDataURL画像をlocalStorage保管用に適度な解像度(最大520px)へ軽量化
 function compactDataUrlForShelf(dataUrl){
   return new Promise(resolve => {
-    if(!dataUrl || dataUrl.length < 140000) return resolve(dataUrl);
+    if(!dataUrl || dataUrl.startsWith('__BUILTIN_') || dataUrl.length < 140000) return resolve(dataUrl);
     const img = new Image();
     img.onload = () => {
       const maxD = 520;
@@ -1827,7 +1882,10 @@ function renderLogoShelf(){
     thumbBox.style.flexShrink = '0';
     thumbBox.style.borderRadius = '4px';
     thumbBox.style.border = '1px solid #cbd5e1';
-    thumbBox.style.background = 'repeating-conic-gradient(#e2e8f0 0% 25%, #f8fafc 0% 50%) 50% / 8px 8px';
+    const isWhiteFuda = (sl.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || (sl.logoName && sl.logoName.includes('white')) || (sl.logoMono && (sl.logoColor||'').toLowerCase() === '#ffffff'));
+    thumbBox.style.background = isWhiteFuda
+      ? '#0f172a'
+      : 'repeating-conic-gradient(#e2e8f0 0% 25%, #f8fafc 0% 50%) 50% / 8px 8px';
     thumbBox.style.display = 'flex';
     thumbBox.style.alignItems = 'center';
     thumbBox.style.justifyContent = 'center';
@@ -1836,7 +1894,7 @@ function renderLogoShelf(){
     thumbBox.title = 'クリックで現在のロゴ枠に読み込みます';
 
     const tImg = document.createElement('img');
-    tImg.src = sl.logoDataUrl || (typeof HANTEN_LOGO_B64 !== 'undefined' ? HANTEN_LOGO_B64 : '');
+    tImg.src = resolveLogoDataUrl(sl.logoDataUrl) || (typeof HANTEN_LOGO_B64 !== 'undefined' ? HANTEN_LOGO_B64 : '');
     tImg.style.maxWidth = '100%';
     tImg.style.maxHeight = '100%';
     tImg.style.objectFit = 'contain';
@@ -2233,25 +2291,27 @@ function renderKoboBridgeUI(){
 }
 
 function ensureLogoLoaded(url){
-  if(!url){ RAW_LOGO_IMG=null; RAW_LOGO_URL=''; PROC_LOGO_CV=null; updateLogoEditPreviewBox(); return; }
-  if(RAW_LOGO_MAP.has(url)){
-    RAW_LOGO_IMG = RAW_LOGO_MAP.get(url);
-    RAW_LOGO_URL = url;
+  const resolved = resolveLogoDataUrl(url);
+  if(!resolved){ RAW_LOGO_IMG=null; RAW_LOGO_URL=''; PROC_LOGO_CV=null; updateLogoEditPreviewBox(); return; }
+  if(RAW_LOGO_MAP.has(resolved)){
+    RAW_LOGO_IMG = RAW_LOGO_MAP.get(resolved);
+    RAW_LOGO_URL = resolved;
     updateLogoEditPreviewBox();
     return;
   }
-  RAW_LOGO_URL = url;
+  RAW_LOGO_URL = resolved;
   const img = new Image();
   img.onload = ()=>{
-    RAW_LOGO_MAP.set(url, img);
+    RAW_LOGO_MAP.set(resolved, img);
+    if(url && url !== resolved) RAW_LOGO_MAP.set(url, img);
     RAW_LOGO_IMG = img;
-    RAW_LOGO_URL = url;
+    RAW_LOGO_URL = resolved;
     PROC_LOGO_KEY = '';
     PROC_LOGO_MAP.clear();
     draw();
     updateLogoEditPreviewBox();
   };
-  img.src = url;
+  img.src = resolved;
 }
 
 function updateLogoEditPreviewBox(){
@@ -2272,7 +2332,7 @@ function getProcessedLogoCanvas(cfg){
   const st = cfg || S;
   if(st.showLogo === false && st === S) return null;
   // デフォルトで「仲羽半纏ロゴ」がバンドルされている場合は未選択時にそれを使用
-  const effectiveUrl = st.logoDataUrl || (typeof HANTEN_LOGO_B64 !== 'undefined' ? HANTEN_LOGO_B64 : '');
+  const effectiveUrl = resolveLogoDataUrl(st.logoDataUrl) || (typeof HANTEN_LOGO_B64 !== 'undefined' ? HANTEN_LOGO_B64 : '');
   let rawImg = effectiveUrl ? RAW_LOGO_MAP.get(effectiveUrl) : null;
   if(effectiveUrl && !rawImg){
     ensureLogoLoaded(effectiveUrl);
@@ -2292,7 +2352,7 @@ function getProcessedLogoCanvas(cfg){
     c.fillText('仲', 0, 4);
     return defCv;
   }
-  const urlSig = effectiveUrl.length + ':' + effectiveUrl.slice(-36);
+  const urlSig = effectiveUrl.length + ':' + effectiveUrl.slice(0, 160) + ':' + effectiveUrl.slice(-36);
   const key = [
     urlSig, st.logoBgMode||'white', st.logoKeyColor||'#ffffff', st.logoRemoveBg,
     st.logoInvert, st.logoThreshold, st.logoSoftness||18, st.logoDilate||0, st.logoContrast||0,
@@ -2314,7 +2374,16 @@ function getProcessedLogoCanvas(cfg){
   ox.restore();
 
   const id = ox.getImageData(0,0,w,h), d = id.data;
-  const bgMode = (st.logoRemoveBg === false) ? 'none' : (st.logoBgMode || 'white');
+  // 既に四隅が完全透過されている画像（SVGや透過PNG）の場合、白背景除去モードによる白色ロゴ本体の消失を防ぐ
+  const cornersTransparent = (w > 2 && h > 2) &&
+    d[3] < 10 &&
+    d[(w - 1) * 4 + 3] < 10 &&
+    d[(h - 1) * w * 4 + 3] < 10 &&
+    d[((h - 1) * w + (w - 1)) * 4 + 3] < 10;
+  let bgMode = (st.logoRemoveBg === false) ? 'none' : (st.logoBgMode || 'white');
+  if(cornersTransparent && bgMode === 'white' && !st.logoInvert){
+    bgMode = 'none';
+  }
   const th = st.logoThreshold ?? 225;
   const softSpan = Math.max(1, st.logoSoftness ?? 18);
   const contrast = st.logoContrast || 0;
@@ -3466,14 +3535,19 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
       const ar = lcv.width / Math.max(1, lcv.height);
       const pm = effSlot.logoPadMode || 'none';
       const sig = [
-        effSlot.logoName || 'lg', lcv.width + 'x' + lcv.height,
+        effSlot.logoName || 'lg', (effSlot.logoDataUrl || '').slice(0, 64), lcv.width + 'x' + lcv.height,
         effSlot.logoMono ? effSlot.logoColor : 'multi',
         effSlot.logoOutlineMm || 0, effSlot.logoOutlineColor || '#fff',
         effSlot.logoInvert ? 1 : 0, effSlot.logoBgMode || 'white',
         effSlot.logoThreshold || 230, effSlot.logoKeyColor || '#fff'
       ].join(':');
-      const monoHex = (effSlot.logoMono && !(effSlot.logoOutlineMm > 0)) ? (effSlot.logoColor || '#ffffff') : null;
+      let monoHex = (effSlot.logoMono && !(effSlot.logoOutlineMm > 0)) ? (effSlot.logoColor || '#ffffff') : null;
+      if(!monoHex && !(effSlot.logoOutlineMm > 0) && !effSlot.logoInvert){
+        if(effSlot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || effSlot.logoName === 'fuda_logo_teal') monoHex = '#00a3af';
+        else if(effSlot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || effSlot.logoName === 'fuda_logo_white') monoHex = '#ffffff';
+      }
       const tracedLayers = traceLogoCanvasToVectorColorLayers(lcv, sig, monoHex);
+      const dataUrl = lcv.toDataURL('image/png');
 
       const placements = generateScatterPlacementsMm({
         W: st.W, H: st.H,
@@ -8076,6 +8150,32 @@ if($('quickOpenLogoShelfBtn')){
     if($('logoBox')) $('logoBox').scrollIntoView({ behavior:'smooth', block:'nearest' });
   });
 }
+function applyBuiltinFudaLogoPreset(variant){
+  const isWhite = (variant === 'white');
+  const token = isWhite ? '__BUILTIN_FUDA_WHITE__' : '__BUILTIN_FUDA_TEAL__';
+  const name = isWhite ? 'fuda_logo_white' : 'fuda_logo_teal';
+  const label = isWhite ? '札ロゴ (白抜き #FFFFFF)' : '札ロゴ (ティール #00A3AF)';
+  const hex = isWhite ? '#ffffff' : '#00a3af';
+  S.logoName = name;
+  S.logoDataUrl = token;
+  S.showLogo = true;
+  S.logoRemoveBg = false;
+  S.logoBgMode = 'none';
+  S.logoInvert = false;
+  S.logoMono = false;
+  S.logoColor = hex;
+  ensureLogoLoaded(S.logoDataUrl);
+  syncActiveSlotFromS();
+  if($('logoFileStatus')) $('logoFileStatus').textContent = label + ' (SVG内蔵)';
+  update(false);
+  saySave('🏷️ 「' + label + '」を配置しました！ドラッグで位置移動・サイズ変更できます。');
+}
+['useFudaLogoTealPresetBtn','quickUseFudaTealTopBtn','stageTopFudaTealBtn'].forEach(id=>{
+  if($(id)) $(id).addEventListener('click',()=>applyBuiltinFudaLogoPreset('teal'));
+});
+['useFudaLogoWhitePresetBtn','quickUseFudaWhiteTopBtn','stageTopFudaWhiteBtn'].forEach(id=>{
+  if($(id)) $(id).addEventListener('click',()=>applyBuiltinFudaLogoPreset('white'));
+});
 if($('useHantenLogoPresetBtn')){
   $('useHantenLogoPresetBtn').addEventListener('click',()=>{
     if(typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64){
@@ -8095,6 +8195,7 @@ $('uploadLogoInput').addEventListener('change', async e=>{
   const f=e.target.files&&e.target.files[0]; if(!f) return;
   const fname = f.name || '';
   const cleanName = fname.replace(/\.[^.]+$/, '') || '読込ロゴ';
+  const isSvgFile = /\.svg$/i.test(fname) || f.type === 'image/svg+xml';
   if($('logoFileStatus')) $('logoFileStatus').textContent = '読込中: ' + fname;
   try{
     if(/\.(ai|pdf|eps)$/i.test(fname) || f.type === 'application/pdf' || f.type === 'application/postscript'){
@@ -8113,6 +8214,12 @@ $('uploadLogoInput').addEventListener('change', async e=>{
         S.logoName = cleanName;
         S.logoDataUrl=ev.target.result;
         S.showLogo=true;
+        if(isSvgFile){
+          // SVGファイル（特に fuda_logo_white.svg 等の白抜きSVG）は既に背景が透明なため、白背景透過による白消失を防止
+          S.logoRemoveBg = false;
+          S.logoBgMode = 'none';
+          S.logoMono = false;
+        }
         ensureLogoLoaded(S.logoDataUrl);
         syncActiveSlotFromS();
         addOrSaveLogoToShelf(cleanName, S);
@@ -9386,6 +9493,8 @@ $('saveJsx').addEventListener('click',()=>save(baseName()+'.jsx',new Blob(['\uFE
 $('savePng').addEventListener('click',()=>saveHighResPng());
 if(!inClaude){$('saveAi').textContent='.ai を保存';}
 window.addEventListener('resize',()=>draw());
+ensureLogoLoaded('__BUILTIN_FUDA_TEAL__');
+ensureLogoLoaded('__BUILTIN_FUDA_WHITE__');
 syncUI();layout();draw();
 })();
 </script>

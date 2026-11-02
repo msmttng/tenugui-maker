@@ -11,6 +11,7 @@ app_template.html の /*__LIB__*/ に arare_shapes.json の粒形状を、
 文字コード: すべて UTF-8 で読み書きする
 """
 import json
+import re
 from pathlib import Path
 
 here = Path(__file__).resolve().parent
@@ -32,10 +33,20 @@ if hanten_logo_path.exists():
 else:
     hanten_js = 'const HANTEN_LOGO_B64="";'
 
+fuda_svg_path = here / "fuda_logo_teal.svg"
+if fuda_svg_path.exists():
+    svg_txt = fuda_svg_path.read_text(encoding="utf-8")
+    m = re.search(r'\bd="([^"]+)"', svg_txt)
+    fuda_d = re.sub(r"\s+", " ", m.group(1)).strip() if m else ""
+    fuda_js = "const FUDA_LOGO_PATH_D=" + json.dumps(fuda_d) + ";"
+else:
+    fuda_js = 'const FUDA_LOGO_PATH_D="";'
+
 body = (
     tpl.replace("/*__LIB__*/", lib_js)
     .replace("/*__EMBLEM__*/", emblem_js)
     .replace("/*__HANTEN_LOGO__*/", hanten_js)
+    .replace("/*__FUDA_LOGO__*/", fuda_js)
 )
 
 (here / "arare_app_artifact.html").write_text(body, encoding="utf-8")
