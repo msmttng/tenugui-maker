@@ -422,15 +422,16 @@
         <div class="ctrl-label" style="color:#fde68a;">
           <span>② 2枚目(下の札)の文字 ＆ 位置ずらし</span>
           <div class="chips">
-            <button type="button" class="mini-chip quick-sub" data-val="遠州">遠州(見本)</button>
+            <button type="button" class="mini-chip quick-sub" data-val="青年会">青年会(公式)</button>
+            <button type="button" class="mini-chip quick-sub" data-val="仲羽田">仲羽田</button>
             <button type="button" class="mini-chip quick-sub" data-val="羽田">羽田</button>
-            <button type="button" class="mini-chip quick-sub" data-val="青年会">青年会</button>
+            <button type="button" class="mini-chip quick-sub" data-val="遠州">遠州</button>
             <button type="button" class="mini-chip quick-sub" data-val="祭">祭</button>
             <button type="button" class="mini-chip quick-sub" data-val="御祭禮">御祭禮</button>
           </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr auto;gap:5px;align-items:center">
-          <input type="text" id="subTextInput" value="遠州" maxlength="8" placeholder="2枚目の札の文字 / 頭文字 / 差し札">
+          <input type="text" id="subTextInput" value="青年会" maxlength="8" placeholder="2枚目の札の文字 / 頭文字 / 差し札">
           <div class="chips" id="subCharCountChips">
             <button type="button" class="mini-chip active" data-scnt="0">全</button>
             <button type="button" class="mini-chip" data-scnt="1">1字</button>
@@ -467,10 +468,14 @@
       <!-- ③ 札のかたち（今の形・四角・山形・角丸・八角）＆ 紐の形 ＆ 書体 -->
       <div class="ctrl-box">
         <div class="ctrl-label" style="color:#86efac">
-          <span>③ 🏷️ 札のかたち（今の形・四角など選択可能）</span>
+          <span>③ 🏷️ 札のかたち・SVGベース読込</span>
+          <label class="mini-chip" style="background:#0f766e;color:#fff;border-color:#14b8a6;cursor:pointer;font-weight:800" title="fuda_logo_custom2.svg 等のカスタムSVGを読み込み高画質ベクター平滑化します">
+            📂 札ベースSVG読込
+            <input type="file" id="mockFudaBaseSvgInput" accept=".svg,image/svg+xml" hidden>
+          </label>
         </div>
         <div class="chips" id="fudaShapeChips">
-          <button type="button" class="mini-chip active" data-shape="auto">自動(種類別)</button>
+          <button type="button" class="mini-chip active" data-shape="auto">自動(高画質SVGベース)</button>
           <button type="button" class="mini-chip" data-shape="trapezoid">今の形(上台形6角)</button>
           <button type="button" class="mini-chip" data-shape="rect">四角(長方形)</button>
           <button type="button" class="mini-chip" data-shape="pointed">山形5角(将棋駒)</button>
@@ -482,8 +487,8 @@
           <button type="button" class="mini-chip" id="resetCordPosBtn" title="マウスで動かした紐の位置を初期位置に戻します">紐の位置リセット</button>
         </div>
         <select id="cordStyleSelect">
-          <option value="side_loop" selected>① 脇添えねじり組紐＋房（写真2「同志會」風）</option>
-          <option value="top_knot">② 上結び輪っか紐＋垂れ紐（写真1「濱松・遠州」風）</option>
+          <option value="side_loop" selected>① 梅結び組紐＋飾りひげ（公式SVGベース）</option>
+          <option value="top_knot">② 上結び輪っか紐＋垂れ紐（濱松・遠州風）</option>
           <option value="double_bow">③ 祭り叶結び（左右対称の縁起飾り結び）</option>
           <option value="tassel">④ 房付き根付紐（上輪っか＋下部の飾り房）</option>
           <option value="neck_cord">⑤ 首掛け長紐（V字の首下げ祭り紐）</option>
@@ -497,7 +502,8 @@
           </label>
         </div>
         <select id="fontSelect">
-          <option value="reggae" selected>【江戸勘亭流・祭り太筆風】Reggae One</option>
+          <option value="svg_carved" selected>【公式札ロゴ書体】仲羽田・青年会 彫刻筆文字</option>
+          <option value="reggae">【江戸勘亭流・祭り太筆風】Reggae One</option>
           <option value="yuji">【本格毛筆・楷書】佑字 粛</option>
           <option value="dela">【極太千社札・番付風】Dela Gothic</option>
           <option value="kakuji">【江戸角字（カクジ）】直線格子・角字彫り</option>

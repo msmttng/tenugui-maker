@@ -38,9 +38,19 @@ if fuda_svg_path.exists():
     svg_txt = fuda_svg_path.read_text(encoding="utf-8")
     m = re.search(r'\bd="([^"]+)"', svg_txt)
     fuda_d = re.sub(r"\s+", " ", m.group(1)).strip() if m else ""
-    fuda_js = "const FUDA_LOGO_PATH_D=" + json.dumps(fuda_d) + ";"
+    vb = re.search(r'viewBox="([^"]+)"', svg_txt)
+    fuda_vb = vb.group(1).strip() if vb else "0 0 538 566.93"
+    fuda_js = "const FUDA_LOGO_PATH_D=" + json.dumps(fuda_d) + ";const FUDA_LOGO_VIEWBOX=" + json.dumps(fuda_vb) + ";"
 else:
-    fuda_js = 'const FUDA_LOGO_PATH_D="";'
+    fuda_js = 'const FUDA_LOGO_PATH_D="";const FUDA_LOGO_VIEWBOX="0 0 538 566.93";'
+
+# 札ベース（部品分解・彫刻筆文字用）。配置用の札ロゴ（fuda_logo_teal.svg）とは別のファイル
+base_svg_path = here / "fuda_base_parts.svg"
+if base_svg_path.exists():
+    btxt = base_svg_path.read_text(encoding="utf-8")
+    bm = re.search(r'\bd="([^"]+)"', btxt)
+    base_d = re.sub(r"\s+", " ", bm.group(1)).strip() if bm else ""
+    fuda_js += "const FUDA_BASE_PATH_D=" + json.dumps(base_d) + ";"
 
 body = (
     tpl.replace("/*__LIB__*/", lib_js)

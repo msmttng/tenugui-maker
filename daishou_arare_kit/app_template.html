@@ -94,6 +94,20 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 .preset-title{font-weight:700;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
 .preset-meta{font-size:10.5px;color:var(--muted);display:block}
 .preset-btns{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end}
+.pm-list{display:grid;gap:5px}
+.pm-it{display:grid;grid-template-columns:20px minmax(0,1fr);gap:6px;align-items:start;font-size:11.5px;line-height:1.45;padding:6px 8px;border-radius:6px;background:#ffffff;border:1px solid #fde68a}
+.pm-it b{color:#0f172a}
+.pm-it .pm-ic{width:18px;height:18px;line-height:18px;border-radius:50%;text-align:center;font-weight:700;font-size:11px;color:#fff}
+.pm-it.ok .pm-ic{background:#16a34a}.pm-it.cau .pm-ic{background:#d97706}.pm-it.ng .pm-ic{background:#dc2626}
+.ft-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px}
+.ft-card{background:#fff;border:1px solid #a5f3fc;border-radius:6px;padding:4px;display:grid;gap:3px;font-size:10.5px}
+.ft-card .ft-ph{border:0;padding:0;background:#f1f5f9;border-radius:4px;cursor:pointer;aspect-ratio:5/2;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ft-card .ft-ph.tate{aspect-ratio:2/3}
+.ft-card .ft-ph img{max-width:100%;max-height:100%;display:block}
+.ft-card .ft-nm{font-weight:700;color:#0f172a;line-height:1.3}
+.ft-card .ft-row{display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.ft-card .ft-chip{font-size:9.5px;padding:0 5px;border-radius:99px;border:1px solid #cbd5e1;color:#475569}
+.ft-card .ft-chip.ok{border-color:#16a34a;color:#15803d}.ft-card .ft-chip.ng{border-color:#dc2626;color:#b91c1c}
 .mini-btn{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:5px;padding:3px 6px;font:inherit;font-size:11px;cursor:pointer;white-space:nowrap}
 .mini-btn:hover{border-color:var(--ai);color:var(--ai)}
 .mini-btn.del:hover{border-color:#dc2626;color:#dc2626}
@@ -270,6 +284,33 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
       <div class="pair">
         <label class="field"><span>幅 mm</span><input type="number" id="W" min="50" max="2000" step="1" value="350"></label>
         <label class="field"><span>丈 mm</span><input type="number" id="H" min="50" max="3000" step="1" value="900"></label>
+      </div>
+    </section>
+
+    <!-- 🖨️ プリント方法ごとの下限（印刷できる太さ） -->
+    <section id="sec-pm" aria-labelledby="h-pm" data-cat="pattern">
+      <h2 id="h-pm"><span>🖨️ プリント方法（印刷できる太さ）</span><span class="badge" id="pmBadgeA">シルク</span></h2>
+      <div class="cgroup" style="background:#fffbeb;border:1.5px solid #f59e0b">
+        <select id="pmMethodA" aria-label="プリント方法" style="font-size:12px;font-weight:700"></select>
+        <p class="note" id="pmRuleA"></p>
+        <div id="pmStatusA" class="pm-list"></div>
+        <p class="note" id="pmMsgA" role="status" style="color:#b45309;font-weight:700;min-height:1em"></p>
+        <p class="note">選んだ方法で印刷できない細さにならないよう、仲羽田の線の太さ・文字内の抜け幅・あられの粒とすき間・札ロゴの大きさ・ロゴのフチ・フチ抜き幅・タオル外周枠に下限をかけます。数値は各社の入稿ルール（線とすき間の最小幅）をもとにした目安です。最終確認は業者のデータチェックで。</p>
+      </div>
+    </section>
+
+    <!-- 🏷️ 札タオル図案（図案一覧・作成ツール・札の調整）との統合 -->
+    <section id="sec-fudatowel" aria-labelledby="h-fudatowel" data-cat="towel">
+      <h2 id="h-fudatowel"><span>🏷️ 札タオル図案（22案・作成ツール・札の調整）</span><span class="badge">採用ロゴ入り</span></h2>
+      <div class="cgroup" style="background:#ecfeff;border:1.5px solid #06b6d4">
+        <div class="chips">
+          <button type="button" class="mini-btn" data-ftopen="gal" style="background:#0891b2;color:#fff;border-color:#0e7490;font-weight:700">🗂️ 図案一覧</button>
+          <button type="button" class="mini-btn" data-ftopen="ed" style="background:#0891b2;color:#fff;border-color:#0e7490;font-weight:700">🧣 作成ツール</button>
+          <button type="button" class="mini-btn" data-ftopen="fuda" style="background:#0891b2;color:#fff;border-color:#0e7490;font-weight:700">🏷️ 札の調整</button>
+        </div>
+        <span class="clabel" style="font-size:12px;color:#0e7490">タオル22案（画像をタップで生地に入れる・✏️で作成ツールで編集）</span>
+        <div id="ftTplGrid" class="ft-grid"></div>
+        <p class="note">作成ツールでは柄・札の大きさ・位置・色・くり抜き方を変えられ、「📥 手ぬぐい工房の生地に入れる」で戻ってきます。札の調整で作った札は「📥 手ぬぐい工房のロゴ保管棚へ」でロゴとして使えます。プリント方法の選択は両方で共通です。</p>
       </div>
     </section>
 
@@ -742,14 +783,20 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         <!-- 札ロゴの型 ワンクリック切替チップ -->
         <div style="background:#f0f9ff;border:1px solid #7dd3fc;border-radius:6px;padding:6px 7px;display:grid;gap:5px">
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px">
-            <b style="font-size:11px;color:#0369a1">🏮 デザイン枠・札スタイル（文字のみ〜立体木札 全14種）</b>
-            <a href="../fuda_mock.html" target="_blank" class="mini-btn" style="background:#0284c7;color:#fff;border-color:#0369a1;text-decoration:none;font-weight:700">🔍 札モック ↗</a>
+            <b style="font-size:11px;color:#0369a1">🏮 デザイン枠・札スタイル（高画質SVGベース立体木札・全14種）</b>
+            <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+              <label class="mini-btn" style="background:#0f766e;color:#fff;border-color:#115e59;cursor:pointer;font-weight:700" title="fuda_logo_custom2.svg 等のカスタムSVGファイルを札のベース形状として読み込み＆高画質ベクター平滑化します">
+                📂 札ベースSVG読込
+                <input type="file" id="fudaBaseSvgFileInput" accept=".svg,image/svg+xml" hidden>
+              </label>
+              <a href="../fuda_mock.html" target="_blank" class="mini-btn" style="background:#0284c7;color:#fff;border-color:#0369a1;text-decoration:none;font-weight:700">🔍 札モック ↗</a>
+            </div>
           </div>
           <div class="chips" id="fudaStyleQuickChips">
+            <button type="button" class="mini-btn" data-fstyle="twin_kifuda" style="border-color:#0d9488;color:#0f766e;font-weight:800">⑩ 二枚重ね夫婦札(SVGベース)</button>
+            <button type="button" class="mini-btn" data-fstyle="kifuda_3d_rope" style="border-color:#ea580c;color:#9a3412;font-weight:800">⑨ 立体喧嘩札(組紐SVG)</button>
             <button type="button" class="mini-btn" data-fstyle="outline" style="border-color:#0284c7;color:#0369a1;font-weight:800">✍️ 袋文字(枠なし)</button>
             <button type="button" class="mini-btn" data-fstyle="none">✍️ 文字のみ(直染)</button>
-            <button type="button" class="mini-btn" data-fstyle="kifuda_3d_rope" style="border-color:#ea580c;color:#9a3412;font-weight:800">⑨ 立体喧嘩札(組紐)</button>
-            <button type="button" class="mini-btn" data-fstyle="twin_kifuda" style="border-color:#ea580c;color:#9a3412;font-weight:800">⑩ 二枚重ね夫婦札</button>
             <button type="button" class="mini-btn" data-fstyle="senjafuda">① 江戸千社札</button>
             <button type="button" class="mini-btn" data-fstyle="kifuda">② 山形木札</button>
             <button type="button" class="mini-btn" data-fstyle="tenmaru">③ 頭文字(丸紋)札</button>
@@ -762,10 +809,11 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
         </div>
 
         <div class="pair">
-          <label class="field"><span>書体（フォント12種）</span>
+          <label class="field"><span>書体（公式SVG彫刻＋12種）</span>
             <select id="customTextFont" style="font-size:11.5px;font-weight:600">
               <optgroup label="毛筆・江戸文字・角字・祭り書体">
-                <option value="'Reggae One', sans-serif" selected>【勘亭流・太筆】レゲエ One</option>
+                <option value="svg_carved" selected>【公式札ロゴ書体】仲羽田・青年会 彫刻筆文字</option>
+                <option value="'Reggae One', sans-serif">【勘亭流・太筆】レゲエ One</option>
                 <option value="kakuji">【江戸角字】直線角字彫り</option>
                 <option value="'Yuji Syuku', serif">【本格毛筆・楷書】佑字 粛</option>
                 <option value="'Dela Gothic One', sans-serif">【極太・千社札】デラゴシック</option>
@@ -888,11 +936,12 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
             <div id="fudaSubTextRow" style="display:grid;gap:4px;background:#fffbeb;padding:6px 8px;border:1px solid #f59e0b;border-radius:6px">
               <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
                 <span style="font-size:11px;font-weight:700;color:#78350f;white-space:nowrap">2枚目(下の札)・差札文字:</span>
-                <input type="text" id="customTextSubStr" class="save-input" value="遠州" maxlength="8" placeholder="例：遠州 / 羽田 / 青年会" style="padding:4px 7px;font-size:12px;flex:1;min-width:85px">
+                <input type="text" id="customTextSubStr" class="save-input" value="青年会" maxlength="8" placeholder="例：青年会 / 仲羽田 / 遠州" style="padding:4px 7px;font-size:12px;flex:1;min-width:85px">
                 <div class="chips" id="subTextQuickChips">
-                  <button type="button" class="mini-btn" data-sub="遠州">遠州</button>
-                  <button type="button" class="mini-btn" data-sub="羽田">羽田</button>
                   <button type="button" class="mini-btn" data-sub="青年会">青年会</button>
+                  <button type="button" class="mini-btn" data-sub="仲羽田">仲羽田</button>
+                  <button type="button" class="mini-btn" data-sub="羽田">羽田</button>
+                  <button type="button" class="mini-btn" data-sub="遠州">遠州</button>
                   <button type="button" class="mini-btn" data-sub="祭">祭</button>
                 </div>
               </div>
@@ -1267,17 +1316,17 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 
           <div style="display:grid;grid-template-columns:minmax(140px,1.3fr) minmax(95px,0.8fr) auto minmax(125px,1fr) minmax(135px,1fr) auto;gap:6px;align-items:center">
             <input type="text" id="stageDirectTextInput" value="仲羽田" placeholder="ここに文字を入力（例：仲羽田 / 青年会 / 祭）" style="background:#0f172a;color:#fff;border:1.5px solid #38bdf8;border-radius:6px;padding:5px 9px;font-size:13.5px;font-weight:700;width:100%;box-sizing:border-box">
-            <input type="text" id="stageDirectSubInput" value="遠州" placeholder="差札・2枚目文字" title="二枚札・差札・頭文字のサブ文字" style="background:#0f172a;color:#fde047;border:1px solid #475569;border-radius:6px;padding:5px 7px;font-size:12px;width:100%;box-sizing:border-box">
+            <input type="text" id="stageDirectSubInput" value="青年会" placeholder="差札・2枚目文字" title="二枚札・差札・頭文字のサブ文字" style="background:#0f172a;color:#fde047;border:1px solid #475569;border-radius:6px;padding:5px 7px;font-size:12px;width:100%;box-sizing:border-box">
             <div style="display:flex;gap:3px">
               <button type="button" class="mini-btn" id="stageDirectVertBtn" style="background:#0284c7;color:#fff;border-color:#38bdf8;font-weight:700">縦書</button>
               <button type="button" class="mini-btn" id="stageDirectHorizBtn" style="background:#0f172a;color:#cbd5e1;border-color:#475569">横書</button>
             </div>
             <select id="stageDirectFrameSel" style="background:#0f172a;color:#fff;border:1px solid #475569;border-radius:6px;padding:5px 6px;font-size:11.5px;font-weight:700">
+              <option value="twin_kifuda">⑩ 二枚重ね夫婦木札(SVG)</option>
+              <option value="kifuda_3d_rope">⑨ 立体喧嘩札(組紐SVG)</option>
               <option value="outline">✍️ 袋文字(太フチ文字)</option>
               <option value="none">✍️ 文字のみ(直染め)</option>
               <option value="senjafuda">① 江戸千社札(二重枠)</option>
-              <option value="kifuda_3d_rope">⑨ 立体喧嘩札(組紐付)</option>
-              <option value="twin_kifuda">⑩ 二枚重ね夫婦木札</option>
               <option value="kifuda">② 山形木札(喧嘩札)</option>
               <option value="tenmaru">③ 頭文字(丸紋)札</option>
               <option value="sashifuda">④ 差し札(肩文字)札</option>
@@ -1286,6 +1335,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
               <option value="circle">丸紋風・丸座布団抜き</option>
             </select>
             <select id="stageDirectFontSel" style="background:#0f172a;color:#fff;border:1px solid #475569;border-radius:6px;padding:5px 6px;font-size:11.5px;font-weight:700">
+              <option value="svg_carved">【公式札書体】仲羽田・青年会 彫刻筆</option>
               <option value="'Reggae One', sans-serif">【勘亭流・太筆】レゲエ</option>
               <option value="kakuji">【江戸角字】直線角字彫</option>
               <option value="'Yuji Syuku', serif">【毛筆楷書】佑字 粛</option>
@@ -1371,23 +1421,164 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
   <iframe id="koboEmbeddedFrame" src="about:blank" style="flex:1;width:100%;border:1px solid #334155;border-radius:0 0 10px 10px;background:#ffffff"></iframe>
 </div>
 
+<div id="ftModalOverlay" style="position:fixed;inset:0;z-index:9999;background:rgba(15,23,42,0.82);backdrop-filter:blur(4px);display:none;flex-direction:column;padding:12px;box-sizing:border-box">
+  <div style="background:#083344;color:#f8fafc;padding:8px 14px;border-radius:10px 10px 0 0;border:1px solid #155e75;border-bottom:none;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+      <span style="font-size:15px;font-weight:700;color:#67e8f9">🏷️ 札タオル図案（統合モード）</span>
+      <span style="font-size:11.5px;color:#cbd5e1">作った図案は「📥 手ぬぐい工房の生地に入れる」、札は「📥 手ぬぐい工房のロゴ保管棚へ」でこちらに取り込めます。</span>
+    </div>
+    <button type="button" id="ftCloseBtn" style="background:#334155;color:#f8fafc;border:1px solid #475569;border-radius:6px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer">✕ 閉じる</button>
+  </div>
+  <iframe id="ftFrame" src="about:blank" title="札タオル図案" style="flex:1;width:100%;border:1px solid #155e75;border-radius:0 0 10px 10px;background:#ffffff"></iframe>
+</div>
+
 <script>
 /*__LIB__*/
 /*__EMBLEM__*/
 /*__HANTEN_LOGO__*/
 /*__FUDA_LOGO__*/
+// 札ベース（部品分解・彫刻筆文字用。fuda_base_parts.svg）と、配置用の内蔵札ロゴ（採用ロゴ。fuda_logo_teal.svg）は別に持つ
+let FUDA_ACTIVE_PATH_D = (typeof FUDA_BASE_PATH_D !== 'undefined' && FUDA_BASE_PATH_D) ? FUDA_BASE_PATH_D : ((typeof FUDA_LOGO_PATH_D !== 'undefined' && FUDA_LOGO_PATH_D) ? FUDA_LOGO_PATH_D : '');
+const FUDA_PLACE_PATH_D = (typeof FUDA_LOGO_PATH_D !== 'undefined' && FUDA_LOGO_PATH_D) ? FUDA_LOGO_PATH_D : FUDA_ACTIVE_PATH_D;
+const FUDA_PLACE_VIEWBOX = (typeof FUDA_LOGO_VIEWBOX === 'string' && FUDA_LOGO_VIEWBOX) ? FUDA_LOGO_VIEWBOX : '0 0 538 566.93';
 function buildFudaLogoSvgDataUrl(fillHex){
-  if(typeof FUDA_LOGO_PATH_D === 'undefined' || !FUDA_LOGO_PATH_D) return '';
-  const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 533.14 566.93" width="1066" height="1134"><path fill="${fillHex}" fill-rule="nonzero" d="${FUDA_LOGO_PATH_D}"/></svg>`;
+  if(!FUDA_PLACE_PATH_D) return '';
+  const vbn = FUDA_PLACE_VIEWBOX.split(/[\s,]+/).map(Number);
+  const pxW = Math.round(vbn[2] * 2), pxH = Math.round(vbn[3] * 2);
+  const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${FUDA_PLACE_VIEWBOX}" width="${pxW}" height="${pxH}"><path fill="${fillHex}" fill-rule="nonzero" d="${FUDA_PLACE_PATH_D}"/></svg>`;
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svgStr);
 }
-const FUDA_LOGO_TEAL_URL = buildFudaLogoSvgDataUrl('#00A3AF');
-const FUDA_LOGO_WHITE_URL = buildFudaLogoSvgDataUrl('#FFFFFF');
+let FUDA_LOGO_TEAL_URL = buildFudaLogoSvgDataUrl('#00A3AF');
+let FUDA_LOGO_WHITE_URL = buildFudaLogoSvgDataUrl('#FFFFFF');
 function resolveLogoDataUrl(url){
   if(url === '__BUILTIN_FUDA_TEAL__') return FUDA_LOGO_TEAL_URL;
   if(url === '__BUILTIN_FUDA_WHITE__') return FUDA_LOGO_WHITE_URL;
   return url || '';
 }
+
+// ★ 高画質SVG札ロゴベースモデル（64サブパス分解＆彫刻筆文字6字の正規化輪郭データ）
+let FUDA_BASE_POLYS = [];
+let FUDA_CARVED_GLYPHS = {};
+
+function sampleSvgSubpathToDensePts(sp, step = 0.85){
+  const tokens = sp.match(/[MLCZmlcz]|[-+]?\d*\.?\d+/g) || [];
+  const pts = [];
+  let idx = 0, cx = 0, cy = 0, sx = 0, sy = 0, cmd = 'M';
+  while(idx < tokens.length){
+    const t = tokens[idx];
+    if(/^[MLCZmlcz]$/.test(t)){
+      cmd = t;
+      idx++;
+      continue;
+    }
+    if(cmd === 'M'){
+      cx = parseFloat(tokens[idx]); cy = parseFloat(tokens[idx + 1]);
+      sx = cx; sy = cy;
+      pts.push([cx, cy]);
+      idx += 2; cmd = 'L';
+    }else if(cmd === 'L'){
+      cx = parseFloat(tokens[idx]); cy = parseFloat(tokens[idx + 1]);
+      pts.push([cx, cy]);
+      idx += 2;
+    }else if(cmd === 'C'){
+      const x1 = parseFloat(tokens[idx]), y1 = parseFloat(tokens[idx + 1]);
+      const x2 = parseFloat(tokens[idx + 2]), y2 = parseFloat(tokens[idx + 3]);
+      const x3 = parseFloat(tokens[idx + 4]), y3 = parseFloat(tokens[idx + 5]);
+      const chord = Math.hypot(x3 - cx, y3 - cy);
+      const n = Math.max(2, Math.min(10, Math.ceil(chord / step)));
+      for(let k = 1; k <= n; k++){
+        const u = k / n, mu = 1 - u;
+        pts.push([
+          mu*mu*mu*cx + 3*mu*mu*u*x1 + 3*mu*u*u*x2 + u*u*u*x3,
+          mu*mu*mu*cy + 3*mu*mu*u*y1 + 3*mu*u*u*y2 + u*u*u*y3
+        ]);
+      }
+      cx = x3; cy = y3;
+      idx += 6;
+    }else{
+      idx++;
+    }
+  }
+  if(pts.length > 2 && Math.hypot(pts[pts.length - 1][0] - pts[0][0], pts[pts.length - 1][1] - pts[0][1]) < 0.05){
+    pts.pop();
+  }
+  return pts;
+}
+
+function smoothClosedContourPts(pts, passes = 2){
+  if(pts.length < 8 || passes <= 0) return pts;
+  let cur = pts;
+  const N = cur.length;
+  for(let p = 0; p < passes; p++){
+    const next = new Array(N);
+    for(let i = 0; i < N; i++){
+      const pPrev2 = cur[(i - 2 + N) % N];
+      const pPrev1 = cur[(i - 1 + N) % N];
+      const pCurr  = cur[i];
+      const pNext1 = cur[(i + 1) % N];
+      const pNext2 = cur[(i + 2) % N];
+      // 角の急な頂点はピン留めし、階段状ジャギーのみガウシアン平滑化
+      const v1x = pCurr[0] - pPrev2[0], v1y = pCurr[1] - pPrev2[1];
+      const v2x = pNext2[0] - pCurr[0], v2y = pNext2[1] - pCurr[1];
+      const n1 = Math.hypot(v1x, v1y) || 1, n2 = Math.hypot(v2x, v2y) || 1;
+      const cosA = (v1x * v2x + v1y * v2y) / (n1 * n2);
+      if(cosA < 0.65){
+        next[i] = [pCurr[0], pCurr[1]];
+      }else{
+        next[i] = [
+          pPrev2[0]*0.08 + pPrev1[0]*0.24 + pCurr[0]*0.36 + pNext1[0]*0.24 + pNext2[0]*0.08,
+          pPrev2[1]*0.08 + pPrev1[1]*0.24 + pCurr[1]*0.36 + pNext1[1]*0.24 + pNext2[1]*0.08
+        ];
+      }
+    }
+    cur = next;
+  }
+  return cur;
+}
+
+function initFudaBaseFromPathD(dStr, applyExtraSmooth = false){
+  if(!dStr) return;
+  FUDA_ACTIVE_PATH_D = dStr;
+  FUDA_LOGO_TEAL_URL = buildFudaLogoSvgDataUrl('#00A3AF');
+  FUDA_LOGO_WHITE_URL = buildFudaLogoSvgDataUrl('#FFFFFF');
+  const rawSubs = dStr.split(/(?=M)/).map(s => s.trim()).filter(Boolean);
+  FUDA_BASE_POLYS = rawSubs.map((sp, idx) => {
+    let pts = sampleSvgSubpathToDensePts(sp, 0.85);
+    if(applyExtraSmooth){
+      const passes = (idx === 20 || idx === 31 || idx === 38 || idx === 53 || idx === 61 || idx === 62) ? 4 : 2;
+      pts = smoothClosedContourPts(pts, passes);
+    }
+    return pts;
+  });
+  // 6文字（仲・羽・田・青・年・会）の彫刻グリフを正立・中心(0,0)・基準サイズ1.0に正規化して登録
+  FUDA_CARVED_GLYPHS = {};
+  if(FUDA_BASE_POLYS.length >= 51){
+    const defs = [
+      { ch: '仲', idxs: [39, 42, 43], deg: -13.1 },
+      { ch: '羽', idxs: [40, 44, 45, 46], deg: -13.1 },
+      { ch: '田', idxs: [41, 47, 48, 49, 50], deg: -13.1 },
+      { ch: '青', idxs: [21, 25, 26], deg: 21.2 },
+      { ch: '年', idxs: [22, 27], deg: 21.2 },
+      { ch: '会', idxs: [23, 24, 28, 29], deg: 21.2 }
+    ];
+    for(const df of defs){
+      const rad = (df.deg * Math.PI) / 180;
+      const c = Math.cos(rad), s = Math.sin(rad);
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      const rotLoops = df.idxs.map(i => (FUDA_BASE_POLYS[i] || []).map(([x, y]) => {
+        const rx = x * c - y * s, ry = x * s + y * c;
+        if(rx < minX) minX = rx; if(rx > maxX) maxX = rx;
+        if(ry < minY) minY = ry; if(ry > maxY) maxY = ry;
+        return [rx, ry];
+      }));
+      const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+      const scale = 1 / 88.0;
+      FUDA_CARVED_GLYPHS[df.ch] = rotLoops.map(lp => lp.map(([rx, ry]) => [(rx - cx) * scale, (ry - cy) * scale]));
+    }
+  }
+}
+initFudaBaseFromPathD(FUDA_ACTIVE_PATH_D, false);
+
 (function(){
 const $=id=>document.getElementById(id);
 const DEF={
@@ -1425,12 +1616,12 @@ const DEF={
   logoRepeatMode:'none', logoRepeatGapX:72, logoRepeatGapY:72, logoRepeatGridAngle:0, logoRepeatAngleVar:0, logoRepeatSizeVar:0,
   logoSlots:[], activeLogoSlot:0,
   // 名入れ文字・札(ふだ)ロゴ・1文字ちりばめ総柄パラメーター
-  showText:false, customTextStr:'仲羽田', customTextSubStr:'遠州', customTextFont:"'Reggae One', sans-serif",
-  customTextVert:true, customTextFrame:'senjafuda', customTextColor:'#ffffff', fudaFrameColor:'#ffffff', customTextBg:'#046e7e',
+  showText:false, customTextStr:'仲羽田', customTextSubStr:'青年会', customTextFont:'svg_carved',
+  customTextVert:true, customTextFrame:'twin_kifuda', customTextColor:'#ffffff', fudaFrameColor:'#ffffff', customTextBg:'#00a3af',
   fudaAccentColor:'#c93a40', customTextOutline:false, customTextOutlineColor:'#046e7e',
   fudaCharLimit:0, fudaShape:'auto', fudaCordStyle:'auto', fudaWidthPct:100, fudaHeightPct:100, fudaDepth3d:0,
   fudaSubOffX:56, fudaSubOffY:6, fudaSubAngle:18,
-  fudaCordColor:'#046e7e', fudaCordStroke:'#ffffff',
+  fudaCordColor:'#00a3af', fudaCordStroke:'#ffffff',
   fudaBgTransparent:false, fudaFrameTransparent:false, fudaCordTransparent:false, fudaCordAllTransparent:false,
   fudaNonTextOpacity:100, fudaOpacity:100, showFudaGizmo:true,
   fudaCordKnotX:0, fudaCordKnotY:0, fudaCordTailX:0, fudaCordTailY:0,
@@ -1471,6 +1662,16 @@ try{
     if(!S.fudaFrameColor) S.fudaFrameColor = S.customTextColor || '#ffffff';
     if(S.fudaNonTextOpacity === undefined) S.fudaNonTextOpacity = 100;
     localStorage.setItem('haneda-fix-fudatrans-v188', '1');
+    localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
+  }
+  if(!localStorage.getItem('haneda-fix-fudasvgbase-v193')){
+    S.customTextFrame = 'twin_kifuda';
+    S.customTextFont = 'svg_carved';
+    S.customTextStr = '仲羽田';
+    S.customTextSubStr = '青年会';
+    S.customTextBg = '#00a3af';
+    S.fudaCordColor = '#00a3af';
+    localStorage.setItem('haneda-fix-fudasvgbase-v193', '1');
     localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
   }
 }catch(e){}
@@ -3121,9 +3322,383 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
   const nonTextAlpha = Math.max(0, Math.min(1, ((st.fudaNonTextOpacity ?? 100) / 100) * fudaAlpha));
   let gizmoHandles = null;
 
-  // ⑩ 二枚重ね夫婦木札（濱松・遠州風）の場合は、奥の札と手前の札の2枚を扇状に重ねて合成する（下の札の位置ずらし・角度差対応）
+  const chars = mainChars;
+  const rad = (deg * Math.PI) / 180;
+  const cos = Math.cos(rad), sin = Math.sin(rad);
+  const tr = (lx, ly) => [cx + lx * cos - ly * sin, cy + lx * sin + ly * cos];
+  const rectToPts = (rx, ry, rw, rh) => [tr(rx, ry), tr(rx + rw, ry), tr(rx + rw, ry + rh), tr(rx, ry + rh)];
+  const circleToPts = (ccx, ccy, r, segs = 24) => {
+    const pts = [];
+    for(let i = 0; i < segs; i++){
+      const a = (i / segs) * Math.PI * 2;
+      pts.push(tr(ccx + Math.cos(a) * r, ccy + Math.sin(a) * r));
+    }
+    return pts;
+  };
+
+  const frameItems = [];
+  const textItems = [];
+  const charDrawList = []; // Canvas直接描画用 [{ ch, gx, gy, deg, sz, fgCol, outCol, useOut, fontVal, rot90, compoundLoops }]
+
+  const addCharItem = (ch, lx, ly, sz, fgCol, outCol, useOut, fVal, rot90, extraDeg = 0) => {
+    const [gx, gy] = tr(lx, ly);
+    const totalDeg = deg + extraDeg;
+    const radChar = (totalDeg * Math.PI) / 180;
+    const cCh = Math.cos(radChar), sCh = Math.sin(radChar);
+    const trChar = (dx, dy) => [gx + dx * cCh - dy * sCh, gy + dx * sCh + dy * cCh];
+
+    if(fVal === 'svg_carved' && FUDA_CARVED_GLYPHS && FUDA_CARVED_GLYPHS[ch]){
+      const worldLoops = FUDA_CARVED_GLYPHS[ch].map(lp => lp.map(([nx, ny]) => {
+        const rx = rot90 ? -ny * sz : nx * sz;
+        const ry = rot90 ? nx * sz : ny * sz;
+        return trChar(rx, ry);
+      }));
+      charDrawList.push({ ch, lx, ly, gx, gy, deg: totalDeg, sz, fgCol, outCol, useOut, fontVal: fVal, rot90: !!rot90, compoundLoops: worldLoops });
+      if(includeTracedTextVector){
+        textItems.push({
+          type: 'compound', fill: fgCol,
+          stroke: useOut ? outCol : null,
+          strokeWidth: useOut ? Math.max(0.8, ow * 0.45) : 0,
+          loops: worldLoops
+        });
+      }
+      return;
+    }
+
+    const resolvedFont = (fVal === 'svg_carved') ? "'Reggae One', sans-serif" : fVal;
+    charDrawList.push({ ch, lx, ly, gx, gy, deg: totalDeg, sz, fgCol, outCol, useOut, fontVal: resolvedFont, rot90: !!rot90 });
+    if(!includeTracedTextVector) return;
+    if(resolvedFont === 'kakuji'){
+      const kData = getKakujiCharRectsMm(ch, sz);
+      if(kData){
+        const hs = kData.boxS / 2;
+        if(useOut){
+          textItems.push({ type: 'poly', fill: outCol, stroke: null, pts: [
+            trChar(-hs - sz * 0.05, -hs - sz * 0.05), trChar(hs + sz * 0.05, -hs - sz * 0.05),
+            trChar(hs + sz * 0.05, hs + sz * 0.05), trChar(-hs - sz * 0.05, hs + sz * 0.05)
+          ] });
+        }
+        for(const [rx, ry, rw, rh] of kData.rects){
+          textItems.push({ type: 'poly', fill: fgCol, stroke: null, pts: [
+            trChar(rx, ry), trChar(rx + rw, ry), trChar(rx + rw, ry + rh), trChar(rx, ry + rh)
+          ] });
+        }
+        return;
+      }
+    }
+    const effFont = resolvedFont === 'kakuji' ? "'Dela Gothic One', sans-serif" : resolvedFont;
+    const strokeRatio = Math.max(0.08, (ow / Math.max(8, fs)) * 1.15);
+    if(useOut){
+      const outLoops = traceGlyphToVectorLoops(ch, effFont, true, strokeRatio);
+      if(outLoops.length > 0){
+        textItems.push({
+          type: 'compound', fill: outCol,
+          loops: outLoops.map(lp => lp.map(([nx, ny]) => {
+            const rx = rot90 ? -ny * sz : nx * sz;
+            const ry = rot90 ? nx * sz : ny * sz;
+            return trChar(rx, ry);
+          }))
+        });
+      }
+    }
+    const fgLoops = traceGlyphToVectorLoops(ch, effFont, false, 0);
+    if(fgLoops.length > 0){
+      textItems.push({
+        type: 'compound', fill: fgCol,
+        loops: fgLoops.map(lp => lp.map(([nx, ny]) => {
+          const rx = rot90 ? -ny * sz : nx * sz;
+          const ry = rot90 ? nx * sz : ny * sz;
+          return trChar(rx, ry);
+        }))
+      });
+    }
+  };
+
+  // ★ 高画質SVGベース：⑩ 二枚重ね夫婦木札 (twin_kifuda) ＆ ⑨ 立体喧嘩札・組紐付 (kifuda_3d_rope)
+  const useSvgFudaBase = (FUDA_BASE_POLYS && FUDA_BASE_POLYS.length >= 64 && isV && (!st.fudaShape || st.fudaShape === 'auto' || st.fudaShape === 'trapezoid'));
+  if(frame === 'twin_kifuda' && useSvgFudaBase){
+    const svgScale = (fs * 0.85) / 88.0;
+    const toLocalMm = (sx, sy) => [(sx - 266.57) * svgScale * wScale, (sy - 283.47) * svgScale * hScale];
+    const trSvg = (sx, sy) => {
+      const [lx, ly] = toLocalMm(sx, sy);
+      return tr(lx, ly);
+    };
+    const dSubX = ((st.fudaSubOffX ?? 56) - 56) * 1.8;
+    const dSubY = ((st.fudaSubOffY ?? 6) - 6) * 1.8;
+    const dSubDeg = (st.fudaSubAngle ?? 18) - 18;
+    const dSubRad = (dSubDeg * Math.PI) / 180;
+    const cSub = Math.cos(dSubRad), sSub = Math.sin(dSubRad);
+    const trLeftSvgPt = (sx, sy) => {
+      const dx = sx - 206.0, dy = sy - 185.0;
+      return [206.0 + dx * cSub - dy * sSub + dSubX, 185.0 + dx * sSub + dy * cSub + dSubY];
+    };
+    const trLeftSvg = (sx, sy) => {
+      const [px, py] = trLeftSvgPt(sx, sy);
+      return trSvg(px, py);
+    };
+    const kxSvg = (st.fudaCordKnotX || 0) / Math.max(0.05, svgScale * wScale);
+    const kySvg = (st.fudaCordKnotY || 0) / Math.max(0.05, svgScale * hScale);
+    const txSvg = (st.fudaCordTailX || 0) / Math.max(0.05, svgScale * wScale);
+    const tySvg = (st.fudaCordTailY || 0) / Math.max(0.05, svgScale * hScale);
+
+    const cLw = Math.max(0.6, ow * 0.35);
+    const faceFill = bodyFill;
+    const faceStroke = (st.fudaBgTransparent && frameCol) ? frameCol : null;
+    const sideFill = st.fudaBgTransparent
+      ? frameCol
+      : ((st.fudaFrameColor && st.fudaFrameColor.toLowerCase() !== fg.toLowerCase()) ? frameCol : bodyFill);
+    const showCord = !st.fudaCordAllTransparent && (st.fudaCordStyle || 'auto') !== 'none';
+    const cFill = st.fudaCordTransparent ? null : (cordFill || bodyFill || bg);
+    const cStroke = st.fudaCordTransparent ? cordStroke : null;
+
+    // 1. 左札（奥・仲羽田側）の板面＆3D厚み側面
+    if(faceFill || faceStroke){
+      frameItems.push({ type: 'poly', fill: faceFill, stroke: faceStroke, strokeWidth: cLw * 1.2, pts: FUDA_BASE_POLYS[38].map(([x, y]) => trLeftSvg(x, y)) });
+    }
+    if(sideFill){
+      for(const idx of [53, 61, 62]){
+        frameItems.push({ type: 'poly', fill: sideFill, stroke: null, strokeWidth: 0, pts: FUDA_BASE_POLYS[idx].map(([x, y]) => trLeftSvg(x, y)) });
+      }
+    }
+    // 2. 右札（手前・青年会側）の板面＆3D厚み側面
+    if(faceFill || faceStroke){
+      frameItems.push({ type: 'poly', fill: faceFill, stroke: faceStroke, strokeWidth: cLw * 1.2, pts: FUDA_BASE_POLYS[20].map(([x, y]) => trSvg(x, y)) });
+    }
+    if(sideFill){
+      frameItems.push({ type: 'poly', fill: sideFill, stroke: null, strokeWidth: 0, pts: FUDA_BASE_POLYS[31].map(([x, y]) => trSvg(x, y)) });
+    }
+    // 3. 梅結び組紐・通し玉・脇飾りひげ
+    if(showCord && (cFill || cStroke)){
+      const knotIdxs = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19, 30, 32, 34, 36];
+      for(const idx of knotIdxs){
+        frameItems.push({ type: 'poly', fill: cFill, stroke: cStroke, strokeWidth: cLw, pts: FUDA_BASE_POLYS[idx].map(([x, y]) => trSvg(x + kxSvg, y + kySvg)) });
+      }
+      for(const idx of [33, 35, 37]){
+        frameItems.push({ type: 'poly', fill: cFill, stroke: cStroke, strokeWidth: cLw, pts: FUDA_BASE_POLYS[idx].map(([x, y]) => trSvg(x, y)) });
+      }
+      for(const idx of [51, 52]){
+        frameItems.push({ type: 'poly', fill: cFill, stroke: cStroke, strokeWidth: cLw, pts: FUDA_BASE_POLYS[idx].map(([x, y]) => trLeftSvg(x, y)) });
+      }
+      for(const idx of [54, 56, 57, 58]){
+        frameItems.push({ type: 'poly', fill: cFill, stroke: cStroke, strokeWidth: cLw, pts: FUDA_BASE_POLYS[idx].map(([x, y]) => trSvg(x + txSvg, y + tySvg)) });
+      }
+      for(const idx of [55, 59, 60, 63]){
+        frameItems.push({ type: 'poly', fill: cFill, stroke: cStroke, strokeWidth: cLw, pts: FUDA_BASE_POLYS[idx].map(([x, y]) => trLeftSvg(x - txSvg * 0.5, y + tySvg * 0.5)) });
+      }
+    }
+
+    // 4. 左右の札の彫刻文字（仲羽田＋青年会の場合はSVGネイティブ彫刻パスをそのまま高画質配置、任意文字の場合は各札の傾き軸に沿って配置）
+    const subCharsRaw = getEffectiveFudaChars(subTxt, 0, '青年会');
+    const mJoin = mainChars.join(''), sJoin = subCharsRaw.join('');
+    const isStdPair = (mJoin === '仲羽田' && (sJoin === '青年会' || sJoin === '遠州')) || (mJoin === '青年会' && sJoin === '仲羽田');
+    const leftChars = isStdPair ? ['仲', '羽', '田'] : subCharsRaw;
+    const rightChars = isStdPair ? ['青', '年', '会'] : mainChars;
+
+    const pushNativeCarvedGroups = (groups, mapFn) => {
+      for(const grp of groups){
+        const loops = grp.idxs.map(idx => FUDA_BASE_POLYS[idx].map(([x, y]) => mapFn(x, y)));
+        charDrawList.push({ ch: grp.ch, sz: fs * 0.85, fgCol: fg, outCol: outColDefault, useOut: useOutline, fontVal, compoundLoops: loops });
+        if(includeTracedTextVector){
+          textItems.push({
+            type: 'compound', fill: fg,
+            stroke: useOutline ? outColDefault : null,
+            strokeWidth: useOutline ? Math.max(0.8, ow * 0.45) : 0,
+            loops
+          });
+        }
+      }
+    };
+
+    if(fontVal === 'svg_carved' && leftChars.join('') === '仲羽田'){
+      pushNativeCarvedGroups([
+        { ch: '仲', idxs: [39, 42, 43] },
+        { ch: '羽', idxs: [40, 44, 45, 46] },
+        { ch: '田', idxs: [41, 47, 48, 49, 50] }
+      ], trLeftSvg);
+    }else{
+      const nL = Math.max(1, leftChars.length);
+      const stepSvg = 282 / nL;
+      const charSzMm = Math.min(fs * 0.84, stepSvg * svgScale * 0.86);
+      const angL = 13.1 + dSubDeg;
+      const radAxisL = ((90 + 13.1) * Math.PI) / 180;
+      leftChars.forEach((ch, idx) => {
+        const offsetSvg = (idx - (nL - 1) / 2) * stepSvg;
+        const sx = 175.8 + Math.cos(radAxisL) * offsetSvg;
+        const sy = 354.2 + Math.sin(radAxisL) * offsetSvg;
+        const [txL, tyL] = trLeftSvgPt(sx, sy);
+        const [lxMm, lyMm] = toLocalMm(txL, tyL);
+        const rot90 = 'ー〜～()（）「」『』－-'.includes(ch);
+        addCharItem(ch, lxMm, lyMm, charSzMm, fg, outColDefault, useOutline, fontVal, rot90, angL);
+      });
+    }
+
+    if(fontVal === 'svg_carved' && rightChars.join('') === '青年会'){
+      pushNativeCarvedGroups([
+        { ch: '青', idxs: [21, 25, 26] },
+        { ch: '年', idxs: [22, 27] },
+        { ch: '会', idxs: [23, 24, 28, 29] }
+      ], trSvg);
+    }else{
+      const nR = Math.max(1, rightChars.length);
+      const stepSvg = 276 / nR;
+      const charSzMm = Math.min(fs * 0.84, stepSvg * svgScale * 0.86);
+      const angR = -21.2;
+      const radAxisR = ((90 - 21.2) * Math.PI) / 180;
+      rightChars.forEach((ch, idx) => {
+        const offsetSvg = (idx - (nR - 1) / 2) * stepSvg;
+        const sx = 353.2 + Math.cos(radAxisR) * offsetSvg;
+        const sy = 320.3 + Math.sin(radAxisR) * offsetSvg;
+        const [lxMm, lyMm] = toLocalMm(sx, sy);
+        const rot90 = 'ー〜～()（）「」『』－-'.includes(ch);
+        addCharItem(ch, lxMm, lyMm, charSzMm, fg, outColDefault, useOutline, fontVal, rot90, angR);
+      });
+    }
+
+    const hw = 250 * svgScale * wScale, hh = 275 * svgScale * hScale;
+    const [subCx, subCy] = trLeftSvg(175.8, 354.2);
+    gizmoHandles = {
+      cx, cy, deg, hw, hh,
+      knot: trSvg(225 + kxSvg, 95 + kySvg),
+      tail: trSvg(455 + txSvg, 415 + tySvg),
+      scale: tr(hw, hh),
+      width: tr(hw, 0),
+      height: tr(0, hh),
+      rotate: tr(0, -hh - Math.max(8, fs * 0.2)),
+      subMove: [subCx, subCy],
+      subRot: trLeftSvg(206.0, 140.0),
+      subCx, subCy, baseFs: fs, wScale, hScale, baseDeg: deg
+    };
+
+    const filteredFrameItems = [];
+    if(nonTextAlpha > 0.001){
+      for(const it of frameItems){
+        if(!it.fill && !it.stroke) continue;
+        it.opacity = nonTextAlpha;
+        filteredFrameItems.push(it);
+      }
+    }
+    for(const ti of textItems) ti.opacity = fudaAlpha;
+    return { frameItems: filteredFrameItems, textItems, charDrawList, gizmoHandles };
+  }
+
+  if(frame === 'kifuda_3d_rope' && useSvgFudaBase){
+    const svgScale = (fs * 0.90) / 88.0;
+    const toLocalMm = (sx, sy) => [(sx - 273.5) * svgScale * wScale, (sy - 285.0) * svgScale * hScale];
+    const trSvg = (sx, sy) => {
+      const [lx, ly] = toLocalMm(sx, sy);
+      return tr(lx, ly);
+    };
+    const radUp = (21.2 * Math.PI) / 180, cUp = Math.cos(radUp), sUp = Math.sin(radUp);
+    const trUpSvgPt = (sx, sy, ex = 0, ey = 0) => {
+      const dx = sx - 272.0, dy = sy - 162.0;
+      return [272.0 + dx * cUp - dy * sUp - 17.0 + ex, 162.0 + dx * sUp + dy * cUp + ey];
+    };
+    const trUpSvg = (sx, sy, ex = 0, ey = 0) => {
+      const [px, py] = trUpSvgPt(sx, sy, ex, ey);
+      return trSvg(px, py);
+    };
+    const kxSvg = (st.fudaCordKnotX || 0) / Math.max(0.05, svgScale * wScale);
+    const kySvg = (st.fudaCordKnotY || 0) / Math.max(0.05, svgScale * hScale);
+    const txSvg = (st.fudaCordTailX || 0) / Math.max(0.05, svgScale * wScale);
+    const tySvg = (st.fudaCordTailY || 0) / Math.max(0.05, svgScale * hScale);
+
+    const cLw = Math.max(0.6, ow * 0.35);
+    const faceFill = bodyFill;
+    const faceStroke = (st.fudaBgTransparent && frameCol) ? frameCol : null;
+    const sideFill = st.fudaBgTransparent
+      ? frameCol
+      : ((st.fudaFrameColor && st.fudaFrameColor.toLowerCase() !== fg.toLowerCase()) ? frameCol : bodyFill);
+    const showCord = !st.fudaCordAllTransparent && (st.fudaCordStyle || 'auto') !== 'none';
+    const cFill = st.fudaCordTransparent ? null : (cordFill || bodyFill || bg);
+    const cStroke = st.fudaCordTransparent ? cordStroke : null;
+
+    if(faceFill || faceStroke){
+      frameItems.push({ type: 'poly', fill: faceFill, stroke: faceStroke, strokeWidth: cLw * 1.2, pts: FUDA_BASE_POLYS[20].map(([x, y]) => trUpSvg(x, y)) });
+    }
+    if(sideFill){
+      frameItems.push({ type: 'poly', fill: sideFill, stroke: null, strokeWidth: 0, pts: FUDA_BASE_POLYS[31].map(([x, y]) => trUpSvg(x, y)) });
+    }
+    if(showCord && (cFill || cStroke)){
+      const knotIdxs = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19, 30];
+      for(const idx of knotIdxs){
+        frameItems.push({ type: 'poly', fill: cFill, stroke: cStroke, strokeWidth: cLw, pts: FUDA_BASE_POLYS[idx].map(([x, y]) => trSvg(x + 12.0 + kxSvg, y + 10.0 + kySvg)) });
+      }
+      for(const idx of [33, 35, 37]){
+        frameItems.push({ type: 'poly', fill: cFill, stroke: cStroke, strokeWidth: cLw, pts: FUDA_BASE_POLYS[idx].map(([x, y]) => trUpSvg(x, y)) });
+      }
+      for(const idx of [54, 56, 57, 58]){
+        frameItems.push({ type: 'poly', fill: cFill, stroke: cStroke, strokeWidth: cLw, pts: FUDA_BASE_POLYS[idx].map(([x, y]) => trUpSvg(x, y, txSvg, tySvg)) });
+      }
+    }
+
+    const mJoin = chars.join('');
+    if(fontVal === 'svg_carved' && mJoin === '青年会'){
+      for(const grp of [
+        { ch: '青', idxs: [21, 25, 26] },
+        { ch: '年', idxs: [22, 27] },
+        { ch: '会', idxs: [23, 24, 28, 29] }
+      ]){
+        const loops = grp.idxs.map(idx => FUDA_BASE_POLYS[idx].map(([x, y]) => trUpSvg(x, y)));
+        charDrawList.push({ ch: grp.ch, sz: fs * 0.90, fgCol: fg, outCol: outColDefault, useOut: useOutline, fontVal, compoundLoops: loops });
+        if(includeTracedTextVector){
+          textItems.push({ type: 'compound', fill: fg, stroke: useOutline ? outColDefault : null, strokeWidth: useOutline ? Math.max(0.8, ow * 0.45) : 0, loops });
+        }
+      }
+    }else if(fontVal === 'svg_carved' && mJoin === '仲羽田'){
+      const radL = (-13.1 * Math.PI) / 180, cL = Math.cos(radL), sL = Math.sin(radL);
+      const trLeftToUp = (sx, sy) => {
+        const dx = sx - 177.0, dy = sy - 353.4;
+        return trSvg(177.0 + dx * cL - dy * sL + 96.5, 353.4 + dx * sL + dy * cL - 15.7);
+      };
+      for(const grp of [
+        { ch: '仲', idxs: [39, 42, 43] },
+        { ch: '羽', idxs: [40, 44, 45, 46] },
+        { ch: '田', idxs: [41, 47, 48, 49, 50] }
+      ]){
+        const loops = grp.idxs.map(idx => FUDA_BASE_POLYS[idx].map(([x, y]) => trLeftToUp(x, y)));
+        charDrawList.push({ ch: grp.ch, sz: fs * 0.90, fgCol: fg, outCol: outColDefault, useOut: useOutline, fontVal, compoundLoops: loops });
+        if(includeTracedTextVector){
+          textItems.push({ type: 'compound', fill: fg, stroke: useOutline ? outColDefault : null, strokeWidth: useOutline ? Math.max(0.8, ow * 0.45) : 0, loops });
+        }
+      }
+    }else{
+      const nC = Math.max(1, chars.length);
+      const stepSvg = 276 / nC;
+      const charSzMm = Math.min(fs * 0.88, stepSvg * svgScale * 0.86);
+      chars.forEach((ch, idx) => {
+        const sy = 338.8 + (idx - (nC - 1) / 2) * stepSvg;
+        const [lxMm, lyMm] = toLocalMm(273.5, sy);
+        const rot90 = 'ー〜～()（）「」『』－-'.includes(ch);
+        addCharItem(ch, lxMm, lyMm, charSzMm, fg, outColDefault, useOutline, fontVal, rot90, 0);
+      });
+    }
+
+    const hw = 115 * svgScale * wScale, hh = 265 * svgScale * hScale;
+    gizmoHandles = {
+      cx, cy, deg, hw, hh,
+      knot: trSvg(235 + kxSvg, 95 + kySvg),
+      tail: trUpSvg(435, 420, txSvg, tySvg),
+      scale: tr(hw, hh),
+      width: tr(hw, 0),
+      height: tr(0, hh),
+      rotate: tr(0, -hh - Math.max(8, fs * 0.2))
+    };
+
+    const filteredFrameItems = [];
+    if(nonTextAlpha > 0.001){
+      for(const it of frameItems){
+        if(!it.fill && !it.stroke) continue;
+        it.opacity = nonTextAlpha;
+        filteredFrameItems.push(it);
+      }
+    }
+    for(const ti of textItems) ti.opacity = fudaAlpha;
+    return { frameItems: filteredFrameItems, textItems, charDrawList, gizmoHandles };
+  }
+
+  // ⑩ 二枚重ね夫婦木札（カスタム形状指定時などのフォールバック）
   if(frame === 'twin_kifuda'){
-    const subChars = getEffectiveFudaChars(subTxt, 0, '遠州');
+    const subChars = getEffectiveFudaChars(subTxt, 0, '青年会');
     const cordChoice = (!st.fudaCordStyle || st.fudaCordStyle === 'auto') ? 'top_knot' : st.fudaCordStyle;
     const rad0 = (deg * Math.PI) / 180;
     const cos0 = Math.cos(rad0), sin0 = Math.sin(rad0);
@@ -3168,69 +3743,6 @@ function buildSingleFudaOrTextPrimitivesMm(cx, cy, deg, fs, st, includeTracedTex
       gizmoHandles: combinedGizmo
     };
   }
-
-  const chars = mainChars;
-  const rad = (deg * Math.PI) / 180;
-  const cos = Math.cos(rad), sin = Math.sin(rad);
-  const tr = (lx, ly) => [cx + lx * cos - ly * sin, cy + lx * sin + ly * cos];
-  const rectToPts = (rx, ry, rw, rh) => [tr(rx, ry), tr(rx + rw, ry), tr(rx + rw, ry + rh), tr(rx, ry + rh)];
-  const circleToPts = (ccx, ccy, r, segs = 24) => {
-    const pts = [];
-    for(let i = 0; i < segs; i++){
-      const a = (i / segs) * Math.PI * 2;
-      pts.push(tr(ccx + Math.cos(a) * r, ccy + Math.sin(a) * r));
-    }
-    return pts;
-  };
-
-  const frameItems = [];
-  const textItems = [];
-  const charDrawList = []; // Canvas直接描画用 [{ ch, gx, gy, deg, sz, fgCol, outCol, useOut, fontVal, rot90 }]
-
-  const addCharItem = (ch, lx, ly, sz, fgCol, outCol, useOut, fVal, rot90) => {
-    const [gx, gy] = tr(lx, ly);
-    charDrawList.push({ ch, lx, ly, gx, gy, deg, sz, fgCol, outCol, useOut, fontVal: fVal, rot90: !!rot90 });
-    if(!includeTracedTextVector) return;
-    if(fVal === 'kakuji'){
-      const kData = getKakujiCharRectsMm(ch, sz);
-      if(kData){
-        const hs = kData.boxS / 2;
-        if(useOut){
-          textItems.push({ type: 'poly', fill: outCol, stroke: null, pts: rectToPts(lx - hs - sz * 0.05, ly - hs - sz * 0.05, kData.boxS + sz * 0.1, kData.boxS + sz * 0.1) });
-        }
-        for(const [rx, ry, rw, rh] of kData.rects){
-          textItems.push({ type: 'poly', fill: fgCol, stroke: null, pts: rectToPts(lx + rx, ly + ry, rw, rh) });
-        }
-        return;
-      }
-    }
-    const effFont = fVal === 'kakuji' ? "'Dela Gothic One', sans-serif" : fVal;
-    const strokeRatio = Math.max(0.08, (ow / Math.max(8, fs)) * 1.15);
-    if(useOut){
-      const outLoops = traceGlyphToVectorLoops(ch, effFont, true, strokeRatio);
-      if(outLoops.length > 0){
-        textItems.push({
-          type: 'compound', fill: outCol,
-          loops: outLoops.map(lp => lp.map(([nx, ny]) => {
-            const rx = rot90 ? -ny * sz : nx * sz;
-            const ry = rot90 ? nx * sz : ny * sz;
-            return tr(lx + rx, ly + ry);
-          }))
-        });
-      }
-    }
-    const fgLoops = traceGlyphToVectorLoops(ch, effFont, false, 0);
-    if(fgLoops.length > 0){
-      textItems.push({
-        type: 'compound', fill: fgCol,
-        loops: fgLoops.map(lp => lp.map(([nx, ny]) => {
-          const rx = rot90 ? -ny * sz : nx * sz;
-          const ry = rot90 ? nx * sz : ny * sz;
-          return tr(lx + rx, ly + ry);
-        }))
-      });
-    }
-  };
 
   if(FUDA_FRAME_SET.has(frame)){
     // 伝統10種の札ロゴレイアウト（札のサイズ・幅比率・縦長比率・3D厚み・組紐・文字以外の個別透過対応）
@@ -3800,18 +4312,51 @@ function drawCustomLogoAndTextMm(x, cfg){
             x.closePath();
             if(it.fill){ x.fillStyle = it.fill; x.fill(); }
             if(it.stroke){ x.strokeStyle = it.stroke; x.lineWidth = it.strokeWidth || 1; x.lineJoin = 'round'; x.stroke(); }
+          }else if(it.type === 'compound' && it.loops && it.loops.length > 0){
+            x.globalAlpha = (it.opacity !== undefined) ? it.opacity : nonTextAlpha;
+            x.beginPath();
+            for(const lp of it.loops){
+              if(!lp || lp.length < 3) continue;
+              x.moveTo(lp[0][0], lp[0][1]);
+              for(let i = 1; i < lp.length; i++) x.lineTo(lp[i][0], lp[i][1]);
+              x.closePath();
+            }
+            if(it.fill){ x.fillStyle = it.fill; x.fill('evenodd'); }
+            if(it.stroke){ x.strokeStyle = it.stroke; x.lineWidth = it.strokeWidth || 1; x.lineJoin = 'round'; x.stroke(); }
           }
         }
         x.restore();
       }
 
-      // 札の中の文字（江戸角字またはフォント文字・二枚重ね札の個別角度にも対応）を描画
+      // 札の中の文字（公式SVG彫刻文字・江戸角字・フォント文字・二枚重ね札の個別角度にも対応）を描画
       x.save();
       x.globalAlpha = fudaAlpha;
       x.textAlign = 'center';
       x.textBaseline = 'middle';
 
       for(const cd of charDrawList){
+        if(cd.compoundLoops && cd.compoundLoops.length > 0){
+          x.save();
+          x.beginPath();
+          for(const lp of cd.compoundLoops){
+            if(!lp || lp.length < 3) continue;
+            x.moveTo(lp[0][0], lp[0][1]);
+            for(let i = 1; i < lp.length; i++) x.lineTo(lp[i][0], lp[i][1]);
+            x.closePath();
+          }
+          if(cd.useOut && cd.outCol){
+            x.strokeStyle = cd.outCol;
+            x.lineWidth = Math.max(1.2, ow * ((cd.sz || fs) / Math.max(8, fs)));
+            x.lineJoin = 'round';
+            x.stroke();
+          }
+          if(cd.fgCol){
+            x.fillStyle = cd.fgCol;
+            x.fill('evenodd');
+          }
+          x.restore();
+          continue;
+        }
         x.save();
         if(cd.gx !== undefined && cd.gy !== undefined){
           x.translate(cd.gx, cd.gy);
@@ -3836,7 +4381,7 @@ function drawCustomLogoAndTextMm(x, cfg){
             continue;
           }
         }
-        const effFont = cd.fontVal === 'kakuji' ? "'Dela Gothic One', sans-serif" : cd.fontVal;
+        const effFont = (cd.fontVal === 'kakuji' || cd.fontVal === 'svg_carved') ? "'Reggae One', sans-serif" : cd.fontVal;
         x.font = `700 ${cd.sz}px ${effFont}`;
         if(cd.useOut){
           x.strokeStyle = cd.outCol;
@@ -7128,9 +7673,9 @@ alert("完了：手ぬぐいデータ (仲羽田 " + (POLYS.length + SPOT_POLYS.
 // 🏷️ 現在作成中の「札ロゴ単体」を Illustrator (.ai / .svg) で直接書き出す機能
 function exportSingleFudaVector(format){
   const isWide = (S.customTextFrame === 'twin_kifuda' || S.customTextFrame === 'kifuda_3d_rope');
-  const Wf = isWide ? 200 : 140, Hf = 290;
+  const Wf = isWide ? 250 : 140, Hf = 290;
   const cx = Wf / 2, cy = Hf / 2;
-  const fs = 50;
+  const fs = 46;
   const { frameItems, textItems } = buildSingleFudaOrTextPrimitivesMm(cx, cy, 0, fs, S, true);
   const safeTxt = ((S.customTextStr || '仲羽田') + '_' + (S.customTextFrame || 'senjafuda')).replace(/[\\/:*?"<>|\s]+/g, '_');
 
@@ -7782,8 +8327,10 @@ function syncUI(){
 
 let timer=null;
 function update(relayout){
+  if(typeof pmApplyA === 'function' && typeof PM_A !== 'undefined' && PM_A) pmApplyA();
   if(S.showLogo) syncActiveSlotFromS();
   persist(); syncUI();
+  if(typeof pmRenderA === 'function' && typeof PM_A !== 'undefined' && PM_A) pmRenderA();
   if(relayout){
     clearTimeout(timer);
     timer=setTimeout(()=>{layout();draw();}, 35);
@@ -8324,6 +8871,38 @@ $('logoPadMatchBgBtn').addEventListener('click',()=>{S.logoPadColor=S.bgColor; i
 if($('logoPadWhiteBtn')) $('logoPadWhiteBtn').addEventListener('click',()=>{S.logoPadColor='#ffffff'; if(S.logoPadMode==='none') S.logoPadMode='circle'; update(false);});
 
 // 名入れ文字・フォント・全10種札ロゴ・組紐・文字数制限・1文字ちりばめ総柄・単体ベクター書き出しイベント
+if($('fudaBaseSvgFileInput')){
+  $('fudaBaseSvgFileInput').addEventListener('change', e => {
+    const f = e.target.files && e.target.files[0];
+    if(!f) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const txt = String(ev.target.result || '');
+      const dList = [];
+      const re = /\bd\s*=\s*"([^"]+)"/g;
+      let m;
+      while((m = re.exec(txt)) !== null){
+        if(m[1] && m[1].trim()) dList.push(m[1].trim());
+      }
+      if(dList.length === 0){
+        alert('SVGファイル内に <path d="..."> が見つかりませんでした。');
+        return;
+      }
+      const joinedD = dList.join(' ');
+      initFudaBaseFromPathD(joinedD, true);
+      if(S.customTextFrame !== 'twin_kifuda' && S.customTextFrame !== 'kifuda_3d_rope'){
+        S.customTextFrame = 'twin_kifuda';
+      }
+      S.showText = true;
+      PROC_LOGO_KEY = '';
+      if(typeof VECTOR_LOGO_CACHE !== 'undefined') VECTOR_LOGO_CACHE.clear();
+      saySave(`✨ 札ベースSVG「${f.name}」を高画質ベクター平滑化して搭載しました！`);
+      update(false);
+    };
+    reader.readAsText(f, 'utf-8');
+    e.target.value = '';
+  });
+}
 document.querySelectorAll('#fudaStyleQuickChips button[data-fstyle]').forEach(b=>b.addEventListener('click',()=>{
   S.customTextFrame = b.dataset.fstyle;
   if(S.customTextFrame === 'kifuda_3d_rope'){
@@ -9492,6 +10071,214 @@ $('saveAi').addEventListener('click',()=>{const ai=new TextEncoder().encode(aiTe
 $('saveJsx').addEventListener('click',()=>save(baseName()+'.jsx',new Blob(['\uFEFF'+jsxText()],{type:'text/javascript;charset=utf-8'}),baseName()+'.jsx'));
 $('savePng').addEventListener('click',()=>saveHighResPng());
 if(!inClaude){$('saveAi').textContent='.ai を保存';}
+/* ==== 🖨️ プリント方法ごとの下限 ＆ 🏷️ 札タオル図案との統合（v1.10.0） ==== */
+// L = 線の最小幅、G = すき間（白く抜く所）の最小幅（mm）。各社の入稿ルールの目安。
+var PM_A = {
+  silk:   { name: 'シルク（顔料・染料）フェイス・マフラー', short: 'シルク', L: 1, G: 1, note: '線・線の間とも 1mm 以上。' },
+  bath:   { name: 'シルク バスタオル', short: 'バス', L: 2, G: 2, note: 'バスタオルは線・線の間とも 2mm 以上。' },
+  fuchi:  { name: 'ふち有りプリント', short: 'ふち有り', L: 1, G: 2, note: '線 1mm 以上・線と線の間 2mm 以上。' },
+  zenmen: { name: '全面プリント（顔料・染料）', short: '全面', L: 2.5, G: 2.5, note: '2.5mm 以下の線はにじみやすい。柄を生地の端まで描くとにじみ汚れが出ます。' },
+  chusen: { name: '注染（本染めの手ぬぐい）', short: '注染', L: 2, G: 2, note: '線・点とも 2mm 以上。色と色の間は 1cm 以上。にじみ・かすれは手染めの味として出ます。' },
+  full:   { name: 'フルカラー（インクジェット・昇華）', short: 'フルカラー', L: 1, G: 1, note: '線・白く抜く所とも 1mm 以上。写真は実寸 300dpi 以上。' },
+  none:   { name: '指定しない（下限なし）', short: '指定なし', L: 0, G: 0, note: '下限をかけません。入稿前に業者へ確認してください。' }
+};
+var PM_KEY_A = 'towel_pm';
+// 札ロゴ：文字のいちばん細い所 7.4・縁の縞のすき間 2.65（札の高さ 566.93 に対する値）
+var FUDA_K_TEXT = 7.4 / 566.93, FUDA_K_DETAIL = 2.65 / 566.93;
+// 札タオル図案（fuda_towel/）のタオル案
+var FT_TPL = [{"id":"towel_tate_A_gaikei","label":"A 外形くり抜き・下寄せ","group":"縦 340×850","W":340,"H":850,"bg":"#00A3AF","logoH":215,"patScale":1,"gap":7,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_tate_B_marumado","label":"B 丸窓","group":"縦 340×850","W":340,"H":850,"bg":"#00A3AF","logoH":196,"patScale":1,"gap":6,"style":"maru","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_tate_C_fudamado","label":"C 札形の窓","group":"縦 340×850","W":340,"H":850,"bg":"#00A3AF","logoH":232,"patScale":1,"gap":6,"style":"fuda","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_tate_D_obi","label":"D 下を無地の帯に","group":"縦 340×850","W":340,"H":850,"bg":"#00A3AF","logoH":215,"patScale":1,"gap":7,"style":"obi","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_tate_E_chuou","label":"E 中央に大きく・白フチ","group":"縦 340×850","W":340,"H":850,"bg":"#00A3AF","logoH":270,"patScale":1,"gap":11,"style":"gaikei","fuchi":true,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_tate_small1_gaikei","label":"右下に小さく・外形","group":"縦 340×850","W":340,"H":850,"bg":"#00A3AF","logoH":110,"patScale":1,"gap":10,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_tate_small2_marumado","label":"右下に小さく・丸窓","group":"縦 340×850","W":340,"H":850,"bg":"#00A3AF","logoH":101.2,"patScale":1,"gap":4.5,"style":"maru","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_tate_small3_fudamado","label":"右下に小さく・札形の窓","group":"縦 340×850","W":340,"H":850,"bg":"#00A3AF","logoH":110,"patScale":1,"gap":4.5,"style":"fuda","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_Y1_gaikei_migi","label":"Y1 外形くり抜き・右","group":"横 850×340","W":850,"H":340,"bg":"#00A3AF","logoH":262,"patScale":1,"gap":7,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_Y1_h150_fuchi8","label":"Y1 札150mm・端8mm無地","group":"横 850×340（端8mm）","W":850,"H":340,"bg":"#00A3AF","logoH":150,"patScale":1,"gap":7,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_Y1_h200_fuchi8","label":"Y1 札200mm・端8mm無地","group":"横 850×340（端8mm）","W":850,"H":340,"bg":"#00A3AF","logoH":200,"patScale":1,"gap":7,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_Y1_h262_fuchi8","label":"Y1 札262mm・端8mm無地","group":"横 850×340（端8mm）","W":850,"H":340,"bg":"#00A3AF","logoH":262,"patScale":1,"gap":7,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_Y1_h300_fuchi8","label":"Y1 札300mm・端8mm無地","group":"横 850×340（端8mm）","W":850,"H":340,"bg":"#00A3AF","logoH":300,"patScale":1,"gap":7,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_Y1_h150_migishita_fuchi8","label":"Y1 札150mm・右下・端8mm無地","group":"横 850×340（端8mm）","W":850,"H":340,"bg":"#00A3AF","logoH":150,"patScale":1,"gap":7,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_Y1_h200_migishita_fuchi8","label":"Y1 札200mm・右下・端8mm無地","group":"横 850×340（端8mm）","W":850,"H":340,"bg":"#00A3AF","logoH":200,"patScale":1,"gap":7,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_Y2_marumado_migi","label":"Y2 丸窓・右","group":"横 850×340","W":850,"H":340,"bg":"#00A3AF","logoH":212,"patScale":1,"gap":6,"style":"maru","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_Y3_migi_muji","label":"Y3 右を無地の帯に","group":"横 850×340","W":850,"H":340,"bg":"#00A3AF","logoH":256,"patScale":1,"gap":7,"style":"obi","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_Y4_chuou","label":"Y4 中央・白フチ","group":"横 850×340","W":850,"H":340,"bg":"#00A3AF","logoH":286,"patScale":1,"gap":11,"style":"gaikei","fuchi":true,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_Y5_ryouhashi","label":"Y5 両端に2つ","group":"横 850×340","W":850,"H":340,"bg":"#00A3AF","logoH":236,"patScale":1,"gap":7,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_small1_gaikei","label":"右下に小さく・外形","group":"横 850×340","W":850,"H":340,"bg":"#00A3AF","logoH":110,"patScale":1,"gap":10,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_small2_marumado","label":"右下に小さく・丸窓","group":"横 850×340","W":850,"H":340,"bg":"#00A3AF","logoH":101.2,"patScale":1,"gap":4.5,"style":"maru","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"towel_yoko_small3_fudamado","label":"右下に小さく・札形の窓","group":"横 850×340","W":850,"H":340,"bg":"#00A3AF","logoH":110,"patScale":1,"gap":4.5,"style":"fuda","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6},{"id":"tenugui_340x840","label":"手ぬぐい 340×840（外形くり抜き）","group":"手ぬぐい","W":340,"H":840,"bg":"#00A3AF","logoH":200,"patScale":1,"gap":7,"style":"gaikei","fuchi":false,"fuchiW":1.9,"fuchiIn":4.6}];
+var FT_P_LINE = 2.71, FT_P_GAP = 3.1;
+var FT_BASE = (location.pathname.indexOf('/daishou_arare_kit/') >= 0) ? '../fuda_towel/' : 'fuda_towel/';
+var pmLastMsgA = '';
+
+function pmCurA(){
+  try{ var v = localStorage.getItem(PM_KEY_A); if(v && PM_A[v]) return v; }catch(e){}
+  return 'silk';
+}
+function isBuiltinFudaSlot(sl){
+  return !!sl && (sl.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || sl.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || sl.logoName === 'fuda_logo_teal' || sl.logoName === 'fuda_logo_white' || /^fudatowel_/.test(sl.logoName || ''));
+}
+function kakuGeomA(st){
+  var eff = st.kakuSize * (st.kakuScale / 100) / (st.kakuDensity / 100);
+  var hRow = 216 + (st.kakuRowGap || 0) * 2.16;
+  var u = eff / hRow, t = 15 * (st.kakuWeight / 100), gr = st.kakuInnerGap / 100;
+  var gu = Math.min(Math.max(4, 18 * gr), Math.max(4, 28.5 * gr - (t - 15) * 0.25), Math.max(4, 28 * gr));
+  return { u: u, t: t, strokeMm: t * u, gapMm: gu * u };
+}
+function fudaLogoMinA(p){ return Math.ceil(p.G / FUDA_K_TEXT); }
+// 下限より細い値を上げる。上げた項目の説明一覧を返す
+function pmEnforceA(){
+  if(typeof S === 'undefined' || !S) return [];
+  var p = PM_A[pmCurA()]; var ch = [];
+  if(!p || !p.L) return ch;
+  var usesKaku = !(S.mode === 'arare' || S.mode === 'scatter');
+  var usesArare = (S.mode === 'arare' || S.mode === 'both');
+  if(usesKaku){
+    var g = kakuGeomA(S);
+    if(g.strokeMm < p.L - 1e-6){
+      var w = Math.ceil(p.L / (0.15 * g.u));
+      if(w > 220){ w = 220; ch.push('仲羽田の線は太さ最大でも ' + (0.15 * 220 * g.u).toFixed(2) + 'mm です。文字サイズか全体倍率を上げてください'); }
+      else ch.push('仲羽田の線の太さ ' + w + '%（' + (0.15 * w * g.u).toFixed(2) + 'mm）');
+      S.kakuWeight = w; g = kakuGeomA(S);
+    }
+    if(g.gapMm < p.G - 1e-6){
+      var Gu = p.G / g.u;
+      var gr = Math.max(Gu / 18, (Gu + (g.t - 15) * 0.25) / 28.5, Gu / 28);
+      var ig = Math.ceil(gr * 100);
+      if(ig > 180){ ig = 180; ch.push('文字内の抜け幅は最大でも足りません。文字サイズか全体倍率を上げてください'); }
+      else ch.push('文字内の抜け幅 ' + ig + '%');
+      S.kakuInnerGap = ig;
+    }
+  }
+  if(usesArare){
+    if(S.dmin < p.L){ S.dmin = p.L; ch.push('あられの小粒 ' + p.L + 'mm'); }
+    if(S.gap < p.G){ S.gap = p.G; ch.push('あられの最小すき間 ' + p.G + 'mm'); }
+  }
+  var minLogo = fudaLogoMinA(p);
+  function fixSlot(sl, label){
+    if(!sl) return;
+    if(isBuiltinFudaSlot(sl) && (sl.logoSize || 85) < minLogo){ sl.logoSize = minLogo; ch.push(label + '札ロゴの大きさ ' + minLogo + 'mm'); }
+    if((sl.logoOutlineMm || 0) > 0 && sl.logoOutlineMm < p.L){ sl.logoOutlineMm = p.L; ch.push(label + 'ロゴのフチ ' + p.L + 'mm'); }
+  }
+  if(S.showLogo){
+    fixSlot(S, '');
+    if(Array.isArray(S.logoSlots)) S.logoSlots.forEach(function(sl, i){ if(i !== S.activeLogoSlot) fixSlot(sl, 'ロゴ' + (i + 1) + 'の'); });
+  }
+  if((S.knockoutMm || 0) > 0 && S.knockoutMm < p.G){ S.knockoutMm = p.G; ch.push('フチ抜き幅 ' + p.G + 'mm'); }
+  if(S.towelBorder && S.towelBorderWidth < p.L){ S.towelBorderWidth = Math.max(1.5, p.L); ch.push('タオル外周枠の太さ ' + Math.max(1.5, p.L) + 'mm'); }
+  return ch;
+}
+function pmItemA(box, cls, title, body){
+  var d = document.createElement('div'); d.className = 'pm-it ' + cls;
+  var ic = document.createElement('div'); ic.className = 'pm-ic'; ic.textContent = cls === 'ok' ? '✓' : (cls === 'cau' ? '!' : '×');
+  var t = document.createElement('div'); var b = document.createElement('b'); b.textContent = title; t.appendChild(b);
+  if(body){ t.appendChild(document.createElement('br')); var s = document.createElement('span'); s.textContent = body; t.appendChild(s); }
+  d.appendChild(ic); d.appendChild(t); box.appendChild(d);
+}
+function pmRenderA(){
+  var sel = $('pmMethodA'); if(!sel) return;
+  var key = pmCurA(), p = PM_A[key];
+  if(sel.value !== key) sel.value = key;
+  if($('pmBadgeA')) $('pmBadgeA').textContent = p.short;
+  if($('pmRuleA')) $('pmRuleA').textContent = p.note;
+  var box = $('pmStatusA'); if(!box) return; box.textContent = '';
+  if(!p.L) return;
+  if(!(S.mode === 'arare' || S.mode === 'scatter')){
+    var g = kakuGeomA(S);
+    pmItemA(box, g.strokeMm >= p.L - 1e-6 ? 'ok' : 'ng', '仲羽田の線 ' + g.strokeMm.toFixed(2) + 'mm（下限 ' + p.L + 'mm）', '太さ ' + S.kakuWeight + '%');
+    pmItemA(box, g.gapMm >= p.G - 1e-6 ? 'ok' : 'ng', '文字内の抜け（狭い所） ' + g.gapMm.toFixed(2) + 'mm（下限 ' + p.G + 'mm）', '抜け幅 ' + S.kakuInnerGap + '%');
+  }
+  if(S.mode === 'arare' || S.mode === 'both'){
+    pmItemA(box, S.dmin >= p.L ? 'ok' : 'ng', 'あられの小粒 ' + S.dmin + 'mm・すき間 ' + S.gap + 'mm', '下限 粒 ' + p.L + 'mm・すき間 ' + p.G + 'mm');
+  }
+  if(S.showLogo){
+    var slots = Array.isArray(S.logoSlots) && S.logoSlots.length ? S.logoSlots : [S];
+    var minLogo = fudaLogoMinA(p), rec = Math.ceil(Math.max(p.L, p.G) / FUDA_K_DETAIL);
+    slots.forEach(function(sl, i){
+      var cur = (i === S.activeLogoSlot) ? S : sl;
+      if(!isBuiltinFudaSlot(cur)) return;
+      var h = cur.logoSize || 85;
+      var body = '文字の最細 ' + (h * FUDA_K_TEXT).toFixed(1) + 'mm。縁の縞のすき間 ' + (h * FUDA_K_DETAIL).toFixed(1) + 'mm' + (h >= rec ? '' : '（縞は潰れて帯に見えることがあります。縞まで出すには ' + rec + 'mm 以上）');
+      pmItemA(box, h >= rec ? 'ok' : 'cau', '札ロゴ' + (slots.length > 1 ? (i + 1) : '') + ' ' + Math.round(h) + 'mm（下限 ' + minLogo + 'mm）', body);
+    });
+  }
+  if(S.towelBorder) pmItemA(box, 'ok', 'タオル外周枠 ' + S.towelBorderWidth + 'mm（下限 ' + p.L + 'mm）', '');
+  if(key === 'chusen' && (S.towelCenterBox || S.towelBorder || S.showCrest)) pmItemA(box, 'cau', '色の境目', '注染では色と色の間を 1cm 以上離すのが目安です。枠や丸紋の縁は業者に相談してください。');
+  if(pmLastMsgA && $('pmMsgA')) $('pmMsgA').textContent = pmLastMsgA;
+}
+function pmApplyA(){
+  var ch = pmEnforceA();
+  if(ch.length){ pmLastMsgA = PM_A[pmCurA()].short + 'で印刷できる太さにするため、' + ch.join('、') + ' に上げました（これ以上細くすると印刷できません）。'; }
+  return ch;
+}
+(function(){
+  var sel = $('pmMethodA'); if(!sel) return;
+  Object.keys(PM_A).forEach(function(k){ var o = document.createElement('option'); o.value = k; o.textContent = PM_A[k].name; sel.appendChild(o); });
+  sel.value = pmCurA();
+  sel.addEventListener('change', function(){
+    try{ localStorage.setItem(PM_KEY_A, sel.value); }catch(e){}
+    pmLastMsgA = '';
+    if($('pmMsgA')) $('pmMsgA').textContent = '';
+    update(true);
+    ftRenderTpl();
+  });
+})();
+
+/* ---- 🏷️ 札タオル図案（fuda_towel/）の埋め込みとブリッジ ---- */
+function ftProblems(c, key){
+  var p = PM_A[key]; var out = []; if(!p || !p.L) return out;
+  if(c.logoH < Math.ceil(p.G / FUDA_K_TEXT)) out.push('札の高さ');
+  if(c.patScale * 100 < Math.ceil(Math.max(p.L / FT_P_LINE, p.G / FT_P_GAP) * 100) - 0.01) out.push('柄の大きさ');
+  if(c.style !== 'obi' && c.style !== 'none' && c.gap < p.G) out.push('柄との間');
+  if(c.style === 'gaikei' && c.fuchi && (c.fuchiW < p.L || c.fuchiIn < p.G)) out.push('白フチ');
+  return out;
+}
+function openFtModal(tab, presetId){
+  var modal = $('ftModalOverlay'), frame = $('ftFrame'); if(!modal || !frame) return;
+  var q = '?embedded=1&tab=' + encodeURIComponent(tab || 'gal') + (presetId ? '&preset=' + encodeURIComponent(presetId) : '');
+  frame.src = FT_BASE + 'index.html' + q;
+  modal.style.display = 'flex';
+}
+function closeFtModal(){
+  var modal = $('ftModalOverlay'); if(modal) modal.style.display = 'none';
+  var sel = $('pmMethodA'); if(sel) sel.value = pmCurA();
+  update(true); ftRenderTpl();
+}
+function svgToDataUrlA(svg){ return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }
+function ftImportFabricSvg(svg, name, W, H, bg){
+  applyKoboFabricToStudio(svgToDataUrlA(svg), name || '札タオル図案', W, H, bg);
+  setTimeout(function(){ say('🧣「' + (name || '札タオル図案') + '」を生地に入れました（' + W + '×' + H + 'mm）。ダボ仕立てや書き出しにそのまま使えます。'); }, 400);
+}
+function ftImportLogoSvg(svg, name){
+  var p = PM_A[pmCurA()];
+  var nm = 'fudatowel_' + (name || '札');
+  var slotObj = Object.assign({}, extractLogoSlotFromS(DEF), {
+    logoName: nm, logoDataUrl: svgToDataUrlA(svg),
+    logoRemoveBg: false, logoBgMode: 'none', logoMono: false, logoOutlineMm: 0,
+    logoSize: Math.max(85, p && p.L ? fudaLogoMinA(p) : 0)
+  });
+  addOrSaveLogoToShelf('🏷️ ' + (name || '札タオル図案の札'), slotObj);
+  addNewLogoSlot(slotObj);
+  setTimeout(function(){ say('📚 札「' + (name || '札') + '」をロゴ保管棚に入れ、ロゴとして配置しました。'); }, 400);
+}
+window.addEventListener('message', function(ev){
+  var frame = $('ftFrame');
+  if(!frame || ev.source !== frame.contentWindow) return;
+  var d = ev.data; if(!d || typeof d !== 'object') return;
+  if(d.type === 'fudaTowel:fabric' && typeof d.svg === 'string'){ ftImportFabricSvg(d.svg, d.name, d.W, d.H, d.bg); closeFtModal(); }
+  else if(d.type === 'fudaTowel:logo' && typeof d.svg === 'string'){ ftImportLogoSvg(d.svg, d.name); closeFtModal(); }
+  else if(d.type === 'fudaTowel:pm'){ var sel = $('pmMethodA'); if(sel) sel.value = pmCurA(); }
+});
+function ftRenderTpl(){
+  var grid = $('ftTplGrid'); if(!grid) return;
+  grid.textContent = '';
+  var key = pmCurA();
+  FT_TPL.forEach(function(t){
+    var card = document.createElement('div'); card.className = 'ft-card';
+    var ph = document.createElement('button'); ph.type = 'button'; ph.className = 'ft-ph' + (t.H > t.W ? ' tate' : '');
+    ph.title = 'この案を生地に入れる'; ph.setAttribute('aria-label', t.label + ' を生地に入れる');
+    var im = document.createElement('img'); im.loading = 'lazy'; im.alt = t.label; im.src = FT_BASE + 'thumb/' + t.id + '.webp';
+    ph.appendChild(im);
+    ph.addEventListener('click', function(){
+      fetch(FT_BASE + 'svg/' + t.id + '.svg').then(function(r){ if(!r.ok) throw new Error(r.status); return r.text(); })
+        .then(function(svg){ ftImportFabricSvg(svg, t.label, t.W, t.H, t.bg); })
+        .catch(function(){ openFtModal('ed', t.id); });
+    });
+    var nm = document.createElement('div'); nm.className = 'ft-nm'; nm.textContent = t.label + '（' + t.group + '）';
+    var row = document.createElement('div'); row.className = 'ft-row';
+    var bad = ftProblems(t, key);
+    var chip = document.createElement('span'); chip.className = 'ft-chip ' + (bad.length ? 'ng' : 'ok');
+    chip.textContent = PM_A[key].short + (bad.length ? '✕ ' + bad.join('・') + 'が細い' : '○');
+    var ed = document.createElement('button'); ed.type = 'button'; ed.className = 'mini-btn'; ed.textContent = '✏️ 編集';
+    ed.addEventListener('click', function(){ openFtModal('ed', t.id); });
+    row.appendChild(chip); row.appendChild(ed);
+    card.appendChild(ph); card.appendChild(nm); card.appendChild(row); grid.appendChild(card);
+  });
+}
+document.querySelectorAll('[data-ftopen]').forEach(function(b){ b.addEventListener('click', function(){ openFtModal(b.dataset.ftopen); }); });
+if($('ftCloseBtn')) $('ftCloseBtn').addEventListener('click', closeFtModal);
+ftRenderTpl();
+
 window.addEventListener('resize',()=>draw());
 ensureLogoLoaded('__BUILTIN_FUDA_TEAL__');
 ensureLogoLoaded('__BUILTIN_FUDA_WHITE__');
