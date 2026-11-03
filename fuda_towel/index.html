@@ -177,6 +177,46 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
 .st-gaikei .o-gaikei,.st-maru .o-maru,.st-fuda .o-fuda,.st-obi .o-obi{display:block}
 .out .btns{margin-top:10px}
 .msg{font-size:12.5px;color:var(--ink-2);min-height:1.2em;margin-top:6px}
+/* かんたん／詳細の切り替え */
+.uimode{display:flex;gap:2px;background:var(--surface-2);border-radius:999px;padding:3px}
+.uimode button{border:0;background:transparent;color:var(--ink-2);font:inherit;font-size:13px;font-weight:700;padding:6px 14px;border-radius:999px;cursor:pointer;min-height:34px}
+.uimode button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.easy-only{display:none}
+html.easy .easy-only{display:block}
+html.easy .pick.easy-only{display:grid}
+html:not(.embedded) .e-kobo,html:not(.easy) .e-kobo{display:none !important}
+html.easy.embedded .e-kobo{display:flex;width:100%;justify-content:center;margin-top:10px;min-height:44px;font-size:14px}
+html.easy .adv{display:none !important}
+html.easy .foldbar{display:none}
+html.easy #fpanel > fieldset.fold > legend::before{display:none}
+html.easy fieldset.fold > legend ~ *{clear:both}
+html.easy fieldset.fold > legend{cursor:default}
+html.easy fieldset.fold > legend:hover{color:inherit}
+html.easy #panel > fieldset{order:9}
+html.easy #panel > fieldset[data-st="1"]{order:1}html.easy #panel > fieldset[data-st="2"]{order:2}
+html.easy #panel > fieldset[data-st="3"]{order:3}html.easy #panel > fieldset[data-st="4"]{order:4}
+html.easy #panel > fieldset[data-st="5"]{order:5}html.easy #panel > fieldset[data-st="6"]{order:6}
+html.easy #panel > fieldset[data-st="7"]{order:7}
+html.easy #panel > fieldset > legend[data-e]{font-size:0;gap:8px}
+html.easy #panel > fieldset > legend[data-e]::before{content:attr(data-n);border:0;width:22px;height:22px;line-height:22px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:12.5px;text-align:center;transform:none !important}
+html.easy #panel > fieldset > legend[data-e]::after{content:attr(data-e);font-size:15px}
+html.easy .e-top{margin-top:2px}
+.pick{margin-top:10px;display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(var(--tw,140px),1fr));max-height:360px;overflow:auto;padding:2px}
+.pick.tate{--tw:72px}
+.pick button{border:2px solid transparent;background:var(--surface-2);border-radius:10px;padding:6px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font:inherit;font-size:11.5px;line-height:1.35;color:var(--ink-2);text-align:center;min-height:44px}
+.pick button img{display:block;width:100%;height:auto;border-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.pick button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink);font-weight:700;background:var(--accent-soft)}
+.pick button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pick .ng{color:var(--warn);font-weight:700}
+html.easy #ed .stage .bar{justify-content:flex-start}
+@media (max-width:900px){
+  .uimode{order:-1;margin-left:auto}
+  html.easy #ed .stage{position:sticky;top:0;z-index:5;padding:8px}
+  html.easy #ed .canvas{min-height:0;padding:8px}
+  html.easy #ed .canvas svg{max-height:34vh;width:auto}
+  html.easy #ed .stage .bar{margin-top:6px;font-size:12px}
+  .pick{max-height:none}
+}
 @media (max-width:900px){
   .ed{grid-template-columns:1fr}
   .stage{position:relative;top:0}
@@ -184,6 +224,7 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
 }
 </style>
 
+<script>(function(){var m='easy';try{m=localStorage.getItem('towel_ui')||'easy';}catch(e){}var q=/[?&]ui=(easy|full)/.exec(location.search);if(q)m=q[1];if(m!=='full')document.documentElement.classList.add('easy');})();</script>
 <div class="wrap" id="app">
   <header class="top">
     <h1>仲羽田青年会 タオル図案<small>フェイスタオル 340×850mm・手ぬぐい柄「仲羽田」×札ロゴ</small></h1>
@@ -193,10 +234,15 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
       <button role="tab" aria-selected="false" data-tab="ed">作成ツール</button>
       <button role="tab" aria-selected="false" data-tab="fuda">札の調整</button>
     </div>
+    <div class="uimode" role="group" aria-label="表示の切り替え">
+      <button type="button" data-ui="easy" aria-pressed="true">かんたん</button>
+      <button type="button" data-ui="full" aria-pressed="false">詳細</button>
+    </div>
   </header>
 
   <section id="gal">
-    <div class="note">データは全て<b>アウトライン化済み（塗りのパスのみ）</b>で、実寸（mm）です。<b>SVG</b> は Illustrator で「開く」とそのまま色変更できます。<b>PDF</b> も Illustrator で開けます。EPS は以前チャットでお渡ししたものをお使いください（このページからは EPS を保存できません）。</div>
+    <div class="note easy-only">気に入った図案の「この案を編集」を押すと、作成ツールで色や大きさを変えられます。</div>
+    <div class="note adv">データは全て<b>アウトライン化済み（塗りのパスのみ）</b>で、実寸（mm）です。<b>SVG</b> は Illustrator で「開く」とそのまま色変更できます。<b>PDF</b> も Illustrator で開けます。EPS は以前チャットでお渡ししたものをお使いください（このページからは EPS を保存できません）。</div>
     <div class="bulk">
       <div class="bulk-head">
         <div>
@@ -219,104 +265,110 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
         <div class="canvas" id="cv"><span class="busy">作成中…</span></div>
         <div class="bar"><span id="info"></span><label class="chk" style="margin:0"><input type="checkbox" id="guide" checked>端の無地の目安線（保存されません）</label></div>
         <div class="warn" id="warn" hidden></div>
+        <button class="btn pri kobo-only easy-only e-kobo" id="toKobo2" type="button">📥 この図案を手ぬぐい工房の生地に入れる</button>
       </div>
 
       <div class="panel" id="panel">
-        <fieldset>
-          <legend>元にする図案</legend>
-          <select id="preset"></select>
-          <div class="row2" style="margin-top:10px">
+        <fieldset data-st="1">
+          <legend data-n="1" data-e="図案を選ぶ">元にする図案</legend>
+          <select id="preset" class="adv"></select>
+          <div class="row2 e-top">
             <span style="color:var(--ink-2)">大きさ</span>
             <div class="seg" id="canvasSeg">
-              <button data-c="tate">縦 340×850</button>
-              <button data-c="yoko">横 850×340</button>
-              <button data-c="tenugui">手ぬぐい 340×840</button>
+              <button data-c="tate">タオル 縦 340×850</button>
+              <button data-c="yoko">タオル 横 850×340</button>
+              <button data-c="tnv">手ぬぐい 縦 350×900</button>
+              <button data-c="tnh">手ぬぐい 横 900×350</button>
+              <button data-c="tenugui" class="adv">元柄の手ぬぐい 340×840</button>
             </div>
           </div>
+          <p class="hint" id="tnNote" hidden>タオルの図案を手ぬぐいの大きさに移しました。札の位置は同じ割合のところに置き直しています。</p>
+          <div class="pick easy-only" id="easyPick" role="group" aria-label="図案"></div>
         </fieldset>
 
-        <fieldset id="pmFs">
-          <legend>プリント方法（印刷できる太さ）</legend>
+        <fieldset id="pmFs" data-st="6">
+          <legend data-n="6" data-e="プリント方法">プリント方法（印刷できる太さ）</legend>
           <select id="pmethod" aria-label="プリント方法"></select>
           <p class="hint" id="pmRule"></p>
           <div id="pmStatus" class="pmst"></div>
           <div class="msg" id="pmMsg" role="status"></div>
-          <p class="hint">選んだ方法で印刷できない細さにならないよう、札の高さ・柄の大きさ・柄との間・フチや線の太さに下限をかけます。数値は各社の入稿ルール（線とすき間の最小幅）をもとにした目安です。最終確認は業者のデータチェックで。</p>
+          <p class="hint adv">選んだ方法で印刷できない細さにならないよう、札の高さ・柄の大きさ・柄との間・フチや線の太さに下限をかけます。数値は各社の入稿ルール（線とすき間の最小幅）をもとにした目安です。最終確認は業者のデータチェックで。</p>
         </fieldset>
 
-        <fieldset>
-          <legend>仲羽田（柄）</legend>
+        <fieldset data-st="5">
+          <legend data-n="5" data-e="柄の大きさ">仲羽田（柄）</legend>
           <div class="row"><label for="patScale">大きさ</label><input type="range" id="patScale" min="40" max="250" step="1"><input type="number" data-for="patScale" step="1"></div>
-          <div class="row"><label for="patRot">回転（度）</label><input type="range" id="patRot" min="0" max="359" step="1"><input type="number" data-for="patRot" step="1"></div>
-          <div class="row2"><span style="color:var(--ink-2)">回転</span>
+          <div class="row adv"><label for="patRot">回転（度）</label><input type="range" id="patRot" min="0" max="359" step="1"><input type="number" data-for="patRot" step="1"></div>
+          <div class="row2 adv"><span style="color:var(--ink-2)">回転</span>
             <div class="seg rotSeg" data-key="patRot">
               <button data-d="-5">−5°</button><button data-d="5">＋5°</button><button data-v="0">0°</button><button data-v="45">45°</button><button data-v="90">90°</button><button data-v="135">135°</button><button data-v="180">180°</button><button data-v="270">270°</button>
             </div>
           </div>
-          <div class="row"><label for="patDX">位置 左右</label><input type="range" id="patDX" min="-120" max="120" step="0.5"><input type="number" data-for="patDX" step="0.5"></div>
-          <div class="row"><label for="patDY">位置 上下</label><input type="range" id="patDY" min="-120" max="120" step="0.5"><input type="number" data-for="patDY" step="0.5"></div>
-          <p class="hint">大きさは %（100 = 元の手ぬぐいと同じ）、位置は mm です。</p>
+          <div class="row adv"><label for="patDX">位置 左右</label><input type="range" id="patDX" min="-120" max="120" step="0.5"><input type="number" data-for="patDX" step="0.5"></div>
+          <div class="row adv"><label for="patDY">位置 上下</label><input type="range" id="patDY" min="-120" max="120" step="0.5"><input type="number" data-for="patDY" step="0.5"></div>
+          <p class="hint adv">大きさは %（100 = 元の手ぬぐいと同じ）、位置は mm です。</p>
+          <p class="hint easy-only">100% が元の手ぬぐいと同じ大きさです。</p>
         </fieldset>
 
-        <fieldset>
-          <legend>札（ロゴ）</legend>
+        <fieldset data-st="3">
+          <legend data-n="3" data-e="札の大きさと位置">札（ロゴ）</legend>
           <div class="row2" style="margin-top:0"><span id="logoSrc" style="color:var(--ink-2)">使っている札：採用ロゴ</span><button class="btn" id="logoReset" type="button" hidden>採用ロゴに戻す</button></div>
           <div class="row"><label for="logoH">高さ mm</label><input type="range" id="logoH" min="40" max="330" step="1"><input type="number" data-for="logoH" step="1"></div>
-          <div class="row"><label for="logoX">中心 左右</label><input type="range" id="logoX" min="0" max="850" step="0.5"><input type="number" data-for="logoX" step="0.5"></div>
-          <div class="row"><label for="logoY">中心 上下</label><input type="range" id="logoY" min="0" max="850" step="0.5"><input type="number" data-for="logoY" step="0.5"></div>
-          <div class="row"><label for="logoRot">傾き（度）</label><input type="range" id="logoRot" min="-180" max="180" step="1"><input type="number" data-for="logoRot" step="1"></div>
-          <div class="row2"><span style="color:var(--ink-2)">傾き</span>
+          <div class="row adv"><label for="logoX">中心 左右</label><input type="range" id="logoX" min="0" max="850" step="0.5"><input type="number" data-for="logoX" step="0.5"></div>
+          <div class="row adv"><label for="logoY">中心 上下</label><input type="range" id="logoY" min="0" max="850" step="0.5"><input type="number" data-for="logoY" step="0.5"></div>
+          <div class="row adv"><label for="logoRot">傾き（度）</label><input type="range" id="logoRot" min="-180" max="180" step="1"><input type="number" data-for="logoRot" step="1"></div>
+          <div class="row2 adv"><span style="color:var(--ink-2)">傾き</span>
             <div class="seg rotSeg" data-key="logoRot">
               <button data-d="-5">−5°</button><button data-d="5">＋5°</button><button data-v="-15">−15°</button><button data-v="0">0°</button><button data-v="15">15°</button><button data-v="90">90°</button>
             </div>
           </div>
-          <p class="hint">＋は右回り。札形の窓は札と一緒に傾きます。2つ置くときは左右対称に傾きます。</p>
+          <p class="hint adv">＋は右回り。札形の窓は札と一緒に傾きます。2つ置くときは左右対称に傾きます。</p>
           <div class="row2">
             <span style="color:var(--ink-2)">寄せる</span>
             <div class="seg" id="alignSeg">
               <button data-a="c">中央</button><button data-a="r">右寄せ</button><button data-a="br">右下</button><button data-a="b">下寄せ</button>
             </div>
           </div>
-          <div class="row"><label for="alignM">寄せ余白</label><input type="range" id="alignM" min="8" max="120" step="1" value="28"><input type="number" data-for="alignM" step="1" value="28"></div>
-          <label class="chk"><input type="checkbox" id="twin">左右対称に2つ置く</label>
+          <div class="row adv"><label for="alignM">寄せ余白</label><input type="range" id="alignM" min="8" max="120" step="1" value="28"><input type="number" data-for="alignM" step="1" value="28"></div>
+          <label class="chk adv"><input type="checkbox" id="twin">左右対称に2つ置く</label>
         </fieldset>
 
-        <fieldset id="knockFs">
-          <legend>くり抜き方</legend>
+        <fieldset id="knockFs" data-st="4">
+          <legend data-n="4" data-e="札のまわり">くり抜き方</legend>
           <div class="seg" id="styleSeg">
             <button data-s="gaikei">外形</button><button data-s="maru">丸窓</button><button data-s="fuda">札形の窓</button><button data-s="obi">無地の帯</button><button data-s="none">なし</button>
           </div>
           <div class="row" id="gapRow"><label for="gap">柄との間 mm</label><input type="range" id="gap" min="0" max="25" step="0.5"><input type="number" data-for="gap" step="0.5"></div>
-          <div class="only o-gaikei">
+          <div class="only o-gaikei adv">
             <label class="chk"><input type="checkbox" id="fuchi">ロゴのまわりに白フチ線</label>
             <div class="row"><label for="fuchiIn">フチの位置</label><input type="range" id="fuchiIn" min="1" max="15" step="0.1"><input type="number" data-for="fuchiIn" step="0.1"></div>
             <div class="row"><label for="fuchiW">フチの太さ</label><input type="range" id="fuchiW" min="0.5" max="5" step="0.1"><input type="number" data-for="fuchiW" step="0.1"></div>
           </div>
-          <div class="only o-maru">
+          <div class="only o-maru adv">
             <div class="row"><label for="winR">窓の半径</label><input type="range" id="winR" min="30" max="200" step="0.5"><input type="number" data-for="winR" step="0.5"></div>
           </div>
-          <div class="only o-fuda">
+          <div class="only o-fuda adv">
             <div class="row"><label for="padX">余白 左右</label><input type="range" id="padX" min="0" max="60" step="0.5"><input type="number" data-for="padX" step="0.5"></div>
             <div class="row"><label for="padY">余白 上下</label><input type="range" id="padY" min="0" max="60" step="0.5"><input type="number" data-for="padY" step="0.5"></div>
             <div class="row"><label for="corner">角の丸み</label><input type="range" id="corner" min="0" max="60" step="0.5"><input type="number" data-for="corner" step="0.5"></div>
             <label class="chk"><input type="checkbox" id="frame">内側に枠線</label>
           </div>
-          <div class="only o-maru o-fuda">
+          <div class="only o-maru o-fuda adv">
             <div class="row"><label for="winDY">窓の上下ずれ</label><input type="range" id="winDY" min="-30" max="30" step="0.5"><input type="number" data-for="winDY" step="0.5"></div>
           </div>
-          <div class="only o-obi">
+          <div class="only o-obi adv">
             <div class="row2"><span style="color:var(--ink-2)">帯の位置</span>
               <div class="seg" id="obiSeg"><button data-o="bottom">下</button><button data-o="top">上</button><button data-o="right">右</button><button data-o="left">左</button></div>
             </div>
             <div class="row"><label for="obiSize">帯の幅 mm</label><input type="range" id="obiSize" min="60" max="500" step="1"><input type="number" data-for="obiSize" step="1"></div>
           </div>
-          <div class="row"><label for="border">端の無地 mm</label><input type="range" id="border" min="0" max="25" step="0.5"><input type="number" data-for="border" step="0.5"></div>
-          <p class="hint">「端の無地」は印字が抜ける縁。ここは地色だけになり、柄もロゴも入りません。</p>
+          <div class="row adv"><label for="border">端の無地 mm</label><input type="range" id="border" min="0" max="25" step="0.5"><input type="number" data-for="border" step="0.5"></div>
+          <p class="hint adv">「端の無地」は印字が抜ける縁。ここは地色だけになり、柄もロゴも入りません。</p>
         </fieldset>
 
-        <fieldset>
-          <legend>色</legend>
-          <div class="cols">
+        <fieldset data-st="2">
+          <legend data-n="2" data-e="色">色</legend>
+          <div class="cols adv">
             <label class="cpick"><input type="color" id="c_bg">地<code data-c="bg"></code></label>
             <label class="cpick"><input type="color" id="c_pat">柄<code data-c="pat"></code></label>
             <label class="cpick"><input type="color" id="c_logo">札<code data-c="logo"></code></label>
@@ -325,9 +377,9 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
           <div class="sw" id="swatch"></div>
         </fieldset>
 
-        <fieldset class="out">
-          <legend>保存</legend>
-          <input type="text" id="fname" aria-label="ファイル名">
+        <fieldset class="out" data-st="7">
+          <legend data-n="7" data-e="保存">保存</legend>
+          <input type="text" id="fname" class="adv" aria-label="ファイル名">
           <div class="btns">
             <button class="btn pri dl" id="saveSvg">SVG を保存（Illustrator 用）</button>
             <button class="btn dl" id="savePng">PNG を保存（確認用）</button>
@@ -335,14 +387,16 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
             <button class="btn pri kobo-only" id="toKobo" type="button">📥 手ぬぐい工房の生地に入れる</button>
           </div>
           <div class="msg" id="msg"></div>
-          <p class="hint">SVG は実寸・アウトライン済み（塗りのみ）。Illustrator で開き、必要なら「別名で保存」で EPS / PDF にしてください。レイヤー名：Background／HanedaNaka_Kakuji（柄）／Window（窓）／Fuda_Logo（札）。</p>
+          <p class="hint easy-only">SVG は Illustrator 用の実寸データ、PNG は確認用の画像です。</p>
+          <p class="hint adv">SVG は実寸・アウトライン済み（塗りのみ）。Illustrator で開き、必要なら「別名で保存」で EPS / PDF にしてください。レイヤー名：Background／HanedaNaka_Kakuji（柄）／Window（窓）／Fuda_Logo（札）。</p>
         </fieldset>
       </div>
     </div>
   </section>
 
   <section id="fuda" hidden>
-    <div class="note">札ロゴだけを細かく調整する画面です。最初は<b>いま採用している札</b>がそのまま入っています。形・厚み・光を数値で変えられます。<b>札の角をドラッグ</b>して大きさや傾きを直したり、<b>消しゴム・ペン</b>で一部を消す／足すこともできます。調整は自動で保存され、次に開いたときも続きから始まります（この端末のこのブラウザのみ）。</div>
+    <div class="note easy-only">札の案と色を選んで、「この札でタオルを作る」を押すと作成ツールに入ります。形や線を細かく直すときは、右上の「詳細」に切り替えてください。</div>
+    <div class="note adv">札ロゴだけを細かく調整する画面です。最初は<b>いま採用している札</b>がそのまま入っています。形・厚み・光を数値で変えられます。<b>札の角をドラッグ</b>して大きさや傾きを直したり、<b>消しゴム・ペン</b>で一部を消す／足すこともできます。調整は自動で保存され、次に開いたときも続きから始まります（この端末のこのブラウザのみ）。</div>
     <div class="ed">
       <div class="stage">
         <div class="canvas" id="fcv"><span class="busy">作成中…</span>
@@ -353,12 +407,12 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
             <g id="fover"></g>
           </svg>
         </div>
-        <div class="bar">
+        <div class="bar adv">
           <div class="seg" id="ftool">
             <button data-t="none" aria-pressed="true">選ぶ・動かす</button><button data-t="pan">手のひら（表示を動かす）</button><button data-t="mvline">揺れ線を動かす</button><button data-t="mvknot">結びを動かす</button><button data-t="mvlayer">レイヤーを動かす</button><button data-t="draw">ペン</button><button data-t="erase">消しゴム</button><button data-t="line">揺れ線を描く</button><button data-t="smooth">囲んでなめらかに</button>
           </div>
         </div>
-        <div class="bar" style="margin-top:6px">
+        <div class="bar adv" style="margin-top:6px">
           <label class="lyrpick">編集するレイヤー
             <select id="factiveSel"><option value="all">全体（ぜんぶに）</option><option value="tagL">仲羽田の札</option><option value="tagR">青年会の札</option><option value="knot">結び</option><option value="lines">揺れ線</option></select>
           </label>
@@ -370,11 +424,11 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
           <span id="fzoomLbl" style="font-weight:700;color:var(--ink)">100%</span>
           <button class="btn pri" id="fmaxBtn" type="button">全画面で編集</button>
         </div>
-        <div id="fsmoothOpts">
+        <div id="fsmoothOpts" class="adv">
           <div class="row"><label for="fsmStr">なめらかさの強さ（mm）</label><input type="range" id="fsmStr" min="0.1" max="3" step="0.05" value="0.8"><input type="number" data-ffor="fsmStr" step="0.05" value="0.8"></div>
           <p class="hint" style="margin:4px 0 0">ガタガタしている所をマウス（指）でぐるっと囲むと、囲んだ中の輪郭だけがなめらかになります。囲みの縁に近いほど弱くかかるので、つなぎ目は目立ちません。強すぎたら「元に戻す」。</p>
         </div>
-        <div id="fpenOpts">
+        <div id="fpenOpts" class="adv">
           <div class="row"><label for="fbrush">線の太さ（mm）</label><input type="range" id="fbrush" min="0.3" max="12" step="0.1" value="2.5"><input type="number" data-ffor="fbrush" step="0.1" value="2.5"></div>
           <div class="row"><label for="fsmooth">手ぶれ補正（%）</label><input type="range" id="fsmooth" min="0" max="90" step="1" value="55"><input type="number" data-ffor="fsmooth" step="1" value="55"></div>
           <div class="row"><label for="ftin">入り（細く始める mm）</label><input type="range" id="ftin" min="0" max="40" step="0.5" value="4"><input type="number" data-ffor="ftin" step="0.5" value="4"></div>
@@ -389,22 +443,22 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
         </div>
         <div class="bar">
           <div class="btns" style="margin:0"><button class="btn" id="fundo" type="button">↶ 元に戻す</button><button class="btn" id="fredo" type="button">↷ やり直す</button><button class="btn" id="fclear" type="button">ペン・消しゴム・なめらかを全部取り消す</button></div>
-          <label class="chk" style="margin:0"><input type="checkbox" id="fhandles">札の角をドラッグで動かす</label>
+          <label class="chk adv" style="margin:0"><input type="checkbox" id="fhandles">札の角をドラッグで動かす</label>
         </div>
-        <p class="hint" id="fhint">太さは mm。消しゴム・ペンを選んだら、プレビューの上をなぞってください。</p>
+        <p class="hint adv" id="fhint">太さは mm。消しゴム・ペンを選んだら、プレビューの上をなぞってください。</p>
       </div>
 
       <div class="panel" id="fpanel">
         <fieldset>
           <legend>元にする案</legend>
           <select id="fpreset"></select>
-          <p class="hint">「いまの札（採用版）を調整」は、いまの札の形をそのまま使って変形・加工します。「描き直し案」は数値から描き直した札です。選び直すと、それまでの調整は消えます（元に戻す で戻せます）。</p>
-          <div class="row2"><span style="color:var(--ink-2)">調整する札</span>
+          <p class="hint adv">「いまの札（採用版）を調整」は、いまの札の形をそのまま使って変形・加工します。「描き直し案」は数値から描き直した札です。選び直すと、それまでの調整は消えます（元に戻す で戻せます）。</p>
+          <div class="row2 adv"><span style="color:var(--ink-2)">調整する札</span>
             <div class="seg" id="ftarget"><button data-g="both" aria-pressed="true">両方</button><button data-g="L">仲羽田</button><button data-g="R">青年会</button></div>
           </div>
         </fieldset>
 
-        <fieldset class="fparam">
+        <fieldset class="fparam adv">
           <legend>札の形</legend>
           <div class="row2"><span style="color:var(--ink-2)">頭の形</span>
             <div class="seg" id="ftop"><button data-v="flat">平ら</button><button data-v="yama">山形</button><button data-v="kado">角落とし</button><button data-v="maru">丸</button></div>
@@ -412,7 +466,7 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
           <div id="fshapeRows"></div>
         </fieldset>
 
-        <fieldset class="fparam">
+        <fieldset class="fparam adv">
           <legend>厚み（影になる側）</legend>
           <div class="row2"><span style="color:var(--ink-2)">厚みの向き</span>
             <div class="seg" id="fdir"><button data-v="right">右と下</button><button data-v="left">左と下</button><button data-v="none">なし</button></div>
@@ -422,7 +476,7 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
           <div id="fhatchRows"></div>
         </fieldset>
 
-        <fieldset class="fparam">
+        <fieldset class="fparam adv">
           <legend>光</legend>
           <label class="chk"><input type="checkbox" data-fchk="teri">へりの照り（左と上の縁に細い白線）</label>
           <div id="fteriRows"></div>
@@ -432,14 +486,14 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
           <div id="frimRows"></div>
         </fieldset>
 
-        <fieldset class="fparam">
+        <fieldset class="fparam adv">
           <legend>札の位置・大きさ</legend>
           <p class="hint" style="margin-top:0">「札の角をドラッグで動かす」をオンにすると、角（○）と中心（＋）が出ます。角で形・傾き、中心で位置を変えます。</p>
           <div id="fxfRows"></div>
           <div class="btns"><button class="btn" id="fquadReset" type="button">位置・大きさを元に戻す</button></div>
         </fieldset>
 
-        <fieldset>
+        <fieldset class="adv">
           <legend>結び</legend>
           <label class="chk" style="margin-top:0"><input type="checkbox" id="fknot">結びを表示する</label>
           <select id="fknotType" style="margin-top:8px"></select>
@@ -449,7 +503,7 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
           <p class="hint">プレビューで「結びを動かす」を選ぶと、ドラッグで動かせます。結びが上にはみ出すときは、保存するデータの高さが自動で広がります。</p>
         </fieldset>
 
-        <fieldset>
+        <fieldset class="adv">
           <legend>揺れ線</legend>
           <p class="hint" style="margin-top:0">名前を押すと選べます（プレビューで赤く表示）。「揺れ線を動かす」で線をドラッグして動かせます。「揺れ線を描く」で新しい線を描けます。</p>
           <div id="flines"></div>
@@ -459,7 +513,7 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
           </div>
         </fieldset>
 
-        <fieldset>
+        <fieldset class="adv">
           <legend>レイヤーの順番（上ほど手前）</legend>
           <div id="flayers"></div>
           <div class="btns"><button class="btn pri" id="flayAdd" type="button">＋ 新しいレイヤー（空）</button><button class="btn" id="flayDup" type="button">編集中のレイヤーを写して新しく</button></div>
@@ -478,7 +532,7 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
           <p class="hint">チェックで表示／非表示、「編集」でそのレイヤーだけを編集（ペン・消しゴム・なめらかがそのレイヤーにだけかかり、ほかは薄く表示）。↑↓で重なりの順番。例：結びを札より後ろにすると、紐が札の裏へ回ります。</p>
         </fieldset>
 
-        <fieldset>
+        <fieldset class="adv">
           <legend>ペン・消しゴム・なめらかの記録</legend>
           <p class="hint" style="margin-top:0">描いた順に並んでいます。チェックを外すと一時的に消え、×で削除します。名前に触れるとプレビューで場所が光ります。</p>
           <div id="fstrokes"></div>
@@ -516,12 +570,12 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
 
 <script src="vendor/clipper.js"></script>
 <script src="vendor/jszip.min.js"></script>
-<script src="towel_data.js?v=20261103e"></script>
-<script src="engine.js?v=20261103e"></script>
-<script src="presets.js?v=20261103e"></script>
-<script src="fuda_data.js?v=20261103e"></script>
-<script src="fuda.js?v=20261103e"></script>
-<script src="fuda_presets.js?v=20261103e"></script>
+<script src="towel_data.js?v=20261103h"></script>
+<script src="engine.js?v=20261103h"></script>
+<script src="presets.js?v=20261103h"></script>
+<script src="fuda_data.js?v=20261103h"></script>
+<script src="fuda.js?v=20261103h"></script>
+<script src="fuda_presets.js?v=20261103h"></script>
 <script>
 (function () {
   'use strict';
@@ -616,7 +670,7 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
     { t: '縦 340×850', s: 'フェイスタオル縦向き', cls: 'tate', f: function (n) { return /^towel_tate/.test(n); } },
     { t: '以前の検討案（旧ロゴ）', s: '光の当たり方 L1〜L6・札の形 S2〜S6。採用ロゴに替える前の案です（188×200mm）', cls: 'tate', f: function (n) { return /^fuda_[LS]\d/.test(n); } }
   ];
-  var META = null, V = '?v=20261103e';
+  var META = null, V = '?v=20261103h';
   fetch('meta.json' + V).then(function (r) { return r.json(); }).then(function (m) { META = m; renderGallery(); })
     .catch(function () { $('#galBody').textContent = '一覧を読み込めませんでした。ページを再読み込みしてください。'; });
 
@@ -730,7 +784,7 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
   /* ---------------- editor ---------------- */
   var eng = null, cfg = null, curPreset = null, last = null;
   var NUM = ['patScale', 'patRot', 'patDX', 'patDY', 'logoH', 'logoX', 'logoY', 'logoRot', 'gap', 'fuchiIn', 'fuchiW', 'winR', 'padX', 'padY', 'corner', 'winDY', 'obiSize', 'border'];
-  var CANVAS = { tate: { W: 340, H: 850, patRot: 0, patDY: 0 }, yoko: { W: 850, H: 340, patRot: 90, patDY: 0 }, tenugui: { W: 340, H: 840, patRot: 0, patDY: 5 } };
+  var CANVAS = { tate: { W: 340, H: 850, patRot: 0, patDY: 0 }, yoko: { W: 850, H: 340, patRot: 90, patDY: 0 }, tnv: { W: 350, H: 900, patRot: 0, patDY: 0 }, tnh: { W: 900, H: 350, patRot: 90, patDY: 0 }, tenugui: { W: 340, H: 840, patRot: 0, patDY: 5 } };
   var SW = [
     ['ティール×白', { bg: '#00A3AF', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }],
     ['紺×白', { bg: '#0032AD', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }],
@@ -839,7 +893,10 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
     syncUI(); schedule();
     try { localStorage.setItem('towel_preset', p.id); } catch (e) {}
   }
-  function canvasKey() { return cfg.H === 840 ? 'tenugui' : (cfg.W > cfg.H ? 'yoko' : 'tate'); }
+  function canvasKey() {
+    for (var k in CANVAS) { if (CANVAS[k].W === cfg.W && CANVAS[k].H === cfg.H) return k; }
+    return cfg.W > cfg.H ? 'yoko' : 'tate';
+  }
 
   function syncUI() {
     $('#patScale').value = Math.round(cfg.patScale * 100);
@@ -854,10 +911,13 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
     $$('#styleSeg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.s === cfg.style)); });
     $$('#obiSeg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.o === cfg.obiSide)); });
     $$('#canvasSeg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.c === canvasKey())); });
-    $('#knockFs').className = 'st-' + cfg.style;
+    var isTn = canvasKey() === 'tnv' || canvasKey() === 'tnh';
+    $('#tnNote').hidden = !(isTn && curPreset && curPreset.cfg.W !== cfg.W);
+    var kf = $('#knockFs'); kf.className = (kf.className.replace(/(^|\s)st-\S+/g, ' ').trim() + ' st-' + cfg.style).trim();
     $('#gapRow').style.display = (cfg.style === 'obi' || cfg.style === 'none') ? 'none' : '';
     $('#winPick').style.display = (cfg.style === 'maru' || cfg.style === 'fuda') ? '' : 'none';
     ['bg', 'pat', 'logo', 'win'].forEach(function (k) { $('#c_' + k).value = cfg.colors[k].toLowerCase(); $('code[data-c="' + k + '"]').textContent = cfg.colors[k].toUpperCase(); });
+    if (window.__easySync) window.__easySync();
   }
 
   function setVal(k, v) {
@@ -918,6 +978,7 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
       cfg.logoX = Math.min(Math.max(cfg.logoX, m + cfg.winR), cfg.W - m - cfg.winR);
       cfg.logoY = Math.min(Math.max(cfg.logoY - (cfg.winDY || 0) * 0, m + cfg.winR - (cfg.winDY || 0)), cfg.H - m - cfg.winR - (cfg.winDY || 0));
     }
+    if (curPreset) $('#fname').value = curPreset.id + (b.dataset.c === 'tnv' || b.dataset.c === 'tnh' ? '_tenugui_' + c.W + 'x' + c.H : '_edit');
     syncUI(); schedule();
   }); });
   function clampLogo() {
@@ -1005,10 +1066,18 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
     var pid = null; try { pid = localStorage.getItem('towel_preset'); } catch (e) {}
     if (QS.get('preset') && PRESETS.some(function (p) { return p.id === QS.get('preset'); })) pid = QS.get('preset');
     loadPreset(pid || 'towel_yoko_Y1_h200_fuchi8');
+    var sz = QS.get('size');
+    if (sz && CANVAS[sz]) { var sb = $('#canvasSeg button[data-c="' + sz + '"]'); if (sb) sb.click(); }
     var t = null; try { t = localStorage.getItem('towel_tab'); } catch (e) {}
     if (QS.get('tab')) t = QS.get('tab');
     showTab(t === 'ed' || t === 'fuda' ? t : 'gal');
   }
+  // かんたんモード（ui_easy.js）とのつなぎ
+  window.__towelEasy = {
+    presets: PRESETS, load: loadPreset,
+    cur: function () { return curPreset; }, canvas: function () { return cfg ? canvasKey() : 'yoko'; },
+    problems: function (c) { return pmProblems(c, pm); }
+  };
   // 札の調整ツールとのつなぎ
   window.__saveFile = save;
   window.__towelSetLogo = function (logo, sil, label) {
@@ -1019,6 +1088,7 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
     $('#logoReset').hidden = !logo;
     last = null; schedule();
   };
+  $('#toKobo2').addEventListener('click', function () { $('#toKobo').click(); });
   $('#logoReset').addEventListener('click', function () { window.__towelSetLogo(null); try { localStorage.removeItem('towel_logo_custom'); } catch (e) {} });
   start();
   if (window.claude && window.claude.use) {
@@ -1029,8 +1099,9 @@ select,input[type=text]{font:inherit;font-size:14px;padding:6px 8px;border:1px s
   }
 })();
 </script>
-<script src="fuda_ui.js?v=20261103e"></script>
-<script src="ui_fold.js?v=20261103e"></script>
+<script src="fuda_ui.js?v=20261103h"></script>
+<script src="ui_fold.js?v=20261103h"></script>
+<script src="ui_easy.js?v=20261103h"></script>
 
 </body>
 </html>
