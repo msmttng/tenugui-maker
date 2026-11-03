@@ -27,6 +27,11 @@ header p{margin:3px 0 0;color:var(--muted);font-size:11.5px}
 .nav-cat-tabs{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:repeat(6,1fr);gap:3px;padding:7px 10px;background:var(--panel);border-bottom:1.5px solid var(--line);box-shadow:0 2px 6px rgba(0,0,0,.05)}
 .nav-cat-tabs button{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:6px;padding:5px 2px;font:inherit;font-size:11px;font-weight:700;cursor:pointer;text-align:center;white-space:nowrap;transition:all .12s}
 .nav-cat-tabs button[aria-pressed=true]{background:var(--ai);border-color:var(--ai);color:#fff}
+.panel>section.cat-hidden,.cat-hidden{display:none !important}
+.focused-detail-bar{position:sticky;top:0;z-index:35;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:8px 12px;background:#f0f9ff;border-bottom:2px solid var(--ai);box-shadow:0 2px 8px rgba(4,110,126,.12)}
+.focused-detail-bar[hidden]{display:none !important}
+.focused-detail-title{font-size:12px;font-weight:800;color:#0c4a6e;display:flex;align-items:center;gap:5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.focused-detail-btns{display:flex;gap:5px;flex-shrink:0}
 section{padding:11px 15px;border-bottom:1px solid var(--line);display:grid;gap:8px}
 h2{font-size:11.5px;letter-spacing:.08em;color:var(--muted);margin:0;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
 h2 .badge{font-size:10.5px;background:var(--ai-soft);color:var(--ai);padding:1px 7px;border-radius:99px;letter-spacing:0;white-space:nowrap}
@@ -216,7 +221,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
     <!-- ✨ かんたんモード：よく使う操作だけ。設定（S）は詳細モードと共通 -->
     <div id="easyPanel" class="easy-panel">
       <div class="e-step">
-        <div class="e-h"><b>1</b><span>手ぬぐいのベース柄を選ぶ</span><button type="button" class="e-more" data-emore="pattern">詳しく</button></div>
+        <div class="e-h"><b>1</b><span>手ぬぐいのベース柄を選ぶ</span><button type="button" class="e-more" data-emore="step1">詳しく</button></div>
         <div class="e-pat" id="ePat">
           <button type="button" data-ep="haneda"><i>仲</i><span>「仲羽田」のみ<small>伝統の3文字総柄</small></span></button>
           <button type="button" data-ep="seinenkai"><i>青</i><span>「仲羽田青年会」<small>6文字連結の総柄</small></span></button>
@@ -228,7 +233,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>2</b><span>大きさ</span><button type="button" class="e-more" data-emore="pattern">詳しく</button></div>
+        <div class="e-h"><b>2</b><span>大きさ</span><button type="button" class="e-more" data-emore="step2">詳しく</button></div>
         <div class="e-chips" id="eSize">
           <button type="button" data-w="350" data-h="900">手ぬぐい<small>35×90cm</small></button>
           <button type="button" data-w="900" data-h="350">手ぬぐい 横<small>90×35cm</small></button>
@@ -239,7 +244,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>3</b><span>色</span><button type="button" class="e-more" data-emore="pattern">詳しく</button></div>
+        <div class="e-h"><b>3</b><span>色</span><button type="button" class="e-more" data-emore="step3">詳しく</button></div>
         <div class="e-colors" id="eColors"></div>
         <div class="e-pick">
           <label><input type="color" id="eBg">地の色</label>
@@ -248,7 +253,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <p class="e-note" id="eColorNote" hidden>札入りタオル図案を入れているときは、図案の色は「札入りタオル図案から選ぶ」を開いて変えます。</p>
       </div>
       <div class="e-step" id="eTuneStep">
-        <div class="e-h"><b>4</b><span>柄の大きさ・太さ</span><button type="button" class="e-more" data-emore="pattern">詳しく</button></div>
+        <div class="e-h"><b>4</b><span>柄の大きさ・太さ・あられ周り枠</span><button type="button" class="e-more" data-emore="step4">詳しく</button></div>
         <div class="e-chips small" id="eStyles">
           <button type="button" data-style="std">標準</button>
           <button type="button" data-style="fine">細め・細かく</button>
@@ -259,9 +264,47 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div class="e-range" data-for="kakuWeight"><span>線の太さ</span><input type="range" min="20" max="220" step="1"><b></b></div>
         <div class="e-range" data-for="count"><span>あられの数</span><input type="range" min="50" max="4000" step="10"><b></b></div>
         <div class="e-range" data-for="scale"><span>あられの大きさ</span><input type="range" min="25" max="300" step="1"><b></b></div>
+        <div class="e-subbox" id="eArareFrameBox" hidden>
+          <div class="e-sublbl"><span>🛡️ 大小あられの周り枠（1粒ごとの周り枠 ＆ 外周の額縁枠）</span></div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted)">① あられ1粒ごとの周り枠（うしろ透過なし・フチ枠）:</div>
+          <div class="e-chips" id="eArarePadMode">
+            <button type="button" data-eap="none">枠なし<small>そのまま</small></button>
+            <button type="button" data-eap="pad">うしろ抜き<small>柄を透かさない</small></button>
+            <button type="button" data-eap="frame">周り枠線つき<small>粒をフチ取り</small></button>
+            <button type="button" data-eap="padFrame">うしろ抜き＋枠線<small>抜き余白＋枠線</small></button>
+          </div>
+          <div id="eArarePadControls" style="display:flex;flex-direction:column;gap:5px" hidden>
+            <div class="e-range" data-for="ararePadMarginMm"><span>あられ周り抜き幅</span><input type="range" min="0" max="10" step="0.2"><b></b></div>
+            <div class="e-range" data-for="ararePadStrokeMm"><span>あられ周り枠線太さ</span><input type="range" min="0" max="6" step="0.2"><b></b></div>
+            <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+              <span style="font-size:11px;color:var(--muted)">うしろ色:</span>
+              <div class="e-chips small" id="eArarePadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
+                <button type="button" data-eapc="bg">地の色</button>
+                <button type="button" data-eapc="white">白</button>
+                <button type="button" data-eapc="black">黒</button>
+              </div>
+              <input type="color" id="eArarePadCustomCol" value="#046e7e" title="あられうしろ抜き色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+              <span style="font-size:11px;color:var(--muted)">枠線色:</span>
+              <input type="color" id="eArarePadStrokeCol" value="#877028" title="あられ周り枠線の色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+            </div>
+          </div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-top:3px">② あられ全体の外周周り枠（生地の周囲を囲む枠）:</div>
+          <div class="e-chips" id="eArareOuterMode">
+            <button type="button" data-eao="none">外周枠なし</button>
+            <button type="button" data-eao="single">一重枠</button>
+            <button type="button" data-eao="double">二重太細枠</button>
+            <button type="button" data-eao="roundRect">角丸枠</button>
+            <button type="button" data-eao="corner" style="grid-column:span 2">隅切り飾り枠（伝統八角枠）</button>
+          </div>
+          <div id="eArareOuterControls" style="display:flex;flex-direction:column;gap:5px" hidden>
+            <div class="e-range" data-for="arareOuterMarginMm"><span>外周枠の位置(余白)</span><input type="range" min="2" max="60" step="1"><b></b></div>
+            <div class="e-range" data-for="arareOuterWidthMm"><span>外周枠の太さ</span><input type="range" min="1" max="20" step="0.5"><b></b></div>
+            <div class="e-range" data-for="arareOuterPadMm"><span>枠まわりの抜き幅</span><input type="range" min="0" max="20" step="0.5"><b></b></div>
+          </div>
+        </div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>5</b><span>札・ロゴを入れる（透過・枠サイズ調整）</span><button type="button" class="e-more" data-emore="overlay">詳しく</button></div>
+        <div class="e-h"><b>5</b><span>札・ロゴを入れる（透過・枠サイズ調整）</span><button type="button" class="e-more" data-emore="step5">詳しく</button></div>
         <div class="e-chips" id="eLogo">
           <button type="button" data-el="teal">札ロゴ<small>色つき</small></button>
           <button type="button" data-el="white">札ロゴ<small>白抜き</small></button>
@@ -295,7 +338,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <p class="e-note" id="eLogoNote">ロゴは手ぬぐいの上でもダボシャツの上でもドラッグして動かせます。</p>
       </div>
       <div class="e-step" id="eDaboFromLogoStep">
-        <div class="e-h"><b>6</b><span>👕 ダボシャツのロゴ位置から手ぬぐいを作る</span><button type="button" class="e-more" data-emore="dabo">詳しく</button></div>
+        <div class="e-h"><b>6</b><span>👕 ダボシャツのロゴ位置から手ぬぐいを作る</span><button type="button" class="e-more" data-emore="step6">詳しく</button></div>
         <div class="e-subbox dabo-box">
           <div class="e-sublbl"><span>① 手ぬぐいのベース柄（仲羽田 ／ 仲羽田青年会）</span></div>
           <div class="e-chips" id="eDaboBasePat">
@@ -337,17 +380,21 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>7</b><span>プリント方法</span><button type="button" class="e-more" data-emore="pattern">詳しく</button></div>
+        <div class="e-h"><b>7</b><span>プリント方法</span><button type="button" class="e-more" data-emore="step7">詳しく</button></div>
         <select id="ePm" aria-label="プリント方法"></select>
         <div id="ePmSum" class="e-pmsum"></div>
         <div id="ePmList" class="pm-list"></div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>8</b><span>保存する</span><button type="button" class="e-more" data-emore="export">詳しく</button></div>
-        <div class="e-save">
-          <button type="button" class="btn" id="eSavePng">画像で保存（PNG）</button>
-          <button type="button" class="btn ghost" id="eSaveSvg">Illustrator 用（SVG）</button>
-          <button type="button" class="btn ghost" id="eCopySvg">SVG をコピー</button>
+        <div class="e-h"><b>8</b><span>保存する（手ぬぐい・ダボ・イラレ・設定）</span><button type="button" class="e-more" data-emore="step8">詳しく</button></div>
+        <div class="e-save" style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <button type="button" class="btn" id="eSavePng" style="grid-column:span 2">📜 手ぬぐい画像で保存（300dpi PNG）</button>
+          <button type="button" class="btn" id="eSaveDaboPng" style="background:#0284c7;border-color:#0369a1;color:#fff">👕 ダボ＆裁断図（PNG）</button>
+          <button type="button" class="btn" id="eSaveAi" style="background:#ea580c;border-color:#c2410c;color:#fff">✒️ Illustrator（.ai）</button>
+          <button type="button" class="btn ghost" id="eSaveSvg">📐 Illustrator（SVG）</button>
+          <button type="button" class="btn ghost" id="eCopySvg">📋 SVG をコピー</button>
+          <button type="button" class="btn ghost" id="eSaveJson">📥 設定ファイル保存(.json)</button>
+          <button type="button" class="btn ghost" id="eLoadJson">📂 設定ファイル読込</button>
         </div>
         <div class="e-keep">
           <input type="text" id="eName" placeholder="名前をつけてアプリ内に残す（例：紺・細め案）" maxlength="40">
@@ -357,6 +404,15 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <p class="e-msg" id="eMsg" role="status"></p>
       </div>
       <button type="button" class="e-tofull" data-emore="all">すべての機能を使う（詳細モードへ）</button>
+    </div>
+
+    <!-- 🔍「詳しく」で特定項目だけ開いたときの案内バー -->
+    <div id="focusedDetailBar" class="focused-detail-bar" hidden>
+      <div class="focused-detail-title"><span>🔍</span><span id="focusedDetailTitle">項目の詳細設定</span></div>
+      <div class="focused-detail-btns">
+        <button type="button" class="mini-btn" id="focusedBackEasyBtn" style="background:var(--ai);color:#fff;border-color:var(--ai);font-weight:700;padding:4px 9px">← かんたんに戻る</button>
+        <button type="button" class="mini-btn" id="focusedShowAllBtn" style="background:#fff;color:var(--fg);border-color:var(--line);font-weight:700;padding:4px 8px">全項目を表示</button>
+      </div>
     </div>
 
     <!-- 🧭 シンプル化カテゴリ切替バー（機能は1つも落とさず、見たい項目だけをすっきり表示） -->
@@ -370,7 +426,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
     </nav>
 
     <!-- 1. 柄モード切替 ＆ レイヤー前後順 ＆ 手ぬぐい工房合体パネル -->
-    <section aria-labelledby="h-mode" data-cat="pattern">
+    <section id="sec-mode" aria-labelledby="h-mode" data-cat="pattern">
       <h2 id="h-mode"><span>文様モード・手ぬぐい工房合体</span><div style="display:flex;gap:6px;align-items:center"><a href="seinen_mock.html" target="_blank" style="font-size:11px;background:#0284c7;color:#fff;padding:2px 8px;border-radius:999px;text-decoration:none;font-weight:700">🆕「仲羽田青年会」モック ↗</a><a href="index.html" style="font-size:11px;color:var(--ai);text-decoration:none;font-weight:600">🖌️ 手ぬぐい工房 ↗</a></div></h2>
       <div class="mode-tabs" id="modeTabs" style="grid-template-columns:1fr 1fr">
         <button class="chip" data-mode="haneda" aria-pressed="true">① 江戸角字（仲羽田 / 青年会）</button>
@@ -470,7 +526,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
     </section>
 
     <!-- 1-B. 名前を付けて保存・マイデザイン一覧 -->
-    <section aria-labelledby="h-save" data-cat="export">
+    <section id="sec-save" aria-labelledby="h-save" data-cat="export">
       <h2 id="h-save"><span>💾 名前を付けて保存・呼び出し</span><span class="badge" id="savedCountBadge">0件</span></h2>
       <div class="save-bar">
         <input type="text" id="presetName" class="save-input" placeholder="保存名（例：羽田納戸・細線案1）" maxlength="40">
@@ -487,7 +543,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
     </section>
 
     <!-- 2. 布・タオルの大きさ ＆ 🧣 タオル制作設定 -->
-    <section aria-labelledby="h-size" data-cat="pattern">
+    <section id="sec-size" aria-labelledby="h-size" data-cat="pattern">
       <h2 id="h-size"><span>布・タオルの大きさ</span><button class="chip" id="flipOrient" style="padding:2px 8px;font-size:11px">縦横入替 ⇄</button></h2>
       <div style="font-size:11px;font-weight:700;color:var(--muted)">📜 手ぬぐい規格サイズ:</div>
       <div class="chips" id="presets">
@@ -1471,7 +1527,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
 
     <!-- 6. 大小あられ調整セクション -->
     <section id="sec-arare" aria-labelledby="h-dist" data-cat="pattern" hidden>
-      <h2 id="h-dist">大小あられ：数と散らばり・大きさ</h2>
+      <h2 id="h-dist">大小あられ：数と散らばり・大きさ・周り枠</h2>
       <div class="row"><label for="count">粒の数</label><input type="range" id="count" min="50" max="4000" step="10" value="1220"><output for="count" id="count-o"></output></div>
       <div class="row"><label for="gap">最小すき間</label><input type="range" id="gap" min="0" max="15" step="0.1" value="2.5"><output for="gap" id="gap-o"></output></div>
       <div class="row"><label for="spread">ばらつき</label><input type="range" id="spread" min="0" max="100" step="1" value="15"><output for="spread" id="spread-o"></output></div>
@@ -1484,10 +1540,84 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <button class="chip" data-v="orig" aria-pressed="true">元柄の形（160種）</button>
         <button class="chip" data-v="circle" aria-pressed="false">正円</button>
       </div>
+
+      <!-- 🛡️ 大小あられの周り枠（①1粒ごとの周り枠・うしろ抜き ＆ ②あられ全体の外周枠） -->
+      <div class="cgroup" style="background:#f0fdf4;border:1.5px solid #22c55e;border-radius:7px;padding:7px 8px;margin-top:6px;display:grid;gap:6px">
+        <span class="clabel" style="font-size:11.5px;color:#15803d">🛡️ 大小あられの周り枠（1粒ごとの周り枠 ＆ 外周の額縁枠）</span>
+
+        <div style="font-size:11px;font-weight:700;color:#14532d">① あられ1粒ごとの周り枠（うしろ透過なし抜き・フチ取り枠）</div>
+        <div class="chips" id="ararePadQuickChips" style="gap:4px">
+          <button type="button" class="mini-btn" data-apmode="none" style="font-weight:700">枠なし(標準)</button>
+          <button type="button" class="mini-btn" data-apmode="pad" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">🛡️ うしろ抜き(柄を透かさない)</button>
+          <button type="button" class="mini-btn" data-apmode="frame" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">⭕ 周り枠線つき(フチ取り)</button>
+          <button type="button" class="mini-btn" data-apmode="padFrame" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">✨ うしろ抜き＋周り枠線</button>
+        </div>
+        <div id="ararePadParamsBox" style="display:grid;gap:5px;background:#ffffff;border:1px solid #86efac;border-radius:6px;padding:6px 7px" hidden>
+          <div class="row" style="grid-template-columns:120px minmax(0,1fr) 48px">
+            <label for="ararePadMarginMm" style="font-size:11px;font-weight:700;color:#14532d">周りの抜き幅(余白)</label>
+            <input type="range" id="ararePadMarginMm" min="0" max="10" step="0.2" value="2.5">
+            <output for="ararePadMarginMm" id="ararePadMarginMm-o" style="font-size:11px">2.5 mm</output>
+          </div>
+          <div class="row" style="grid-template-columns:120px minmax(0,1fr) 48px">
+            <label for="ararePadStrokeMm" style="font-size:11px;font-weight:700;color:#14532d">周りの枠線の太さ</label>
+            <input type="range" id="ararePadStrokeMm" min="0" max="6" step="0.2" value="1.5">
+            <output for="ararePadStrokeMm" id="ararePadStrokeMm-o" style="font-size:11px">1.5 mm</output>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:11px">
+            <span style="font-weight:700;color:#14532d">うしろ色:</span>
+            <input type="color" id="ararePadColor" value="#046e7e" style="width:24px;height:22px">
+            <button type="button" class="mini-btn" id="ararePadMatchBgBtn" style="font-weight:700">地の色</button>
+            <button type="button" class="mini-btn" id="ararePadWhiteBtn">白</button>
+            <button type="button" class="mini-btn" id="ararePadBlackBtn">黒</button>
+            <span style="font-weight:700;color:#14532d;margin-left:4px">枠線色:</span>
+            <input type="color" id="ararePadStrokeColor" value="#877028" style="width:24px;height:22px">
+            <button type="button" class="mini-btn" id="ararePadStrokeGoldBtn" style="background:#877028;color:#fff;font-weight:700">羽田金</button>
+            <button type="button" class="mini-btn" id="ararePadStrokeWhiteBtn">白</button>
+          </div>
+        </div>
+
+        <div style="font-size:11px;font-weight:700;color:#14532d;margin-top:2px">② 大小あられ全体の外周周り枠（生地の周囲を囲む額縁枠）</div>
+        <div class="chips" id="arareOuterQuickChips" style="gap:4px">
+          <button type="button" class="mini-btn" data-aomode="none" style="font-weight:700">外周枠なし</button>
+          <button type="button" class="mini-btn" data-aomode="single" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">🖼️ 一重枠</button>
+          <button type="button" class="mini-btn" data-aomode="double" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">🖼️ 二重太細枠</button>
+          <button type="button" class="mini-btn" data-aomode="roundRect" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">▢ 角丸枠</button>
+          <button type="button" class="mini-btn" data-aomode="corner" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">❖ 隅切り飾り枠</button>
+        </div>
+        <div id="arareOuterParamsBox" style="display:grid;gap:5px;background:#ffffff;border:1px solid #86efac;border-radius:6px;padding:6px 7px" hidden>
+          <div class="row" style="grid-template-columns:120px minmax(0,1fr) 48px">
+            <label for="arareOuterMarginMm" style="font-size:11px;font-weight:700;color:#14532d">外周枠の位置(余白)</label>
+            <input type="range" id="arareOuterMarginMm" min="2" max="60" step="1" value="16">
+            <output for="arareOuterMarginMm" id="arareOuterMarginMm-o" style="font-size:11px">16 mm</output>
+          </div>
+          <div class="row" style="grid-template-columns:120px minmax(0,1fr) 48px">
+            <label for="arareOuterWidthMm" style="font-size:11px;font-weight:700;color:#14532d">外周枠の太さ</label>
+            <input type="range" id="arareOuterWidthMm" min="1" max="20" step="0.5" value="4">
+            <output for="arareOuterWidthMm" id="arareOuterWidthMm-o" style="font-size:11px">4 mm</output>
+          </div>
+          <div class="row" style="grid-template-columns:120px minmax(0,1fr) 48px">
+            <label for="arareOuterPadMm" style="font-size:11px;font-weight:700;color:#14532d">枠まわりの抜き幅</label>
+            <input type="range" id="arareOuterPadMm" min="0" max="20" step="0.5" value="5">
+            <output for="arareOuterPadMm" id="arareOuterPadMm-o" style="font-size:11px">5 mm</output>
+          </div>
+          <div class="row" id="arareOuterCornerRow" style="grid-template-columns:120px minmax(0,1fr) 48px">
+            <label for="arareOuterCornerMm" style="font-size:11px;font-weight:700;color:#14532d">角丸・隅切りサイズ</label>
+            <input type="range" id="arareOuterCornerMm" min="2" max="45" step="1" value="14">
+            <output for="arareOuterCornerMm" id="arareOuterCornerMm-o" style="font-size:11px">14 mm</output>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px">
+            <span style="font-weight:700;color:#14532d">外周枠の色:</span>
+            <input type="color" id="arareOuterColor" value="#ffffff" style="width:24px;height:22px">
+            <button type="button" class="mini-btn" id="arareOuterSyncDotBtn" style="font-weight:700">あられ色に合わせる</button>
+            <button type="button" class="mini-btn" id="arareOuterGoldBtn" style="background:#877028;color:#fff;font-weight:700">羽田金</button>
+            <label class="chk" style="margin-left:auto;font-weight:700;color:#14532d"><input type="checkbox" id="arareOuterClip" checked>枠の外側を地色でスッキリ抜く</label>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- 7. 端の扱い（裁ち落とし / 内側余白） -->
-    <section aria-labelledby="h-edge" data-cat="pattern">
+    <section id="sec-edge" aria-labelledby="h-edge" data-cat="pattern">
       <h2 id="h-edge">布の端の扱い</h2>
       <div class="chips" id="edge">
         <button class="chip" data-v="bleed" aria-pressed="true">端ではみ出す（全面・裁ち落とし）</button>
@@ -1497,7 +1627,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
     </section>
 
     <!-- 8. 配置と書き出し -->
-    <section aria-labelledby="h-out" data-cat="export">
+    <section id="sec-out" aria-labelledby="h-out" data-cat="export">
       <h2 id="h-out">配置と書き出し（Illustrator / 印刷入稿）</h2>
       <div class="cgroup" style="background:#f0fdf4;border:1.5px solid #22c55e;padding:6px 8px;margin-bottom:4px">
         <span class="clabel" style="font-size:11.5px;color:#15803d">🎨 .ai / .jsx 書き出しカラーモード（色ズレ防止）</span>
@@ -1510,8 +1640,8 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <button class="btn ghost" id="reroll">位置を並べ直す</button>
         <button class="btn ghost" id="reset">初期設定に戻す</button>
         <button class="btn wide" id="copySvg">SVGをコピー（Illustratorに貼り付け）</button>
-        <button class="btn" id="saveSvg" hidden>SVGで保存</button>
-        <button class="btn" id="saveAi" hidden>.ai を保存</button>
+        <button class="btn" id="saveSvg">SVGで保存</button>
+        <button class="btn" id="saveAi">.ai を保存</button>
         <button class="btn ghost" id="saveJsx">.jsx (AIスクリプト)</button>
         <button class="btn ghost" id="savePng">300dpi PNG保存</button>
       </div>
@@ -1708,13 +1838,14 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
 /*__HANTEN_LOGO__*/
 /*__FUDA_LOGO__*/
 // 札ベース（部品分解・彫刻筆文字用。fuda_base_parts.svg）と、配置用の内蔵札ロゴ（採用ロゴ。fuda_logo_teal.svg）は別に持つ
+// ★ 左右の横揺れ線（x = -26.52 .. 572.91）が viewBox (0..538) で見切れないよう拡張 viewBox を使用
+const FUDA_VB_X = -36, FUDA_VB_Y = 0, FUDA_VB_W = 616, FUDA_VB_H = 566.93;
 let FUDA_ACTIVE_PATH_D = (typeof FUDA_BASE_PATH_D !== 'undefined' && FUDA_BASE_PATH_D) ? FUDA_BASE_PATH_D : ((typeof FUDA_LOGO_PATH_D !== 'undefined' && FUDA_LOGO_PATH_D) ? FUDA_LOGO_PATH_D : '');
 const FUDA_PLACE_PATH_D = (typeof FUDA_LOGO_PATH_D !== 'undefined' && FUDA_LOGO_PATH_D) ? FUDA_LOGO_PATH_D : FUDA_ACTIVE_PATH_D;
-const FUDA_PLACE_VIEWBOX = (typeof FUDA_LOGO_VIEWBOX === 'string' && FUDA_LOGO_VIEWBOX) ? FUDA_LOGO_VIEWBOX : '0 0 538 566.93';
+const FUDA_PLACE_VIEWBOX = `${FUDA_VB_X} ${FUDA_VB_Y} ${FUDA_VB_W} ${FUDA_VB_H}`;
 function buildFudaLogoSvgDataUrl(fillHex){
   if(!FUDA_PLACE_PATH_D) return '';
-  const vbn = FUDA_PLACE_VIEWBOX.split(/[\s,]+/).map(Number);
-  const pxW = Math.round(vbn[2] * 2), pxH = Math.round(vbn[3] * 2);
+  const pxW = Math.round(FUDA_VB_W * 2), pxH = Math.round(FUDA_VB_H * 2);
   const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${FUDA_PLACE_VIEWBOX}" width="${pxW}" height="${pxH}"><path fill="${fillHex}" fill-rule="nonzero" d="${FUDA_PLACE_PATH_D}"/></svg>`;
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svgStr);
 }
@@ -1849,34 +1980,96 @@ function initFudaBaseFromPathD(dStr, applyExtraSmooth = false){
 }
 initFudaBaseFromPathD(FUDA_ACTIVE_PATH_D, false);
 
-// ★ 札ロゴ（fuda_logo_teal.svg / fuda_logo_white.svg）の「うしろを透過させない（中抜き穴なしシルエット）」ベクターデータ生成
+// ★ 札ロゴ（fuda_logo_teal.svg / fuda_logo_white.svg）の「うしろを透過させない（中抜き穴なしシルエット＋左右の横揺れ線完全対応）」ベクターデータ生成
 let FUDA_SOLID_SIL_PATH_D = '';
 let FUDA_SOLID_SIL_PATH2D = null;
 let FUDA_SOLID_SIL_POLYS = [];
+let FUDA_SOLID_SIL_NORM_POLYS = [];
+function ptsToSvgSubpathD(pts){
+  if(!pts || pts.length < 3) return '';
+  let d = `M${pts[0][0].toFixed(2)},${pts[0][1].toFixed(2)}`;
+  for(let i = 1; i < pts.length; i++) d += `L${pts[i][0].toFixed(2)},${pts[i][1].toFixed(2)}`;
+  return d + 'Z';
+}
+function computeClockwiseConvexHull(points){
+  if(!points || points.length < 3) return points || [];
+  const sorted = points.slice().sort((a, b) => a[0] === b[0] ? a[1] - b[1] : a[0] - b[0]);
+  const cross = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lower = [];
+  for(const p of sorted){
+    while(lower.length >= 2 && cross(lower[lower.length - 2], lower[lower.length - 1], p) <= 0) lower.pop();
+    lower.push(p);
+  }
+  const upper = [];
+  for(let i = sorted.length - 1; i >= 0; i--){
+    const p = sorted[i];
+    while(upper.length >= 2 && cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0) upper.pop();
+    upper.push(p);
+  }
+  upper.pop(); lower.pop();
+  const hull = lower.concat(upper);
+  let a2 = 0;
+  for(let i = 0, n = hull.length; i < n; i++){
+    const p1 = hull[i], p2 = hull[(i + 1) % n];
+    a2 += p1[0] * p2[1] - p2[0] * p1[1];
+  }
+  if(a2 < 0) hull.reverse();
+  return hull;
+}
 (function buildFudaSolidSilhouetteData(){
   if(!FUDA_PLACE_PATH_D) return;
   const rawSubs = FUDA_PLACE_PATH_D.split(/(?=M)/).map(s => s.trim()).filter(Boolean);
   const posSubs = [];
   const posPolys = [];
+  const leftWobblePts = [];
+  const rightWobblePts = [];
   for(const sp of rawSubs){
     const pts = sampleSvgSubpathToDensePts(sp, 1.8);
     if(pts.length < 3) continue;
-    let area2 = 0;
+    let area2 = 0, minX = Infinity, maxX = -Infinity;
     for(let i = 0, n = pts.length; i < n; i++){
       const p1 = pts[i], p2 = pts[(i + 1) % n];
       area2 += p1[0] * p2[1] - p2[0] * p1[1];
+      if(p1[0] < minX) minX = p1[0];
+      if(p1[0] > maxX) maxX = p1[0];
     }
     if(area2 > 0){
       posSubs.push(sp);
       posPolys.push(pts);
+    }else if(minX < 15 || maxX > 535){
+      // 左右の横揺れ線（subpaths 58..63）は反時計回り(area2 < 0)で格納されているため、向きを反転して不透過シルエット＆周り枠の対象に含める
+      const rev = pts.slice().reverse();
+      posSubs.push(ptsToSvgSubpathD(rev));
+      posPolys.push(rev);
+      if(minX < 15) leftWobblePts.push(...rev);
+      if(maxX > 535) rightWobblePts.push(...rev);
+    }
+  }
+  // 3本の横揺れ線の間の隙間や札本体との付け根も変に透過しないよう、横揺れ線群を包むブリッジ包絡ポリゴンを追加
+  if(leftWobblePts.length >= 3){
+    const hullL = computeClockwiseConvexHull(leftWobblePts.concat([[72, 480], [78, 538]]));
+    if(hullL.length >= 3){
+      posSubs.push(ptsToSvgSubpathD(hullL));
+      posPolys.push(hullL);
+    }
+  }
+  if(rightWobblePts.length >= 3){
+    const hullR = computeClockwiseConvexHull(rightWobblePts.concat([[495, 402], [502, 462]]));
+    if(hullR.length >= 3){
+      posSubs.push(ptsToSvgSubpathD(hullR));
+      posPolys.push(hullR);
     }
   }
   FUDA_SOLID_SIL_PATH_D = posSubs.join(' ');
   FUDA_SOLID_SIL_POLYS = posPolys;
+  FUDA_SOLID_SIL_NORM_POLYS = posPolys.map(pts => pts.map(([x, y]) => [(x - FUDA_VB_X) / FUDA_VB_W, (y - FUDA_VB_Y) / FUDA_VB_H]));
   if(typeof Path2D !== 'undefined' && FUDA_SOLID_SIL_PATH_D){
     try{ FUDA_SOLID_SIL_PATH2D = new Path2D(FUDA_SOLID_SIL_PATH_D); }catch(e){}
   }
 })();
+function getFudaSolidSilhouettePolys(){
+  return FUDA_SOLID_SIL_NORM_POLYS;
+}
 
 (function(){
 const $=id=>document.getElementById(id);
@@ -1937,8 +2130,12 @@ const DEF={
   daboShiftY:0, daboShiftX:0, daboSleeveShiftY:0, daboPatScale:100,
   daboBodyPreset:'current', daboSleevePreset:'same', daboCollarMode:'same', daboPocketMode:'match',
   showDaboZoneGuide:false, daboInteractiveLogo:false, daboDragItemType:'text',
-  // 大小あられパラメーター
+  // 大小あられパラメーター ＆ 大小あられの周り枠（1粒ごとの周り枠・外周周り枠）
   count:1220, gap:2.5, spread:15, grad:0, dmin:3.5, dmax:11, bigratio:32, scale:100, shape:'orig',
+  ararePadMode:'none', // 'none' | 'pad' (うしろ抜き) | 'frame' (周り枠線) | 'padFrame' (うしろ抜き＋周り枠線)
+  ararePadMarginMm:2.5, ararePadStrokeMm:1.5, ararePadColorMode:'bg', ararePadColor:'#046e7e', ararePadStrokeColor:'#877028',
+  arareOuterMode:'none', arareOuterFrame:'none', // 'none' | 'single' | 'double' | 'roundRect' | 'corner'
+  arareOuterMarginMm:16, arareOuterWidthMm:4, arareOuterPadMm:5, arareOuterCornerMm:14, arareOuterColor:'#ffffff', arareOuterClip:true,
   // 共通
   edge:'bleed', margin:10, seed:1
 };
@@ -3310,13 +3507,14 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
 
     if(pm === 'silhouette'){
       if(isBuiltinFuda && FUDA_SOLID_SIL_PATH2D){
-        const sx = lw / 538, sy = lh / 566.93;
+        const sx = lw / FUDA_VB_W, sy = lh / FUDA_VB_H;
         const scAvg = (sx + sy) * 0.5;
-        const baseCloseSvg = 12; // 札本体と3D側面の間の3unit溝を埋めて完全不透明シルエット化する基本幅
+        const baseCloseSvg = 12; // 札本体と3D側面の間の3unit溝＆横揺れ線を埋めて完全不透明シルエット化する基本幅
         const expandSvg = (marginMm / Math.max(0.001, scAvg)) * 2;
         x.save();
         x.translate(-lw / 2, -lh / 2);
         x.scale(sx, sy);
+        x.translate(-FUDA_VB_X, -FUDA_VB_Y);
         x.lineJoin = 'round';
         x.lineCap = 'round';
         if(strokeMm > 0){
@@ -3332,7 +3530,7 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
         x.lineWidth = baseCloseSvg + expandSvg;
         x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero');
         x.stroke(FUDA_SOLID_SIL_PATH2D);
-        // ティール色つき札ロゴで外枠色が白以外のとき、札内部の彫り文字「仲羽田・青年会」が白く不透明に出るよう札内部(0mm)を白で下敷き塗り
+        // ティール色つき札ロゴで外枠色が白以外のとき、札内部の彫り文字「仲羽田・青年会」と横揺れ線の輪郭が白く不透明に出るよう札内部(0mm)を白で下敷き塗り
         if(isTealFuda && effPadColor.toLowerCase() !== '#ffffff'){
           x.fillStyle = '#ffffff';
           x.strokeStyle = '#ffffff';
@@ -3367,10 +3565,11 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
         x.stroke();
       }
       if(isTealFuda && FUDA_SOLID_SIL_PATH2D && effPadColor.toLowerCase() !== '#ffffff'){
-        const sx = lw / 538, sy = lh / 566.93;
+        const sx = lw / FUDA_VB_W, sy = lh / FUDA_VB_H;
         x.save();
         x.translate(-lw / 2, -lh / 2);
         x.scale(sx, sy);
+        x.translate(-FUDA_VB_X, -FUDA_VB_Y);
         x.lineJoin = 'round'; x.lineCap = 'round';
         x.fillStyle = '#ffffff'; x.strokeStyle = '#ffffff'; x.lineWidth = 12;
         x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero'); x.stroke(FUDA_SOLID_SIL_PATH2D);
@@ -3390,10 +3589,11 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
         x.stroke();
       }
       if(isTealFuda && FUDA_SOLID_SIL_PATH2D && effPadColor.toLowerCase() !== '#ffffff'){
-        const sx = lw / 538, sy = lh / 566.93;
+        const sx = lw / FUDA_VB_W, sy = lh / FUDA_VB_H;
         x.save();
         x.translate(-lw / 2, -lh / 2);
         x.scale(sx, sy);
+        x.translate(-FUDA_VB_X, -FUDA_VB_Y);
         x.lineJoin = 'round'; x.lineCap = 'round';
         x.fillStyle = '#ffffff'; x.strokeStyle = '#ffffff'; x.lineWidth = 12;
         x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero'); x.stroke(FUDA_SOLID_SIL_PATH2D);
@@ -4774,7 +4974,91 @@ function buildTowelDecoVectorItemsMm(cfg){
       items.push({ type: 'poly', fill: null, stroke: boxSt, strokeWidth: Math.max(0.8, bw * 0.38), pts: rectPts(cx0 + inG, cy0 + inG, cw - inG * 2, ch - inG * 2) });
     }
   }
+
+  // 4. 🛡️ 大小あられ全体の外周周り枠（一重枠 / 二重太細枠 / 角丸枠 / 隅切り飾り枠）
+  const fStyle = st.arareOuterMode || st.arareOuterFrame || 'none';
+  if((st.mode === 'arare' || st.mode === 'both') && fStyle !== 'none'){
+    const mg = Math.max(2, st.arareOuterMarginMm ?? 16);
+    const bw = Math.max(0.8, st.arareOuterWidthMm ?? 4);
+    const pad = Math.max(0, st.arareOuterPadMm ?? 5);
+    const cr = Math.max(2, st.arareOuterCornerMm ?? 14);
+    const fCol = st.arareOuterColor || st.dotColor || '#ffffff';
+    const x0 = mg, y0 = mg, rw = Math.max(12, W - mg * 2), rh = Math.max(12, H - mg * 2);
+    const buildShapePts = (bx, by, bwRect, bhRect, inset) => {
+      const c = Math.max(0, Math.min(cr - inset * 0.4, bwRect * 0.45, bhRect * 0.45));
+      if(fStyle === 'corner' && c > 0.5){
+        return [
+          [bx + c, by], [bx + bwRect - c, by], [bx + bwRect, by + c], [bx + bwRect, by + bhRect - c],
+          [bx + bwRect - c, by + bhRect], [bx + c, by + bhRect], [bx, by + bhRect - c], [bx, by + c]
+        ];
+      }
+      if(fStyle === 'roundRect' && c > 0.5){
+        const pts = [];
+        const corners = [
+          { cx: bx + bwRect - c, cy: by + c,          a0: -Math.PI/2, a1: 0 },
+          { cx: bx + bwRect - c, cy: by + bhRect - c, a0: 0,          a1: Math.PI/2 },
+          { cx: bx + c,          cy: by + bhRect - c, a0: Math.PI/2,  a1: Math.PI },
+          { cx: bx + c,          cy: by + c,          a0: Math.PI,    a1: Math.PI*1.5 }
+        ];
+        for(const cn of corners){
+          for(let s = 0; s <= 6; s++){
+            const a = cn.a0 + (cn.a1 - cn.a0) * (s / 6);
+            pts.push([cn.cx + Math.cos(a) * c, cn.cy + Math.sin(a) * c]);
+          }
+        }
+        return pts;
+      }
+      return rectPts(bx, by, bwRect, bhRect);
+    };
+    const outerPts = buildShapePts(x0, y0, rw, rh, 0);
+    // 外周枠の外側を地色でスッキリ抜く
+    if(st.arareOuterClip !== false){
+      const sheetLoop = [[0, 0], [W, 0], [W, H], [0, H]];
+      items.push({ type: 'compound', fill: bgCol, stroke: null, loops: [sheetLoop, outerPts.slice().reverse()] });
+    }
+    // 枠線のまわりの抜き幅（地色余白）
+    if(pad > 0){
+      items.push({ type: 'poly', fill: null, stroke: bgCol, strokeWidth: bw + pad * 2, pts: outerPts });
+    }
+    items.push({ type: 'poly', fill: null, stroke: fCol, strokeWidth: bw, pts: outerPts });
+    if(fStyle === 'double' || fStyle === 'corner'){
+      const inGap = bw * 1.45;
+      if(rw > inGap * 2.5 && rh > inGap * 2.5){
+        const innerPts = buildShapePts(x0 + inGap, y0 + inGap, rw - inGap * 2, rh - inGap * 2, inGap);
+        if(pad > 0){
+          items.push({ type: 'poly', fill: null, stroke: bgCol, strokeWidth: Math.max(0.8, bw * 0.4) + pad, pts: innerPts });
+          items.push({ type: 'poly', fill: null, stroke: fCol, strokeWidth: bw, pts: outerPts });
+        }
+        items.push({ type: 'poly', fill: null, stroke: fCol, strokeWidth: Math.max(0.8, bw * 0.4), pts: innerPts });
+      }
+    }
+  }
   return items;
+}
+
+function resolveArarePadColor(cfg){
+  const st = cfg || S;
+  const cm = st.ararePadColorMode || 'bg';
+  if(cm === 'bg') return st.bgColor || '#046e7e';
+  if(cm === 'white') return '#ffffff';
+  if(cm === 'black') return '#1b1e24';
+  return st.ararePadColor || st.bgColor || '#046e7e';
+}
+function getArarePadMetrics(cfg){
+  const st = cfg || S;
+  const pm = st.ararePadMode || 'none';
+  const hasPad = (pm === 'pad' || pm === 'padFrame');
+  const hasStk = (pm === 'frame' || pm === 'padFrame');
+  const padMm = hasPad ? Math.max(0, st.ararePadMarginMm ?? 2.5) : 0;
+  const stkMm = hasStk ? Math.max(0, st.ararePadStrokeMm ?? 1.5) : 0;
+  return {
+    active: pm !== 'none' && (padMm > 0 || stkMm > 0),
+    mode: pm,
+    padMm,
+    stkMm,
+    padColor: resolveArarePadColor(st),
+    stkColor: st.ararePadStrokeColor || '#877028'
+  };
 }
 
 let FUDA_STAGE_GIZMOS = [];
@@ -4782,7 +5066,7 @@ let FUDA_STAGE_GIZMOS = [];
 function drawCustomLogoAndTextMm(x, cfg){
   const st = cfg || S;
   if(st === S) FUDA_STAGE_GIZMOS = [];
-  // 0. 🧣 タオル専用枠・両端ヘムライン・中央抜き座布団枠・パイル地質感を描画
+  // 0. 🧣 タオル専用枠・両端ヘムライン・中央抜き座布団枠・大小あられ外周枠・パイル地質感を描画
   const towelItems = buildTowelDecoVectorItemsMm(st);
   if(towelItems.length > 0){
     x.save();
@@ -4793,7 +5077,17 @@ function drawCustomLogoAndTextMm(x, cfg){
         for(let i = 1; i < it.pts.length; i++) x.lineTo(it.pts[i][0], it.pts[i][1]);
         x.closePath();
         if(it.fill){ x.fillStyle = it.fill; x.fill(); }
-        if(it.stroke){ x.strokeStyle = it.stroke; x.lineWidth = it.strokeWidth || 1; x.lineJoin = 'miter'; x.stroke(); }
+        if(it.stroke){ x.strokeStyle = it.stroke; x.lineWidth = it.strokeWidth || 1; x.lineJoin = 'round'; x.lineCap = 'round'; x.stroke(); }
+      }else if(it.type === 'compound' && it.loops && it.loops.length > 0){
+        x.beginPath();
+        for(const lp of it.loops){
+          if(!lp || lp.length < 3) continue;
+          x.moveTo(lp[0][0], lp[0][1]);
+          for(let i = 1; i < lp.length; i++) x.lineTo(lp[i][0], lp[i][1]);
+          x.closePath();
+        }
+        if(it.fill){ x.fillStyle = it.fill; x.fill('evenodd'); }
+        if(it.stroke){ x.strokeStyle = it.stroke; x.lineWidth = it.strokeWidth || 1; x.lineJoin = 'round'; x.stroke(); }
       }
     }
     x.restore();
@@ -5620,13 +5914,31 @@ function renderArbitraryTenuguiCanvas(st, includeOverlays, pxPerMm, patScaleMul)
   }
 
   const ko = (cfg.mode === 'both' && cfg.knockoutMm > 0) ? cfg.knockoutMm : 0;
+  const ap = getArarePadMetrics(cfg);
   const drawArare = (isFront) => {
     if(!dots || dots.length === 0) return;
-    if(isFront && ko > 0){
-      x.save(); x.strokeStyle = cfg.bgColor; x.lineWidth = ko * 2; x.lineJoin = 'round'; x.lineCap = 'round';
+    const effPad = Math.max(ap.padMm, (isFront && ko > 0) ? ko : 0);
+    if(ap.stkMm > 0 || effPad > 0){
+      x.save();
+      x.lineJoin = 'round'; x.lineCap = 'round';
       x.beginPath();
       for(const o of dots){ const a=anchors(o), b=beziers(a); x.moveTo(a[0][0],a[0][1]); for(const q of b) x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]); x.closePath(); }
-      x.stroke(); x.restore();
+      if(ap.stkMm > 0){
+        x.fillStyle = ap.stkColor;
+        x.strokeStyle = ap.stkColor;
+        x.lineWidth = (effPad + ap.stkMm) * 2;
+        x.fill();
+        x.stroke();
+      }
+      if(effPad > 0){
+        const pCol = ap.active ? ap.padColor : cfg.bgColor;
+        x.fillStyle = pCol;
+        x.strokeStyle = pCol;
+        x.lineWidth = effPad * 2;
+        x.fill();
+        x.stroke();
+      }
+      x.restore();
     }
     x.fillStyle = cfg.dotColor || '#ffffff';
     x.beginPath();
@@ -5656,7 +5968,7 @@ function renderArbitraryTenuguiCanvas(st, includeOverlays, pxPerMm, patScaleMul)
     }
   };
 
-  if(cfg.layerOrder === 'arareFront'){
+  if(cfg.layerOrder === 'arareFront' || ap.active){
     drawKaku(false); drawArare(true);
   }else{
     drawArare(false); drawKaku(true);
@@ -5833,11 +6145,28 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
       if(KOBO_BASE_IMG) x.drawImage(KOBO_BASE_IMG, 0, 0, W, H);
     }
 
+    const apVec = getArarePadMetrics(cfg);
     const drawArareVec = (isFront) => {
       if(!ararePath) return;
-      if(isFront && ko > 0){
-        x.save(); x.strokeStyle = cfg.bgColor; x.lineWidth = ko * 2; x.lineJoin = 'round'; x.lineCap = 'round';
-        x.stroke(ararePath); x.restore();
+      const effPad = Math.max(apVec.padMm, (isFront && ko > 0) ? ko : 0);
+      if(apVec.stkMm > 0 || effPad > 0){
+        x.save(); x.lineJoin = 'round'; x.lineCap = 'round';
+        if(apVec.stkMm > 0){
+          x.fillStyle = apVec.stkColor;
+          x.strokeStyle = apVec.stkColor;
+          x.lineWidth = (effPad + apVec.stkMm) * 2;
+          x.fill(ararePath);
+          x.stroke(ararePath);
+        }
+        if(effPad > 0){
+          const pCol = apVec.active ? apVec.padColor : cfg.bgColor;
+          x.fillStyle = pCol;
+          x.strokeStyle = pCol;
+          x.lineWidth = effPad * 2;
+          x.fill(ararePath);
+          x.stroke(ararePath);
+        }
+        x.restore();
       }
       x.fillStyle = cfg.dotColor || '#ffffff';
       x.fill(ararePath);
@@ -5860,7 +6189,7 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
       }
     };
 
-    if(cfg.layerOrder === 'arareFront'){
+    if(cfg.layerOrder === 'arareFront' || apVec.active){
       drawKakuVec(false); drawArareVec(true);
     }else{
       drawArareVec(false); drawKakuVec(true);
@@ -7869,12 +8198,12 @@ function draw(){
 
   // 2 & 3. 大小あられ / 仲羽田（江戸角字）を S.layerOrder の前後順で描画
   const ko = (S.mode === 'both' && S.knockoutMm > 0) ? S.knockoutMm : 0;
+  const apMain = getArarePadMetrics(S);
   const drawArareLayer = (isFront) => {
     if(DOTS.length === 0) return;
-    if(isFront && ko > 0){
+    const effPad = Math.max(apMain.padMm, (isFront && ko > 0) ? ko : 0);
+    if(apMain.stkMm > 0 || effPad > 0){
       x.save();
-      x.strokeStyle = S.bgColor;
-      x.lineWidth = ko * 2;
       x.lineJoin = 'round';
       x.lineCap = 'round';
       x.beginPath();
@@ -7884,7 +8213,21 @@ function draw(){
         for(const q of b) x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]);
         x.closePath();
       }
-      x.stroke();
+      if(apMain.stkMm > 0){
+        x.fillStyle = apMain.stkColor;
+        x.strokeStyle = apMain.stkColor;
+        x.lineWidth = (effPad + apMain.stkMm) * 2;
+        x.fill();
+        x.stroke();
+      }
+      if(effPad > 0){
+        const pCol = apMain.active ? apMain.padColor : S.bgColor;
+        x.fillStyle = pCol;
+        x.strokeStyle = pCol;
+        x.lineWidth = effPad * 2;
+        x.fill();
+        x.stroke();
+      }
       x.restore();
     }
     x.fillStyle=S.dotColor;
@@ -7942,7 +8285,7 @@ function draw(){
     }
   };
 
-  if(S.layerOrder === 'arareFront'){
+  if(S.layerOrder === 'arareFront' || apMain.active){
     drawKakuLayer(false);
     drawArareLayer(true);
   }else{
@@ -8035,11 +8378,24 @@ function svgText(){
   if(S.useKoboBase && S.koboBaseDataUrl){
     s+='<g id="Kobo_Base_Fabric"><image x="0" y="0" width="'+W+'" height="'+H+'" preserveAspectRatio="none" href="'+S.koboBaseDataUrl+'"/></g>\n';
   }
+  const apSvg = getArarePadMetrics(S);
   const buildArareSvg=(isFront)=>{
     if(DOTS.length===0) return '';
     let g='';
-    if(isFront && ko>0){
-      g+='<g id="Arare_Knockout" fill="none" stroke="'+S.bgColor+'" stroke-width="'+f2(ko*2)+'" stroke-linejoin="round" stroke-linecap="round">\n';
+    const effPad = Math.max(apSvg.padMm, (isFront && ko>0) ? ko : 0);
+    if(apSvg.stkMm > 0){
+      g+='<g id="Arare_Surrounding_Frame" fill="'+apSvg.stkColor+'" stroke="'+apSvg.stkColor+'" stroke-width="'+f2((effPad+apSvg.stkMm)*2)+'" stroke-linejoin="round" stroke-linecap="round">\n';
+      for(const o of DOTS){
+        const a=anchors(o), b=beziers(a);
+        let d='M'+f2(a[0][0])+','+f2(a[0][1]);
+        for(const q of b) d+='C'+f2(q[0])+','+f2(q[1])+' '+f2(q[2])+','+f2(q[3])+' '+f2(q[4])+','+f2(q[5]);
+        g+='<path d="'+d+'Z"/>\n';
+      }
+      g+='</g>\n';
+    }
+    if(effPad>0){
+      const pCol = apSvg.active ? apSvg.padColor : S.bgColor;
+      g+='<g id="Arare_Knockout" fill="'+pCol+'" stroke="'+pCol+'" stroke-width="'+f2(effPad*2)+'" stroke-linejoin="round" stroke-linecap="round">\n';
       for(const o of DOTS){
         const a=anchors(o), b=beziers(a);
         let d='M'+f2(a[0][0])+','+f2(a[0][1]);
@@ -8096,7 +8452,7 @@ function svgText(){
     }
     return g;
   };
-  if(S.layerOrder === 'arareFront'){
+  if(S.layerOrder === 'arareFront' || apSvg.active){
     s += buildKakuSvg(false) + buildArareSvg(true);
   }else{
     s += buildArareSvg(false) + buildKakuSvg(true);
@@ -8267,17 +8623,32 @@ function aiText(){
   }
   // Layer 2 & 3: Arare Dots / HanedaNaka Kakuji (S.layerOrder に従い前後順で出力)
   const koPt = (S.mode==='both' && S.knockoutMm>0) ? (S.knockoutMm * 2 * MM) : 0;
+  const apAi = getArarePadMetrics(S);
   const writeArareLayer = (isFront) => {
     if(DOTS.length === 0) return;
     L.push('%AI5_BeginLayer','1 1 1 1 0 0 1 255 79 79 Lb','(Arare_Dots) Ln','0 A','0 O');
-    if(isFront && koPt > 0){
-      pushAiStrokeColor(L, S.bgColor, useRgb);
-      L.push('0 i 1 J 1 j '+koPt.toFixed(3)+' w 4 M []0 d');
+    const effPadMm = Math.max(apAi.padMm, (isFront && S.mode==='both' && S.knockoutMm>0) ? S.knockoutMm : 0);
+    if(apAi.stkMm > 0){
+      pushAiFillColor(L, apAi.stkColor, useRgb);
+      pushAiStrokeColor(L, apAi.stkColor, useRgb);
+      L.push('0 i 1 J 1 j '+(((effPadMm + apAi.stkMm) * 2 * MM)).toFixed(3)+' w 4 M []0 d');
       for(const o of DOTS){
         const a=anchors(o), b=beziers(a);
         L.push(P(a[0][0],a[0][1])+' m');
         for(const q of b) L.push(P(q[0],q[1])+' '+P(q[2],q[3])+' '+P(q[4],q[5])+' c');
-        L.push('s');
+        L.push('b');
+      }
+    }
+    if(effPadMm > 0){
+      const pCol = apAi.active ? apAi.padColor : S.bgColor;
+      pushAiFillColor(L, pCol, useRgb);
+      pushAiStrokeColor(L, pCol, useRgb);
+      L.push('0 i 1 J 1 j '+((effPadMm * 2 * MM)).toFixed(3)+' w 4 M []0 d');
+      for(const o of DOTS){
+        const a=anchors(o), b=beziers(a);
+        L.push(P(a[0][0],a[0][1])+' m');
+        for(const q of b) L.push(P(q[0],q[1])+' '+P(q[2],q[3])+' '+P(q[4],q[5])+' c');
+        L.push('b');
       }
     }
     pushAiFillColor(L, S.dotColor, useRgb);
@@ -8328,7 +8699,7 @@ function aiText(){
     }
     L.push('LB','%AI5_EndLayer--');
   };
-  if(S.layerOrder === 'arareFront'){
+  if(S.layerOrder === 'arareFront' || apAi.active){
     writeKakuLayer(false);
     writeArareLayer(true);
   }else{
@@ -8625,12 +8996,23 @@ function saveHighResPng(){
     x.drawImage(KOBO_BASE_IMG, 0, 0, S.W, S.H);
   }
   const ko = (S.mode === 'both' && S.knockoutMm > 0) ? S.knockoutMm : 0;
+  const apPng = getArarePadMetrics(S);
   const drawArarePng = (isFront) => {
     if(DOTS.length === 0) return;
-    if(isFront && ko > 0){
-      x.save(); x.strokeStyle=S.bgColor; x.lineWidth=ko*2; x.lineJoin='round'; x.lineCap='round'; x.beginPath();
+    const effPad = Math.max(apPng.padMm, (isFront && ko > 0) ? ko : 0);
+    if(apPng.stkMm > 0 || effPad > 0){
+      x.save(); x.lineJoin='round'; x.lineCap='round'; x.beginPath();
       for(const o of DOTS){const a=anchors(o),b=beziers(a);x.moveTo(a[0][0],a[0][1]);for(const q of b)x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]);x.closePath();}
-      x.stroke(); x.restore();
+      if(apPng.stkMm > 0){
+        x.fillStyle=apPng.stkColor; x.strokeStyle=apPng.stkColor; x.lineWidth=(effPad+apPng.stkMm)*2;
+        x.fill(); x.stroke();
+      }
+      if(effPad > 0){
+        const pCol = apPng.active ? apPng.padColor : S.bgColor;
+        x.fillStyle=pCol; x.strokeStyle=pCol; x.lineWidth=effPad*2;
+        x.fill(); x.stroke();
+      }
+      x.restore();
     }
     x.fillStyle=S.dotColor; x.beginPath();
     for(const o of DOTS){const a=anchors(o),b=beziers(a);x.moveTo(a[0][0],a[0][1]);for(const q of b)x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]);x.closePath();}
@@ -8655,7 +9037,7 @@ function saveHighResPng(){
       x.fill();
     }
   };
-  if(S.layerOrder === 'arareFront'){
+  if(S.layerOrder === 'arareFront' || apPng.active){
     drawKakuPng(false); drawArarePng(true);
   }else{
     drawArarePng(false); drawKakuPng(true);
@@ -8709,7 +9091,14 @@ try{
 }catch(e){}
 
 function savePresetsToStorage(){
-  try{localStorage.setItem(PRESET_KEY,JSON.stringify(PRESETS));}catch(e){}
+  try{
+    localStorage.setItem(PRESET_KEY,JSON.stringify(PRESETS));
+  }catch(e){
+    try{
+      const slim = PRESETS.map((p, idx) => idx > 4 ? Object.assign({}, p, {thumb:''}) : p);
+      localStorage.setItem(PRESET_KEY, JSON.stringify(slim));
+    }catch(e2){}
+  }
 }
 
 function saySave(t,warn){
@@ -8986,7 +9375,9 @@ const ranges={
   towelHemWidth:v=>v+' mm', towelBorderMargin:v=>v+' mm', towelBorderWidth:v=>v+' mm', towelCenterBoxW:v=>v+'%', towelCenterBoxH:v=>v+'%',
   bandH:v=>v+' mm',
   count:v=>v+' 粒', gap:v=>v+' mm', spread:v=>v+'', grad:v=>(v>0?'+':'')+v,
-  margin:v=>v+' mm', dmin:v=>v+' mm', dmax:v=>v+' mm', bigratio:v=>v+'%', scale:v=>v+'%'
+  margin:v=>v+' mm', dmin:v=>v+' mm', dmax:v=>v+' mm', bigratio:v=>v+'%', scale:v=>v+'%',
+  ararePadMarginMm:v=>v+' mm', ararePadStrokeMm:v=>v+' mm',
+  arareOuterMarginMm:v=>v+' mm', arareOuterWidthMm:v=>v+' mm', arareOuterPadMm:v=>v+' mm', arareOuterCornerMm:v=>v+' mm'
 };
 
 function syncUI(){
@@ -9183,6 +9574,19 @@ function syncUI(){
   for(const b of document.querySelectorAll('#edge .chip')) b.setAttribute('aria-pressed',(b.dataset.v===S.edge)+'');
   for(const b of document.querySelectorAll('#shape .chip')) b.setAttribute('aria-pressed',(b.dataset.v===S.shape)+'');
   for(const b of document.querySelectorAll('#anglePresets .chip')) b.setAttribute('aria-pressed',(Math.abs(parseFloat(b.dataset.ang)-S.kakuAngle)<0.05)+'');
+  for(const b of document.querySelectorAll('#ararePadQuickChips button[data-apmode]')){
+    b.setAttribute('aria-pressed', (b.dataset.apmode === (S.ararePadMode || 'none')) + '');
+  }
+  if($('ararePadParamsBox')) $('ararePadParamsBox').hidden = (!S.ararePadMode || S.ararePadMode === 'none');
+  if($('ararePadColor')) $('ararePadColor').value = resolveArarePadColor(S);
+  if($('ararePadStrokeColor')) $('ararePadStrokeColor').value = S.ararePadStrokeColor || '#877028';
+  for(const b of document.querySelectorAll('#arareOuterQuickChips button[data-aomode]')){
+    b.setAttribute('aria-pressed', (b.dataset.aomode === (S.arareOuterMode || 'none')) + '');
+  }
+  if($('arareOuterParamsBox')) $('arareOuterParamsBox').hidden = (!S.arareOuterMode || S.arareOuterMode === 'none');
+  if($('arareOuterCornerRow')) $('arareOuterCornerRow').hidden = (S.arareOuterMode !== 'roundRect' && S.arareOuterMode !== 'corner');
+  if($('arareOuterColor')) $('arareOuterColor').value = S.arareOuterColor || S.dotColor || '#ffffff';
+  if($('arareOuterClip')) $('arareOuterClip').checked = (S.arareOuterClip !== false);
   $('margin-row').hidden=S.edge!=='inside';
 }
 
@@ -9207,7 +9611,8 @@ const NO_LAYOUT_KEYS = new Set([
   'textSize','fudaWidthPct','fudaHeightPct','fudaDepth3d','fudaOpacity','fudaNonTextOpacity','fudaSubOffX','fudaSubOffY','fudaSubAngle','textSpacing','textOutlineW','textAngle','textX','textY',
   'textRepeatGapX','textRepeatGapY','textRepeatGridAngle','textRepeatAngleVar','textRepeatSizeVar',
   'daboShiftY','daboShiftX','daboSleeveShiftY','daboPatScale',
-  'towelHemWidth','towelBorderMargin','towelBorderWidth','towelCenterBoxW','towelCenterBoxH'
+  'towelHemWidth','towelBorderMargin','towelBorderWidth','towelCenterBoxW','towelCenterBoxH',
+  'ararePadMarginMm','ararePadStrokeMm','arareOuterMarginMm','arareOuterWidthMm','arareOuterPadMm','arareOuterCornerMm'
 ]);
 
 for(const k in ranges){
@@ -9951,9 +10356,153 @@ document.querySelectorAll('#textScatterQuickBtns button').forEach(b=>b.addEventL
   update(false);
 }));
 
-// 🗂️ 左パネルのシンプル・カテゴリタブ切替（機能は100%残したまま表示を整理）
+// 🛡️ 大小あられの周り枠（1粒ごとの周り枠 ＆ 外周額縁枠）イベント配線
+document.querySelectorAll('#ararePadQuickChips button[data-apmode]').forEach(b=>b.addEventListener('click',()=>{
+  const m = b.dataset.apmode || 'none';
+  S.ararePadMode = m;
+  if((m === 'pad' || m === 'padFrame') && (!S.ararePadMarginMm || S.ararePadMarginMm <= 0)) S.ararePadMarginMm = 2.0;
+  if((m === 'frame' || m === 'padFrame') && (!S.ararePadStrokeMm || S.ararePadStrokeMm <= 0)) S.ararePadStrokeMm = 1.0;
+  update(false);
+}));
+if($('ararePadColor')) $('ararePadColor').addEventListener('input',e=>{
+  S.ararePadColor = e.target.value;
+  S.ararePadColorMode = 'custom';
+  if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+  update(false);
+});
+if($('ararePadMatchBgBtn')) $('ararePadMatchBgBtn').addEventListener('click',()=>{
+  S.ararePadColorMode = 'bg';
+  S.ararePadColor = S.bgColor;
+  if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+  update(false);
+});
+if($('ararePadWhiteBtn')) $('ararePadWhiteBtn').addEventListener('click',()=>{
+  S.ararePadColorMode = 'white';
+  S.ararePadColor = '#ffffff';
+  if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+  update(false);
+});
+if($('ararePadBlackBtn')) $('ararePadBlackBtn').addEventListener('click',()=>{
+  S.ararePadColorMode = 'black';
+  S.ararePadColor = '#111827';
+  if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+  update(false);
+});
+if($('ararePadStrokeColor')) $('ararePadStrokeColor').addEventListener('input',e=>{
+  S.ararePadStrokeColor = e.target.value;
+  if(S.ararePadMode === 'none') S.ararePadMode = 'frame';
+  else if(S.ararePadMode === 'pad') S.ararePadMode = 'padFrame';
+  update(false);
+});
+if($('ararePadStrokeGoldBtn')) $('ararePadStrokeGoldBtn').addEventListener('click',()=>{
+  S.ararePadStrokeColor = '#877028';
+  if(S.ararePadMode === 'none') S.ararePadMode = 'frame';
+  else if(S.ararePadMode === 'pad') S.ararePadMode = 'padFrame';
+  update(false);
+});
+if($('ararePadStrokeWhiteBtn')) $('ararePadStrokeWhiteBtn').addEventListener('click',()=>{
+  S.ararePadStrokeColor = '#ffffff';
+  if(S.ararePadMode === 'none') S.ararePadMode = 'frame';
+  else if(S.ararePadMode === 'pad') S.ararePadMode = 'padFrame';
+  update(false);
+});
+document.querySelectorAll('#arareOuterQuickChips button[data-aomode]').forEach(b=>b.addEventListener('click',()=>{
+  S.arareOuterMode = b.dataset.aomode || 'none';
+  update(false);
+}));
+if($('arareOuterColor')) $('arareOuterColor').addEventListener('input',e=>{
+  S.arareOuterColor = e.target.value;
+  if(!S.arareOuterMode || S.arareOuterMode === 'none') S.arareOuterMode = 'single';
+  update(false);
+});
+if($('arareOuterSyncDotBtn')) $('arareOuterSyncDotBtn').addEventListener('click',()=>{
+  S.arareOuterColor = S.dotColor || '#ffffff';
+  if(!S.arareOuterMode || S.arareOuterMode === 'none') S.arareOuterMode = 'single';
+  update(false);
+});
+if($('arareOuterGoldBtn')) $('arareOuterGoldBtn').addEventListener('click',()=>{
+  S.arareOuterColor = '#877028';
+  if(!S.arareOuterMode || S.arareOuterMode === 'none') S.arareOuterMode = 'single';
+  update(false);
+});
+if($('arareOuterClip')) $('arareOuterClip').addEventListener('change',e=>{
+  S.arareOuterClip = e.target.checked;
+  update(false);
+});
+
+// 🗂️ 左パネルのシンプル・カテゴリタブ切替 ＆「詳しく」単一項目フォーカス表示
+const FOCUSED_STEP_INFO = {
+  step1: { title: '① 手ぬぐいのベース柄・文様モードの詳細', ids: ['sec-mode'] },
+  step2: { title: '② 大きさ・タオル規格の詳細', ids: ['sec-size', 'sec-towel'] },
+  step3: { title: '③ 色（地色・柄色・イラレ色ピッカー）の詳細', ids: ['sec-color-main'] },
+  step4: { title: '④ 柄の大きさ・角度・太さ・あられ周り枠・端の詳細', ids: ['sec-haneda', 'sec-arare', 'sec-edge'] },
+  step5: { title: '⑤ 札・ロゴ・丸紋・名入れ文字の詳細', ids: ['sec-crest'] },
+  step6: { title: '⑥ ダボシャツのロゴ位置逆算・仕立ての詳細', ids: ['sec-dabo'] },
+  step7: { title: '⑦ プリント方法・印刷できる最小線幅の詳細', ids: ['sec-pm'] },
+  step8: { title: '⑧ 保存・マイデザイン管理・Illustrator出力の詳細', ids: ['sec-save', 'sec-out'] }
+};
+
+function openFocusedDetailStep(target){
+  const bar = $('focusedDetailBar'), tabs = $('panelCatTabs');
+  const info = FOCUSED_STEP_INFO[target];
+  if(!info){
+    if(bar) bar.hidden = true;
+    if(tabs) tabs.hidden = false;
+    const cat = (target && target !== 'all') ? target : 'all';
+    const tabBtn = document.querySelector('#panelCatTabs [data-cat-filter="' + cat + '"]') || document.querySelector('#panelCatTabs [data-cat-filter="all"]');
+    if(tabBtn) tabBtn.click();
+    return;
+  }
+  if(bar) bar.hidden = false;
+  if($('focusedDetailTitle')) $('focusedDetailTitle').textContent = info.title;
+  if(tabs) tabs.hidden = true;
+
+  // 選ばれた項目のセクションだけを表示し、それ以外は非表示にする
+  const allow = new Set(info.ids);
+  if(target === 'step1' && S.mode === 'scatter') allow.add('sec-fudatowel');
+  document.querySelectorAll('.panel > section').forEach(sec=>{
+    sec.classList.toggle('cat-hidden', !allow.has(sec.id));
+  });
+
+  // 各ステップで開いたときにすぐ使えるよう関連サブパネルを自動展開
+  if(target === 'step3'){
+    if($('aiColorPickerDock')) $('aiColorPickerDock').hidden = false;
+    if(typeof renderAiColorPickerUI === 'function') renderAiColorPickerUI();
+  }else if(target === 'step4'){
+    if(S.mode === 'scatter'){
+      $('sec-haneda').hidden = false;
+      $('sec-arare').hidden = false;
+    }
+    const adv = document.querySelector('#sec-haneda details.adv-details');
+    if(adv) adv.open = true;
+  }else if(target === 'step5'){
+    if(!S.showText && !S.showLogo && !S.showCrest){ S.showLogo = true; update(false); }
+  }else if(target === 'step6'){
+    const advDabo = document.querySelector('#sec-dabo details.adv-details');
+    if(advDabo) advDabo.open = true;
+    if(S.viewMode === 'fabric'){ S.viewMode = 'cut_dabo'; update(false); }
+  }
+  const pn = document.querySelector('.panel');
+  if(pn) pn.scrollTop = 0;
+}
+
+if($('focusedBackEasyBtn')){
+  $('focusedBackEasyBtn').addEventListener('click', ()=>{
+    if($('focusedDetailBar')) $('focusedDetailBar').hidden = true;
+    if($('panelCatTabs')) $('panelCatTabs').hidden = false;
+    easySetMode('easy', true);
+  });
+}
+if($('focusedShowAllBtn')){
+  $('focusedShowAllBtn').addEventListener('click', ()=>{
+    openFocusedDetailStep('all');
+  });
+}
+
 document.querySelectorAll('#panelCatTabs button').forEach(tab=>{
   tab.addEventListener('click',()=>{
+    if($('focusedDetailBar')) $('focusedDetailBar').hidden = true;
+    if($('panelCatTabs')) $('panelCatTabs').hidden = false;
     const cat = tab.dataset.cat || tab.dataset.catFilter || 'all';
     document.querySelectorAll('#panelCatTabs button').forEach(t=>t.setAttribute('aria-pressed', (t===tab)+''));
     document.querySelectorAll('.panel > section[data-cat]').forEach(sec=>{
@@ -10900,7 +11449,7 @@ let downloads=null;const inClaude=!!(window.claude&&window.claude.use);
   if(inClaude){try{downloads=await window.claude.use('downloads');}catch(e){downloads=null;}}
   if(downloads||!inClaude){$('saveSvg').hidden=false;$('saveAi').hidden=false;}})();
 function plainDownload(filename,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();
-  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);}
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},60000);}
 async function save(filename,data,label){
   if(!downloads){plainDownload(filename,data);say(label+' をダウンロードしました。');return;}
   try{await downloads.save({filename,data});say(label+' を保存しました。');}
@@ -11166,11 +11715,45 @@ function easyRenderImpl(){
   if(document.activeElement !== $('eFg')) $('eFg').value = eLow(fg);
   var kaku = mode === 'haneda' || mode === 'both', arare = mode === 'arare' || mode === 'both';
   var hasPad = !!(S.showLogo && S.logoPadMode && S.logoPadMode !== 'none');
+  var hasArarePad = !!(arare && S.ararePadMode && S.ararePadMode !== 'none');
+  var hasArareOuter = !!(arare && S.arareOuterMode && S.arareOuterMode !== 'none');
   $('eTuneStep').hidden = mode === 'scatter';
   $('eColorNote').hidden = mode !== 'scatter';
   $('eStyles').hidden = !kaku;
+  if($('eArareFrameBox')) $('eArareFrameBox').hidden = !arare;
+  if($('eArarePadControls')) $('eArarePadControls').hidden = !hasArarePad;
+  if($('eArareOuterControls')) $('eArareOuterControls').hidden = !hasArareOuter;
+  if($('eArarePadMode')){
+    var apm = S.ararePadMode || 'none';
+    $('eArarePadMode').querySelectorAll('button').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.eap === apm));
+    });
+  }
+  if($('eArarePadColBtns')){
+    var apcm = S.ararePadColorMode || 'bg';
+    $('eArarePadColBtns').querySelectorAll('button').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.eapc === apcm));
+    });
+  }
+  if($('eArarePadCustomCol') && document.activeElement !== $('eArarePadCustomCol')){
+    $('eArarePadCustomCol').value = resolveArarePadColor(S);
+  }
+  if($('eArarePadStrokeCol') && document.activeElement !== $('eArarePadStrokeCol')){
+    $('eArarePadStrokeCol').value = S.ararePadStrokeColor || '#877028';
+  }
+  if($('eArareOuterMode')){
+    var aom = S.arareOuterMode || 'none';
+    $('eArareOuterMode').querySelectorAll('button').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.eao === aom));
+    });
+  }
   var vis = {
     kakuScale: kaku, kakuWeight: kaku, count: arare, scale: arare,
+    ararePadMarginMm: hasArarePad && (S.ararePadMode === 'pad' || S.ararePadMode === 'padFrame'),
+    ararePadStrokeMm: hasArarePad && (S.ararePadMode === 'frame' || S.ararePadMode === 'padFrame'),
+    arareOuterMarginMm: hasArareOuter,
+    arareOuterWidthMm: hasArareOuter,
+    arareOuterPadMm: hasArareOuter,
     logoSize: !!S.showLogo,
     logoPadMarginMm: hasPad,
     logoPadCornerMm: hasPad && S.logoPadMode === 'roundRect',
@@ -11255,11 +11838,13 @@ function easyRenderImpl(){
 }
 (function(){
   if(!$('easyPanel')) return;
-  document.querySelectorAll('.uimode button').forEach(function(b){ b.addEventListener('click', function(){ easySetMode(b.dataset.ui, true); }); });
+  document.querySelectorAll('.uimode button').forEach(function(b){ b.addEventListener('click', function(){
+    if(b.dataset.ui === 'full') openFocusedDetailStep('all');
+    easySetMode(b.dataset.ui, true);
+  }); });
   document.querySelectorAll('#easyPanel [data-emore]').forEach(function(b){ b.addEventListener('click', function(){
     easySetMode('full', true);
-    var t = document.querySelector('#panelCatTabs [data-cat-filter="' + b.dataset.emore + '"]'); if(t) t.click();
-    var pn = document.querySelector('.panel'); if(pn) pn.scrollTop = 0;
+    openFocusedDetailStep(b.dataset.emore || 'all');
   }); });
   $('ePat').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
     var v = b.dataset.ep;
@@ -11289,6 +11874,48 @@ function easyRenderImpl(){
     if(c) c.click();
     if(keep === 'both' && S.mode !== 'both'){ S.mode = 'both'; update(true); }
   }); });
+  if($('eArarePadMode')){
+    $('eArarePadMode').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      var m = b.dataset.eap || 'none';
+      S.ararePadMode = m;
+      if((m === 'pad' || m === 'padFrame') && (!S.ararePadMarginMm || S.ararePadMarginMm <= 0)) S.ararePadMarginMm = 2.0;
+      if((m === 'frame' || m === 'padFrame') && (!S.ararePadStrokeMm || S.ararePadStrokeMm <= 0)) S.ararePadStrokeMm = 1.0;
+      update(false);
+    }); });
+  }
+  if($('eArarePadColBtns')){
+    $('eArarePadColBtns').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      var c = b.dataset.eapc || 'bg';
+      S.ararePadColorMode = c;
+      if(c === 'bg') S.ararePadColor = S.bgColor;
+      else if(c === 'white') S.ararePadColor = '#ffffff';
+      else if(c === 'black') S.ararePadColor = '#111827';
+      if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+      update(false);
+    }); });
+  }
+  if($('eArarePadCustomCol')){
+    $('eArarePadCustomCol').addEventListener('input', function(e){
+      S.ararePadColor = e.target.value;
+      S.ararePadColorMode = 'custom';
+      if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+      update(false);
+    });
+  }
+  if($('eArarePadStrokeCol')){
+    $('eArarePadStrokeCol').addEventListener('input', function(e){
+      S.ararePadStrokeColor = e.target.value;
+      if(S.ararePadMode === 'none') S.ararePadMode = 'frame';
+      else if(S.ararePadMode === 'pad') S.ararePadMode = 'padFrame';
+      update(false);
+    });
+  }
+  if($('eArareOuterMode')){
+    $('eArareOuterMode').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      S.arareOuterMode = b.dataset.eao || 'none';
+      update(false);
+    }); });
+  }
   document.querySelectorAll('#easyPanel .e-range').forEach(function(r){
     var inp = r.querySelector('input');
     inp.addEventListener('input', function(){ var real = $(r.dataset.for); if(!real) return; real.value = inp.value; real.dispatchEvent(new Event('input', { bubbles: true })); });
@@ -11375,8 +12002,12 @@ function easyRenderImpl(){
   Object.keys(PM_A).forEach(function(k){ var o = document.createElement('option'); o.value = k; o.textContent = PM_A[k].name; sel.appendChild(o); });
   sel.addEventListener('change', function(){ var real = $('pmMethodA'); if(!real) return; real.value = sel.value; real.dispatchEvent(new Event('change')); });
   $('eSavePng').addEventListener('click', function(){ $('savePng').click(); });
+  if($('eSaveDaboPng')) $('eSaveDaboPng').addEventListener('click', function(){ saveDaboHighResPng(); });
+  if($('eSaveAi')) $('eSaveAi').addEventListener('click', function(){ $('saveAi').click(); });
   $('eSaveSvg').addEventListener('click', function(){ $('saveSvg').click(); });
   $('eCopySvg').addEventListener('click', function(){ $('copySvg').click(); });
+  if($('eSaveJson')) $('eSaveJson').addEventListener('click', function(){ $('exportJsonBtn').click(); });
+  if($('eLoadJson')) $('eLoadJson').addEventListener('click', function(){ $('importJsonBtn').click(); });
   function keep(){ $('presetName').value = $('eName').value.trim(); $('savePresetBtn').click(); $('eName').value = ''; easyRender(); }
   $('eKeep').addEventListener('click', keep);
   $('eName').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); keep(); } });
