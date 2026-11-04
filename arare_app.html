@@ -258,7 +258,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <label><input type="color" id="eBg">地の色</label>
           <label><input type="color" id="eFg">仲羽田の色</label>
           <label><input type="color" id="eDotCol">あられの色</label>
-          <label><input type="color" id="eFudaCol">札の色</label>
+          <label><input type="color" id="eFudaCol">札本体の色</label>
         </div>
         <div class="e-subbox" id="eArareColorBox">
           <div class="e-sublbl"><span>🟢 あられの色（粒の色・うしろ抜き色・周り枠の色）</span></div>
@@ -283,27 +283,61 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <input type="color" id="eArarePadStrokeCol" value="#877028" title="あられ周り枠線・外周枠の色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
           </div>
         </div>
-        <div class="e-subbox" id="eFudaColorBox">
-          <div class="e-sublbl"><span>🏷️ 札の色（札ロゴ本体・うしろ色・周り枠の色）</span></div>
-          <div class="e-chips small" id="eFudaColChips">
-            <button type="button" data-efcol="teal" style="border-color:#00a3af;color:#007b86">浅葱(標準)</button>
-            <button type="button" data-efcol="white">白抜き</button>
-            <button type="button" data-efcol="#046e7e">羽田納戸</button>
-            <button type="button" data-efcol="#877028">羽田金</button>
-            <button type="button" data-efcol="#b7282e">茜</button>
-            <button type="button" data-efcol="#183574">藍</button>
-            <button type="button" data-efcol="#262626">墨</button>
+        <div class="e-subbox" id="eFudaColorBox" style="border:1.5px solid #7dd3fc;background:#f0f9ff">
+          <div class="e-sublbl"><span style="color:#0c4a6e">🏷️ 札の色（①札本体・②札の文字・③うしろ背景・④周り枠線）</span></div>
+          <!-- ① 札本体の色 -->
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#0c4a6e">① 札本体の色（板・組紐）:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#0369a1;cursor:pointer">自由色 <input type="color" id="eFudaBodyPicker" value="#00a3af" style="width:28px;height:22px;border:1px solid #7dd3fc;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eFudaColChips">
+              <button type="button" data-efcol="teal" style="border-color:#00a3af;color:#007b86">浅葱(標準)</button>
+              <button type="button" data-efcol="white">白抜き</button>
+              <button type="button" data-efcol="#046e7e">羽田納戸</button>
+              <button type="button" data-efcol="#877028">羽田金</button>
+              <button type="button" data-efcol="#b7282e">茜</button>
+              <button type="button" data-efcol="#183574">藍</button>
+              <button type="button" data-efcol="#262626">墨</button>
+            </div>
           </div>
-          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:3px;border-top:1px dashed #cbd5e1">
-            <span style="font-size:11px;color:var(--muted)">うしろ色:</span>
-            <div class="e-chips small" id="eLogoPadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
+          <!-- ② 札の文字色（仲羽田・青年会） -->
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #bae6fd">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#0c4a6e">② 札の文字色（仲羽田・青年会）:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#0369a1;cursor:pointer">自由色 <input type="color" id="eFudaTextCol" value="#ffffff" style="width:28px;height:22px;border:1px solid #7dd3fc;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eFudaTextColChips">
+              <button type="button" data-eftxt="#ffffff">白</button>
+              <button type="button" data-eftxt="#877028">羽田金</button>
+              <button type="button" data-eftxt="#f8b500">山吹</button>
+              <button type="button" data-eftxt="#046e7e">羽田納戸</button>
+              <button type="button" data-eftxt="#b7282e">茜</button>
+              <button type="button" data-eftxt="#111827">黒</button>
+              <button type="button" data-eftxt="transparent">透かし</button>
+            </div>
+          </div>
+          <!-- ③ 札のうしろ背景色（周り枠の中） -->
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:5px;border-top:1px dashed #bae6fd">
+            <span style="font-size:11px;font-weight:700;color:#0c4a6e">③ うしろ背景:</span>
+            <div class="e-chips small" id="eLogoPadColBtns" style="flex:1;grid-template-columns:repeat(4,1fr)">
               <button type="button" data-epc="bg">地の色</button>
               <button type="button" data-epc="white">白</button>
               <button type="button" data-epc="black">黒</button>
+              <button type="button" data-epc="none">透過</button>
             </div>
-            <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="札のうしろ色を自由に選ぶ" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
-            <span style="font-size:11px;color:var(--muted)">周り枠線色:</span>
-            <input type="color" id="eLogoPadStrokeCol" value="#ffffff" title="札の周り枠線の色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+            <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="札のうしろ背景色を自由に選ぶ" style="width:28px;height:24px;border:1px solid #7dd3fc;border-radius:5px;padding:0;background:none;cursor:pointer">
+          </div>
+          <!-- ④ 札の周り枠線の色 -->
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:5px;border-top:1px dashed #bae6fd">
+            <span style="font-size:11px;font-weight:700;color:#0c4a6e">④ 周り枠線色:</span>
+            <div class="e-chips small" id="eLogoPadStrokeBtns" style="flex:1;grid-template-columns:repeat(4,1fr)">
+              <button type="button" data-epsc="none">枠線なし</button>
+              <button type="button" data-epsc="#ffffff">白</button>
+              <button type="button" data-epsc="#877028">羽田金</button>
+              <button type="button" data-epsc="#111827">黒</button>
+            </div>
+            <input type="color" id="eLogoPadStrokeCol" value="#ffffff" title="札の周り枠線の色" style="width:28px;height:24px;border:1px solid #7dd3fc;border-radius:5px;padding:0;background:none;cursor:pointer">
           </div>
         </div>
         <p class="e-note" id="eColorNote" hidden>札入りタオル図案を入れているときは、図案の色は「札入りタオル図案から選ぶ」を開いて変えます。</p>
@@ -350,16 +384,27 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>5</b><span>札・ロゴを入れる（透過・枠サイズ調整）</span><button type="button" class="e-more" data-emore="step5">詳しく</button></div>
+        <div class="e-h"><b>5</b><span>札・ロゴを入れる（色・透過・マイロゴ）</span><button type="button" class="e-more" data-emore="step5">詳しく</button></div>
         <div class="e-chips" id="eLogo">
           <button type="button" data-el="teal">札ロゴ<small>色つき</small></button>
           <button type="button" data-el="white">札ロゴ<small>白抜き</small></button>
           <button type="button" data-el="img">画像を入れる<small>.ai / PDF / PNG</small></button>
           <button type="button" data-el="none">入れない</button>
         </div>
+        <!-- 📚 かんたんモード用 マイ・ロゴ保管棚 ＆ 消したマイロゴ復元バー -->
+        <div class="e-subbox" id="eLogoShelfBox" style="background:#eff6ff;border:1px solid #93c5fd">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+            <span style="font-size:11.5px;font-weight:800;color:#1e40af">📚 マイ・ロゴ保管棚（クリックで配置）</span>
+            <div style="display:flex;gap:4px">
+              <button type="button" class="mini-btn" id="eSaveCurrentToShelfBtn" style="background:#2563eb;color:#fff;border-color:#1d4ed8;font-weight:700;font-size:10.5px;padding:2px 6px">📌 今のロゴを登録</button>
+              <button type="button" class="mini-btn" id="eRestoreLogoShelfBtn" style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;font-size:10.5px;padding:2px 6px" title="誤って消したマイロゴや初期ロゴを元に戻します">↩️ 消したマイロゴを戻す</button>
+            </div>
+          </div>
+          <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:4px;max-height:112px;overflow-y:auto"></div>
+        </div>
         <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
         <div class="e-subbox" id="eLogoPadBox" hidden>
-          <div class="e-sublbl"><span>🛡️ 札ロゴのうしろ（透過させない・周り枠）</span></div>
+          <div class="e-sublbl"><span>🛡️ 札ロゴのうしろ（透過させない・周り枠・色）</span></div>
           <div class="e-chips" id="eLogoPadMode">
             <button type="button" data-epm="silhouette">札の形<small>うしろ透過なし</small></button>
             <button type="button" data-epm="roundRect">四角枠<small>うしろ透過なし</small></button>
@@ -370,7 +415,12 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <div class="e-range" data-for="logoPadMarginMm"><span>周りの枠の広さ</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
             <div class="e-range" data-for="logoPadCornerMm" id="eLogoPadCornerRow"><span>四角枠の角丸</span><input type="range" min="0" max="30" step="1"><b></b></div>
             <div class="e-range" data-for="logoPadStrokeMm"><span>周りの枠線の太さ</span><input type="range" min="0" max="8" step="0.5"><b></b></div>
-            <div style="font-size:11px;color:var(--muted)">💡 札の色・うしろ色・周り枠線の色は上の「<b>3 色</b>」で変えられます。</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding-top:4px;border-top:1px dashed #cbd5e1;font-size:11px;font-weight:700;color:#0c4a6e">
+              <label style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:3px 5px;cursor:pointer"><input type="color" id="eStep5FudaBodyCol" value="#00a3af" style="width:22px;height:20px;border:0;padding:0;background:none;cursor:pointer">札本体</label>
+              <label style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:3px 5px;cursor:pointer"><input type="color" id="eStep5FudaTextCol" value="#ffffff" style="width:22px;height:20px;border:0;padding:0;background:none;cursor:pointer">札文字</label>
+              <label style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:3px 5px;cursor:pointer"><input type="color" id="eStep5FudaPadCol" value="#046e7e" style="width:22px;height:20px;border:0;padding:0;background:none;cursor:pointer">うしろ</label>
+              <label style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:3px 5px;cursor:pointer"><input type="color" id="eStep5FudaStrokeCol" value="#ffffff" style="width:22px;height:20px;border:0;padding:0;background:none;cursor:pointer">枠線</label>
+            </div>
           </div>
         </div>
         <p class="e-note" id="eLogoNote">ロゴは手ぬぐいの上でもダボシャツの上でもドラッグして動かせます。</p>
@@ -722,17 +772,12 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <button type="button" class="mini-btn ai-target-chip" data-ckey="ararePadColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="ararePadColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>あられうしろ色</button>
           <button type="button" class="mini-btn ai-target-chip" data-ckey="ararePadStrokeColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="ararePadStrokeColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>あられ枠線色</button>
           <button type="button" class="mini-btn ai-target-chip" data-ckey="arareOuterColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="arareOuterColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>あられ外周枠色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>④ 札ロゴ本体の色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoPadColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoPadColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑤ 札のうしろ色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoPadStrokeColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoPadStrokeColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑥ 札の周り枠線色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑦ 木札の文字色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaFrameColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaFrameColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑧ 木札の枠線色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑨ 木札の背景色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑩ 木札の紐塗り</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordStroke" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordStroke" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑪ 木札の紐フチ</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaAccentColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaAccentColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑫ 札の丸紋・差札</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestFg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestFg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑬ 丸紋の色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑭ 丸紋の背景</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>④ 札本体の色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoTextColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoTextColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑤ 札の文字色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoPadColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoPadColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑥ 札のうしろ背景色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoPadStrokeColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoPadStrokeColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑦ 札の周り枠線色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestFg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestFg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑧ 丸紋の色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑨ 丸紋の背景</button>
           <button type="button" class="mini-btn ai-target-chip" data-ckey="seinenSpotColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="seinenSpotColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>🌟 1個青年会色</button>
         </div>
 
@@ -828,7 +873,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
       </div>
       <div class="cgroup" id="fudaColorGroup" style="border:1.5px solid #7dd3fc;background:#f0f9ff">
-        <div class="chead"><span class="clabel" style="color:#0c4a6e;font-weight:800">🏷️ 札の色（本体・うしろ・周り枠）</span>
+        <div class="chead"><span class="clabel" style="color:#0c4a6e;font-weight:800">🏷️ ① 札本体の色（板・組紐の色）</span>
           <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           <input type="color" id="sec3FudaLogoColor" value="#00a3af" aria-label="札ロゴ本体の色を選ぶ">
           <input type="text" id="sec3FudaLogoHex" class="hex" maxlength="7" spellcheck="false" aria-label="札ロゴのカラーコード"></div>
@@ -837,30 +882,38 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <button type="button" class="mini-btn" id="sec3FudaTealBtn" style="background:#e0f2fe;border-color:#00a3af;color:#007b86;font-weight:700">浅葱(標準)</button>
           <button type="button" class="mini-btn" id="sec3FudaWhiteBtn">白抜き</button>
         </div>
-        <div style="display:grid;gap:5px;margin-top:4px;padding-top:6px;border-top:1px dashed #7dd3fc;font-size:11.5px">
+        <div style="display:grid;gap:6px;margin-top:4px;padding-top:6px;border-top:1px dashed #7dd3fc;font-size:11.5px">
+          <!-- ② 札の文字色（仲羽田・青年会） -->
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-            <span style="font-weight:700;color:#0c4a6e">札のうしろ色(透過なし):</span>
+            <span style="font-weight:700;color:#0c4a6e">② 札の文字色(仲羽田・青年会):</span>
+            <input type="color" id="sec3FudaTextColor" value="#ffffff" aria-label="札の文字色">
+            <button type="button" class="mini-btn" id="sec3FudaTextWhiteBtn">白</button>
+            <button type="button" class="mini-btn" id="sec3FudaTextGoldBtn">羽田金</button>
+            <button type="button" class="mini-btn" id="sec3FudaTextYellowBtn">山吹</button>
+            <button type="button" class="mini-btn" id="sec3FudaTextNandoBtn">羽田納戸</button>
+            <button type="button" class="mini-btn" id="sec3FudaTextBlackBtn">黒</button>
+            <button type="button" class="mini-btn" id="sec3FudaTextTransBtn" title="文字を透かし（うしろ色・生地色）にします">透かし</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoTextColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          </div>
+          <!-- ③ 札のうしろ背景色 -->
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:3px;border-top:1px dotted #bae6fd">
+            <span style="font-weight:700;color:#0c4a6e">③ 札のうしろ背景色:</span>
             <input type="color" id="sec3LogoPadColor" value="#046e7e" aria-label="札のうしろ色">
             <button type="button" class="mini-btn" id="sec3LogoPadBgBtn">地の色と同色</button>
             <button type="button" class="mini-btn" id="sec3LogoPadWhiteBtn">白</button>
             <button type="button" class="mini-btn" id="sec3LogoPadBlackBtn">黒</button>
+            <button type="button" class="mini-btn" id="sec3LogoPadNoneBtn" title="うしろの枠を消して柄を透かします">うしろ透過</button>
             <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoPadColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           </div>
-          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-            <span style="font-weight:700;color:#0c4a6e">札の周り枠線の色:</span>
+          <!-- ④ 札の周り枠線の色 -->
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:3px;border-top:1px dotted #bae6fd">
+            <span style="font-weight:700;color:#0c4a6e">④ 札の周り枠線の色:</span>
             <input type="color" id="sec3LogoPadStrokeColor" value="#ffffff" aria-label="札の周り枠線の色">
+            <button type="button" class="mini-btn" id="sec3LogoStrokeNoneBtn">枠線なし</button>
             <button type="button" class="mini-btn" id="sec3LogoStrokeGoldBtn">羽田金</button>
             <button type="button" class="mini-btn" id="sec3LogoStrokeWhiteBtn">白</button>
             <button type="button" class="mini-btn" id="sec3LogoStrokeBlackBtn">黒</button>
             <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoPadStrokeColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding-top:3px;border-top:1px dotted #bae6fd">
-            <span style="font-weight:700;color:#0c4a6e">名入れ木札の色:</span>
-            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextFgColor" value="#ffffff">文字</label>
-            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextFrameColor" value="#ffffff">枠線</label>
-            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextBgColor" value="#046e7e">札背景</label>
-            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextCordColor" value="#046e7e">組紐</label>
-            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="customTextColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           </div>
         </div>
       </div>
@@ -985,7 +1038,10 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
             <span style="font-size:11px;font-weight:700;color:#1e40af">📚 マイ・ロゴ保管棚（登録済みロゴ一覧）</span>
-            <span id="logoShelfCountBadge" class="badge" style="background:#dbeafe;color:#1e40af">0個</span>
+            <div style="display:flex;gap:4px;align-items:center">
+              <button type="button" class="mini-btn" id="restoreLogoShelfBtn" style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;padding:2px 6px" title="誤って消したマイロゴや初期ロゴをすべて元に戻します">↩️ 消したマイロゴを戻す</button>
+              <span id="logoShelfCountBadge" class="badge" style="background:#dbeafe;color:#1e40af">0個</span>
+            </div>
           </div>
           <div style="display:flex;gap:4px;align-items:center">
             <input type="text" id="logoShelfNameInput" class="save-input" placeholder="登録するロゴ名（例：仲羽半纏ロゴ）" style="font-size:11.5px;padding:4px 7px">
@@ -1016,12 +1072,21 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
 
         <div class="crow2">
-          <label class="chk"><input type="checkbox" id="logoMono">単色染め(色変更)</label>
-          <input type="color" id="logoColor" value="#ffffff" title="単色染め時のロゴ色">
+          <label class="chk"><input type="checkbox" id="logoMono">札本体・単色染め</label>
+          <input type="color" id="logoColor" value="#00a3af" title="札本体・単色染め時のロゴ色">
           <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           <button type="button" class="mini-btn" id="logoColorToBgBtn" title="地色と同じ色にして白抜き・型抜き風にします">地色と同色</button>
           <button type="button" class="mini-btn" id="logoColorToFgBtn" title="柄の文字色と同じ色にします">柄と同色</button>
           <button type="button" class="mini-btn" id="logoColorGoldBtn" style="background:#877028;color:#fff;border-color:#877028">羽田金</button>
+        </div>
+        <div class="crow2" style="background:#f0f9ff;padding:4px 7px;border:1px solid #bae6fd;border-radius:6px">
+          <span style="font-size:11.5px;font-weight:700;color:#0c4a6e">札の文字色(仲羽田・青年会):</span>
+          <input type="color" id="logoTextColor" value="#ffffff" title="札ロゴ内部の彫刻文字（仲羽田・青年会）の色">
+          <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoTextColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          <button type="button" class="mini-btn" id="logoTextColWhiteBtn">白</button>
+          <button type="button" class="mini-btn" id="logoTextColGoldBtn" style="background:#877028;color:#fff;border-color:#877028">羽田金</button>
+          <button type="button" class="mini-btn" id="logoTextColBlackBtn">黒</button>
+          <button type="button" class="mini-btn" id="logoTextColTransBtn" title="文字を透かし（うしろ色・生地色）にします">透かし</button>
         </div>
         <div class="row"><label for="logoSize">ロゴの大きさ</label><input type="range" id="logoSize" min="6" max="340" step="1" value="85"><output for="logoSize" id="logoSize-o"></output></div>
         <div class="row"><label for="logoAngle">ロゴの回転角度</label><input type="range" id="logoAngle" min="-180" max="180" step="1" value="0"><output for="logoAngle" id="logoAngle-o"></output></div>
@@ -1040,10 +1105,10 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             </select>
           </div>
           <div class="chips" id="logoPadQuickChips" style="gap:4px">
-            <button type="button" class="mini-btn" data-pm="silhouette" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">🏷️ 札の形（透過なし）</button>
-            <button type="button" class="mini-btn" data-pm="roundRect" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">🔲 四角枠（透過なし）</button>
-            <button type="button" class="mini-btn" data-pm="circle" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">⭕ 丸枠（透過なし）</button>
-            <button type="button" class="mini-btn" data-pm="none">透過のまま</button>
+            <button type="button" class="mini-btn" data-pm="silhouette" data-pquick="silhouette" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">🏷️ 札の形（透過なし）</button>
+            <button type="button" class="mini-btn" data-pm="roundRect" data-pquick="roundRect" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">🔲 四角枠（透過なし）</button>
+            <button type="button" class="mini-btn" data-pm="circle" data-pquick="circle" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">⭕ 丸枠（透過なし）</button>
+            <button type="button" class="mini-btn" data-pm="none" data-pquick="none">透過のまま</button>
           </div>
           <div id="logoPadDetailControls" style="display:flex;flex-direction:column;gap:4px">
             <div class="row"><label for="logoPadMarginMm">周りの枠(余白)の広さ</label><input type="range" id="logoPadMarginMm" min="0" max="45" step="0.5" value="6"><output for="logoPadMarginMm" id="logoPadMarginMm-o">6 mm</output></div>
@@ -1582,6 +1647,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <div class="adv-body">
             <div class="row"><label for="daboShiftY">身頃の取り位置(上下)</label><input type="range" id="daboShiftY" min="-45" max="45" step="1" value="0"><output for="daboShiftY" id="daboShiftY-o"></output></div>
             <div class="row"><label for="daboShiftX">身頃の取り位置(左右)</label><input type="range" id="daboShiftX" min="-45" max="45" step="1" value="0"><output for="daboShiftX" id="daboShiftX-o"></output></div>
+            <div class="row" style="grid-template-columns:1fr"><button type="button" class="mini-btn" id="resetCutOffsetBtn" title="裁断図でドラッグして動かしたパーツの取り位置を元に戻します">✂️ 裁断図で動かした取り位置を元に戻す</button></div>
             <div class="row"><label for="daboSleeveShiftY">袖の取り位置(上下)</label><input type="range" id="daboSleeveShiftY" min="-45" max="45" step="1" value="0"><output for="daboSleeveShiftY" id="daboSleeveShiftY-o"></output></div>
             <div class="row"><label for="daboPatScale">ダボ上の柄倍率</label><input type="range" id="daboPatScale" min="50" max="200" step="5" value="100"><output for="daboPatScale" id="daboPatScale-o"></output></div>
 
@@ -2084,11 +2150,14 @@ function initFudaBaseFromPathD(dStr, applyExtraSmooth = false){
 }
 initFudaBaseFromPathD(FUDA_ACTIVE_PATH_D, false);
 
-// ★ 札ロゴ（fuda_logo_teal.svg / fuda_logo_white.svg）の「うしろを透過させない（中抜き穴なしシルエット＋左右の横揺れ線完全対応）」ベクターデータ生成
+// ★ 札ロゴ（fuda_logo_teal.svg / fuda_logo_white.svg）の「うしろを透過させない（中抜き穴なしシルエット＋左右の横揺れ線完全対応）」＆「彫刻文字（仲羽田・青年会）の独立色変え」ベクターデータ生成
 let FUDA_SOLID_SIL_PATH_D = '';
 let FUDA_SOLID_SIL_PATH2D = null;
 let FUDA_SOLID_SIL_POLYS = [];
 let FUDA_SOLID_SIL_NORM_POLYS = [];
+let FUDA_TEXT_HOLES_PATH_D = '';
+let FUDA_TEXT_HOLES_PATH2D = null;
+let FUDA_TEXT_HOLES_NORM_POLYS = [];
 function ptsToSvgSubpathD(pts){
   if(!pts || pts.length < 3) return '';
   let d = `M${pts[0][0].toFixed(2)},${pts[0][1].toFixed(2)}`;
@@ -2125,17 +2194,22 @@ function computeClockwiseConvexHull(points){
   const rawSubs = FUDA_PLACE_PATH_D.split(/(?=M)/).map(s => s.trim()).filter(Boolean);
   const posSubs = [];
   const posPolys = [];
+  const textHoleSubs = [];
+  const textHolePolys = [];
   const leftWobblePts = [];
   const rightWobblePts = [];
-  for(const sp of rawSubs){
+  for(let subIdx = 0; subIdx < rawSubs.length; subIdx++){
+    const sp = rawSubs[subIdx];
     const pts = sampleSvgSubpathToDensePts(sp, 1.8);
     if(pts.length < 3) continue;
-    let area2 = 0, minX = Infinity, maxX = -Infinity;
+    let area2 = 0, minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
     for(let i = 0, n = pts.length; i < n; i++){
       const p1 = pts[i], p2 = pts[(i + 1) % n];
       area2 += p1[0] * p2[1] - p2[0] * p1[1];
       if(p1[0] < minX) minX = p1[0];
       if(p1[0] > maxX) maxX = p1[0];
+      if(p1[1] < minY) minY = p1[1];
+      if(p1[1] > maxY) maxY = p1[1];
     }
     if(area2 > 0){
       posSubs.push(sp);
@@ -2147,6 +2221,11 @@ function computeClockwiseConvexHull(points){
       posPolys.push(rev);
       if(minX < 15) leftWobblePts.push(...rev);
       if(maxX > 535) rightWobblePts.push(...rev);
+    }else if(minY >= 165){
+      // 札内部の彫刻文字（仲・羽・田・青・年・会）の穴（反時計回り area2 < 0、組紐より下の minY >= 165）を時計回りに反転して保持
+      const rev = pts.slice().reverse();
+      textHoleSubs.push(ptsToSvgSubpathD(rev));
+      textHolePolys.push(rev);
     }
   }
   // 3本の横揺れ線の間の隙間や札本体との付け根も変に透過しないよう、横揺れ線群を包むブリッジ包絡ポリゴンを追加
@@ -2167,12 +2246,22 @@ function computeClockwiseConvexHull(points){
   FUDA_SOLID_SIL_PATH_D = posSubs.join(' ');
   FUDA_SOLID_SIL_POLYS = posPolys;
   FUDA_SOLID_SIL_NORM_POLYS = posPolys.map(pts => pts.map(([x, y]) => [(x - FUDA_VB_X) / FUDA_VB_W, (y - FUDA_VB_Y) / FUDA_VB_H]));
-  if(typeof Path2D !== 'undefined' && FUDA_SOLID_SIL_PATH_D){
-    try{ FUDA_SOLID_SIL_PATH2D = new Path2D(FUDA_SOLID_SIL_PATH_D); }catch(e){}
+  FUDA_TEXT_HOLES_PATH_D = textHoleSubs.join(' ');
+  FUDA_TEXT_HOLES_NORM_POLYS = textHolePolys.map(pts => pts.map(([x, y]) => [(x - FUDA_VB_X) / FUDA_VB_W, (y - FUDA_VB_Y) / FUDA_VB_H]));
+  if(typeof Path2D !== 'undefined'){
+    if(FUDA_SOLID_SIL_PATH_D){
+      try{ FUDA_SOLID_SIL_PATH2D = new Path2D(FUDA_SOLID_SIL_PATH_D); }catch(e){}
+    }
+    if(FUDA_TEXT_HOLES_PATH_D){
+      try{ FUDA_TEXT_HOLES_PATH2D = new Path2D(FUDA_TEXT_HOLES_PATH_D); }catch(e){}
+    }
   }
 })();
 function getFudaSolidSilhouettePolys(){
   return FUDA_SOLID_SIL_NORM_POLYS;
+}
+function getFudaTextHolesPolys(){
+  return FUDA_TEXT_HOLES_NORM_POLYS;
 }
 
 (function(){
@@ -2206,7 +2295,8 @@ const DEF={
   showLogo:false, logoName:'仲羽半纏ロゴ', logoDataUrl:'', logoRemoveBg:true, logoBgMode:'white', logoKeyColor:'#ffffff',
   logoInvert:false, logoThreshold:225, logoSoftness:18, logoDilate:0, logoContrast:0, logoOpacity:100,
   logoFlipH:false, logoFlipV:false, logoAutoTrim:false,
-  logoMono:false, logoColor:'#ffffff', logoOutlineMm:0, logoOutlineColor:'#ffffff', logoMaskShape:'none',
+  logoMono:false, logoColor:'#00a3af', logoTextColor:'#ffffff', logoTextColorMode:'auto',
+  logoOutlineMm:0, logoOutlineColor:'#ffffff', logoMaskShape:'none',
   logoPadMode:'none', logoPadColor:'#046e7e', logoPadColorMode:'bg',
   logoPadMarginMm:6, logoPadCornerMm:6, logoPadStrokeMm:0, logoPadStrokeColor:'#ffffff',
   logoSize:85, logoAngle:0, logoX:50, logoY:28, daboSpotPart:'auto',
@@ -2220,7 +2310,7 @@ const DEF={
   fudaSubOffX:56, fudaSubOffY:6, fudaSubAngle:18,
   fudaCordColor:'#00a3af', fudaCordStroke:'#ffffff',
   fudaBgTransparent:false, fudaFrameTransparent:false, fudaCordTransparent:false, fudaCordAllTransparent:false,
-  fudaNonTextOpacity:100, fudaOpacity:100, showFudaGizmo:true,
+  fudaNonTextOpacity:100, fudaOpacity:100, showFudaGizmo:false,
   fudaCordKnotX:0, fudaCordKnotY:0, fudaCordTailX:0, fudaCordTailY:0,
   textSize:44, textSpacing:6, textOutlineW:5, textAngle:0, textX:50, textY:75,
   textRepeatMode:'none', textRepeatGapX:68, textRepeatGapY:68, textRepeatGridAngle:0, textRepeatAngleVar:0, textRepeatSizeVar:0,
@@ -2232,6 +2322,7 @@ const DEF={
   daboStripRot:'auto', // 'auto' | '0' | '-90' | '90' | '180'
   daboSize:'L', // 'S' | 'M' | 'L' | 'LL' | '3L'
   daboShiftY:0, daboShiftX:0, daboSleeveShiftY:0, daboPatScale:100,
+  daboCutOffset:{}, // ✂️ 裁断図でドラッグして動かした各パーツの取り位置のずれ {partId:[du,dv]}（0..1 正規化）
   daboBodyPreset:'current', daboSleevePreset:'same', daboCollarMode:'same', daboPocketMode:'match',
   showDaboZoneGuide:false, daboInteractiveLogo:false, daboDragItemType:'auto',
   // 大小あられパラメーター ＆ 大小あられの周り枠（1粒ごとの周り枠・外周周り枠）
@@ -2282,6 +2373,15 @@ try{
       S.logoSlots.forEach(sl => { if(sl) sl.daboSpotPart = 'all'; });
     }
     localStorage.setItem('haneda-fix-sametenugui-v1123', '1');
+    localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
+  }
+  if(!localStorage.getItem('haneda-fix-fudagizmo-v1124')){
+    // 意図せぬ虹色ドット（変形丸ハンドル）や名入れ木札の自動ONをリセット
+    S.showFudaGizmo = false;
+    S.showText = false;
+    if(!S.logoTextColor) S.logoTextColor = '#ffffff';
+    if(!S.logoTextColorMode) S.logoTextColorMode = 'auto';
+    localStorage.setItem('haneda-fix-fudagizmo-v1124', '1');
     localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
   }
 }catch(e){}
@@ -2341,7 +2441,7 @@ let PDFJS_LOADED = null;
 const LOGO_SLOT_KEYS = [
   'logoName','logoDataUrl','logoRemoveBg','logoBgMode','logoKeyColor',
   'logoInvert','logoThreshold','logoSoftness','logoDilate','logoContrast','logoOpacity',
-  'logoFlipH','logoFlipV','logoAutoTrim','logoMono','logoColor',
+  'logoFlipH','logoFlipV','logoAutoTrim','logoMono','logoColor','logoTextColor','logoTextColorMode',
   'logoOutlineMm','logoOutlineColor','logoMaskShape',
   'logoPadMode','logoPadColor','logoPadColorMode','logoPadMarginMm','logoPadCornerMm','logoPadStrokeMm','logoPadStrokeColor',
   'logoSize','logoAngle','logoX','logoY','daboSpotPart',
@@ -2433,8 +2533,22 @@ function duplicateActiveLogoSlot(){
   update(false);
 }
 
+const LOGO_SHELF_TRASH_STORAGE = 'haneda-logo-shelf-trash-v1';
+const REMOVED_SLOTS_TRASH_STORAGE = 'haneda-removed-slots-trash-v1';
+
+function pushRemovedSlotToTrash(slotObj){
+  if(!slotObj) return;
+  try{
+    const arr = JSON.parse(localStorage.getItem(REMOVED_SLOTS_TRASH_STORAGE) || '[]');
+    arr.unshift(slotObj);
+    localStorage.setItem(REMOVED_SLOTS_TRASH_STORAGE, JSON.stringify(arr.slice(0, 10)));
+  }catch(e){}
+}
+
 function removeLogoSlotAt(idx){
   if(!Array.isArray(S.logoSlots) || S.logoSlots.length <= 1){
+    if(Array.isArray(S.logoSlots) && S.logoSlots[0]) pushRemovedSlotToTrash(S.logoSlots[0]);
+    else if(S.showLogo) pushRemovedSlotToTrash(extractLogoSlotFromS(S));
     S.logoSlots = [];
     S.activeLogoSlot = 0;
     S.showLogo = false;
@@ -2442,6 +2556,7 @@ function removeLogoSlotAt(idx){
     update(false);
     return;
   }
+  if(S.logoSlots[idx]) pushRemovedSlotToTrash(S.logoSlots[idx]);
   S.logoSlots.splice(idx, 1);
   if(S.activeLogoSlot >= S.logoSlots.length) S.activeLogoSlot = S.logoSlots.length - 1;
   else if(idx < S.activeLogoSlot) S.activeLogoSlot = Math.max(0, S.activeLogoSlot - 1);
@@ -2451,6 +2566,11 @@ function removeLogoSlotAt(idx){
 }
 
 function clearAllLogos(){
+  if(Array.isArray(S.logoSlots) && S.logoSlots.length > 0){
+    S.logoSlots.forEach(sl => pushRemovedSlotToTrash(sl));
+  }else if(S.showLogo){
+    pushRemovedSlotToTrash(extractLogoSlotFromS(S));
+  }
   S.logoSlots = [];
   S.activeLogoSlot = 0;
   S.showLogo = false;
@@ -2606,7 +2726,7 @@ function renderLogoSlotsBar(){
   });
 }
 
-// 📚 マイ・ロゴ保管棚（複数のロゴをlocalStorageに永続保持し、いつでも切替・追加配置できる機能）
+// 📚 マイ・ロゴ保管棚（複数のロゴをlocalStorageに永続保持し、いつでも切替・追加配置・削除復元できる機能）
 const LOGO_SHELF_KEY = 'haneda-logo-shelf-v1';
 let LOGO_SHELF = [];
 
@@ -2621,7 +2741,7 @@ function getDefaultLogoShelfItems(){
         logoName: 'fuda_logo_teal',
         logoDataUrl: '__BUILTIN_FUDA_TEAL__',
         logoRemoveBg: false, logoBgMode: 'none', logoThreshold: 225, logoSoftness: 18,
-        logoMono: false, logoColor: '#00a3af', logoOutlineMm: 0
+        logoMono: false, logoColor: '#00a3af', logoTextColor: '#ffffff', logoTextColorMode: 'auto', logoOutlineMm: 0
       })
     },
     {
@@ -2632,7 +2752,7 @@ function getDefaultLogoShelfItems(){
         logoName: 'fuda_logo_white',
         logoDataUrl: '__BUILTIN_FUDA_WHITE__',
         logoRemoveBg: false, logoBgMode: 'none', logoThreshold: 225, logoSoftness: 18,
-        logoMono: false, logoColor: '#ffffff', logoOutlineMm: 0
+        logoMono: false, logoColor: '#ffffff', logoTextColor: '#ffffff', logoTextColorMode: 'auto', logoOutlineMm: 0
       })
     },
     {
@@ -2671,30 +2791,127 @@ function getDefaultLogoShelfItems(){
   ];
 }
 
+function recoverMissingAndDeletedLogosIntoShelf(){
+  const hUrl = (typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64) ? HANTEN_LOGO_B64 : '';
+  let restoredCount = 0;
+  // 1. ゴミ箱（誤って×を押したマイロゴ）から復元
+  try{
+    const trash = JSON.parse(localStorage.getItem(LOGO_SHELF_TRASH_STORAGE) || '[]');
+    if(Array.isArray(trash) && trash.length > 0){
+      for(let i = trash.length - 1; i >= 0; i--){
+        const tItem = trash[i];
+        if(tItem && tItem.slot && !LOGO_SHELF.some(x => x && (x.id === tItem.id || (x.name === tItem.name && x.slot && x.slot.logoDataUrl === tItem.slot.logoDataUrl)))){
+          LOGO_SHELF.unshift(tItem);
+          restoredCount++;
+        }
+      }
+      localStorage.removeItem(LOGO_SHELF_TRASH_STORAGE);
+    }
+  }catch(e){}
+
+  // 2. 現在の設定 S や保存済みプリセット内に残っているカスタムロゴを自動スキャンして保管棚に復元
+  const tryRecoverSlot = (sl, fallbackName) => {
+    if(!sl || !sl.logoDataUrl) return;
+    const url = sl.logoDataUrl;
+    const exists = LOGO_SHELF.some(x => x && x.slot && x.slot.logoDataUrl === url && (x.slot.logoColor || '') === (sl.logoColor || ''));
+    if(!exists){
+      LOGO_SHELF.unshift({
+        id: 'lg_rec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+        name: sl.logoName || fallbackName || '復元マイロゴ',
+        savedAt: Date.now(),
+        slot: extractLogoSlotFromS(sl)
+      });
+      restoredCount++;
+    }
+  };
+  try{
+    if(S && S.logoDataUrl) tryRecoverSlot(S, S.logoName);
+    if(S && Array.isArray(S.logoSlots)) S.logoSlots.forEach(sl => tryRecoverSlot(sl, sl && sl.logoName));
+    const savedPresets = JSON.parse(localStorage.getItem('haneda-arare-presets-v1') || '[]');
+    if(Array.isArray(savedPresets)){
+      savedPresets.forEach(p => {
+        const st = p && p.settings;
+        if(!st) return;
+        if(st.logoDataUrl) tryRecoverSlot(st, st.logoName || p.name);
+        if(Array.isArray(st.logoSlots)) st.logoSlots.forEach(sl => tryRecoverSlot(sl, (sl && sl.logoName) || p.name));
+      });
+    }
+    const removedSlots = JSON.parse(localStorage.getItem(REMOVED_SLOTS_TRASH_STORAGE) || '[]');
+    if(Array.isArray(removedSlots)){
+      removedSlots.forEach(sl => tryRecoverSlot(sl, sl && sl.logoName));
+    }
+  }catch(e){}
+
+  // 3. 標準5種のマイロゴ（札ロゴ ティール・札ロゴ 白抜き・仲羽半纏 標準/白染め/金＋白フチ）のうち消えていたものをすべて復元
+  const defs = getDefaultLogoShelfItems();
+  for(const defItem of defs){
+    const exists = LOGO_SHELF.some(x => x && (x.id === defItem.id || (x.name === defItem.name)));
+    if(!exists){
+      LOGO_SHELF.push(defItem);
+      restoredCount++;
+    }
+  }
+  LOGO_SHELF.forEach(item => {
+    if(item && item.slot && !item.slot.logoDataUrl && hUrl) item.slot.logoDataUrl = hUrl;
+  });
+  return restoredCount;
+}
+
+function restoreDeletedMyLogos(fromUserClick){
+  if(!LOGO_SHELF || LOGO_SHELF.length === 0) loadLogoShelfFromStorage();
+  const cnt = recoverMissingAndDeletedLogosIntoShelf();
+  saveLogoShelfToStorage();
+  renderLogoShelf();
+  // キャンバス上から直前に消したロゴ枠があればそれも復元
+  let restoredCanvasSlot = false;
+  if(fromUserClick){
+    try{
+      const removedSlots = JSON.parse(localStorage.getItem(REMOVED_SLOTS_TRASH_STORAGE) || '[]');
+      if(Array.isArray(removedSlots) && removedSlots.length > 0){
+        const lastSlot = removedSlots.shift();
+        localStorage.setItem(REMOVED_SLOTS_TRASH_STORAGE, JSON.stringify(removedSlots));
+        if(lastSlot){
+          addNewLogoSlot(lastSlot);
+          restoredCanvasSlot = true;
+        }
+      }
+    }catch(e){}
+    if(typeof saySave === 'function'){
+      if(cnt > 0 && restoredCanvasSlot) saySave(`↩️ 消したマイロゴ（${cnt}件）を保管棚に戻し、キャンバス上のロゴも復元しました！`);
+      else if(cnt > 0) saySave(`↩️ 消してしまったマイロゴ（${cnt}件）を保管棚に復元しました！`);
+      else if(restoredCanvasSlot) saySave('↩️ 直前に消したロゴをキャンバス上に元通り復元しました！');
+      else saySave('✅ マイ・ロゴ保管棚のすべてのロゴ（札ロゴ・仲羽半纏ロゴ・登録ロゴ）が揃っています！');
+    }
+    update(false);
+  }
+}
+
 function loadLogoShelfFromStorage(){
   try{
     const raw = JSON.parse(localStorage.getItem(LOGO_SHELF_KEY) || 'null');
     if(Array.isArray(raw) && raw.length > 0){
       LOGO_SHELF = raw;
-      // バンドルされた仲羽半纏ロゴURLが空だった場合は補完
       const hUrl = (typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64) ? HANTEN_LOGO_B64 : '';
       LOGO_SHELF.forEach(item => {
         if(item && item.slot && !item.slot.logoDataUrl && hUrl) item.slot.logoDataUrl = hUrl;
       });
-      // 新規追加された「札ロゴ (ティール / 白抜き)」がまだ保管棚になければ先頭に自動追加
-      const defs = getDefaultLogoShelfItems();
-      const fudaWhiteDef = defs.find(d => d.id === 'shelf_fuda_white');
-      const fudaTealDef = defs.find(d => d.id === 'shelf_fuda_teal');
-      if(fudaWhiteDef && !LOGO_SHELF.some(x => x && (x.id === 'shelf_fuda_white' || (x.slot && x.slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__')))){
-        LOGO_SHELF.unshift(fudaWhiteDef);
-      }
-      if(fudaTealDef && !LOGO_SHELF.some(x => x && (x.id === 'shelf_fuda_teal' || (x.slot && x.slot.logoDataUrl === '__BUILTIN_FUDA_TEAL__')))){
-        LOGO_SHELF.unshift(fudaTealDef);
+      // 誤って削除されたマイロゴや初期ロゴ（仲羽半纏ロゴ・札ロゴ等）を起動時に自動復元
+      if(!localStorage.getItem('haneda-restore-shelf-v1124')){
+        recoverMissingAndDeletedLogosIntoShelf();
+        localStorage.setItem('haneda-restore-shelf-v1124', '1');
+        saveLogoShelfToStorage();
+      }else{
+        const defs = getDefaultLogoShelfItems();
+        for(const d of defs){
+          if(!LOGO_SHELF.some(x => x && x.id === d.id)) LOGO_SHELF.push(d);
+        }
       }
       return;
     }
   }catch(e){}
   LOGO_SHELF = getDefaultLogoShelfItems();
+  recoverMissingAndDeletedLogosIntoShelf();
+  saveLogoShelfToStorage();
 }
 
 function saveLogoShelfToStorage(){
@@ -2752,98 +2969,15 @@ async function addOrSaveLogoToShelf(customName, slotSource){
 
 function renderLogoShelf(){
   const listEl = $('logoShelfList');
+  const easyListEl = $('eLogoShelfList');
   const badgeEl = $('logoShelfCountBadge');
-  if(!listEl) return;
   if(!LOGO_SHELF || LOGO_SHELF.length === 0) loadLogoShelfFromStorage();
   if(badgeEl) badgeEl.textContent = LOGO_SHELF.length + '個保持中';
-  listEl.innerHTML = '';
+  if(listEl) listEl.innerHTML = '';
+  if(easyListEl) easyListEl.innerHTML = '';
 
   LOGO_SHELF.forEach(item => {
     const sl = item.slot || extractLogoSlotFromS(DEF);
-    const card = document.createElement('div');
-    card.style.background = '#ffffff';
-    card.style.border = '1px solid #bfdbfe';
-    card.style.borderRadius = '6px';
-    card.style.padding = '5px';
-    card.style.display = 'flex';
-    card.style.flexDirection = 'column';
-    card.style.gap = '4px';
-    card.style.fontSize = '10.5px';
-
-    const topRow = document.createElement('div');
-    topRow.style.display = 'flex';
-    topRow.style.alignItems = 'center';
-    topRow.style.gap = '5px';
-
-    const thumbBox = document.createElement('div');
-    thumbBox.style.width = '36px';
-    thumbBox.style.height = '36px';
-    thumbBox.style.flexShrink = '0';
-    thumbBox.style.borderRadius = '4px';
-    thumbBox.style.border = '1px solid #cbd5e1';
-    const isWhiteFuda = (sl.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || (sl.logoName && sl.logoName.includes('white')) || (sl.logoMono && (sl.logoColor||'').toLowerCase() === '#ffffff'));
-    thumbBox.style.background = isWhiteFuda
-      ? '#0f172a'
-      : 'repeating-conic-gradient(#e2e8f0 0% 25%, #f8fafc 0% 50%) 50% / 8px 8px';
-    thumbBox.style.display = 'flex';
-    thumbBox.style.alignItems = 'center';
-    thumbBox.style.justifyContent = 'center';
-    thumbBox.style.overflow = 'hidden';
-    thumbBox.style.cursor = 'pointer';
-    thumbBox.title = 'クリックで現在のロゴ枠に読み込みます';
-
-    const tImg = document.createElement('img');
-    tImg.src = resolveLogoDataUrl(sl.logoDataUrl) || (typeof HANTEN_LOGO_B64 !== 'undefined' ? HANTEN_LOGO_B64 : '');
-    tImg.style.maxWidth = '100%';
-    tImg.style.maxHeight = '100%';
-    tImg.style.objectFit = 'contain';
-    thumbBox.appendChild(tImg);
-
-    const titleEl = document.createElement('div');
-    titleEl.style.flex = '1';
-    titleEl.style.fontWeight = '700';
-    titleEl.style.color = '#1e293b';
-    titleEl.style.overflow = 'hidden';
-    titleEl.style.textOverflow = 'ellipsis';
-    titleEl.style.whiteSpace = 'nowrap';
-    titleEl.textContent = item.name || sl.logoName || 'ロゴ';
-    titleEl.title = item.name || '';
-
-    const delShelfBtn = document.createElement('button');
-    delShelfBtn.type = 'button';
-    delShelfBtn.className = 'mini-btn del';
-    delShelfBtn.style.padding = '1px 5px';
-    delShelfBtn.style.fontSize = '10px';
-    delShelfBtn.textContent = '×';
-    delShelfBtn.title = '保管棚から削除';
-    delShelfBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      LOGO_SHELF = LOGO_SHELF.filter(x => x.id !== item.id);
-      if(LOGO_SHELF.length === 0) LOGO_SHELF = getDefaultLogoShelfItems();
-      saveLogoShelfToStorage();
-      renderLogoShelf();
-    });
-
-    topRow.appendChild(thumbBox);
-    topRow.appendChild(titleEl);
-    topRow.appendChild(delShelfBtn);
-
-    const btnRow = document.createElement('div');
-    btnRow.style.display = 'flex';
-    btnRow.style.gap = '3px';
-
-    const useCurrentBtn = document.createElement('button');
-    useCurrentBtn.type = 'button';
-    useCurrentBtn.className = 'mini-btn';
-    useCurrentBtn.style.flex = '1';
-    useCurrentBtn.style.padding = '2px 4px';
-    useCurrentBtn.style.fontSize = '10px';
-    useCurrentBtn.style.background = '#eff6ff';
-    useCurrentBtn.style.borderColor = '#93c5fd';
-    useCurrentBtn.style.color = '#1d4ed8';
-    useCurrentBtn.style.fontWeight = '700';
-    useCurrentBtn.textContent = '🔄 今の枠へ切替';
-    useCurrentBtn.title = '現在選択中のロゴをこのロゴに切り替えます（位置はそのまま維持）';
     const applyToCurrentFn = () => {
       const keepX = S.logoX ?? 50, keepY = S.logoY ?? 28, keepSz = S.logoSize || 85;
       S.showLogo = true;
@@ -2852,31 +2986,169 @@ function renderLogoShelf(){
       PROC_LOGO_KEY = '';
       update(false);
     };
-    useCurrentBtn.addEventListener('click', applyToCurrentFn);
-    thumbBox.addEventListener('click', applyToCurrentFn);
+    const isWhiteFuda = (sl.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || (sl.logoName && sl.logoName.includes('white')) || (sl.logoMono && (sl.logoColor||'').toLowerCase() === '#ffffff'));
+    const imgSrc = resolveLogoDataUrl(sl.logoDataUrl) || (typeof HANTEN_LOGO_B64 !== 'undefined' ? HANTEN_LOGO_B64 : '');
 
-    const addMultiBtn = document.createElement('button');
-    addMultiBtn.type = 'button';
-    addMultiBtn.className = 'mini-btn';
-    addMultiBtn.style.flex = '1';
-    addMultiBtn.style.padding = '2px 4px';
-    addMultiBtn.style.fontSize = '10px';
-    addMultiBtn.style.background = '#f0fdf4';
-    addMultiBtn.style.borderColor = '#86efac';
-    addMultiBtn.style.color = '#15803d';
-    addMultiBtn.style.fontWeight = '700';
-    addMultiBtn.textContent = '＋ 追加配置';
-    addMultiBtn.title = '既存のロゴを残したまま、もう1個のロゴとして追加配置します';
-    addMultiBtn.addEventListener('click', () => {
-      addNewLogoSlot(Object.assign({}, sl, { logoName: item.name }));
-    });
+    if(listEl){
+      const card = document.createElement('div');
+      card.style.background = '#ffffff';
+      card.style.border = '1px solid #bfdbfe';
+      card.style.borderRadius = '6px';
+      card.style.padding = '5px';
+      card.style.display = 'flex';
+      card.style.flexDirection = 'column';
+      card.style.gap = '4px';
+      card.style.fontSize = '10.5px';
 
-    btnRow.appendChild(useCurrentBtn);
-    btnRow.appendChild(addMultiBtn);
+      const topRow = document.createElement('div');
+      topRow.style.display = 'flex';
+      topRow.style.alignItems = 'center';
+      topRow.style.gap = '5px';
 
-    card.appendChild(topRow);
-    card.appendChild(btnRow);
-    listEl.appendChild(card);
+      const thumbBox = document.createElement('div');
+      thumbBox.style.width = '36px';
+      thumbBox.style.height = '36px';
+      thumbBox.style.flexShrink = '0';
+      thumbBox.style.borderRadius = '4px';
+      thumbBox.style.border = '1px solid #cbd5e1';
+      thumbBox.style.background = isWhiteFuda
+        ? '#0f172a'
+        : 'repeating-conic-gradient(#e2e8f0 0% 25%, #f8fafc 0% 50%) 50% / 8px 8px';
+      thumbBox.style.display = 'flex';
+      thumbBox.style.alignItems = 'center';
+      thumbBox.style.justifyContent = 'center';
+      thumbBox.style.overflow = 'hidden';
+      thumbBox.style.cursor = 'pointer';
+      thumbBox.title = 'クリックで現在のロゴ枠に読み込みます';
+
+      const tImg = document.createElement('img');
+      tImg.src = imgSrc;
+      tImg.style.maxWidth = '100%';
+      tImg.style.maxHeight = '100%';
+      tImg.style.objectFit = 'contain';
+      thumbBox.appendChild(tImg);
+
+      const titleEl = document.createElement('div');
+      titleEl.style.flex = '1';
+      titleEl.style.fontWeight = '700';
+      titleEl.style.color = '#1e293b';
+      titleEl.style.overflow = 'hidden';
+      titleEl.style.textOverflow = 'ellipsis';
+      titleEl.style.whiteSpace = 'nowrap';
+      titleEl.textContent = item.name || sl.logoName || 'ロゴ';
+      titleEl.title = item.name || '';
+
+      const delShelfBtn = document.createElement('button');
+      delShelfBtn.type = 'button';
+      delShelfBtn.className = 'mini-btn del';
+      delShelfBtn.style.padding = '1px 5px';
+      delShelfBtn.style.fontSize = '10px';
+      delShelfBtn.textContent = '×';
+      delShelfBtn.title = '保管棚から削除（↩️ボタンでいつでも元に戻せます）';
+      delShelfBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        try{
+          const trash = JSON.parse(localStorage.getItem(LOGO_SHELF_TRASH_STORAGE) || '[]');
+          trash.unshift(item);
+          localStorage.setItem(LOGO_SHELF_TRASH_STORAGE, JSON.stringify(trash.slice(0, 12)));
+        }catch(err){}
+        LOGO_SHELF = LOGO_SHELF.filter(x => x.id !== item.id);
+        if(LOGO_SHELF.length === 0) LOGO_SHELF = getDefaultLogoShelfItems();
+        saveLogoShelfToStorage();
+        renderLogoShelf();
+        if(typeof saySave === 'function') saySave(`「${item.name}」を保管棚から外しました。「↩️ 消したマイロゴを戻す」でいつでも復元できます。`);
+      });
+
+      topRow.appendChild(thumbBox);
+      topRow.appendChild(titleEl);
+      topRow.appendChild(delShelfBtn);
+
+      const btnRow = document.createElement('div');
+      btnRow.style.display = 'flex';
+      btnRow.style.gap = '3px';
+
+      const useCurrentBtn = document.createElement('button');
+      useCurrentBtn.type = 'button';
+      useCurrentBtn.className = 'mini-btn';
+      useCurrentBtn.style.flex = '1';
+      useCurrentBtn.style.padding = '2px 4px';
+      useCurrentBtn.style.fontSize = '10px';
+      useCurrentBtn.style.background = '#eff6ff';
+      useCurrentBtn.style.borderColor = '#93c5fd';
+      useCurrentBtn.style.color = '#1d4ed8';
+      useCurrentBtn.style.fontWeight = '700';
+      useCurrentBtn.textContent = '🔄 今の枠へ切替';
+      useCurrentBtn.title = '現在選択中のロゴをこのロゴに切り替えます（位置はそのまま維持）';
+      useCurrentBtn.addEventListener('click', applyToCurrentFn);
+      thumbBox.addEventListener('click', applyToCurrentFn);
+
+      const addMultiBtn = document.createElement('button');
+      addMultiBtn.type = 'button';
+      addMultiBtn.className = 'mini-btn';
+      addMultiBtn.style.flex = '1';
+      addMultiBtn.style.padding = '2px 4px';
+      addMultiBtn.style.fontSize = '10px';
+      addMultiBtn.style.background = '#f0fdf4';
+      addMultiBtn.style.borderColor = '#86efac';
+      addMultiBtn.style.color = '#15803d';
+      addMultiBtn.style.fontWeight = '700';
+      addMultiBtn.textContent = '＋ 追加配置';
+      addMultiBtn.title = '既存のロゴを残したまま、もう1個のロゴとして追加配置します';
+      addMultiBtn.addEventListener('click', () => {
+        addNewLogoSlot(Object.assign({}, sl, { logoName: item.name }));
+      });
+
+      btnRow.appendChild(useCurrentBtn);
+      btnRow.appendChild(addMultiBtn);
+
+      card.appendChild(topRow);
+      card.appendChild(btnRow);
+      listEl.appendChild(card);
+    }
+
+    if(easyListEl){
+      const eBtn = document.createElement('button');
+      eBtn.type = 'button';
+      eBtn.style.display = 'flex';
+      eBtn.style.alignItems = 'center';
+      eBtn.style.gap = '5px';
+      eBtn.style.padding = '4px 6px';
+      eBtn.style.background = '#ffffff';
+      eBtn.style.border = '1px solid #93c5fd';
+      eBtn.style.borderRadius = '6px';
+      eBtn.style.cursor = 'pointer';
+      eBtn.style.fontSize = '10.5px';
+      eBtn.style.fontWeight = '700';
+      eBtn.style.color = '#1e293b';
+      eBtn.style.textAlign = 'left';
+      eBtn.title = (item.name || 'マイロゴ') + ' を配置します';
+      const eThumb = document.createElement('span');
+      eThumb.style.width = '24px';
+      eThumb.style.height = '24px';
+      eThumb.style.flexShrink = '0';
+      eThumb.style.borderRadius = '4px';
+      eThumb.style.border = '1px solid #cbd5e1';
+      eThumb.style.background = isWhiteFuda ? '#0f172a' : '#f8fafc';
+      eThumb.style.display = 'inline-flex';
+      eThumb.style.alignItems = 'center';
+      eThumb.style.justifyContent = 'center';
+      eThumb.style.overflow = 'hidden';
+      const eIm = document.createElement('img');
+      eIm.src = imgSrc;
+      eIm.style.maxWidth = '100%';
+      eIm.style.maxHeight = '100%';
+      eIm.style.objectFit = 'contain';
+      eThumb.appendChild(eIm);
+      const eTxt = document.createElement('span');
+      eTxt.style.overflow = 'hidden';
+      eTxt.style.textOverflow = 'ellipsis';
+      eTxt.style.whiteSpace = 'nowrap';
+      eTxt.textContent = (item.name || sl.logoName || 'ロゴ').replace(/^(?:🏷️|🏮)\s*/u, '');
+      eBtn.appendChild(eThumb);
+      eBtn.appendChild(eTxt);
+      eBtn.addEventListener('click', applyToCurrentFn);
+      easyListEl.appendChild(eBtn);
+    }
   });
 }
 
@@ -3573,6 +3845,22 @@ function resolveLogoPadColor(slot, bgColor){
   return (slot && slot.logoPadColor) || bgColor || S.bgColor || '#046e7e';
 }
 
+function resolveLogoTextColor(slot, bgColor, effPadColor){
+  const tm = (slot && slot.logoTextColorMode) || 'auto';
+  if(tm === 'transparent') return null;
+  if(tm === 'custom') return (slot && slot.logoTextColor) || '#ffffff';
+  // auto モード: 本体色が白の場合は背景または地の色とコントラストがつく色、本体が色つきの場合は白文字
+  const effFudaBodyHex = (slot && slot.logoMono ? (slot.logoColor || '#ffffff') : ((slot && (slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || slot.logoName === 'fuda_logo_white')) ? '#ffffff' : '#00a3af')).toLowerCase();
+  if(effFudaBodyHex === '#ffffff'){
+    const pm = (slot && slot.logoPadMode) || 'none';
+    if(pm === 'none') return null; // 白抜き札＋背景透過時は地の色をそのまま見せる
+    const padHex = (effPadColor || '').toLowerCase();
+    if(padHex === '#ffffff') return bgColor || S.bgColor || '#046e7e';
+    return null; // 背景色が白以外なら背景色をそのまま文字穴に見せる
+  }
+  return (slot && slot.logoTextColor) || '#ffffff';
+}
+
 function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
   const lcv = getProcessedLogoCanvas(slot);
   if(!lcv) return;
@@ -3589,8 +3877,7 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
   const effStrokeColor = slot.logoPadStrokeColor || '#ffffff';
   const alpha = Math.max(0.05, Math.min(1, (slot.logoOpacity ?? 100) / 100));
   const isBuiltinFuda = (slot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || slot.logoName === 'fuda_logo_teal' || slot.logoName === 'fuda_logo_white');
-  const effFudaBodyHex = (slot.logoMono ? (slot.logoColor || '#ffffff') : ((slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || slot.logoName === 'fuda_logo_white') ? '#ffffff' : '#00a3af')).toLowerCase();
-  const isTealFuda = isBuiltinFuda && effFudaBodyHex !== '#ffffff';
+  const effTextCol = isBuiltinFuda ? resolveLogoTextColor(slot, bgColor, effPadColor) : null;
 
   const placements = generateScatterPlacementsMm({
     W, H,
@@ -3637,14 +3924,6 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
         x.lineWidth = baseCloseSvg + expandSvg;
         x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero');
         x.stroke(FUDA_SOLID_SIL_PATH2D);
-        // ティール色つき札ロゴで外枠色が白以外のとき、札内部の彫り文字「仲羽田・青年会」と横揺れ線の輪郭が白く不透明に出るよう札内部(0mm)を白で下敷き塗り
-        if(isTealFuda && effPadColor.toLowerCase() !== '#ffffff'){
-          x.fillStyle = '#ffffff';
-          x.strokeStyle = '#ffffff';
-          x.lineWidth = baseCloseSvg;
-          x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero');
-          x.stroke(FUDA_SOLID_SIL_PATH2D);
-        }
         x.restore();
       }else{
         const pw = lw + marginMm * 2, ph = lh + marginMm * 2;
@@ -3671,17 +3950,6 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
         x.lineWidth = strokeMm;
         x.stroke();
       }
-      if(isTealFuda && FUDA_SOLID_SIL_PATH2D && effPadColor.toLowerCase() !== '#ffffff'){
-        const sx = lw / FUDA_VB_W, sy = lh / FUDA_VB_H;
-        x.save();
-        x.translate(-lw / 2, -lh / 2);
-        x.scale(sx, sy);
-        x.translate(-FUDA_VB_X, -FUDA_VB_Y);
-        x.lineJoin = 'round'; x.lineCap = 'round';
-        x.fillStyle = '#ffffff'; x.strokeStyle = '#ffffff'; x.lineWidth = 12;
-        x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero'); x.stroke(FUDA_SOLID_SIL_PATH2D);
-        x.restore();
-      }
     }else if(pm === 'roundRect'){
       const pw = lw + marginMm * 2, ph = lh + marginMm * 2;
       const r = Math.min(cornerMm, pw * 0.48, ph * 0.48);
@@ -3695,17 +3963,23 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
         x.lineWidth = strokeMm;
         x.stroke();
       }
-      if(isTealFuda && FUDA_SOLID_SIL_PATH2D && effPadColor.toLowerCase() !== '#ffffff'){
-        const sx = lw / FUDA_VB_W, sy = lh / FUDA_VB_H;
-        x.save();
-        x.translate(-lw / 2, -lh / 2);
-        x.scale(sx, sy);
-        x.translate(-FUDA_VB_X, -FUDA_VB_Y);
-        x.lineJoin = 'round'; x.lineCap = 'round';
-        x.fillStyle = '#ffffff'; x.strokeStyle = '#ffffff'; x.lineWidth = 12;
-        x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero'); x.stroke(FUDA_SOLID_SIL_PATH2D);
-        x.restore();
-      }
+    }
+    // 札ロゴ内部の彫り文字「仲羽田・青年会」の穴を指定した文字色（effTextCol）で塗りつぶす
+    if(isBuiltinFuda && effTextCol && FUDA_TEXT_HOLES_PATH2D){
+      const sx = lw / FUDA_VB_W, sy = lh / FUDA_VB_H;
+      x.save();
+      x.globalAlpha = alpha;
+      x.translate(-lw / 2, -lh / 2);
+      x.scale(sx, sy);
+      x.translate(-FUDA_VB_X, -FUDA_VB_Y);
+      x.lineJoin = 'round';
+      x.lineCap = 'round';
+      x.fillStyle = effTextCol;
+      x.strokeStyle = effTextCol;
+      x.lineWidth = 4.5;
+      x.fill(FUDA_TEXT_HOLES_PATH2D, 'nonzero');
+      x.stroke(FUDA_TEXT_HOLES_PATH2D);
+      x.restore();
     }
     x.globalAlpha = alpha;
     x.drawImage(lcv, -lw/2, -lh/2, lw, lh);
@@ -4888,8 +5162,7 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
         const strokeMm = Math.max(0, effSlot.logoPadStrokeMm ?? 0);
         const effStrokeColor = effSlot.logoPadStrokeColor || '#ffffff';
         const isBuiltinFuda = (effSlot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || effSlot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || effSlot.logoName === 'fuda_logo_teal' || effSlot.logoName === 'fuda_logo_white');
-        const effFudaBodyHex = (effSlot.logoMono ? (effSlot.logoColor || '#ffffff') : ((effSlot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || effSlot.logoName === 'fuda_logo_white') ? '#ffffff' : '#00a3af')).toLowerCase();
-        const isTealFuda = isBuiltinFuda && effFudaBodyHex !== '#ffffff';
+        const effTextCol = isBuiltinFuda ? resolveLogoTextColor(effSlot, st.bgColor, effPadColor) : null;
 
         const pushRoundedRectPoly = (pw, ph, rCorner, fillCol, strkCol, strkW) => {
           const r = Math.min(rCorner, pw * 0.48, ph * 0.48);
@@ -4924,13 +5197,20 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
           }
         };
 
+        const pushFudaTextHolesPolys = (fillCol) => {
+          const holePolys = getFudaTextHolesPolys();
+          if(!holePolys || holePolys.length === 0) return;
+          const swMm = (4.5 / 552) * Math.max(lw, lh);
+          for(const hp of holePolys){
+            const pts = hp.map(([nx, ny]) => tr((nx - 0.5) * lw, (ny - 0.5) * lh));
+            logoVectorItems.push({ type: 'poly', fill: fillCol, stroke: fillCol, strokeWidth: swMm, pts });
+          }
+        };
+
         if(pm === 'silhouette'){
           if(isBuiltinFuda){
             if(strokeMm > 0) pushFudaSilhouettePolys(marginMm + strokeMm, effStrokeColor);
             pushFudaSilhouettePolys(marginMm, effPadColor);
-            if(isTealFuda && effPadColor.toLowerCase() !== '#ffffff'){
-              pushFudaSilhouettePolys(0, '#ffffff');
-            }
           }else{
             pushRoundedRectPoly(lw + marginMm * 2, lh + marginMm * 2, cornerMm, effPadColor, effStrokeColor, strokeMm);
           }
@@ -4942,14 +5222,12 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
             cpts.push(tr(Math.cos(a) * r, Math.sin(a) * r));
           }
           logoVectorItems.push({ type: 'poly', fill: effPadColor, stroke: strokeMm > 0 ? effStrokeColor : null, strokeWidth: strokeMm, pts: cpts });
-          if(isTealFuda && effPadColor.toLowerCase() !== '#ffffff'){
-            pushFudaSilhouettePolys(0, '#ffffff');
-          }
         }else if(pm === 'roundRect'){
           pushRoundedRectPoly(lw + marginMm * 2, lh + marginMm * 2, cornerMm, effPadColor, effStrokeColor, strokeMm);
-          if(isTealFuda && effPadColor.toLowerCase() !== '#ffffff'){
-            pushFudaSilhouettePolys(0, '#ffffff');
-          }
+        }
+
+        if(isBuiltinFuda && effTextCol){
+          pushFudaTextHolesPolys(effTextCol);
         }
 
         for(const layer of tracedLayers){
@@ -6359,7 +6637,29 @@ function drawStripSource(x, src, dx, dy, dw, dh){
 
 // 生地の取り方（裁断パーツ定義）を計算
 // 子ども用（5〜6枚）と、大人用の本格仕立て（7枚取り・8枚取り：前立て通し・柄合わせ胸ポケ・袖下マチ・後脇マチ）に対応
+// ✂️ 裁断図でドラッグした取り位置（S.daboCutOffset）を各パーツに足す。ダボ完成図・書き出しもこの位置で切り出す
 function buildDaboCutPlan(){
+  const plan = buildDaboCutPlanBase();
+  const off = (S.daboCutOffset && typeof S.daboCutOffset === 'object') ? S.daboCutOffset : {};
+  const cl = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const tgt = S.daboLogoTarget || 'all';
+  plan.strips.forEach(st => st.parts.forEach(p => {
+    p.baseU = p.u; p.baseV = p.v;
+    let o = off[p.id];
+    // 柄合わせの胸ポケットは、自分で動かしていなければ左前身頃といっしょに動かす（柄合わせを保つ）
+    if(!o && p.id === 'pocket' && tgt !== 'pocketOnly' && tgt !== 'backPocket') o = off.frontL;
+    if(!Array.isArray(o)) return;
+    p.u = cl(p.u + (+o[0] || 0), 0, Math.max(0, 1 - p.uw));
+    p.v = cl(p.v + (+o[1] || 0), 0, Math.max(0, 1 - p.vh));
+    p.moved = true;
+  }));
+  return plan;
+}
+function hasCutOffset(){
+  const o = S.daboCutOffset;
+  return !!o && typeof o === 'object' && Object.keys(o).some(k => Array.isArray(o[k]) && (Math.abs(o[k][0]) > 1e-4 || Math.abs(o[k][1]) > 1e-4));
+}
+function buildDaboCutPlanBase(){
   const cutMode = S.daboCutMode || 'adult7';
   const target = S.daboLogoTarget || 'all';
   const sx = (S.daboShiftX || 0) / 100;
@@ -6571,6 +6871,8 @@ function buildDaboCutPlan(){
 let DABO_HIT_ZONES = [];
 // ダボ上から逆算配置した際に裁断図上でハイライトするターゲット情報
 let DABO_ACTIVE_REVERSE_HIT = null;
+// ✂️ 裁断図のパーツのヒット領域（ステージ座標）とドラッグ中の状態
+let CUT_PART_RECTS = [], CUT_RESET_RECT = null, CUT_REC = false, CUT_DRAG = null;
 
 // 裁断図およびダボ完成プレビューを一括描画（CSS拡大を使わずCanvas 2Dベクター行列＆直接ベクターストリップ描画で12倍ズームでも文字が一切ぼやけない設計）
 function drawDaboAndCutScene(targetCv, viewMode, exportMode){
@@ -6690,7 +6992,10 @@ function drawDaboAndCutScene(targetCv, viewMode, exportMode){
 
   // 2. 左側：✂️ 手ぬぐいからの生地の取り方（裁断割付図）を描画（viewMode === 'cut_dabo' のとき）
   if(viewMode === 'cut_dabo'){
+    CUT_REC = !exportMode;
+    if(CUT_REC){ CUT_PART_RECTS = []; CUT_RESET_RECT = null; }
     drawCuttingLayoutPanel(x, 14, 14, cutW - 6, ch - 28, plan);
+    CUT_REC = false;
   }
 
   // 3. 左パネルの用尺サマリー更新
@@ -6707,7 +7012,26 @@ function drawCuttingLayoutPanel(x, px, py, pw, ph, plan){
 
   x.fillStyle = '#38bdf8';
   x.font = '700 12.5px sans-serif';
-  x.fillText('✂️ 生地の取り方（裁断割付図：全' + plan.strips.length + '枚）', px + 12, py + 20, pw - 24);
+  // 右上：取り位置を動かしたときは「元に戻す」ボタン、動かしていないときは操作の案内
+  const movedAny = hasCutOffset();
+  const pillTxt = movedAny ? '↺ 取り位置を元に戻す' : '✋ パーツはドラッグで移動';
+  x.font = '700 10px sans-serif';
+  // 画面表示のときだけ出す（PNG などの書き出しには入れない）
+  const pillW = CUT_REC ? Math.min(pw * 0.42, x.measureText(pillTxt).width + 16) : 0, pillH = 18;
+  const pillX = px + pw - 10 - pillW, pillY = py + 7;
+  if(CUT_REC){
+  x.save();
+  x.fillStyle = movedAny ? 'rgba(250, 204, 21, 0.92)' : 'rgba(56, 189, 248, 0.16)';
+  x.beginPath(); x.roundRect(pillX, pillY, pillW, pillH, 9); x.fill();
+  x.fillStyle = movedAny ? '#1e293b' : '#bae6fd';
+  x.textAlign = 'center';
+  x.fillText(pillTxt, pillX + pillW / 2, pillY + 12.5, pillW - 8);
+  x.restore();
+  }
+  if(CUT_REC && movedAny) CUT_RESET_RECT = { x: pillX, y: pillY, w: pillW, h: pillH };
+  x.fillStyle = '#38bdf8';
+  x.font = '700 12.5px sans-serif';
+  x.fillText('✂️ 生地の取り方（裁断割付図：全' + plan.strips.length + '枚）', px + 12, py + 20, pw - 34 - pillW);
   x.fillStyle = '#cbd5e1';
   x.font = '10px sans-serif';
   x.fillText(plan.modeTitle, px + 12, py + 35, pw - 24);
@@ -6756,11 +7080,22 @@ function drawCuttingLayoutPanel(x, px, py, pw, ph, plan){
     x.fillStyle = 'rgba(10, 15, 28, 0.38)';
     x.fillRect(sx, sy, dw, dh);
 
+    // 同じ手ぬぐいの中でパーツどうしが重なっていないか（取り位置を動かしたときの確認用）
+    const ovl = new Set();
+    for(let a = 0; a < st.parts.length; a++) for(let b = a + 1; b < st.parts.length; b++){
+      const A = st.parts[a], B = st.parts[b];
+      const iw = Math.min(A.u + A.uw, B.u + B.uw) - Math.max(A.u, B.u);
+      const ih = Math.min(A.v + A.vh, B.v + B.vh) - Math.max(A.v, B.v);
+      if(iw > 0.01 && ih > 0.01 && (A.moved || B.moved)){ ovl.add(A.id); ovl.add(B.id); }
+    }
+
     // 各裁断パーツを明るく再描画＋破線カットライン表示
     st.parts.forEach((p, pIdx) => {
       const rx = sx + p.u * dw, ry = sy + p.v * dh;
       const rw = p.uw * dw, rh = p.vh * dh;
-      const isHighlightedPart = DABO_ACTIVE_REVERSE_HIT && DABO_ACTIVE_REVERSE_HIT.partId === p.id;
+      const isHighlightedPart = (DABO_ACTIVE_REVERSE_HIT && DABO_ACTIVE_REVERSE_HIT.partId === p.id) || (CUT_DRAG && CUT_DRAG.id === p.id);
+      const isOverlap = ovl.has(p.id);
+      if(CUT_REC) CUT_PART_RECTS.push({ id: p.id, rx, ry, rw, rh, dw, dh, u: p.u, v: p.v, baseU: (p.baseU ?? p.u), baseV: (p.baseV ?? p.v), uw: p.uw, vh: p.vh });
 
       x.save();
       x.beginPath();
@@ -6771,8 +7106,8 @@ function drawCuttingLayoutPanel(x, px, py, pw, ph, plan){
 
       // 裁断破線
       x.save();
-      x.strokeStyle = isHighlightedPart ? '#38bdf8' : '#fde047';
-      x.lineWidth = isHighlightedPart ? 2.4 : 1.5;
+      x.strokeStyle = isOverlap ? '#f87171' : (isHighlightedPart ? '#38bdf8' : '#fde047');
+      x.lineWidth = (isHighlightedPart || isOverlap) ? 2.4 : 1.5;
       x.setLineDash(isHighlightedPart ? [] : [4, 3]);
       x.beginPath();
       traceCutPartShape(x, rx, ry, rw, rh, p.shape);
@@ -6782,11 +7117,12 @@ function drawCuttingLayoutPanel(x, px, py, pw, ph, plan){
       // パーツ名ラベル（狭いパーツや複数パーツが隣り合う場合は上下に段差をつけ、maxWidthで文字かぶりを防止）
       if(rh >= 15 && rw >= 26){
         const fontSz = cols >= 4 ? 8 : 9;
-        const shortLbl = (rw < 42) ? p.label.replace(/\(.*?\)/g, '') : p.label;
+        const shortLbl0 = (rw < 42) ? p.label.replace(/\(.*?\)/g, '') : p.label;
+        const shortLbl = isOverlap ? '⚠重なり ' + shortLbl0 : shortLbl0;
         const lw = Math.min(rw - 2, Math.max(22, shortLbl.length * (fontSz * 0.92) + 6));
         const yOff = (st.parts.length > 1) ? ((pIdx % 2 === 0 ? -1 : 1) * Math.min(10, rh * 0.16)) : 0;
         const pillY = Math.max(ry + 1, Math.min(ry + rh - 14, ry + rh / 2 - 7 + yOff));
-        x.fillStyle = isHighlightedPart ? 'rgba(2, 132, 199, 0.92)' : 'rgba(15, 23, 42, 0.82)';
+        x.fillStyle = isOverlap ? 'rgba(185, 28, 28, 0.92)' : (isHighlightedPart ? 'rgba(2, 132, 199, 0.92)' : 'rgba(15, 23, 42, 0.82)');
         x.fillRect(rx + (rw - lw)/2, pillY, lw, 13);
         x.fillStyle = '#ffffff';
         x.font = '700 ' + fontSz + 'px sans-serif';
@@ -9489,6 +9825,8 @@ function syncUI(){
   if($('logoInvert')) $('logoInvert').checked=!!S.logoInvert;
   if($('logoMono')) $('logoMono').checked=!!S.logoMono;
   if($('logoColor')) $('logoColor').value=S.logoColor||'#ffffff';
+  const curFudaTextColSync = (typeof getCurrentFudaTextColor === 'function') ? getCurrentFudaTextColor() : (S.logoTextColor || '#ffffff');
+  if($('logoTextColor')) $('logoTextColor').value=curFudaTextColSync;
   if($('logoOutlineColor')) $('logoOutlineColor').value=S.logoOutlineColor||'#ffffff';
   if($('logoMaskShape')) $('logoMaskShape').value=S.logoMaskShape||'none';
   if($('logoPadMode')) $('logoPadMode').value=S.logoPadMode||'none';
@@ -9677,12 +10015,14 @@ function syncUI(){
     $('sec3FudaLogoHex').value = curFudaMainHex.toUpperCase();
     $('sec3FudaLogoHex').setAttribute('aria-invalid', 'false');
   }
+  const curFudaTextHex = (typeof getCurrentFudaTextColor === 'function') ? getCurrentFudaTextColor() : (S.logoTextColor || '#ffffff');
+  if($('sec3FudaTextColor')) $('sec3FudaTextColor').value = curFudaTextHex;
+  if($('sec3FudaTextHex') && document.activeElement !== $('sec3FudaTextHex')){
+    $('sec3FudaTextHex').value = curFudaTextHex.toUpperCase();
+    $('sec3FudaTextHex').setAttribute('aria-invalid', 'false');
+  }
   if($('sec3LogoPadColor')) $('sec3LogoPadColor').value = resolveLogoPadColor(S);
   if($('sec3LogoPadStrokeColor')) $('sec3LogoPadStrokeColor').value = S.logoPadStrokeColor || '#ffffff';
-  if($('sec3TextFgColor')) $('sec3TextFgColor').value = S.customTextColor || '#ffffff';
-  if($('sec3TextFrameColor')) $('sec3TextFrameColor').value = S.fudaFrameColor || S.customTextColor || '#ffffff';
-  if($('sec3TextBgColor')) $('sec3TextBgColor').value = S.customTextBg || '#046e7e';
-  if($('sec3TextCordColor')) $('sec3TextCordColor').value = S.fudaCordColor || S.customTextBg || '#046e7e';
   for(const b of document.querySelectorAll('#arareOuterQuickChips button[data-aomode]')){
     b.setAttribute('aria-pressed', (b.dataset.aomode === (S.arareOuterMode || 'none')) + '');
   }
@@ -9944,6 +10284,7 @@ if($('saveToLogoShelfBtn')) $('saveToLogoShelfBtn').addEventListener('click',()=
   if($('logoShelfNameInput')) $('logoShelfNameInput').value = '';
   saySave(`📚 「${customNm}」をマイ・ロゴ保管棚に保存しました！いつでも呼び出せます。`);
 });
+if($('restoreLogoShelfBtn')) $('restoreLogoShelfBtn').addEventListener('click',()=>restoreDeletedMyLogos(true));
 
 // 🏯 手ぬぐい工房合体・ベース生地連携イベント
 if($('openEmbeddedKoboBtn')) $('openEmbeddedKoboBtn').addEventListener('click',()=>openEmbeddedKoboModal());
@@ -10204,11 +10545,17 @@ $('logoColor').addEventListener('input',e=>{S.logoColor=e.target.value; S.logoMo
 $('logoColorToBgBtn').addEventListener('click',()=>{S.logoColor=S.bgColor; S.logoMono=true; PROC_LOGO_KEY=''; update(false);});
 $('logoColorToFgBtn').addEventListener('click',()=>{S.logoColor=(S.mode==='arare'?S.dotColor:S.kakuColor); S.logoMono=true; PROC_LOGO_KEY=''; update(false);});
 if($('logoColorGoldBtn')) $('logoColorGoldBtn').addEventListener('click',()=>{S.logoColor='#877028'; S.logoMono=true; PROC_LOGO_KEY=''; update(false);});
+if($('logoTextColor')) $('logoTextColor').addEventListener('input',e=>applyFudaTextColor(e.target.value));
+if($('logoTextColWhiteBtn')) $('logoTextColWhiteBtn').addEventListener('click',()=>applyFudaTextColor('#ffffff'));
+if($('logoTextColGoldBtn')) $('logoTextColGoldBtn').addEventListener('click',()=>applyFudaTextColor('#877028'));
+if($('logoTextColBlackBtn')) $('logoTextColBlackBtn').addEventListener('click',()=>applyFudaTextColor('#111827'));
+if($('logoTextColTransBtn')) $('logoTextColTransBtn').addEventListener('click',()=>applyFudaTextColor('transparent'));
 if($('logoOutlineColor')) $('logoOutlineColor').addEventListener('input',e=>{S.logoOutlineColor=e.target.value; if(!S.logoOutlineMm) S.logoOutlineMm=2.5; PROC_LOGO_KEY=''; update(false);});
 if($('logoMaskShape')) $('logoMaskShape').addEventListener('change',e=>{S.logoMaskShape=e.target.value; PROC_LOGO_KEY=''; update(false);});
 $('logoPadMode').addEventListener('change',e=>{S.logoPadMode=e.target.value; update(false);});
 document.querySelectorAll('#logoPadQuickChips button[data-pquick]').forEach(b=>b.addEventListener('click',()=>{
   S.logoPadMode = b.dataset.pquick || 'none';
+  if(S.logoPadMode !== 'none' && S.logoPadColorMode === 'none') S.logoPadColorMode = 'bg';
   S.showLogo = true;
   update(false);
 }));
@@ -10615,9 +10962,9 @@ document.querySelectorAll('#panelCatTabs button').forEach(tab=>{
         sec.classList.toggle('cat-hidden', sec.dataset.cat !== cat);
       }
     });
-    // 選んだカテゴリでよく使うセクションが閉じていたら自動で開く
+    // 選んだカテゴリでよく使うセクションが閉じていたら自動で開く（showTextは自動ONにしない）
     if(cat === 'overlay' || cat === 'text_logo'){
-      if(!S.showText && !S.showLogo && !S.showCrest){ S.showLogo = true; S.showText = true; update(false); }
+      if(!S.showText && !S.showLogo && !S.showCrest){ S.showLogo = true; update(false); }
     }else if(cat === 'towel'){
       if(S.viewMode !== 'fabric'){ S.viewMode = 'fabric'; update(false); }
     }else if(cat === 'dabo'){
@@ -10834,6 +11181,67 @@ let isPanningStage = false;
 let panStartClientX = 0, panStartClientY = 0;
 let panOriginX = 0, panOriginY = 0;
 
+/* ---- ✂️ 裁断図のパーツをドラッグして取り位置を動かす ---- */
+function cutHitAt(stageX, stageY){
+  if(CUT_RESET_RECT){
+    const r = CUT_RESET_RECT;
+    if(stageX >= r.x && stageX <= r.x + r.w && stageY >= r.y && stageY <= r.y + r.h) return { reset: true };
+  }
+  for(let i = CUT_PART_RECTS.length - 1; i >= 0; i--){
+    const r = CUT_PART_RECTS[i];
+    if(stageX >= r.rx && stageX <= r.rx + r.rw && stageY >= r.ry && stageY <= r.ry + r.rh) return r;
+  }
+  return null;
+}
+function cutPanelPointerDown(stageX, stageY){
+  const hit = cutHitAt(stageX, stageY);
+  if(!hit) return false;
+  if(hit.reset){
+    S.daboCutOffset = {};
+    update(false);
+    say('✂️ 裁断図で動かした取り位置を元に戻しました。');
+    return true;
+  }
+  // 胸ポケットは左前身頃に連動していることがあるので、いま見えている位置（hit.u, hit.v）から動かし始める
+  CUT_DRAG = { id: hit.id, sx: stageX, sy: stageY, hit };
+  requestImmediateVectorDraw();
+  return true;
+}
+function cutDragMove(stageX, stageY){
+  const d = CUT_DRAG; if(!d) return;
+  const h = d.hit;
+  const cl = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  // ドラッグ量を手ぬぐい上の割合に直して、見えている位置に足す
+  const nu = cl(h.u + (stageX - d.sx) / h.dw, 0, Math.max(0, 1 - h.uw));
+  const nv = cl(h.v + (stageY - d.sy) / h.dh, 0, Math.max(0, 1 - h.vh));
+  const r4 = v => Math.round(v * 10000) / 10000;
+  const next = Object.assign({}, (S.daboCutOffset && typeof S.daboCutOffset === 'object') ? S.daboCutOffset : {});
+  next[d.id] = [r4(nu - h.baseU), r4(nv - h.baseV)];
+  S.daboCutOffset = next;
+  requestImmediateVectorDraw();
+}
+function cutDragEnd(){
+  if(!CUT_DRAG) return;
+  CUT_DRAG = null;
+  update(false);
+}
+box.addEventListener('touchstart', e=>{
+  if(S.viewMode !== 'cut_dabo' || e.touches.length !== 1) return;
+  const t = e.touches[0];
+  const { stageX, stageY } = clientToDaboStageXY(t.clientX, t.clientY);
+  if(cutPanelPointerDown(stageX, stageY)) e.preventDefault();
+}, { passive: false });
+box.addEventListener('touchmove', e=>{
+  if(!CUT_DRAG || e.touches.length !== 1) return;
+  e.preventDefault();
+  const t = e.touches[0];
+  const { stageX, stageY } = clientToDaboStageXY(t.clientX, t.clientY);
+  cutDragMove(stageX, stageY);
+}, { passive: false });
+box.addEventListener('touchend', ()=>{ if(CUT_DRAG) cutDragEnd(); });
+box.addEventListener('touchcancel', ()=>{ if(CUT_DRAG) cutDragEnd(); });
+if($('resetCutOffsetBtn')) $('resetCutOffsetBtn').addEventListener('click', ()=>{ S.daboCutOffset = {}; update(false); say('✂️ 裁断図で動かした取り位置を元に戻しました。'); });
+
 box.addEventListener('mousedown', e=>{
   // 右下のフローティングHUDや上部の直接文字入力バー操作時はパンしない
   if(e.target && e.target.closest && (e.target.closest('.float-zoom-hud') || e.target.closest('.stage-direct-text-bar'))) return;
@@ -10918,6 +11326,16 @@ box.addEventListener('mousedown', e=>{
     }
   }
 
+  // 1-B. 裁断図のパーツをつかんだら、そのパーツの取り位置（手ぬぐいのどこから切り出すか）を動かす
+  if(S.viewMode === 'cut_dabo' && !e.shiftKey && !e.spaceKey){
+    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+    if(cutPanelPointerDown(stageX, stageY)){
+      box.classList.add('is-panning');
+      e.preventDefault();
+      return;
+    }
+  }
+
   // 2. ダボ完成図（cut_dabo / dabo モード）で「ダボ上で直接移動をONにする」またはロゴ表示中、または上部の「✍️ ダボに直接文字を打つ」パネルが開いているとき、クリックしたダボ部位に配置し手ぬぐい座標へ逆算反映する
   const directTextOpen = $('stageDirectTextCard') && !$('stageDirectTextCard').hidden;
   if((S.viewMode === 'cut_dabo' || S.viewMode === 'dabo') && (S.daboInteractiveLogo === true || S.showLogo || directTextOpen) && !e.shiftKey && !e.spaceKey){
@@ -10949,6 +11367,15 @@ box.addEventListener('mousedown', e=>{
 });
 
 window.addEventListener('mousemove', e=>{
+  if(CUT_DRAG){
+    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+    cutDragMove(stageX, stageY);
+    return;
+  }
+  if(S.viewMode === 'cut_dabo' && !dragTarget && !isDraggingDaboReverse && !isPanningStage && e.target && box.contains(e.target)){
+    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+    box.style.cursor = cutHitAt(stageX, stageY) ? 'move' : '';
+  }
   if(dragTarget){
     const r = cv.getBoundingClientRect();
     if(r.width > 0 && r.height > 0){
@@ -11025,6 +11452,7 @@ window.addEventListener('mousemove', e=>{
 });
 
 window.addEventListener('mouseup', ()=>{
+  if(CUT_DRAG){ cutDragEnd(); box.classList.remove('is-panning'); }
   if(dragTarget || isDraggingDaboReverse || isPanningStage){
     dragTarget = null;
     isDraggingDaboReverse = false;
@@ -11108,12 +11536,11 @@ function getCurrentFudaMainColor(){
     if(S.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || S.logoName === 'fuda_logo_teal') return '#00a3af';
     return (S.logoColor || '#00a3af').toLowerCase();
   }
-  if(S.showText) return (S.customTextBg || '#046e7e').toLowerCase();
   return (S.logoColor || '#00a3af').toLowerCase();
 }
 function applyFudaMainColor(val){
   const v = String(val || '').trim().toLowerCase();
-  if(!S.showLogo && !S.showText){
+  if(!S.showLogo){
     S.logoName = 'fuda_logo_teal';
     S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
     S.showLogo = true;
@@ -11161,9 +11588,33 @@ function applyFudaMainColor(val){
     S.logoMono = true;
     S.showLogo = true;
     ensureLogoLoaded(S.logoDataUrl);
-    if(S.showText) S.customTextBg = h;
   }
   PROC_LOGO_KEY = '';
+  syncActiveSlotFromS();
+  update(false);
+}
+function getCurrentFudaTextColor(){
+  const effPad = resolveLogoPadColor(S, S.bgColor);
+  const c = resolveLogoTextColor(S, S.bgColor, effPad);
+  return (c || S.logoTextColor || S.bgColor || '#ffffff').toLowerCase();
+}
+function applyFudaTextColor(val){
+  const v = String(val || '').trim().toLowerCase();
+  if(!S.showLogo){
+    S.logoName = 'fuda_logo_teal';
+    S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+    S.showLogo = true;
+    S.logoRemoveBg = false;
+    S.logoBgMode = 'none';
+    ensureLogoLoaded(S.logoDataUrl);
+  }
+  if(v === 'transparent' || v === 'none'){
+    S.logoTextColorMode = 'transparent';
+  }else{
+    const h = normHex(v) || '#ffffff';
+    S.logoTextColor = h;
+    S.logoTextColorMode = 'custom';
+  }
   syncActiveSlotFromS();
   update(false);
 }
@@ -11174,6 +11625,7 @@ function buildSw(boxId,pal,key){
     btn.setAttribute('aria-label',n); btn.dataset.hex=h.toLowerCase();
     btn.addEventListener('click',()=>{
       if(key==='fudaMain'){ applyFudaMainColor(h); return; }
+      if(key==='fudaText'){ applyFudaTextColor(h); return; }
       S[key]=h;
       if(key==='dotColor' && S.mode==='haneda'){ S.mode='both'; update(true); return; }
       update(false);
@@ -11185,6 +11637,7 @@ buildSw('bgSw',BG_PAL,'bgColor');
 buildSw('kakuSw',FG_PAL,'kakuColor');
 buildSw('dotSw',FG_PAL,'dotColor');
 buildSw('fudaLogoSw',FUDA_PAL,'fudaMain');
+buildSw('fudaTextSw',FG_PAL,'fudaText');
 
 function normHex(v){v=(v||'').trim();if(v[0]!=='#')v='#'+v;if(/^#[0-9a-f]{3}$/i.test(v))v='#'+v[1]+v[1]+v[2]+v[2]+v[3]+v[3];return /^#[0-9a-f]{6}$/i.test(v)?v.toLowerCase():null;}
 for(const [pick,hex,key] of [['bgColor','bgHex','bgColor'],['kakuColor','kakuHex','kakuColor'],['dotColor','dotHex','dotColor'],['crestFg','crestFgHex','crestFg'],['crestBg','crestBgHex','crestBg']]){
@@ -11196,7 +11649,7 @@ for(const [pick,hex,key] of [['bgColor','bgHex','bgColor'],['kakuColor','kakuHex
   $(hex).addEventListener('input',e=>{const h=normHex(e.target.value);e.target.setAttribute('aria-invalid',h?'false':'true');if(h){S[key]=h;if(key==='dotColor'&&S.mode==='haneda'){S.mode='both';update(true);return;}persist();$(pick).value=h;markSw();draw();}});
   $(hex).addEventListener('change',()=>syncUI());
 }
-// Section 3 (🎨 色) 統合コントロール配線（あられ色・札の色）
+// Section 3 (🎨 色) 統合コントロール配線（あられ色・札の4パート色）
 if($('dotSyncKakuBtn')) $('dotSyncKakuBtn').addEventListener('click',()=>{ S.dotColor = S.kakuColor || '#ffffff'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
 if($('sec3ArarePadColor')) $('sec3ArarePadColor').addEventListener('input',e=>{ S.ararePadColor = e.target.value; S.ararePadColorMode = 'custom'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
 if($('sec3ArarePadBgBtn')) $('sec3ArarePadBgBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'bg'; S.ararePadColor = S.bgColor; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
@@ -11214,18 +11667,27 @@ if($('sec3FudaLogoHex')){
   $('sec3FudaLogoHex').addEventListener('input',e=>{ const h=normHex(e.target.value); e.target.setAttribute('aria-invalid',h?'false':'true'); if(h) applyFudaMainColor(h); });
   $('sec3FudaLogoHex').addEventListener('change',()=>syncUI());
 }
+if($('sec3FudaTextColor')) $('sec3FudaTextColor').addEventListener('input',e=>applyFudaTextColor(e.target.value));
+if($('sec3FudaTextHex')){
+  $('sec3FudaTextHex').addEventListener('input',e=>{ const h=normHex(e.target.value); e.target.setAttribute('aria-invalid',h?'false':'true'); if(h) applyFudaTextColor(h); });
+  $('sec3FudaTextHex').addEventListener('change',()=>syncUI());
+}
+if($('sec3FudaTextWhiteBtn')) $('sec3FudaTextWhiteBtn').addEventListener('click',()=>applyFudaTextColor('#ffffff'));
+if($('sec3FudaTextGoldBtn')) $('sec3FudaTextGoldBtn').addEventListener('click',()=>applyFudaTextColor('#877028'));
+if($('sec3FudaTextYellowBtn')) $('sec3FudaTextYellowBtn').addEventListener('click',()=>applyFudaTextColor('#f8b500'));
+if($('sec3FudaTextNandoBtn')) $('sec3FudaTextNandoBtn').addEventListener('click',()=>applyFudaTextColor('#046e7e'));
+if($('sec3FudaTextBlackBtn')) $('sec3FudaTextBlackBtn').addEventListener('click',()=>applyFudaTextColor('#111827'));
+if($('sec3FudaTextTransBtn')) $('sec3FudaTextTransBtn').addEventListener('click',()=>applyFudaTextColor('transparent'));
 if($('sec3LogoPadColor')) $('sec3LogoPadColor').addEventListener('input',e=>{ S.logoPadColor = e.target.value; S.logoPadColorMode = 'custom'; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
 if($('sec3LogoPadBgBtn')) $('sec3LogoPadBgBtn').addEventListener('click',()=>{ S.logoPadColorMode = 'bg'; S.logoPadColor = S.bgColor; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
 if($('sec3LogoPadWhiteBtn')) $('sec3LogoPadWhiteBtn').addEventListener('click',()=>{ S.logoPadColorMode = 'white'; S.logoPadColor = '#ffffff'; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
 if($('sec3LogoPadBlackBtn')) $('sec3LogoPadBlackBtn').addEventListener('click',()=>{ S.logoPadColorMode = 'black'; S.logoPadColor = '#111827'; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoPadNoneBtn')) $('sec3LogoPadNoneBtn').addEventListener('click',()=>{ S.logoPadMode = 'none'; S.showLogo = true; update(false); });
 if($('sec3LogoPadStrokeColor')) $('sec3LogoPadStrokeColor').addEventListener('input',e=>{ S.logoPadStrokeColor = e.target.value; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
 if($('sec3LogoStrokeGoldBtn')) $('sec3LogoStrokeGoldBtn').addEventListener('click',()=>{ S.logoPadStrokeColor = '#877028'; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
 if($('sec3LogoStrokeWhiteBtn')) $('sec3LogoStrokeWhiteBtn').addEventListener('click',()=>{ S.logoPadStrokeColor = '#ffffff'; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
 if($('sec3LogoStrokeBlackBtn')) $('sec3LogoStrokeBlackBtn').addEventListener('click',()=>{ S.logoPadStrokeColor = '#111827'; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
-if($('sec3TextFgColor')) $('sec3TextFgColor').addEventListener('input',e=>{ S.customTextColor = e.target.value; S.showText = true; update(false); });
-if($('sec3TextFrameColor')) $('sec3TextFrameColor').addEventListener('input',e=>{ S.fudaFrameColor = e.target.value; S.fudaFrameTransparent = false; S.showText = true; update(false); });
-if($('sec3TextBgColor')) $('sec3TextBgColor').addEventListener('input',e=>{ S.customTextBg = e.target.value; S.fudaBgTransparent = false; S.showText = true; update(false); });
-if($('sec3TextCordColor')) $('sec3TextCordColor').addEventListener('input',e=>{ S.fudaCordColor = e.target.value; S.fudaCordTransparent = false; S.fudaCordAllTransparent = false; S.showText = true; update(false); });
+if($('sec3LogoStrokeNoneBtn')) $('sec3LogoStrokeNoneBtn').addEventListener('click',()=>{ S.logoPadStrokeMm = 0; S.showLogo = true; update(false); });
 $('swap').addEventListener('click',()=>{
   if(S.mode === 'arare'){
     const t=S.bgColor; S.bgColor=S.dotColor; S.dotColor=t;
@@ -11244,18 +11706,19 @@ const AI_COLOR_TARGETS = {
   ararePadColor:   { label: 'あられうしろ抜き色', inputId: 'sec3ArarePadColor' },
   ararePadStrokeColor: { label: 'あられ1粒枠線色', inputId: 'sec3ArarePadStrokeColor' },
   arareOuterColor: { label: 'あられ外周枠色',     inputId: 'sec3ArareOuterColor' },
-  logoColor:       { label: '④ 札ロゴ本体の色',   inputId: 'sec3FudaLogoColor', autoShow: 'showLogo', isLogoMono: true },
-  logoPadColor:    { label: '⑤ 札のうしろ色',     inputId: 'sec3LogoPadColor',  autoShow: 'showLogo' },
-  logoPadStrokeColor: { label: '⑥ 札の周り枠線色', inputId: 'sec3LogoPadStrokeColor', autoShow: 'showLogo' },
-  customTextColor: { label: '⑦ 木札の文字色',     inputId: 'customTextColor', autoShow: 'showText' },
-  fudaFrameColor:  { label: '⑧ 木札の枠線色',     inputId: 'fudaFrameColor',  autoShow: 'showText' },
-  customTextBg:    { label: '⑨ 木札の背景色',     inputId: 'customTextBg',    autoShow: 'showText' },
-  fudaCordColor:   { label: '⑩ 木札の組紐塗り',   inputId: 'fudaCordColor',   autoShow: 'showText' },
-  fudaCordStroke:  { label: '⑪ 木札の組紐フチ',   inputId: 'fudaCordStroke',  autoShow: 'showText' },
-  fudaAccentColor: { label: '⑫ 札の丸紋・差札',   inputId: 'fudaAccentColor', autoShow: 'showText' },
-  customTextOutlineColor: { label: '札の袋文字フチ', inputId: 'customTextOutlineColor', autoShow: 'showText' },
-  crestFg:         { label: '⑬ 丸紋の文字・枠',   inputId: 'crestFg',         autoShow: 'showCrest' },
-  crestBg:         { label: '⑭ 丸紋の背景',       inputId: 'crestBg',         autoShow: 'showCrest' },
+  logoColor:       { label: '④ 札本体の色',       inputId: 'sec3FudaLogoColor', autoShow: 'showLogo', isLogoMono: true },
+  logoTextColor:   { label: '⑤ 札の文字色(仲羽田・青年会)', inputId: 'sec3FudaTextColor', autoShow: 'showLogo' },
+  logoPadColor:    { label: '⑥ 札のうしろ背景色', inputId: 'sec3LogoPadColor',  autoShow: 'showLogo' },
+  logoPadStrokeColor: { label: '⑦ 札の周り枠線色', inputId: 'sec3LogoPadStrokeColor', autoShow: 'showLogo' },
+  customTextColor: { label: '文字色',             inputId: 'customTextColor' },
+  fudaFrameColor:  { label: '枠線色',             inputId: 'fudaFrameColor' },
+  customTextBg:    { label: '背景色',             inputId: 'customTextBg' },
+  fudaCordColor:   { label: '組紐塗り',           inputId: 'fudaCordColor' },
+  fudaCordStroke:  { label: '組紐フチ',           inputId: 'fudaCordStroke' },
+  fudaAccentColor: { label: '丸紋・差札',         inputId: 'fudaAccentColor' },
+  customTextOutlineColor: { label: '袋文字フチ',  inputId: 'customTextOutlineColor' },
+  crestFg:         { label: '丸紋の文字・枠',     inputId: 'crestFg',         autoShow: 'showCrest' },
+  crestBg:         { label: '丸紋の背景',         inputId: 'crestBg',         autoShow: 'showCrest' },
   logoOutlineColor:{ label: 'ロゴ外フチ色',       inputId: 'logoOutlineColor',autoShow: 'showLogo' },
   logoKeyColor:    { label: 'ロゴ透過指定色',     inputId: 'logoKeyColor',    autoShow: 'showLogo' }
 };
@@ -11474,6 +11937,11 @@ function applyHexToActiveAiTarget(hexStr, keepHsb){
     syncAiPickerUIFromState(keepHsb);
     return;
   }
+  if(activeAiColorKey === 'logoTextColor'){
+    applyFudaTextColor(h);
+    syncAiPickerUIFromState(keepHsb);
+    return;
+  }
   const meta = AI_COLOR_TARGETS[activeAiColorKey];
   S[activeAiColorKey] = h;
   let needRelayout = false;
@@ -11542,6 +12010,11 @@ function markSw(){
   if($('fudaLogoSw')){
     const curFuda = getCurrentFudaMainColor();
     for(const b of $('fudaLogoSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===curFuda)+'');
+  }
+  if($('fudaTextSw')){
+    const curTxt = getCurrentFudaTextColor();
+    const isTrans = (S.logoTextColorMode === 'transparent');
+    for(const b of $('fudaTextSw').children) b.setAttribute('aria-pressed',(!isTrans && b.dataset.hex===curTxt)+'');
   }
   const c=hexCmyk(S.bgColor).map(v=>Math.round(v*100));
   const fgHex = S.mode==='arare' ? S.dotColor : S.kakuColor;
@@ -11964,7 +12437,12 @@ function easyRenderImpl(){
   if(document.activeElement !== $('eFg')) $('eFg').value = eLow(S.kakuColor || '#ffffff');
   if($('eDotCol') && document.activeElement !== $('eDotCol')) $('eDotCol').value = eLow(S.dotColor || '#ffffff');
   var fudaHex = getCurrentFudaMainColor();
+  var fudaTxtHex = getCurrentFudaTextColor();
   if($('eFudaCol') && document.activeElement !== $('eFudaCol')) $('eFudaCol').value = eLow(fudaHex);
+  if($('eFudaBodyPicker') && document.activeElement !== $('eFudaBodyPicker')) $('eFudaBodyPicker').value = eLow(fudaHex);
+  if($('eStep5FudaBodyCol') && document.activeElement !== $('eStep5FudaBodyCol')) $('eStep5FudaBodyCol').value = eLow(fudaHex);
+  if($('eFudaTextCol') && document.activeElement !== $('eFudaTextCol')) $('eFudaTextCol').value = eLow(fudaTxtHex);
+  if($('eStep5FudaTextCol') && document.activeElement !== $('eStep5FudaTextCol')) $('eStep5FudaTextCol').value = eLow(fudaTxtHex);
   if($('eDotColChips')){
     var dotLow = eLow(S.dotColor || '#ffffff'), kakuLow = eLow(S.kakuColor || '#ffffff');
     $('eDotColChips').querySelectorAll('button').forEach(function(b){
@@ -11985,8 +12463,28 @@ function easyRenderImpl(){
       b.setAttribute('aria-pressed', String(isPressed));
     });
   }
+  if($('eFudaTextColChips')){
+    var isTxtTrans = (S.logoTextColorMode === 'transparent');
+    $('eFudaTextColChips').querySelectorAll('button').forEach(function(b){
+      var v = eLow(b.dataset.eftxt || b.dataset.eftcol);
+      var isPressed = (v === 'transparent') ? isTxtTrans : (!isTxtTrans && v === eLow(fudaTxtHex));
+      b.setAttribute('aria-pressed', String(isPressed));
+    });
+  }
   if($('eLogoPadStrokeCol') && document.activeElement !== $('eLogoPadStrokeCol')){
     $('eLogoPadStrokeCol').value = eLow(S.logoPadStrokeColor || '#ffffff');
+  }
+  if($('eStep5FudaStrokeCol') && document.activeElement !== $('eStep5FudaStrokeCol')){
+    $('eStep5FudaStrokeCol').value = eLow(S.logoPadStrokeColor || '#ffffff');
+  }
+  if($('eLogoPadStrokeBtns')){
+    var hasStrk = !!(S.logoPadMode && S.logoPadMode !== 'none' && (S.logoPadStrokeMm > 0));
+    var strkHex = eLow(S.logoPadStrokeColor || '#ffffff');
+    $('eLogoPadStrokeBtns').querySelectorAll('button').forEach(function(b){
+      var v = eLow(b.dataset.epsc || b.dataset.eps);
+      var isPressed = (v === 'none') ? !hasStrk : (hasStrk && v === strkHex);
+      b.setAttribute('aria-pressed', String(isPressed));
+    });
   }
   var kaku = mode === 'haneda' || mode === 'both', arare = mode === 'arare' || mode === 'both';
   var hasPad = !!(S.showLogo && S.logoPadMode && S.logoPadMode !== 'none');
@@ -12054,13 +12552,17 @@ function easyRenderImpl(){
     });
   }
   if($('eLogoPadColBtns')){
-    var cm = S.logoPadColorMode || 'bg';
+    var pmCur = S.logoPadMode || 'none';
+    var cm = (pmCur === 'none') ? 'none' : (S.logoPadColorMode || 'bg');
     $('eLogoPadColBtns').querySelectorAll('button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.dataset.epc === cm));
     });
   }
   if($('eLogoPadCustomCol') && document.activeElement !== $('eLogoPadCustomCol')){
     $('eLogoPadCustomCol').value = resolveLogoPadColor(S);
+  }
+  if($('eStep5FudaPadCol') && document.activeElement !== $('eStep5FudaPadCol')){
+    $('eStep5FudaPadCol').value = resolveLogoPadColor(S);
   }
   if($('eDaboQuickLogo')){
     $('eDaboQuickLogo').querySelectorAll('button').forEach(function(b){
@@ -12165,9 +12667,24 @@ function easyRenderImpl(){
       applyFudaMainColor(e.target.value);
     });
   }
+  if($('eFudaBodyPicker')){
+    $('eFudaBodyPicker').addEventListener('input', function(e){
+      applyFudaMainColor(e.target.value);
+    });
+  }
   if($('eFudaColChips')){
     $('eFudaColChips').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       applyFudaMainColor(b.dataset.efcol || 'teal');
+    }); });
+  }
+  if($('eFudaTextCol')){
+    $('eFudaTextCol').addEventListener('input', function(e){
+      applyFudaTextColor(e.target.value);
+    });
+  }
+  if($('eFudaTextColChips')){
+    $('eFudaTextColChips').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      applyFudaTextColor(b.dataset.eftxt || b.dataset.eftcol || '#ffffff');
     }); });
   }
   if($('eLogoPadStrokeCol')){
@@ -12178,6 +12695,20 @@ function easyRenderImpl(){
       S.showLogo = true;
       update(false);
     });
+  }
+  if($('eLogoPadStrokeBtns')){
+    $('eLogoPadStrokeBtns').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      var v = b.dataset.epsc || b.dataset.eps || 'none';
+      if(v === 'none'){
+        S.logoPadStrokeMm = 0;
+      }else{
+        S.logoPadStrokeColor = v;
+        if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0;
+        if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+      }
+      S.showLogo = true;
+      update(false);
+    }); });
   }
   $('eStyles').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
     var keep = S.mode; var c = document.querySelector('#quickStyles .chip[data-style="' + b.dataset.style + '"]');
@@ -12236,9 +12767,46 @@ function easyRenderImpl(){
     else if(v === 'img'){ var u = $('stageTopUploadLogoBtn'); if(u) u.click(); }
     else clearAllLogos();
   }); });
+  if($('eSaveCurrentToShelfBtn')){
+    $('eSaveCurrentToShelfBtn').addEventListener('click', function(){
+      var nm = S.logoName || 'マイロゴ';
+      addOrSaveLogoToShelf(nm, S);
+      saySave('📚 「' + nm + '」をマイ・ロゴ保管棚に保存しました！');
+    });
+  }
+  if($('eRestoreLogoShelfBtn')){
+    $('eRestoreLogoShelfBtn').addEventListener('click', function(){
+      restoreDeletedMyLogos(true);
+    });
+  }
+  if($('eStep5FudaBodyCol')){
+    $('eStep5FudaBodyCol').addEventListener('input', function(e){ applyFudaMainColor(e.target.value); });
+  }
+  if($('eStep5FudaTextCol')){
+    $('eStep5FudaTextCol').addEventListener('input', function(e){ applyFudaTextColor(e.target.value); });
+  }
+  if($('eStep5FudaPadCol')){
+    $('eStep5FudaPadCol').addEventListener('input', function(e){
+      S.logoPadColor = e.target.value;
+      S.logoPadColorMode = 'custom';
+      if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+      S.showLogo = true;
+      update(false);
+    });
+  }
+  if($('eStep5FudaStrokeCol')){
+    $('eStep5FudaStrokeCol').addEventListener('input', function(e){
+      S.logoPadStrokeColor = e.target.value;
+      if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0;
+      if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+      S.showLogo = true;
+      update(false);
+    });
+  }
   if($('eLogoPadMode')){
     $('eLogoPadMode').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       S.logoPadMode = b.dataset.epm || 'none';
+      if(S.logoPadMode !== 'none' && S.logoPadColorMode === 'none') S.logoPadColorMode = 'bg';
       S.showLogo = true;
       update(false);
     }); });
@@ -12246,6 +12814,12 @@ function easyRenderImpl(){
   if($('eLogoPadColBtns')){
     $('eLogoPadColBtns').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       var c = b.dataset.epc || 'bg';
+      if(c === 'none'){
+        S.logoPadMode = 'none';
+        S.showLogo = true;
+        update(false);
+        return;
+      }
       S.logoPadColorMode = c;
       if(c === 'bg') S.logoPadColor = S.bgColor;
       else if(c === 'white') S.logoPadColor = '#ffffff';
