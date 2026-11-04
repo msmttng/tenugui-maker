@@ -276,7 +276,11 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           </div>
         </div>
         <div class="e-subbox" id="eFudaColorBox" style="border:1.5px solid #7dd3fc;background:#f0f9ff">
-          <div class="e-sublbl"><span style="color:#0c4a6e">🏷️ 札の色（①札本体・②札の文字・③うしろ背景・④周り枠線）</span></div>
+          <div class="e-sublbl" style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+            <span style="color:#0c4a6e">🏷️ 札の色（①札本体・②札の文字・③うしろ背景・④周り枠線）</span>
+            <button type="button" class="mini-btn" id="eStep3FudaToggleBtn" style="font-size:10.5px;font-weight:700;padding:2px 7px;background:#ffffff;color:#0369a1;border-color:#7dd3fc">➕ 札ロゴを表示</button>
+          </div>
+          <div id="eStep3SlotsBar" style="display:flex;flex-wrap:wrap;gap:4px"></div>
           <!-- ① 札本体の色 -->
           <div style="display:flex;flex-direction:column;gap:4px">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
@@ -376,13 +380,14 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>5</b><span>札・ロゴを入れる（色・透過・マイロゴ）</span><button type="button" class="e-more" data-emore="step5">詳しく</button></div>
+        <div class="e-h"><b>5</b><span>札・ロゴを入れる（透過枠・マイロゴ）</span><button type="button" class="e-more" data-emore="step5">詳しく</button></div>
         <div class="e-chips" id="eLogo">
-          <button type="button" data-el="teal">札ロゴ<small>色つき</small></button>
-          <button type="button" data-el="white">札ロゴ<small>白抜き</small></button>
+          <button type="button" data-el="white">札ロゴ<small>白抜き(標準)</small></button>
+          <button type="button" data-el="teal">札ロゴ<small>浅葱(色つき)</small></button>
           <button type="button" data-el="img">画像を入れる<small>.ai / PDF / PNG</small></button>
           <button type="button" data-el="none">入れない</button>
         </div>
+        <div id="eStep5SlotsBar" style="display:flex;flex-wrap:wrap;gap:4px"></div>
         <!-- 📚 かんたんモード用 マイ・ロゴ保管棚 ＆ 消したマイロゴ復元バー -->
         <div class="e-subbox" id="eLogoShelfBox" style="background:#eff6ff;border:1px solid #93c5fd">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
@@ -396,7 +401,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
         <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
         <div class="e-subbox" id="eLogoPadBox" hidden>
-          <div class="e-sublbl"><span>🛡️ 札ロゴのうしろ（透過させない・周り枠・色）</span></div>
+          <div class="e-sublbl"><span>🛡️ 札ロゴのうしろ（透過させない・周り枠の形と幅）</span></div>
           <div class="e-chips" id="eLogoPadMode">
             <button type="button" data-epm="silhouette">札の形<small>うしろ透過なし</small></button>
             <button type="button" data-epm="roundRect">四角枠<small>うしろ透過なし</small></button>
@@ -407,12 +412,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <div class="e-range" data-for="logoPadMarginMm"><span>周りの枠の広さ</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
             <div class="e-range" data-for="logoPadCornerMm" id="eLogoPadCornerRow"><span>四角枠の角丸</span><input type="range" min="0" max="30" step="1"><b></b></div>
             <div class="e-range" data-for="logoPadStrokeMm"><span>周りの枠線の太さ</span><input type="range" min="0" max="8" step="0.5"><b></b></div>
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding-top:4px;border-top:1px dashed #cbd5e1;font-size:11px;font-weight:700;color:#0c4a6e">
-              <label style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:3px 5px;cursor:pointer"><input type="color" id="eStep5FudaBodyCol" value="#00a3af" style="width:22px;height:20px;border:0;padding:0;background:none;cursor:pointer">札本体</label>
-              <label style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:3px 5px;cursor:pointer"><input type="color" id="eStep5FudaTextCol" value="#ffffff" style="width:22px;height:20px;border:0;padding:0;background:none;cursor:pointer">札文字</label>
-              <label style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:3px 5px;cursor:pointer"><input type="color" id="eStep5FudaPadCol" value="#046e7e" style="width:22px;height:20px;border:0;padding:0;background:none;cursor:pointer">うしろ</label>
-              <label style="display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #cbd5e1;border-radius:6px;padding:3px 5px;cursor:pointer"><input type="color" id="eStep5FudaStrokeCol" value="#ffffff" style="width:22px;height:20px;border:0;padding:0;background:none;cursor:pointer">枠線</label>
-            </div>
+            <button type="button" class="mini-btn" id="eJumpToStep3ColorBtn" style="background:#f0f9ff;border-color:#7dd3fc;color:#0369a1;font-weight:700;padding:4px 8px;text-align:center">🎨 札の4つの色（本体・文字・うしろ・枠線）は上の「3 色」で変更 ↑</button>
           </div>
         </div>
         <p class="e-note" id="eLogoNote">ロゴは手ぬぐいの上でもダボシャツの上でもドラッグして動かせます。</p>
@@ -420,21 +420,14 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
       <div class="e-step" id="eDaboFromLogoStep">
         <div class="e-h"><b>6</b><span>👕 ダボシャツのロゴ位置から手ぬぐいを作る</span><button type="button" class="e-more" data-emore="step6">詳しく</button></div>
         <div class="e-subbox dabo-box">
-          <div class="e-sublbl"><span>① 手ぬぐいのベース柄（仲羽田 ／ 仲羽田青年会）</span></div>
-          <div class="e-chips" id="eDaboBasePat">
-            <button type="button" data-dbp="haneda">「仲羽田」のみ<small>3文字総柄</small></button>
-            <button type="button" data-dbp="seinenkai">「仲羽田青年会」<small>6文字総柄</small></button>
-            <button type="button" data-dbp="both_haneda">仲羽田＋あられ<small>3文字＋粒柄</small></button>
-            <button type="button" data-dbp="both_seinenkai">仲羽田青年会＋あられ<small>6文字＋粒柄</small></button>
-          </div>
-          <div class="e-sublbl" style="margin-top:2px"><span>② ダボシャツに入れる札ロゴを選ぶ</span></div>
+          <div class="e-sublbl"><span>① 札・ロゴのうしろ背景（今の札色を保ったまま切り替え）</span></div>
           <div class="e-chips" id="eDaboQuickLogo">
-            <button type="button" data-dql="teal_opaque">🏷️ 札ロゴ 色つき<small>うしろ透過なし</small></button>
-            <button type="button" data-dql="white_opaque">🏷️ 札ロゴ 白抜き<small>うしろ透過なし</small></button>
-            <button type="button" data-dql="teal_trans">札ロゴ 色つき<small>透過のまま</small></button>
-            <button type="button" data-dql="white_trans">札ロゴ 白抜き<small>透過のまま</small></button>
+            <button type="button" data-dql="cur_opaque">🛡️ うしろ透過なし<small>今の札色で枠をつける</small></button>
+            <button type="button" data-dql="cur_trans">✨ 透過のまま<small>今の札色で柄を透かす</small></button>
+            <button type="button" data-dql="white_opaque">🏷️ 白抜き札・透過なし<small>仲羽田と同色(#FFF)</small></button>
+            <button type="button" data-dql="teal_opaque">🏷️ 浅葱札・透過なし<small>色つき(#00A3AF)</small></button>
           </div>
-          <div class="e-sublbl" style="margin-top:2px"><span>③ ダボシャツのロゴ位置から手ぬぐいを逆算（全枚すべて同じ構図の手ぬぐいに反映）</span></div>
+          <div class="e-sublbl" style="margin-top:2px"><span>② ダボシャツのロゴ位置から手ぬぐいを逆算（全枚すべて同じ構図の手ぬぐいに反映）</span></div>
           <div class="e-chips" id="eDaboSpotBtns">
             <button type="button" data-dspot="backAndPocket" style="grid-column:span 2;background:#fef3c7;border-color:#f59e0b;color:#78350f">⭐ 王道おすすめ：背紋＋胸位置（袖は下半分から裁断）<small>全枚すべて同じ構図の手ぬぐいで、背中・胸・ポケットにロゴを出し袖は下側から取る配置</small></button>
             <button type="button" data-dspot="backCrest">① 背中・首下の高さ<small>背紋位置（全枚共通）</small></button>
@@ -2485,6 +2478,22 @@ function syncActiveSlotFromS(){
     const idx = Math.max(0, Math.min(S.logoSlots.length - 1, S.activeLogoSlot || 0));
     S.activeLogoSlot = idx;
     S.logoSlots[idx] = extractLogoSlotFromS(S);
+    // 同じ手ぬぐい内の複数内蔵札ロゴについて、札の色・背景・周り枠の設定を全スロット共通で同期する
+    if(S.logoSlots.length > 1 && isBuiltinFudaSlot(S)){
+      const sharedKeys = [
+        'logoName','logoDataUrl','logoColor','logoMono',
+        'logoTextColor','logoTextColorMode',
+        'logoPadMode','logoPadColor','logoPadColorMode',
+        'logoPadMarginMm','logoPadCornerMm','logoPadStrokeMm','logoPadStrokeColor'
+      ];
+      for(let i = 0; i < S.logoSlots.length; i++){
+        if(i === idx) continue;
+        const sl = S.logoSlots[i];
+        if(sl && isBuiltinFudaSlot(sl)){
+          for(const k of sharedKeys) sl[k] = S[k];
+        }
+      }
+    }
   }
 }
 
@@ -2663,7 +2672,7 @@ function pinCurrentLogoAndAddAnother(){
 }
 
 function renderLogoSlotsBar(){
-  const bars = [$('placedLogoSlotsBar'), $('daboPinnedSlotsBar'), $('eDaboSlotsBar')].filter(Boolean);
+  const bars = [$('placedLogoSlotsBar'), $('daboPinnedSlotsBar'), $('eDaboSlotsBar'), $('eStep3SlotsBar'), $('eStep5SlotsBar')].filter(Boolean);
   if(bars.length === 0) return;
   bars.forEach(b => { b.innerHTML = ''; });
   if(!S.showLogo){
@@ -2679,7 +2688,9 @@ function renderLogoSlotsBar(){
   }
   syncActiveSlotFromS();
   bars.forEach(bar => {
+    const isMultiOnlyBar = (bar.id === 'eStep3SlotsBar' || bar.id === 'eStep5SlotsBar');
     const isDaboBar = (bar.id === 'daboPinnedSlotsBar' || bar.id === 'eDaboSlotsBar');
+    if(isMultiOnlyBar && S.logoSlots.length <= 1) return;
     if(isDaboBar && S.logoSlots.length <= 0){
       return;
     }
@@ -4112,7 +4123,7 @@ function traceGlyphToVectorLoops(ch, fontCss, isStrokeOutline, strokeRatio){
 // 配置されたロゴ画像（仲羽半纏ロゴやアップロード画像）を色別のアウトライン化ベクターパス群に変換
 function traceLogoCanvasToVectorColorLayers(lcv, cacheSig, monoHex){
   if(cacheSig && LOGO_TRACE_CACHE.has(cacheSig)) return LOGO_TRACE_CACHE.get(cacheSig);
-  const maxDim = 220;
+  const maxDim = 420;
   const sc = Math.min(1, maxDim / Math.max(1, lcv.width, lcv.height));
   const W = Math.max(16, Math.round(lcv.width * sc));
   const H = Math.max(16, Math.round(lcv.height * sc));
@@ -5197,7 +5208,8 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
         const pushFudaSilhouettePolys = (expandMm, fillCol) => {
           const silPolys = getFudaSolidSilhouettePolys();
           if(!silPolys || silPolys.length === 0) return;
-          const baseCloseMm = (12 / 552) * Math.max(lw, lh);
+          const vbDenom = (typeof FUDA_VB_W === 'number' && FUDA_VB_W > 0) ? FUDA_VB_W : 616;
+          const baseCloseMm = (12 / vbDenom) * Math.max(lw, lh);
           const swMm = baseCloseMm + Math.max(0, expandMm) * 2;
           for(const sp of silPolys){
             const pts = sp.map(([nx, ny]) => tr((nx - 0.5) * lw, (ny - 0.5) * lh));
@@ -5208,7 +5220,8 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
         const pushFudaTextHolesPolys = (fillCol) => {
           const holePolys = getFudaTextHolesPolys();
           if(!holePolys || holePolys.length === 0) return;
-          const swMm = (4.5 / 552) * Math.max(lw, lh);
+          const vbDenom = (typeof FUDA_VB_W === 'number' && FUDA_VB_W > 0) ? FUDA_VB_W : 616;
+          const swMm = (4.5 / vbDenom) * Math.max(lw, lh);
           for(const hp of holePolys){
             const pts = hp.map(([nx, ny]) => tr((nx - 0.5) * lw, (ny - 0.5) * lh));
             logoVectorItems.push({ type: 'poly', fill: fillCol, stroke: fillCol, strokeWidth: swMm, pts });
@@ -8228,17 +8241,18 @@ function applyDaboSpotPlacement(sp, preferText){
   const partTag = 'all';
   let recLogoSize = null;
 
-  // 常に全手ぬぐい共通（1種類の手ぬぐいを全枚数に使用）
+  // 常に全手ぬぐい共通（1種類の手ぬぐいを全枚数に使用）＆手動裁断オフセットをクリアして計算位置を正確に合わせる
   S.daboLogoTarget = 'all';
   S.daboPocketMode = 'match';
+  S.daboCutOffset = {};
 
   if(sp === 'backAndPocket'){
     S.daboCutMode = 'adult8_crest';
-    S.daboShiftX = 0; S.daboShiftY = 0; S.daboSleeveShiftY = 0;
+    S.daboShiftX = 0; S.daboShiftY = 0; S.daboSleeveShiftY = 22;
     targetU = 0.50; targetV = 0.22;
     recLogoSize = 76;
-    spotLabel = '⭐ 背中（背紋）＋両胸の位置（全8枚すべて同じ構図の手ぬぐい）';
-    stripDesc = '全8枚共通の手ぬぐい（1本目＝背中中央の背紋、3・4本目＝左右の上胸に配置）';
+    spotLabel = '⭐ 背中（背紋）＋両胸の位置（袖は下半分から裁断・全8枚すべて同じ構図の手ぬぐい）';
+    stripDesc = '全8枚共通の手ぬぐい（1本目＝背中中央の背紋、3・4本目＝左右の上胸、5・6本目＝下半分から袖を裁断）';
   }else if(sp === 'backCrest'){
     S.daboCutMode = 'adult8_crest';
     S.daboShiftX = 0; S.daboShiftY = 0;
@@ -10929,10 +10943,8 @@ function openFocusedDetailStep(target){
     if($('aiColorPickerDock')) $('aiColorPickerDock').hidden = false;
     if(typeof renderAiColorPickerUI === 'function') renderAiColorPickerUI();
   }else if(target === 'step4'){
-    if(S.mode === 'scatter'){
-      $('sec-haneda').hidden = false;
-      $('sec-arare').hidden = false;
-    }
+    $('sec-haneda').hidden = (S.mode === 'arare');
+    $('sec-arare').hidden = (S.mode === 'haneda');
     const adv = document.querySelector('#sec-haneda details.adv-details');
     if(adv) adv.open = true;
   }else if(target === 'step5'){
@@ -12185,7 +12197,13 @@ $('reroll').addEventListener('click',()=>{
   }
   update(true);
 });
-$('reset').addEventListener('click',()=>{S=Object.assign({},DEF,{mode:S.mode,W:S.W,H:S.H});update(true);});
+$('reset').addEventListener('click',()=>{
+  const keepMode = S.mode, keepW = S.W, keepH = S.H;
+  S = Object.assign(JSON.parse(JSON.stringify(DEF)), { mode: keepMode, W: keepW, H: keepH, logoSlots: [], daboCutOffset: {} });
+  DABO_ACTIVE_REVERSE_HIT = null;
+  PROC_LOGO_KEY = '';
+  update(true);
+});
 
 function say(t,warn){const m=$('msg');m.textContent=t;m.className='msg'+(warn?' warn':'');}
 $('copySvg').addEventListener('click',()=>{
@@ -12594,14 +12612,27 @@ function easyRenderImpl(){
   if($('eStep5FudaPadCol') && document.activeElement !== $('eStep5FudaPadCol')){
     $('eStep5FudaPadCol').value = resolveLogoPadColor(S);
   }
+  if($('eStep3FudaToggleBtn')){
+    if(S.showLogo){
+      $('eStep3FudaToggleBtn').textContent = '✅ 札・ロゴ表示中（消す）';
+      $('eStep3FudaToggleBtn').style.background = '#e0f2fe';
+      $('eStep3FudaToggleBtn').style.color = '#0369a1';
+    }else{
+      $('eStep3FudaToggleBtn').textContent = '➕ 札ロゴを配置する';
+      $('eStep3FudaToggleBtn').style.background = '#ffffff';
+      $('eStep3FudaToggleBtn').style.color = '#0284c7';
+    }
+  }
   if($('eDaboQuickLogo')){
     $('eDaboQuickLogo').querySelectorAll('button').forEach(function(b){
       var v = b.dataset.dql || b.dataset.edl || '';
       var isOpq = !!(S.logoPadMode && S.logoPadMode !== 'none');
-      var isTeal = !!(S.showLogo && S.logoDataUrl === '__BUILTIN_FUDA_TEAL__');
-      var isWhite = !!(S.showLogo && S.logoDataUrl === '__BUILTIN_FUDA_WHITE__');
+      var isTeal = !!(S.showLogo && fudaHex === '#00a3af');
+      var isWhite = !!(S.showLogo && fudaHex === '#ffffff');
       var pressed = false;
-      if(v === 'teal_opaque') pressed = isTeal && isOpq;
+      if(v === 'cur_opaque') pressed = !!(S.showLogo && isOpq);
+      else if(v === 'cur_trans') pressed = !!(S.showLogo && !isOpq);
+      else if(v === 'teal_opaque') pressed = isTeal && isOpq;
       else if(v === 'white_opaque') pressed = isWhite && isOpq;
       else if(v === 'teal_trans') pressed = isTeal && !isOpq;
       else if(v === 'white_trans') pressed = isWhite && !isOpq;
@@ -12823,28 +12854,19 @@ function easyRenderImpl(){
       restoreDeletedMyLogos(true);
     });
   }
-  if($('eStep5FudaBodyCol')){
-    $('eStep5FudaBodyCol').addEventListener('input', function(e){ applyFudaMainColor(e.target.value); });
-  }
-  if($('eStep5FudaTextCol')){
-    $('eStep5FudaTextCol').addEventListener('input', function(e){ applyFudaTextColor(e.target.value); });
-  }
-  if($('eStep5FudaPadCol')){
-    $('eStep5FudaPadCol').addEventListener('input', function(e){
-      S.logoPadColor = e.target.value;
-      S.logoPadColorMode = 'custom';
-      if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
-      S.showLogo = true;
-      update(false);
+  if($('eStep3FudaToggleBtn')){
+    $('eStep3FudaToggleBtn').addEventListener('click', function(){
+      if(S.showLogo){
+        clearAllLogos();
+      }else{
+        applyBuiltinFudaLogoPreset('default');
+      }
     });
   }
-  if($('eStep5FudaStrokeCol')){
-    $('eStep5FudaStrokeCol').addEventListener('input', function(e){
-      S.logoPadStrokeColor = e.target.value;
-      if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0;
-      if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
-      S.showLogo = true;
-      update(false);
+  if($('eJumpToStep3ColorBtn')){
+    $('eJumpToStep3ColorBtn').addEventListener('click', function(){
+      var bx = $('eFudaColorBox');
+      if(bx) bx.scrollIntoView({ behavior: 'smooth', block: 'center' });
     });
   }
   if($('eLogoPadMode')){
@@ -12852,6 +12874,7 @@ function easyRenderImpl(){
       S.logoPadMode = b.dataset.epm || 'none';
       if(S.logoPadMode !== 'none' && S.logoPadColorMode === 'none') S.logoPadColorMode = 'bg';
       S.showLogo = true;
+      syncActiveSlotFromS();
       update(false);
     }); });
   }
@@ -12861,6 +12884,7 @@ function easyRenderImpl(){
       if(c === 'none'){
         S.logoPadMode = 'none';
         S.showLogo = true;
+        syncActiveSlotFromS();
         update(false);
         return;
       }
@@ -12870,6 +12894,7 @@ function easyRenderImpl(){
       else if(c === 'black') S.logoPadColor = '#111827';
       if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
       S.showLogo = true;
+      syncActiveSlotFromS();
       update(false);
     }); });
   }
@@ -12879,13 +12904,20 @@ function easyRenderImpl(){
       S.logoPadColorMode = 'custom';
       if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
       S.showLogo = true;
+      syncActiveSlotFromS();
       update(false);
     });
   }
   if($('eDaboQuickLogo')){
     $('eDaboQuickLogo').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       var v = b.dataset.dql || b.dataset.edl || '';
-      if(v === 'teal_opaque'){
+      if(v === 'cur_opaque'){
+        if(!S.showLogo) applyBuiltinFudaLogoPreset('default');
+        if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+      }else if(v === 'cur_trans'){
+        if(!S.showLogo) applyBuiltinFudaLogoPreset('default');
+        S.logoPadMode = 'none';
+      }else if(v === 'teal_opaque'){
         applyBuiltinFudaLogoPreset('teal');
         if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
       }else if(v === 'white_opaque'){
@@ -12898,6 +12930,7 @@ function easyRenderImpl(){
         applyBuiltinFudaLogoPreset('white');
         S.logoPadMode = 'none';
       }
+      syncActiveSlotFromS();
       if(S.viewMode === 'fabric') S.viewMode = 'cut_dabo';
       update(false);
     }); });
