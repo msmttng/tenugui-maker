@@ -1,5 +1,16 @@
 # Changelog (手ぬぐい工房 - Tenugui Studio)
 
+## [1.12.5] - 2026-11-04
+
+### Fixed & Improved
+- **👕 ダボ完成図（前面・背面）の首元の別生地上書きを廃止し、身頃生地がそのまま首元まで連続するよう修正 (`daishou_arare_kit/app_template.html` / `arare_app.html`)**:
+  - `drawSingleDaboShirt` にて、共布（標準 `daboCollarMode === 'same'`）のときに首回り（前面・背面）の細い襟バンド領域へ別パーツ（`partMap.collar`）の生地を上書き描画していたため、首の所だけ身頃と違う生地の取り方（柄のズレ・境界線）になっていた問題を修正。
+  - 黒襟・紺襟・白襟など別色襟（`collarCol`）を明示したときのみ襟バンドを描画し、標準（共布）のときは身頃の生地（`frontR` / `frontL` / `backCenter` / `backL` / `backR`）がそのまま首元の輪郭までシームレスに繋がるように改善。
+- **🎨 初期設定で「仲羽田の色」と「札本体の色」を同じ色（`#ffffff`）に統一 (`daishou_arare_kit/app_template.html` / `arare_app.html`)**:
+  - `DEF` の初期設定にて、`logoColor`（札本体の色）を `kakuColor`（仲羽田の色 `#ffffff`）と同じ `#ffffff` に統一（起動時マイグレーション `haneda-fix-fudasamekaku-v1125` により既存環境も自動同期）。
+  - かんたんモード「3 色」の `① 札本体の色` チップに **「仲羽田と同じ」**（`data-efcol="same"`）、詳細モード「🎨 色」の `① 札本体の色` に **「仲羽田と同色」** ボタン（`#sec3FudaSameKakuBtn`）を追加し、配色プリセット（`E_COLORS`）や仲羽田の色を変更した際にも札本体の色が連動して同じ色を保つように改善。
+  - ダボの部位ボタン（`applyDaboSpotPlacement`）や2個目ロゴ追加（`pinCurrentLogoAndAddAnother`）で札ロゴを自動配置する際にも、ハードコードの浅葱色ではなく現在の札本体色・仲羽田色（初期値 `#ffffff`）で配置されるよう統一。
+
 ## [1.12.4] - 2026-11-04
 
 ### Fixed & Improved

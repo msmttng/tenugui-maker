@@ -289,16 +289,16 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <div style="display:flex;flex-direction:column;gap:4px">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
               <span style="font-size:11px;font-weight:700;color:#0c4a6e">① 札本体の色（板・組紐）:</span>
-              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#0369a1;cursor:pointer">自由色 <input type="color" id="eFudaBodyPicker" value="#00a3af" style="width:28px;height:22px;border:1px solid #7dd3fc;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#0369a1;cursor:pointer">自由色 <input type="color" id="eFudaBodyPicker" value="#ffffff" style="width:28px;height:22px;border:1px solid #7dd3fc;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
             <div class="e-chips small" id="eFudaColChips">
-              <button type="button" data-efcol="teal" style="border-color:#00a3af;color:#007b86">浅葱(標準)</button>
+              <button type="button" data-efcol="same">仲羽田と同じ</button>
               <button type="button" data-efcol="white">白抜き</button>
+              <button type="button" data-efcol="teal" style="border-color:#00a3af;color:#007b86">浅葱</button>
               <button type="button" data-efcol="#046e7e">羽田納戸</button>
               <button type="button" data-efcol="#877028">羽田金</button>
               <button type="button" data-efcol="#b7282e">茜</button>
               <button type="button" data-efcol="#183574">藍</button>
-              <button type="button" data-efcol="#262626">墨</button>
             </div>
           </div>
           <!-- ② 札の文字色（仲羽田・青年会） -->
@@ -875,12 +875,13 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
       <div class="cgroup" id="fudaColorGroup" style="border:1.5px solid #7dd3fc;background:#f0f9ff">
         <div class="chead"><span class="clabel" style="color:#0c4a6e;font-weight:800">🏷️ ① 札本体の色（板・組紐の色）</span>
           <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
-          <input type="color" id="sec3FudaLogoColor" value="#00a3af" aria-label="札ロゴ本体の色を選ぶ">
+          <input type="color" id="sec3FudaLogoColor" value="#ffffff" aria-label="札ロゴ本体の色を選ぶ">
           <input type="text" id="sec3FudaLogoHex" class="hex" maxlength="7" spellcheck="false" aria-label="札ロゴのカラーコード"></div>
         <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
           <div class="sw" id="fudaLogoSw" style="flex:1"></div>
-          <button type="button" class="mini-btn" id="sec3FudaTealBtn" style="background:#e0f2fe;border-color:#00a3af;color:#007b86;font-weight:700">浅葱(標準)</button>
+          <button type="button" class="mini-btn" id="sec3FudaSameKakuBtn" title="仲羽田の文字色と同じ色にします">仲羽田と同色</button>
           <button type="button" class="mini-btn" id="sec3FudaWhiteBtn">白抜き</button>
+          <button type="button" class="mini-btn" id="sec3FudaTealBtn" style="background:#e0f2fe;border-color:#00a3af;color:#007b86;font-weight:700">浅葱</button>
         </div>
         <div style="display:grid;gap:6px;margin-top:4px;padding-top:6px;border-top:1px dashed #7dd3fc;font-size:11.5px">
           <!-- ② 札の文字色（仲羽田・青年会） -->
@@ -2295,7 +2296,7 @@ const DEF={
   showLogo:false, logoName:'仲羽半纏ロゴ', logoDataUrl:'', logoRemoveBg:true, logoBgMode:'white', logoKeyColor:'#ffffff',
   logoInvert:false, logoThreshold:225, logoSoftness:18, logoDilate:0, logoContrast:0, logoOpacity:100,
   logoFlipH:false, logoFlipV:false, logoAutoTrim:false,
-  logoMono:false, logoColor:'#00a3af', logoTextColor:'#ffffff', logoTextColorMode:'auto',
+  logoMono:false, logoColor:'#ffffff', logoTextColor:'#ffffff', logoTextColorMode:'auto',
   logoOutlineMm:0, logoOutlineColor:'#ffffff', logoMaskShape:'none',
   logoPadMode:'none', logoPadColor:'#046e7e', logoPadColorMode:'bg',
   logoPadMarginMm:6, logoPadCornerMm:6, logoPadStrokeMm:0, logoPadStrokeColor:'#ffffff',
@@ -2304,11 +2305,11 @@ const DEF={
   logoSlots:[], activeLogoSlot:0,
   // 名入れ文字・札(ふだ)ロゴ・1文字ちりばめ総柄パラメーター
   showText:false, customTextStr:'仲羽田', customTextSubStr:'青年会', customTextFont:'svg_carved',
-  customTextVert:true, customTextFrame:'twin_kifuda', customTextColor:'#ffffff', fudaFrameColor:'#ffffff', customTextBg:'#00a3af',
+  customTextVert:true, customTextFrame:'twin_kifuda', customTextColor:'#ffffff', fudaFrameColor:'#ffffff', customTextBg:'#ffffff',
   fudaAccentColor:'#c93a40', customTextOutline:false, customTextOutlineColor:'#046e7e',
   fudaCharLimit:0, fudaShape:'auto', fudaCordStyle:'auto', fudaWidthPct:100, fudaHeightPct:100, fudaDepth3d:0,
   fudaSubOffX:56, fudaSubOffY:6, fudaSubAngle:18,
-  fudaCordColor:'#00a3af', fudaCordStroke:'#ffffff',
+  fudaCordColor:'#ffffff', fudaCordStroke:'#ffffff',
   fudaBgTransparent:false, fudaFrameTransparent:false, fudaCordTransparent:false, fudaCordAllTransparent:false,
   fudaNonTextOpacity:100, fudaOpacity:100, showFudaGizmo:false,
   fudaCordKnotX:0, fudaCordKnotY:0, fudaCordTailX:0, fudaCordTailY:0,
@@ -2382,6 +2383,21 @@ try{
     if(!S.logoTextColor) S.logoTextColor = '#ffffff';
     if(!S.logoTextColorMode) S.logoTextColorMode = 'auto';
     localStorage.setItem('haneda-fix-fudagizmo-v1124', '1');
+    localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
+  }
+  if(!localStorage.getItem('haneda-fix-fudasamekaku-v1125')){
+    // 初期設定では仲羽田の色(kakuColor)と札本体の色(logoColor)を同じ色(#ffffff)に揃える
+    const kCol = (S.kakuColor || '#ffffff').toLowerCase();
+    S.logoColor = kCol;
+    if(S.showLogo && !S.logoMono && (S.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || S.logoName === 'fuda_logo_teal')){
+      if(kCol === '#ffffff'){
+        S.logoName = 'fuda_logo_white';
+        S.logoDataUrl = '__BUILTIN_FUDA_WHITE__';
+      }else{
+        S.logoMono = true;
+      }
+    }
+    localStorage.setItem('haneda-fix-fudasamekaku-v1125', '1');
     localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
   }
 }catch(e){}
@@ -2610,7 +2626,7 @@ function inferCurrentDaboPartTag(){
 
 function pinCurrentLogoAndAddAnother(){
   if(!S.showLogo){
-    applyBuiltinFudaLogoPreset('teal');
+    applyBuiltinFudaLogoPreset('default');
     if(S.logoPadMode === 'none'){
       S.logoPadMode = 'silhouette';
       S.logoPadColorMode = 'bg';
@@ -3850,7 +3866,7 @@ function resolveLogoTextColor(slot, bgColor, effPadColor){
   if(tm === 'transparent') return null;
   if(tm === 'custom') return (slot && slot.logoTextColor) || '#ffffff';
   // auto モード: 本体色が白の場合は背景または地の色とコントラストがつく色、本体が色つきの場合は白文字
-  const effFudaBodyHex = (slot && slot.logoMono ? (slot.logoColor || '#ffffff') : ((slot && (slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || slot.logoName === 'fuda_logo_white')) ? '#ffffff' : '#00a3af')).toLowerCase();
+  const effFudaBodyHex = (slot && slot.logoMono ? (slot.logoColor || '#ffffff') : ((slot && (slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || slot.logoName === 'fuda_logo_white')) ? '#ffffff' : ((slot && (slot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || slot.logoName === 'fuda_logo_teal')) ? '#00a3af' : ((slot && slot.logoColor) || S.kakuColor || '#ffffff')))).toLowerCase();
   if(effFudaBodyHex === '#ffffff'){
     const pm = (slot && slot.logoPadMode) || 'none';
     if(pm === 'none') return null; // 白抜き札＋背景透過時は地の色をそのまま見せる
@@ -7599,52 +7615,48 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
     x.shadowColor = 'transparent';
 
     // 前立ての右端（見返しステッチライン）
+    const plStitchTopY = collarCol ? (plTopY + collarTrimW) : plTopY;
     x.strokeStyle = 'rgba(0,0,0,0.32)';
     x.lineWidth = 0.9;
     x.beginPath();
-    x.moveTo(placketHalfW, plTopY + collarTrimW);
+    x.moveTo(placketHalfW, plStitchTopY);
     x.lineTo(placketHalfW, bodyBot);
     x.stroke();
     x.strokeStyle = 'rgba(255,255,255,0.28)';
     x.lineWidth = 0.75;
     x.setLineDash([2.5, 2.5]);
     x.beginPath();
-    x.moveTo(-placketHalfW + 2, plTopY + collarTrimW);
+    x.moveTo(-placketHalfW + 2, plStitchTopY);
     x.lineTo(-placketHalfW + 2, bodyBot);
-    x.moveTo(placketHalfW - 1.5, plTopY + collarTrimW);
+    x.moveTo(placketHalfW - 1.5, plStitchTopY);
     x.lineTo(placketHalfW - 1.5, bodyBot);
     x.stroke();
     x.setLineDash([]);
     x.restore();
 
-    // ④ 首回りの丸首パイピング襟（関東襟・盤カラー：首ぐりに沿った細い縁取り）
-    x.save();
-    x.beginPath();
-    x.moveTo(-neckW - collarTrimW, bodyTop);
-    x.quadraticCurveTo(-neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, 0, bodyTop + neckFrontDip + collarTrimW);
-    x.quadraticCurveTo(neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, neckW + collarTrimW, bodyTop);
-    x.lineTo(neckW, bodyTop);
-    x.quadraticCurveTo(neckW * 0.65, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
-    x.quadraticCurveTo(-neckW * 0.65, bodyTop + neckFrontDip, -neckW, bodyTop);
-    x.closePath();
+    // ④ 首回りの別色襟（黒襟・紺襟・白襟を指定したときのみ描画。共布時は別パーツの生地で上書きせず身頃生地をそのまま首元まで表示）
     if(collarCol){
+      x.save();
+      x.beginPath();
+      x.moveTo(-neckW - collarTrimW, bodyTop);
+      x.quadraticCurveTo(-neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, 0, bodyTop + neckFrontDip + collarTrimW);
+      x.quadraticCurveTo(neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, neckW + collarTrimW, bodyTop);
+      x.lineTo(neckW, bodyTop);
+      x.quadraticCurveTo(neckW * 0.65, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
+      x.quadraticCurveTo(-neckW * 0.65, bodyTop + neckFrontDip, -neckW, bodyTop);
+      x.closePath();
       x.fillStyle = collarCol;
       x.fill();
-    }else{
-      x.save();
-      x.clip();
-      drawCroppedPiece(x, partMap.collar || partMap.frontL, -neckW - 10, bodyTop, (neckW + 10) * 2, 35, 0);
+      x.strokeStyle = 'rgba(0,0,0,0.48)';
+      x.lineWidth = 1.1;
+      x.stroke();
+      // 襟元の中心合わせ目（小さな縦スリット線）
+      x.beginPath();
+      x.moveTo(0, bodyTop + neckFrontDip);
+      x.lineTo(0, bodyTop + neckFrontDip + collarTrimW);
+      x.stroke();
       x.restore();
     }
-    x.strokeStyle = 'rgba(0,0,0,0.48)';
-    x.lineWidth = 1.1;
-    x.stroke();
-    // 襟元の中心合わせ目（小さな縦スリット線）
-    x.beginPath();
-    x.moveTo(0, bodyTop + neckFrontDip);
-    x.lineTo(0, bodyTop + neckFrontDip + collarTrimW);
-    x.stroke();
-    x.restore();
 
     // ⑤ 前立ての縦並びボタン（大人用標準の5つボタン＋共布ループ）
     const btnFill = collarCol || bodyCfg.kakuColor || '#ffffff';
@@ -7774,24 +7786,22 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
       x.setLineDash([]);
     }
 
-    // 後ろ首元のパイピング襟バンド
-    x.save();
-    x.beginPath();
-    x.moveTo(-neckW - collarTrimW, bodyTop);
-    x.quadraticCurveTo(0, bodyTop + neckBackDip + collarTrimW, neckW + collarTrimW, bodyTop);
-    x.lineTo(neckW, bodyTop);
-    x.quadraticCurveTo(0, bodyTop + neckBackDip, -neckW, bodyTop);
-    x.closePath();
+    // 後ろ首元の別色襟バンド（黒襟・紺襟・白襟を指定したときのみ描画。共布時は別パーツの生地で上書きせず身頃生地をそのまま首元まで表示）
     if(collarCol){
-      x.fillStyle = collarCol; x.fill();
-    }else{
       x.save();
-      x.clip();
-      drawCroppedPiece(x, partMap.collar || partMap.frontR, -neckW - 8, bodyTop, (neckW + 8) * 2, 18, 0);
+      x.beginPath();
+      x.moveTo(-neckW - collarTrimW, bodyTop);
+      x.quadraticCurveTo(0, bodyTop + neckBackDip + collarTrimW, neckW + collarTrimW, bodyTop);
+      x.lineTo(neckW, bodyTop);
+      x.quadraticCurveTo(0, bodyTop + neckBackDip, -neckW, bodyTop);
+      x.closePath();
+      x.fillStyle = collarCol;
+      x.fill();
+      x.strokeStyle = 'rgba(0,0,0,0.45)';
+      x.lineWidth = 1.1;
+      x.stroke();
       x.restore();
     }
-    x.strokeStyle = 'rgba(0,0,0,0.45)'; x.lineWidth = 1.1; x.stroke();
-    x.restore();
   }
 
   // アームホール（袖付け線）の縫い目と立体影（身頃と袖の境目をくっきり見せる）
@@ -8210,7 +8220,7 @@ function applyDaboSpotPlacement(sp, preferText){
       S.showText = true;
       S.daboDragItemType = 'text';
     }else{
-      applyBuiltinFudaLogoPreset('teal');
+      applyBuiltinFudaLogoPreset('default');
       if(S.logoPadMode === 'none'){
         S.logoPadMode = 'silhouette';
         S.logoPadColorMode = 'bg';
@@ -10380,18 +10390,26 @@ if($('quickOpenLogoShelfBtn')){
   });
 }
 function applyBuiltinFudaLogoPreset(variant){
-  const isWhite = (variant === 'white');
+  let effVar = variant || 'default';
+  let customHex = null;
+  if(effVar === 'default' || effVar === 'same'){
+    const prefHex = (S.logoColor || S.kakuColor || '#ffffff').toLowerCase();
+    if(prefHex === '#ffffff') effVar = 'white';
+    else if(prefHex === '#00a3af') effVar = 'teal';
+    else { effVar = 'custom'; customHex = prefHex; }
+  }
+  const isWhite = (effVar === 'white');
   const token = isWhite ? '__BUILTIN_FUDA_WHITE__' : '__BUILTIN_FUDA_TEAL__';
   const name = isWhite ? 'fuda_logo_white' : 'fuda_logo_teal';
-  const label = isWhite ? '札ロゴ (白抜き #FFFFFF)' : '札ロゴ (ティール #00A3AF)';
-  const hex = isWhite ? '#ffffff' : '#00a3af';
+  const hex = customHex || (isWhite ? '#ffffff' : '#00a3af');
+  const label = customHex ? ('札ロゴ (' + customHex.toUpperCase() + ')') : (isWhite ? '札ロゴ (白抜き #FFFFFF)' : '札ロゴ (ティール #00A3AF)');
   S.logoName = name;
   S.logoDataUrl = token;
   S.showLogo = true;
   S.logoRemoveBg = false;
   S.logoBgMode = 'none';
   S.logoInvert = false;
-  S.logoMono = false;
+  S.logoMono = !!customHex;
   S.logoColor = hex;
   ensureLogoLoaded(S.logoDataUrl);
   syncActiveSlotFromS();
@@ -11525,7 +11543,7 @@ const FG_PAL=[
   ['藍','#183574'],['紺','#223a70'],['茜','#b7282e'],['墨','#262626']
 ];
 const FUDA_PAL=[
-  ['浅葱（標準札色）','#00a3af'],['白抜き','#ffffff'],['羽田納戸','#046e7e'],['羽田金','#877028'],
+  ['白抜き（仲羽田と同色）','#ffffff'],['浅葱','#00a3af'],['羽田納戸','#046e7e'],['羽田金','#877028'],
   ['山吹','#f8b500'],['金茶','#c89932'],['茜','#b7282e'],['臙脂','#9e3d3f'],
   ['藍','#183574'],['紺','#223a70'],['生成り','#f3ecd8'],['墨','#262626']
 ];
@@ -11534,15 +11552,17 @@ function getCurrentFudaMainColor(){
     if(S.logoMono && S.logoColor) return S.logoColor.toLowerCase();
     if(S.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || S.logoName === 'fuda_logo_white') return '#ffffff';
     if(S.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || S.logoName === 'fuda_logo_teal') return '#00a3af';
-    return (S.logoColor || '#00a3af').toLowerCase();
+    return (S.logoColor || S.kakuColor || '#ffffff').toLowerCase();
   }
-  return (S.logoColor || '#00a3af').toLowerCase();
+  return (S.logoColor || S.kakuColor || '#ffffff').toLowerCase();
 }
 function applyFudaMainColor(val){
-  const v = String(val || '').trim().toLowerCase();
+  let v = String(val || '').trim().toLowerCase();
+  if(v === 'same') v = (S.kakuColor || '#ffffff').toLowerCase();
   if(!S.showLogo){
-    S.logoName = 'fuda_logo_teal';
-    S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+    const isW = (v === 'white' || v === '#ffffff');
+    S.logoName = isW ? 'fuda_logo_white' : 'fuda_logo_teal';
+    S.logoDataUrl = isW ? '__BUILTIN_FUDA_WHITE__' : '__BUILTIN_FUDA_TEAL__';
     S.showLogo = true;
     S.logoRemoveBg = false;
     S.logoBgMode = 'none';
@@ -11576,7 +11596,7 @@ function applyFudaMainColor(val){
     S.showLogo = true;
     ensureLogoLoaded(S.logoDataUrl);
   }else{
-    const h = normHex(v) || '#00a3af';
+    const h = normHex(v) || (S.kakuColor || '#ffffff').toLowerCase();
     if(!S.logoDataUrl){
       S.logoName = 'fuda_logo_teal';
       S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
@@ -11596,13 +11616,28 @@ function applyFudaMainColor(val){
 function getCurrentFudaTextColor(){
   const effPad = resolveLogoPadColor(S, S.bgColor);
   const c = resolveLogoTextColor(S, S.bgColor, effPad);
-  return (c || S.logoTextColor || S.bgColor || '#ffffff').toLowerCase();
+  if(c) return c.toLowerCase();
+  const visBg = (S.logoPadMode && S.logoPadMode !== 'none' && effPad) ? effPad : (S.bgColor || '#046e7e');
+  return visBg.toLowerCase();
 }
 function applyFudaTextColor(val){
   const v = String(val || '').trim().toLowerCase();
   if(!S.showLogo){
-    S.logoName = 'fuda_logo_teal';
-    S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+    const initCol = (S.logoColor || S.kakuColor || '#ffffff').toLowerCase();
+    if(initCol === '#ffffff'){
+      S.logoName = 'fuda_logo_white';
+      S.logoDataUrl = '__BUILTIN_FUDA_WHITE__';
+      S.logoMono = false;
+    }else if(initCol === '#00a3af'){
+      S.logoName = 'fuda_logo_teal';
+      S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+      S.logoMono = false;
+    }else{
+      S.logoName = 'fuda_logo_teal';
+      S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+      S.logoMono = true;
+    }
+    S.logoColor = initCol;
     S.showLogo = true;
     S.logoRemoveBg = false;
     S.logoBgMode = 'none';
@@ -11660,6 +11695,7 @@ if($('sec3ArareStrokeGoldBtn')) $('sec3ArareStrokeGoldBtn').addEventListener('cl
 if($('sec3ArareStrokeWhiteBtn')) $('sec3ArareStrokeWhiteBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#ffffff'; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; update(false); });
 if($('sec3ArareOuterColor')) $('sec3ArareOuterColor').addEventListener('input',e=>{ S.arareOuterColor = e.target.value; if(!S.arareOuterMode || S.arareOuterMode==='none') S.arareOuterMode='single'; update(false); });
 if($('sec3ArareOuterDotBtn')) $('sec3ArareOuterDotBtn').addEventListener('click',()=>{ S.arareOuterColor = S.dotColor || '#ffffff'; if(!S.arareOuterMode || S.arareOuterMode==='none') S.arareOuterMode='single'; update(false); });
+if($('sec3FudaSameKakuBtn')) $('sec3FudaSameKakuBtn').addEventListener('click',()=>applyFudaMainColor('same'));
 if($('sec3FudaTealBtn')) $('sec3FudaTealBtn').addEventListener('click',()=>applyFudaMainColor('teal'));
 if($('sec3FudaWhiteBtn')) $('sec3FudaWhiteBtn').addEventListener('click',()=>applyFudaMainColor('white'));
 if($('sec3FudaLogoColor')) $('sec3FudaLogoColor').addEventListener('input',e=>applyFudaMainColor(e.target.value));
@@ -12454,10 +12490,12 @@ function easyRenderImpl(){
   if($('eFudaColChips')){
     var isTealStd = !!(S.showLogo && !S.logoMono && (S.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || S.logoName === 'fuda_logo_teal'));
     var isWhiteStd = !!(S.showLogo && !S.logoMono && (S.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || S.logoName === 'fuda_logo_white'));
+    var kakuLowF = eLow(S.kakuColor || '#ffffff');
     $('eFudaColChips').querySelectorAll('button').forEach(function(b){
       var v = eLow(b.dataset.efcol);
       var isPressed = false;
-      if(v === 'teal') isPressed = isTealStd || (fudaHex === '#00a3af');
+      if(v === 'same') isPressed = (fudaHex === kakuLowF);
+      else if(v === 'teal') isPressed = isTealStd || (fudaHex === '#00a3af');
       else if(v === 'white') isPressed = isWhiteStd || (fudaHex === '#ffffff');
       else isPressed = (v === fudaHex);
       b.setAttribute('aria-pressed', String(isPressed));
@@ -12642,11 +12680,25 @@ function easyRenderImpl(){
   E_COLORS.forEach(function(c){
     var b = document.createElement('button'); b.type = 'button'; b.dataset.bg = c[0]; b.dataset.fg = c[1];
     b.style.background = c[0]; b.style.color = c[1]; b.textContent = '仲'; b.title = c[2]; b.setAttribute('aria-label', c[2]);
-    b.addEventListener('click', function(){ S.bgColor = c[0]; S.kakuColor = c[1]; S.dotColor = c[1]; update(false); });
+    b.addEventListener('click', function(){
+      var prevKaku = eLow(S.kakuColor || '#ffffff');
+      S.bgColor = c[0]; S.kakuColor = c[1]; S.dotColor = c[1];
+      if(!S.showLogo || getCurrentFudaMainColor() === prevKaku){
+        S.logoColor = c[1];
+        if(S.showLogo && isBuiltinFudaSlot(S)){ applyFudaMainColor(c[1]); return; }
+      }
+      update(false);
+    });
     box.appendChild(b);
   });
   $('eBg').addEventListener('input', function(e){ S.bgColor = e.target.value; update(false); });
-  $('eFg').addEventListener('input', function(e){ S.kakuColor = e.target.value; if(S.mode === 'arare') S.dotColor = e.target.value; update(false); });
+  $('eFg').addEventListener('input', function(e){
+    var prevKaku = eLow(S.kakuColor || '#ffffff');
+    S.kakuColor = e.target.value;
+    if(S.mode === 'arare') S.dotColor = e.target.value;
+    if(!S.showLogo && eLow(S.logoColor || '#ffffff') === prevKaku) S.logoColor = e.target.value;
+    update(false);
+  });
   if($('eDotCol')){
     $('eDotCol').addEventListener('input', function(e){
       S.dotColor = e.target.value;
