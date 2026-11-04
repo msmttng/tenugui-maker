@@ -392,24 +392,24 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <button type="button" data-dql="teal_trans">札ロゴ 色つき<small>透過のまま</small></button>
             <button type="button" data-dql="white_trans">札ロゴ 白抜き<small>透過のまま</small></button>
           </div>
-          <div class="e-sublbl" style="margin-top:2px"><span>③ ダボシャツのどこに札ロゴを入れる？（クリックで手ぬぐいを自動逆算）</span></div>
+          <div class="e-sublbl" style="margin-top:2px"><span>③ ダボシャツのロゴ位置から手ぬぐいを逆算（全枚すべて同じ構図の手ぬぐいに反映）</span></div>
           <div class="e-chips" id="eDaboSpotBtns">
-            <button type="button" data-dspot="backAndPocket" style="grid-column:span 2;background:#fef3c7;border-color:#f59e0b;color:#78350f">⭐ 王道おすすめ：背中(背紋)＋左胸ポケット同時<small>1種類の手ぬぐい(1型)で背中と胸ポケの両方にピタッと出し、袖や前身頃には出さない最良の取り方</small></button>
-            <button type="button" data-dspot="backCrest">① 背中・首下のみ<small>背紋（切れ目なし）</small></button>
-            <button type="button" data-dspot="backMid">② 背中・ど真ん中<small>背中に大きく1枚取</small></button>
-            <button type="button" data-dspot="frontChestL">③ 左胸（前身頃）<small>向かって右の胸</small></button>
-            <button type="button" data-dspot="frontChestR">④ 右胸（前身頃）<small>向かって左の胸</small></button>
-            <button type="button" data-dspot="chestPocket">⑤ 左胸ポケットのみ<small>ポケットの中に配置</small></button>
-            <button type="button" data-dspot="frontHem">⑥ 前後の裾<small>腰まわりに配置</small></button>
-            <button type="button" data-dspot="sleeves">⑦ 両袖（肩〜腕）<small>左右の袖に配置</small></button>
-            <button type="button" data-dspot="allParts">⑧ 全パーツ共通<small>全手ぬぐい共通</small></button>
+            <button type="button" data-dspot="backAndPocket" style="grid-column:span 2;background:#fef3c7;border-color:#f59e0b;color:#78350f">⭐ 王道おすすめ：背紋＋胸位置（袖は下半分から裁断）<small>全枚すべて同じ構図の手ぬぐいで、背中・胸・ポケットにロゴを出し袖は下側から取る配置</small></button>
+            <button type="button" data-dspot="backCrest">① 背中・首下の高さ<small>背紋位置（全枚共通）</small></button>
+            <button type="button" data-dspot="backMid">② 背中・ど真ん中<small>身頃中央（全枚共通）</small></button>
+            <button type="button" data-dspot="frontChestL">③ 左胸の高さ<small>向かって右の胸（全枚共通）</small></button>
+            <button type="button" data-dspot="frontChestR">④ 右胸の高さ<small>向かって左の胸（全枚共通）</small></button>
+            <button type="button" data-dspot="chestPocket">⑤ 左胸ポケット位置<small>胸ポケ中央（全枚共通）</small></button>
+            <button type="button" data-dspot="frontHem">⑥ 前後の裾まわり<small>腰元の高さ（全枚共通）</small></button>
+            <button type="button" data-dspot="sleeves">⑦ 両袖の中央<small>肩〜二の腕（全枚共通）</small></button>
+            <button type="button" data-dspot="allParts">⑧ 標準位置（上部）<small>全パーツ共通</small></button>
           </div>
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px">
-            <button type="button" class="mini-btn" id="eDaboPinAddBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:6px 8px;font-size:11.5px">📌 今のロゴ位置を固定して、別の場所にもう1つ追加</button>
+            <button type="button" class="mini-btn" id="eDaboPinAddBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:6px 8px;font-size:11.5px">📌 今のロゴ位置を固定して、手ぬぐいの別の場所にもう1つ追加</button>
           </div>
           <div id="eDaboSlotsBar" style="display:flex;flex-wrap:wrap;gap:4px"></div>
           <div class="e-dabo-card" id="eDaboReverseCard">
-            <div id="eDaboReverseText">💡 上の<b>部位ボタン</b>を押すか、右の<b>ダボシャツの上で札ロゴを直接ドラッグ</b>すると、その位置にぴったり合う<b>手ぬぐい図案が自動で作られます！</b><br>別の場所にも追加したい時は<b>「📌 今のロゴ位置を固定して、別の場所にもう1つ追加」</b>を押してください。</div>
+            <div id="eDaboReverseText">💡 上の<b>部位ボタン</b>を押すか、右の<b>ダボシャツの上で札ロゴを直接ドラッグ</b>すると、手ぬぐい上の位置が逆算され、<b>裁断図の全手ぬぐい（5〜8枚すべて同じ構図）とダボシャツ全体</b>に即座に反映されます！</div>
             <div class="e-dabo-switch">
               <button type="button" id="eDaboShowShirtBtn" aria-pressed="false">👕 ダボシャツで位置を決める</button>
               <button type="button" id="eDaboShowTenuguiBtn" aria-pressed="true">📜 できた手ぬぐい(1枚)を見る</button>
@@ -1486,17 +1486,17 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <option value="5piece">⑤ 子ども用・最小5枚取り（前2・後2・5本目を上下分割して左右両袖）</option>
         </select>
 
-        <span class="clabel" style="font-size:12px;margin-top:4px">③ ロゴ・丸紋・名入れ文字入り手ぬぐいを使う部位</span>
+        <span class="clabel" style="font-size:12px;margin-top:4px">③ ロゴ・丸紋・名入れ文字入り手ぬぐいの使い方（標準：全枚すべて同じ構図の手ぬぐい）</span>
         <select id="daboLogoTarget" style="font-size:12px">
-          <option value="all">全パーツに同じロゴ・文字入り手ぬぐいを使う（5〜8枚すべて）</option>
-          <option value="backOnly">背中（後身頃）だけロゴ・文字入り手ぬぐいを使う（前・袖は総柄のみ）</option>
-          <option value="frontLOnly">左胸（左前身頃）だけロゴ・文字入り手ぬぐいを使う（1枚のみ）</option>
-          <option value="frontROnly">右胸（右前身頃）だけロゴ・文字入り手ぬぐいを使う（1枚のみ）</option>
-          <option value="pocketOnly">左胸ポケットだけロゴ・文字入り手ぬぐいを使う（小パーツ用7・8本目のみ）</option>
-          <option value="frontOnly">両胸（左右の前身頃）だけロゴ・文字入り手ぬぐいを使う（2枚）</option>
-          <option value="backPocket">背中＋左胸ポケット（小パーツ用7・8本目）だけロゴ・文字入りを使う</option>
-          <option value="frontBack">前身頃＋後身頃＋胸ポケにロゴ・文字入りを使う（袖は総柄のみ）</option>
-          <option value="sleevesOnly">両袖のみロゴ・文字入り手ぬぐいを使う</option>
+          <option value="all">★標準：全枚すべて同じ構図の手ぬぐいを使う（5〜8枚すべて同一の手ぬぐい）</option>
+          <option value="backOnly">【2型別注】背中（後身頃）だけロゴ入り・他は無地総柄にする</option>
+          <option value="frontLOnly">【2型別注】左胸（左前身頃）だけロゴ入り・他は無地総柄にする</option>
+          <option value="frontROnly">【2型別注】右胸（右前身頃）だけロゴ入り・他は無地総柄にする</option>
+          <option value="pocketOnly">【2型別注】左胸ポケットだけロゴ入り・他は無地総柄にする</option>
+          <option value="frontOnly">【2型別注】両胸（前身頃2枚）だけロゴ入り・他は無地総柄にする</option>
+          <option value="backPocket">【2型別注】背中＋左胸ポケットだけロゴ入り・他は無地総柄にする</option>
+          <option value="frontBack">【2型別注】前後身頃＋胸ポケにロゴ入り・袖だけ無地総柄にする</option>
+          <option value="sleevesOnly">【2型別注】両袖のみロゴ入り・他は無地総柄にする</option>
         </select>
 
         <!-- 📜 ダボ・手ぬぐいのベース柄ワンタッチ切替（仲羽田のみ ／ 仲羽田青年会） -->
@@ -1530,28 +1530,28 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <button type="button" class="mini-btn del" id="daboClearLogoBtn" style="font-weight:700" title="ダボ上に配置したロゴ・丸紋・文字を消します">🗑️ 消す</button>
           </div>
           <div id="daboReverseMapInfo" style="margin-top:5px;padding:5px 7px;background:#ffffff;border:1px solid #93c5fd;border-radius:4px;font-size:11px;line-height:1.45;color:#0f172a">
-            💡 <b>「✍️ ダボに直接文字を打つ」</b>を押すか、右の<b>ダボシャツの上をドラッグ</b>すると、その部位に札ロゴ・文字が配置され、<b>手ぬぐいのどこ（何本目の横X%・縦Y% / 何mm）に染めるか</b>がリアルタイムで手ぬぐいにも自動反映されます！
+            💡 <b>「✍️ ダボに直接文字を打つ」</b>を押すか、右の<b>ダボシャツの上をドラッグ</b>すると、手ぬぐい上の位置（横X%・縦Y% / 何mm）が逆算され、<b>裁断図の全手ぬぐい（5〜8枚すべて同じ構図）とダボ全体</b>に自動反映されます！
           </div>
         </div>
 
         <div class="cgroup" style="background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:7px 8px;margin-top:4px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
-            <span class="clabel" style="font-size:11.5px;color:#92400e">🎯 ダボシャツのロゴ位置から手ぬぐいを作る（一発逆算配置）</span>
+            <span class="clabel" style="font-size:11.5px;color:#92400e">🎯 ダボシャツのロゴ位置から手ぬぐいを作る（全枚すべて同じ構図の手ぬぐいに反映）</span>
             <button type="button" class="mini-btn" id="daboSwitchToTenuguiBtn" style="background:#046e7e;color:#fff;border-color:#035360;font-weight:700">📜 できた手ぬぐい(1枚)を見る ⇄</button>
           </div>
           <div class="chips" id="daboSmartLogoBtns" style="margin-top:4px">
-            <button type="button" class="mini-btn" data-spot="backAndPocket" style="background:#fef08a;border-color:#ca8a04;color:#713f12;font-weight:800;width:100%">⭐ 王道おすすめ：背中(背紋)＋左胸ポケ同時（1型で両方に出し袖には出さない！）</button>
+            <button type="button" class="mini-btn" data-spot="backAndPocket" style="background:#fef08a;border-color:#ca8a04;color:#713f12;font-weight:800;width:100%">⭐ 王道おすすめ：背紋＋胸位置（全枚同じ構図の手ぬぐい／袖は下半分から裁断）</button>
             <button type="button" class="mini-btn" data-spot="backCrest" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">① 背中・首下(背紋)</button>
             <button type="button" class="mini-btn" data-spot="backMid" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">② 背中ど真ん中(大)</button>
-            <button type="button" class="mini-btn" data-spot="frontChestL" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">③ 左胸(前身頃)</button>
-            <button type="button" class="mini-btn" data-spot="frontChestR" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">④ 右胸(前身頃)</button>
+            <button type="button" class="mini-btn" data-spot="frontChestL" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">③ 左胸の高さ</button>
+            <button type="button" class="mini-btn" data-spot="frontChestR" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">④ 右胸の高さ</button>
             <button type="button" class="mini-btn" data-spot="chestPocket" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">⑤ 左胸ポケット</button>
             <button type="button" class="mini-btn" data-spot="frontHem" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">⑥ 前後の裾(腰元)</button>
             <button type="button" class="mini-btn" data-spot="sleeves" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">⑦ 両袖の肩〜腕</button>
-            <button type="button" class="mini-btn" data-spot="allParts" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">⑧ 全パーツ共通</button>
+            <button type="button" class="mini-btn" data-spot="allParts" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">⑧ 標準位置(上部)</button>
           </div>
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:6px">
-            <button type="button" class="mini-btn" id="daboPinAddLogoBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:5px 8px">📌 今のロゴをこの場所に固定して、別の場所にもう1つ追加</button>
+            <button type="button" class="mini-btn" id="daboPinAddLogoBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:5px 8px">📌 今のロゴ位置を固定して、手ぬぐいの別の場所にもう1つ追加</button>
           </div>
           <div id="daboPinnedSlotsBar" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px"></div>
         </div>
@@ -2233,7 +2233,7 @@ const DEF={
   daboSize:'L', // 'S' | 'M' | 'L' | 'LL' | '3L'
   daboShiftY:0, daboShiftX:0, daboSleeveShiftY:0, daboPatScale:100,
   daboBodyPreset:'current', daboSleevePreset:'same', daboCollarMode:'same', daboPocketMode:'match',
-  showDaboZoneGuide:false, daboInteractiveLogo:false, daboDragItemType:'text',
+  showDaboZoneGuide:false, daboInteractiveLogo:false, daboDragItemType:'auto',
   // 大小あられパラメーター ＆ 大小あられの周り枠（1粒ごとの周り枠・外周周り枠）
   count:1220, gap:2.5, spread:15, grad:0, dmin:3.5, dmax:11, bigratio:32, scale:100, shape:'orig',
   ararePadMode:'none', // 'none' | 'pad' (うしろ抜き) | 'frame' (周り枠線) | 'padFrame' (うしろ抜き＋周り枠線)
@@ -2273,6 +2273,15 @@ try{
     S.customTextBg = '#00a3af';
     S.fudaCordColor = '#00a3af';
     localStorage.setItem('haneda-fix-fudasvgbase-v193', '1');
+    localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
+  }
+  if(!localStorage.getItem('haneda-fix-sametenugui-v1123')){
+    S.daboLogoTarget = 'all';
+    S.daboSpotPart = 'all';
+    if(Array.isArray(S.logoSlots)){
+      S.logoSlots.forEach(sl => { if(sl) sl.daboSpotPart = 'all'; });
+    }
+    localStorage.setItem('haneda-fix-sametenugui-v1123', '1');
     localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
   }
 }catch(e){}
@@ -2492,44 +2501,37 @@ function pinCurrentLogoAndAddAnother(){
   syncActiveSlotFromS();
   const curIdx = Math.max(0, Math.min(S.logoSlots.length - 1, S.activeLogoSlot || 0));
   const curSlot = S.logoSlots[curIdx] || extractLogoSlotFromS(S);
-  if(!curSlot.daboSpotPart || curSlot.daboSpotPart === 'auto'){
-    curSlot.daboSpotPart = inferCurrentDaboPartTag();
-    S.daboSpotPart = curSlot.daboSpotPart;
-    S.logoSlots[curIdx] = curSlot;
-  }
-  // 次のロゴは、前が背中なら「左胸(frontL)」、前が左胸なら「右胸(frontR)」または「背中(back)」へ初期配置
-  let nextPart = 'frontL';
-  let nextUV = { u: 0.68, v: 0.31 };
+  // 1種類の手ぬぐいに複数箇所ロゴを配置して全手ぬぐい共通にするため、daboSpotPart は常に 'all'（全手ぬぐい共通）
+  curSlot.daboSpotPart = 'all';
+  S.daboSpotPart = 'all';
+  S.logoSlots[curIdx] = curSlot;
+
+  // 次のロゴは、現在のロゴが上寄り（背紋・胸付近）なら下側、下寄りなら上側へずらして追加
+  let nextUV = { u: 0.68, v: 0.65 };
   let nextSize = Math.max(55, Math.min(82, Math.round((curSlot.logoSize || 85) * 0.78)));
-  if(curSlot.daboSpotPart === 'frontL'){
-    nextPart = 'back';
+  if((curSlot.logoY || 28) > 45){
     nextUV = { u: 0.50, v: 0.22 };
     nextSize = 85;
-  }else if(curSlot.daboSpotPart === 'back' && S.logoSlots.some(s => s.daboSpotPart === 'frontL')){
-    nextPart = 'pocket';
-    nextUV = { u: 0.68, v: 0.35 };
-    nextSize = 56;
+  }else if(S.logoSlots.length >= 2){
+    nextUV = { u: 0.32, v: 0.52 };
+    nextSize = 62;
   }
   const nextPct = stripUVToTenuguiPct(nextUV.u, nextUV.v);
   const newSlot = Object.assign({}, curSlot, {
     logoX: nextPct.px,
     logoY: nextPct.py,
     logoSize: nextSize,
-    daboSpotPart: nextPart
+    daboSpotPart: 'all'
   });
   S.logoSlots.push(newSlot);
   S.activeLogoSlot = S.logoSlots.length - 1;
   applySlotToS(newSlot);
-  // 背中と前身頃の両方にロゴが出るようにターゲットを自動拡張
-  if(['backOnly', 'frontLOnly', 'frontROnly', 'pocketOnly', 'frontOnly'].includes(S.daboLogoTarget)){
-    S.daboLogoTarget = 'frontBack';
-  }
+  // すべての手ぬぐい（1〜7/8本目すべて）が同じ構図になるよう常に 'all' に設定
+  S.daboLogoTarget = 'all';
   if(S.viewMode === 'fabric') S.viewMode = 'cut_dabo';
   PROC_LOGO_KEY = '';
   update(false);
-  const pinnedPartName = DABO_PART_SHORT_LABELS[curSlot.daboSpotPart] || '現在の位置';
-  const nextPartName = DABO_PART_SHORT_LABELS[nextPart] || '別の部位';
-  saySave(`📌 1つ目のロゴを「${pinnedPartName}」に固定し、2つ目のロゴを「${nextPartName}」に追加しました！①〜⑧ボタンやドラッグで2つ目の位置を自由に変えられます。`);
+  saySave(`📌 1枚の手ぬぐい図案の中に「${S.logoSlots.length}個目のロゴ」を追加しました！全${S.daboCutMode === 'adult8_crest' ? 8 : 7}枚すべての手ぬぐいに同じ構図で反映されます。`);
 }
 
 function renderLogoSlotsBar(){
@@ -2550,7 +2552,7 @@ function renderLogoSlotsBar(){
   syncActiveSlotFromS();
   bars.forEach(bar => {
     const isDaboBar = (bar.id === 'daboPinnedSlotsBar' || bar.id === 'eDaboSlotsBar');
-    if(isDaboBar && S.logoSlots.length <= 1 && (!S.logoSlots[0] || !S.logoSlots[0].daboSpotPart || S.logoSlots[0].daboSpotPart === 'auto')){
+    if(isDaboBar && S.logoSlots.length <= 0){
       return;
     }
     S.logoSlots.forEach((slot, idx) => {
@@ -6309,7 +6311,9 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
         x.fill(crestPath, 'evenodd');
       }
       let ovCfg = cfg;
-      if(partFilter && cfg.showLogo && Array.isArray(cfg.logoSlots) && cfg.logoSlots.length > 0){
+      // S.daboLogoTarget === 'all'（標準：全手ぬぐい同じ構図）のときは全ストリップに全ロゴをそのまま描画し、
+      // 部位別手ぬぐい分けモードを選んだときのみ daboSpotPart でフィルタリングする
+      if(partFilter && cfg.daboLogoTarget && cfg.daboLogoTarget !== 'all' && cfg.showLogo && Array.isArray(cfg.logoSlots) && cfg.logoSlots.length > 0){
         const hasSpecificTags = cfg.logoSlots.some(sl => sl && sl.daboSpotPart && sl.daboSpotPart !== 'auto' && sl.daboSpotPart !== 'all');
         if(hasSpecificTags){
           const matched = cfg.logoSlots.filter(sl => {
@@ -6392,36 +6396,32 @@ function buildDaboCutPlan(){
   const baseYPct = activeKey === 'logo' ? (S.logoY ?? 28) : (activeKey === 'text' ? (S.textY ?? 75) : (S.crestY ?? 80));
   const activeUV = tenuguiPctToStripUV(baseXPct, baseYPct);
 
-  // ポケット用ロゴのUV（胸ポケ専用ピン留めスロットがあればそれを優先、なければアクティブ要素のUV）
+  // ポケット用ロゴのUV（胸ポケ専用設定のときのみ窓をスライドし、全手ぬぐい共通('all')のときは左前身頃の胸ポケ位置と100%柄合わせになる位置に固定）
   let pkLogoUV = activeUV;
   if(S.showLogo && Array.isArray(S.logoSlots)){
     const pkSlot = S.logoSlots.find(sl => sl && sl.daboSpotPart === 'pocket');
     if(pkSlot) pkLogoUV = tenuguiPctToStripUV(pkSlot.logoX ?? 50, pkSlot.logoY ?? 28);
   }
-  // 7/8本目の左胸ポケット切り出し枠：ロゴ位置(pkLogoUV)を中心に40%×22%の窓を自動スライド！
-  // これにより「背紋位置(横50%, 縦22%)」に1つだけロゴを染めた手ぬぐい1種類で、1本目＝背紋ド真ん中、7/8本目＝左胸ポケットのド真ん中の両方にロゴを出せる！
-  const pkU = pocketHasLogo
-    ? clamp(pkLogoUV.u - 0.20 + sx * 0.16, 0.30, 0.58)
-    : clamp(0.48 + sx * 0.16, 0.30, 0.58);
-  const pkV = pocketHasLogo
-    ? clamp(pkLogoUV.v - 0.11 + sy * 0.18, 0.05, 0.56)
-    : clamp(0.24 + sy * 0.18, 0.06, 0.54);
+  // 左前身頃(frontL: u=bx, v=by, uw=bw, vh=bh)上の胸ポケ位置(pkX=14/90, pkY=56/188, pkW=36/90, pkH=42/188)に100%柄合わせする切り出し座標:
+  // u_center ≈ bx + bw * 0.50, v_center ≈ by + bh * 0.36
+  const matchPkU = clamp((bx + bw * 0.50) - 0.20, 0.04, 0.58);
+  const matchPkV = clamp((by + bh * 0.36) - 0.11, 0.04, 0.68);
+  const pkU = (target === 'pocketOnly' || target === 'backPocket')
+    ? clamp(pkLogoUV.u - 0.20 + sx * 0.16, 0.04, 0.58)
+    : matchPkU;
+  const pkV = (target === 'pocketOnly' || target === 'backPocket')
+    ? clamp(pkLogoUV.v - 0.11 + sy * 0.18, 0.04, 0.68)
+    : matchPkV;
 
-  // 袖の切り出し縦位置：袖にもロゴを入れる場合はロゴ位置を中心にし、袖にロゴを出したくない場合（または背紋位置v<0.34のとき）は下半分(v=0.36〜)から取ることで1種類の手ぬぐいでも袖を無地総柄に保てる！
-  let slvLogoUV = activeUV;
-  if(S.showLogo && Array.isArray(S.logoSlots)){
-    const slvSlot = S.logoSlots.find(sl => sl && sl.daboSpotPart === 'sleeves');
-    if(slvSlot) slvLogoUV = tenuguiPctToStripUV(slvSlot.logoX ?? 50, slvSlot.logoY ?? 28);
-  }
-  const slvBaseV = sleeveHasLogo
-    ? clamp(slvLogoUV.v - 0.28, 0.04, 0.40)
-    : (activeUV.v < 0.35 ? 0.36 : 0.06);
+  // 袖の切り出し縦位置：手ぬぐいガイド枠（drawDaboZoneGuideOverlayMm）と一致する固定位置（slvY=0.14+ssy*0.28）を基準にし、
+  // 全手ぬぐいが同じ構図でそのまま各パーツに切り出されるようにする
+  const slvBaseV = (target === 'backPocket' && activeUV.v < 0.35) ? 0.36 : 0.14;
   const slvY1 = clamp(slvBaseV + ssy * 0.28, 0.02, 0.42);
 
   if(cutMode === 'adult7'){
     // ① 大人用・標準7枚取り（お祭り用品店のオーダーメイド標準：身頃4本＋両袖2本＋7本目に前立て・襟・柄合わせ胸ポケ・袖下マチ）
     return {
-      modeTitle: '① 大人用・標準7枚取り（前2・後2・両袖2 ＋ 7本目：前立て・襟・柄合わせ胸ポケ・脇マチ）',
+      modeTitle: '① 大人用・標準7枚取り（全7枚すべて同じ構図の手ぬぐいを使用：前2・後2・両袖2・襟＆柄合せ胸ポケ1）',
       strips: [
         { title: '1本目：右後ろ身頃', hasLogo: backHasLogo, partFilter: 'back', parts: [
           { id: 'backR', label: '右後身頃(背中心接ぎ)', u: bx, v: by, uw: bw, vh: bh, shape: 'backR' }
@@ -6454,12 +6454,12 @@ function buildDaboCutPlan(){
   } else if(cutMode === 'adult8_crest'){
     // ② 大人用・背紋1枚＋ゆったり8枚取り（背中心で柄を切らずに背紋をド真ん中に配置＋後両脇マチ＋太袖マチ＋小パーツ専用）
     return {
-      modeTitle: '② 大人用・背紋1枚＋ゆったり8枚取り（背中央1・後両脇マチ1・前2・両袖2・袖下太マチ1・襟＆胸ポケ1）',
+      modeTitle: '② 大人用・背紋1枚＋ゆったり8枚取り（全8枚すべて同じ構図の手ぬぐいを使用：背中央1・後脇マチ1・前2・両袖2・袖下マチ1・胸ポケ1）',
       strips: [
         { title: '1本目：背中中央(背紋1枚取)', hasLogo: backHasLogo, partFilter: 'back', parts: [
           { id: 'backCenter', label: '後中央身頃(背紋)', u: clamp(0.04+sx*0.12,0,0.12), v: by, uw: 0.92, vh: bh, shape: 'backCenter' }
         ]},
-        { title: '2本目：後両脇マチ(身幅拡張)', hasLogo: false, parts: [
+        { title: '2本目：後両脇マチ(身幅拡張)', hasLogo: backHasLogo, partFilter: 'back', parts: [
           { id: 'backSideR', label: '右後脇マチ(大人幅)', u: 0.05, v: by, uw: 0.41, vh: bh, shape: 'rect' },
           { id: 'backSideL', label: '左後脇マチ(大人幅)', u: 0.54, v: by, uw: 0.41, vh: bh, shape: 'rect' }
         ]},
@@ -6475,7 +6475,7 @@ function buildDaboCutPlan(){
         { title: '6本目：左袖(広袖・七分)', hasLogo: sleeveHasLogo, isSleeve: true, partFilter: 'sleeves', parts: [
           { id: 'sleeveL', label: '左袖(主袖)', u: 0.05, v: slvY1, uw: 0.90, vh: 0.56, shape: 'sleeveL' }
         ]},
-        { title: '7本目：両袖下マチ(太袖ハギ)', hasLogo: false, isSleeve: true, parts: [
+        { title: '7本目：両袖下マチ(太袖ハギ)', hasLogo: sleeveHasLogo, isSleeve: true, partFilter: 'sleeves', parts: [
           { id: 'gussetR', label: '右袖下太マチ(ダボ袖)', u: 0.08, v: 0.06, uw: 0.84, vh: 0.40, shape: 'rect' },
           { id: 'gussetL', label: '左袖下太マチ(ダボ袖)', u: 0.08, v: 0.52, uw: 0.84, vh: 0.40, shape: 'rect' }
         ]},
@@ -6489,12 +6489,12 @@ function buildDaboCutPlan(){
     };
   } else if(cutMode === 'backCenter'){
     return {
-      modeTitle: '④ 6枚・背中中央1枚取り（背紋・中央ロゴを切らずに背中に配置＋両脇マチ）',
+      modeTitle: '④ 6枚・背中中央1枚取り（全6枚すべて同じ構図の手ぬぐいを使用：背紋・中央ロゴを切らずに背中に配置＋両脇マチ）',
       strips: [
         { title: '1本目：背中中央(背紋)', hasLogo: backHasLogo, partFilter: 'back', parts: [
           { id: 'backCenter', label: '後中央身頃(背紋)', u: clamp(0.04+sx*0.12,0,0.12), v: by, uw: 0.92, vh: bh, shape: 'backCenter' }
         ]},
-        { title: '2本目：後両脇マチ＋襟', hasLogo: false, parts: [
+        { title: '2本目：後両脇マチ＋襟', hasLogo: backHasLogo, partFilter: 'back', parts: [
           { id: 'backSideR', label: '右後脇マチ', u: 0.06, v: by, uw: 0.38, vh: bh, shape: 'rect' },
           { id: 'backSideL', label: '左後脇マチ', u: 0.54, v: by, uw: 0.38, vh: bh, shape: 'rect' },
           { id: 'collar', label: '掛け襟', u: 0.08, v: 0.86, uw: 0.84, vh: 0.11, shape: 'rect' }
@@ -6796,23 +6796,35 @@ function drawCuttingLayoutPanel(x, px, py, pw, ph, plan){
       x.restore();
     });
 
-    // ロゴ・丸紋・文字入りストリップの場合、手ぬぐい上のどこに中心があるかターゲット十字マーカーを描画
+    // ロゴ・丸紋・文字入りストリップの場合、手ぬぐい上のどこに中心があるかターゲット十字マーカーを描画（複数ロゴスロットがある場合は全ロゴ位置にマーカーを描画）
     if(st.hasLogo || isHighlightedStrip){
-      const lx = sx + uvLogo.u * dw;
-      const ly = sy + uvLogo.v * dh;
-      x.save();
-      x.strokeStyle = isHighlightedStrip ? '#38bdf8' : 'rgba(250, 204, 21, 0.85)';
-      x.lineWidth = isHighlightedStrip ? 1.8 : 1.1;
-      x.beginPath();
-      x.arc(lx, ly, isHighlightedStrip ? 7 : 4.5, 0, Math.PI * 2);
-      x.stroke();
-      if(isHighlightedStrip){
-        x.beginPath();
-        x.moveTo(sx, ly); x.lineTo(sx + dw, ly);
-        x.moveTo(lx, sy); x.lineTo(lx, sy + dh);
-        x.stroke();
+      const markerUVs = [];
+      if(activeKey === 'logo' && S.showLogo && Array.isArray(S.logoSlots) && S.logoSlots.length > 1){
+        S.logoSlots.forEach((sl, sIdx) => {
+          if(!sl) return;
+          const uv = tenuguiPctToStripUV(sl.logoX ?? 50, sl.logoY ?? 28);
+          markerUVs.push({ u: uv.u, v: uv.v, isActive: sIdx === (S.activeLogoSlot || 0) });
+        });
+      }else{
+        markerUVs.push({ u: uvLogo.u, v: uvLogo.v, isActive: true });
       }
-      x.restore();
+      markerUVs.forEach(mk => {
+        const lx = sx + mk.u * dw;
+        const ly = sy + mk.v * dh;
+        x.save();
+        x.strokeStyle = (isHighlightedStrip && mk.isActive) ? '#38bdf8' : 'rgba(250, 204, 21, 0.88)';
+        x.lineWidth = (isHighlightedStrip && mk.isActive) ? 1.8 : 1.2;
+        x.beginPath();
+        x.arc(lx, ly, (isHighlightedStrip && mk.isActive) ? 7 : 5, 0, Math.PI * 2);
+        x.stroke();
+        if(isHighlightedStrip && mk.isActive){
+          x.beginPath();
+          x.moveTo(sx, ly); x.lineTo(sx + dw, ly);
+          x.moveTo(lx, sy); x.lineTo(lx, sy + dh);
+          x.stroke();
+        }
+        x.restore();
+      });
     }
 
     x.strokeStyle = isHighlightedStrip ? '#38bdf8' : 'rgba(255,255,255,0.3)';
@@ -6823,7 +6835,7 @@ function drawCuttingLayoutPanel(x, px, py, pw, ph, plan){
   x.textAlign = 'left';
   x.fillStyle = '#bae6fd';
   x.font = '10px sans-serif';
-  x.fillText('👆 右のダボシャツ上をクリック/ドラッグすると、該当する手ぬぐい上の位置（水色十字）へ自動反映されます', px + 12, py + ph - 9, pw - 24);
+  x.fillText('👆 右のダボシャツ上をクリック/ドラッグすると、全' + plan.strips.length + '枚の手ぬぐいすべてに同じ構図の位置（黄色丸/水色十字）で即時反映されます', px + 12, py + ph - 9, pw - 24);
   x.restore();
 }
 
@@ -7349,8 +7361,8 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
       x.clip();
       if(S.daboPocketMode === 'bias'){
         drawCroppedPiece(x, partMap.pocket || partMap.frontL, pkX - 8, pkY - 8, pkW + 16, pkH + 16, 45);
-      }else if(partMap.frontL && partMap.frontL.hasLogo && (!partMap.pocket || !partMap.pocket.hasLogo || S.daboLogoTarget === 'frontLOnly' || S.daboLogoTarget === 'frontOnly')){
-        // 左前身頃(左胸)にロゴがあり胸ポケ単体指定でない場合は、左前身頃と100%柄合わせして左胸ロゴがポケットで隠れないようにする
+      }else if(partMap.frontL && (S.daboLogoTarget === 'all' || (partMap.frontL.hasLogo && (!partMap.pocket || !partMap.pocket.hasLogo || S.daboLogoTarget === 'frontLOnly' || S.daboLogoTarget === 'frontOnly')))){
+        // 全手ぬぐい共通('all')または左前身頃(左胸)モードのときは、左前身頃と100%柄合わせして胸ポケの境界で柄やロゴがズレないようにする
         drawCroppedPiece(x, partMap.frontL, -placketHalfW, bodyTop, shldrW + placketHalfW, bodyH, 0);
       }else{
         drawCroppedPiece(x, partMap.pocket || partMap.frontL, pkX, pkY, pkW, pkH, 0);
@@ -7495,9 +7507,9 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
     const placketHalfW = 5.5;
     const isBackCenter = (S.daboCutMode === 'backCenter' || S.daboCutMode === 'adult8_crest') && !!partMap.backCenter;
     if(side === 'front'){
-      // 優先度1: 左胸ポケット（ポケットありの場合。ただし左胸身頃モード中は左胸身頃全体のドラッグを優先）
+      // 優先度1: 左胸ポケット（胸ポケ単体モード時のみ優先度10にし、全手ぬぐい共通('all')や左胸モード中は左前身頃と連続してドラッグできるよう優先度4にする）
       if(S.daboPocketMode !== 'none'){
-        const pkPriority = (S.daboLogoTarget === 'frontLOnly' || S.daboLogoTarget === 'frontOnly') ? 4 : 10;
+        const pkPriority = (S.daboLogoTarget === 'pocketOnly' || S.daboLogoTarget === 'backPocket') ? 10 : 4;
         DABO_HIT_ZONES.push({
           priority: pkPriority, side: 'front', partId: 'pocket', label: '前面・左胸ポケット',
           entry: partMap.pocket || partMap.frontL,
@@ -7705,12 +7717,12 @@ function updateDaboSpecBox(plan){
 }
 
 // 現在ダボ上でのドラッグ操作の対象となっている要素種別 ('logo' | 'crest' | 'text' | null) を返す
-// ※ 何も表示ONになっていない場合は null を返し、勝手にロゴがONにならないようにする
+// ※ 優先指定されている種別が非表示(OFF)の場合は、現在表示ONになっているロゴ・丸紋・文字へ自動フォールバックする
 function getActiveLogoTypeKey(){
   const pref = S.daboDragItemType || 'auto';
-  if(pref === 'logo') return S.showLogo ? 'logo' : null;
-  if(pref === 'crest') return S.showCrest ? 'crest' : null;
-  if(pref === 'text') return S.showText ? 'text' : null;
+  if(pref === 'logo' && S.showLogo) return 'logo';
+  if(pref === 'crest' && S.showCrest) return 'crest';
+  if(pref === 'text' && S.showText) return 'text';
   if(S.showLogo) return 'logo';
   if(S.showCrest) return 'crest';
   if(S.showText) return 'text';
@@ -7788,15 +7800,11 @@ function applyReverseDaboPlacementAtStageXY(stageX, stageY, isInitialClick){
   const itemType = getActiveLogoTypeKey();
   // 現在ONになっているロゴ・丸紋・札がない場合は勝手に追加せず false を返す（通常の画面パン操作へ譲る）
   if(!itemType) return false;
-  const hasMultiplePinned = !!(S.showLogo && Array.isArray(S.logoSlots) && S.logoSlots.length > 1);
   if(itemType === 'logo'){
     S.logoX = px; S.logoY = py;
-    if(hasMultiplePinned || (S.daboSpotPart && S.daboSpotPart !== 'auto')){
-      if(hit.partId === 'frontL') S.daboSpotPart = 'frontL';
-      else if(hit.partId === 'frontR') S.daboSpotPart = 'frontR';
-      else if(hit.partId === 'pocket') S.daboSpotPart = 'pocket';
-      else if(hit.partId === 'sleeveL' || hit.partId === 'sleeveR') S.daboSpotPart = 'sleeves';
-      else if(hit.side === 'back') S.daboSpotPart = 'back';
+    S.daboSpotPart = 'all';
+    if(Array.isArray(S.logoSlots)){
+      S.logoSlots.forEach(sl => { if(sl) sl.daboSpotPart = 'all'; });
     }
     syncActiveSlotFromS();
   }else if(itemType === 'crest'){
@@ -7805,20 +7813,8 @@ function applyReverseDaboPlacementAtStageXY(stageX, stageY, isInitialClick){
     S.textX = px; S.textY = py;
   }
 
-  // 初回クリック時、クリックした部位にロゴ・文字が表示されるよう daboLogoTarget も自動調整
-  if(isInitialClick){
-    if(hit.partId === 'sleeveR' || hit.partId === 'sleeveL'){
-      if(!['all', 'sleevesOnly'].includes(S.daboLogoTarget)) S.daboLogoTarget = hasMultiplePinned ? 'all' : 'sleevesOnly';
-    }else if(hit.partId === 'frontL'){
-      if(!['all', 'frontBack', 'frontOnly', 'frontLOnly'].includes(S.daboLogoTarget)) S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'frontLOnly';
-    }else if(hit.partId === 'frontR'){
-      if(!['all', 'frontBack', 'frontOnly', 'frontROnly'].includes(S.daboLogoTarget)) S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'frontROnly';
-    }else if(hit.partId === 'pocket'){
-      if(!['all', 'pocketOnly', 'backPocket', 'frontBack'].includes(S.daboLogoTarget)) S.daboLogoTarget = hasMultiplePinned ? 'backPocket' : 'pocketOnly';
-    }else if(hit.side === 'back'){
-      if(!['all', 'backOnly', 'backPocket', 'frontBack'].includes(S.daboLogoTarget)) S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'backOnly';
-    }
-  }
+  // ダボシャツ用の手ぬぐいは1種類（全7枚/8枚すべて同じ構図の手ぬぐい）を使うため、常に S.daboLogoTarget = 'all' に保ち全ストリップへ即時反映する
+  S.daboLogoTarget = 'all';
 
   const mmX = Math.round((px / 100) * S.W);
   const mmY = Math.round((py / 100) * S.H);
@@ -7836,9 +7832,10 @@ function applyReverseDaboPlacementAtStageXY(stageX, stageY, isInitialClick){
   const infoBox = $('daboReverseMapInfo');
   if(infoBox){
     const itemName = itemType === 'logo' ? '🏷️ 札ロゴ・画像' : (itemType === 'text' ? '✍️ 名入れ文字' : '💮 丸紋「仲はねだ」');
+    const totalSheets = (S.daboCutMode === 'adult8_crest') ? 8 : (S.daboCutMode === 'adult7' ? 7 : (S.daboCutMode === '5piece' ? 5 : 6));
     infoBox.innerHTML =
-      `<b style="color:#0284c7">🎯 逆算完了！ ${hit.label} に ${itemName} を配置しました</b><br>` +
-      `👉 使用する手ぬぐい：<b>${DABO_ACTIVE_REVERSE_HIT.stripTitle}（${p.label}枠）</b><br>` +
+      `<b style="color:#0284c7">🎯 逆算完了！ ${hit.label} に合わせて全${totalSheets}枚の手ぬぐい（同じ構図）へ ${itemName} を反映しました</b><br>` +
+      `👉 基準にしたパーツ：<b>${DABO_ACTIVE_REVERSE_HIT.stripTitle}（${p.label}枠） ／ 全${totalSheets}枚すべての手ぬぐいに同じ位置で入ります</b><br>` +
       `👉 手ぬぐい上の反映位置：<b>横 ${px}%（左から ${mmX}mm） ／ 縦 ${py}%（上から ${mmY}mm）</b>`;
   }
   update(false);
@@ -7870,6 +7867,7 @@ function applyBasePatternPreset(dbp){
 }
 
 // 🎯 ダボシャツの希望部位（①〜⑧＋王道おすすめ）から手ぬぐい上のロゴ位置・取り方を一発逆算設定する
+// （手ぬぐいは全7枚/8枚すべて同じ構図の1種類を使用し、全ストリップに同じ構図で反映する）
 function applyDaboSpotPlacement(sp, preferText){
   if(!S.showCrest && !S.showLogo && !S.showText){
     if(preferText){
@@ -7886,93 +7884,75 @@ function applyDaboSpotPlacement(sp, preferText){
       S.daboDragItemType = 'logo';
     }
   }
-  const hasMultiplePinned = !!(S.showLogo && Array.isArray(S.logoSlots) && S.logoSlots.length > 1);
   let targetU = 0.50, targetV = 0.22;
   let spotLabel = '';
   let stripDesc = '';
-  let partTag = 'auto';
+  const partTag = 'all';
   let recLogoSize = null;
 
+  // 常に全手ぬぐい共通（1種類の手ぬぐいを全枚数に使用）
+  S.daboLogoTarget = 'all';
+  S.daboPocketMode = 'match';
+
   if(sp === 'backAndPocket'){
-    // ⭐ 王道おすすめ：1種類の手ぬぐい(1型)で「背中・首下(背紋)」と「左胸ポケット」の両方にピタッと出し、袖や前身頃には出さない最良の取り方
     S.daboCutMode = 'adult8_crest';
-    S.daboLogoTarget = 'backPocket';
-    S.daboPocketMode = 'match';
     S.daboShiftX = 0; S.daboShiftY = 0; S.daboSleeveShiftY = 0;
     targetU = 0.50; targetV = 0.22;
-    partTag = 'auto';
     recLogoSize = 76;
-    spotLabel = '⭐ 王道：背中（背紋）＋左胸ポケット同時（1型で最安！）';
-    stripDesc = '1本目（背中中央）＋8本目（左胸ポケット枠を自動位置合わせ）';
+    spotLabel = '⭐ 背中（背紋）＋両胸の位置（全8枚すべて同じ構図の手ぬぐい）';
+    stripDesc = '全8枚共通の手ぬぐい（1本目＝背中中央の背紋、3・4本目＝左右の上胸に配置）';
   }else if(sp === 'backCrest'){
     S.daboCutMode = 'adult8_crest';
-    S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'backOnly';
     S.daboShiftX = 0; S.daboShiftY = 0;
     targetU = 0.50; targetV = 0.22;
-    partTag = hasMultiplePinned ? 'back' : 'auto';
     recLogoSize = 85;
-    spotLabel = '① 背中・首下（背紋・切れ目なし）';
-    stripDesc = '1本目：背中中央身頃（背紋1枚取り）';
+    spotLabel = '① 背中・首下（背紋・全8枚すべて同じ構図の手ぬぐい）';
+    stripDesc = '全8枚共通の手ぬぐい（1本目：背中中央身頃の背紋位置に合わせて逆算）';
   }else if(sp === 'backMid'){
     S.daboCutMode = 'adult8_crest';
-    S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'backOnly';
     S.daboShiftX = 0; S.daboShiftY = 0;
     targetU = 0.50; targetV = 0.45;
-    partTag = hasMultiplePinned ? 'back' : 'auto';
     recLogoSize = 135;
-    spotLabel = '② 背中のど真ん中（大紋）';
-    stripDesc = '1本目：背中中央身頃（背紋1枚取り）';
+    spotLabel = '② 背中のど真ん中（大紋・全8枚すべて同じ構図の手ぬぐい）';
+    stripDesc = '全8枚共通の手ぬぐい（1本目：背中中央身頃のど真ん中に合わせて逆算）';
   }else if(sp === 'frontChestL'){
-    S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'frontLOnly';
     S.daboShiftX = 0; S.daboShiftY = 0;
-    targetU = 0.52; targetV = 0.30;
-    partTag = hasMultiplePinned ? 'frontL' : 'auto';
+    targetU = 0.49; targetV = 0.36;
     recLogoSize = 72;
-    spotLabel = '③ 左胸（左前身頃・向かって右の胸）';
-    stripDesc = '4本目：左前身頃（胸の高さ・ポケット柄合わせ）';
+    spotLabel = '③ 左胸・胸ポケット位置（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（4本目：左前身頃の胸＆胸ポケット位置に合わせて逆算）';
   }else if(sp === 'frontChestR'){
-    S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'frontROnly';
     S.daboShiftX = 0; S.daboShiftY = 0;
     targetU = 0.46; targetV = 0.30;
-    partTag = hasMultiplePinned ? 'frontR' : 'auto';
     recLogoSize = 72;
-    spotLabel = '④ 右胸（右前身頃・向かって左の胸）';
-    stripDesc = '3本目：右前身頃（胸の高さ）';
+    spotLabel = '④ 右胸（右前身頃・全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（3本目：右前身頃の胸の高さに合わせて逆算）';
   }else if(sp === 'chestPocket'){
     if(S.daboCutMode !== 'adult7' && S.daboCutMode !== 'adult8_crest') S.daboCutMode = 'adult7';
-    S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'pocketOnly';
-    S.daboPocketMode = 'match';
     S.daboShiftX = 0; S.daboShiftY = 0;
-    targetU = 0.68; targetV = 0.35;
-    partTag = hasMultiplePinned ? 'pocket' : 'auto';
+    targetU = 0.49; targetV = 0.36;
     recLogoSize = 58;
-    spotLabel = '⑤ 左胸ポケットの中';
-    stripDesc = (S.daboCutMode === 'adult8_crest' ? '8本目' : '7本目') + '：左胸ポケット枠';
+    spotLabel = '⑤ 左胸ポケットの中（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（' + (S.daboCutMode === 'adult8_crest' ? '8本目' : '7本目') + '：左胸ポケット枠＆4本目：左胸に柄合わせ配置）';
   }else if(sp === 'frontHem'){
-    S.daboLogoTarget = 'frontBack';
     S.daboShiftX = 0; S.daboShiftY = 0;
     targetU = 0.52; targetV = 0.75;
-    partTag = 'auto';
     recLogoSize = 82;
-    spotLabel = '⑥ 前後の裾（腰まわり）';
-    stripDesc = '1〜4本目：前後身頃の裾まわり';
+    spotLabel = '⑥ 前後の裾・腰まわり（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（前後身頃の裾まわりに合わせて逆算）';
   }else if(sp === 'sleeves'){
-    S.daboLogoTarget = hasMultiplePinned ? 'all' : 'sleevesOnly';
     S.daboSleeveShiftY = 0;
-    targetU = 0.50; targetV = 0.40;
-    partTag = hasMultiplePinned ? 'sleeves' : 'auto';
+    targetU = 0.50; targetV = 0.42;
     recLogoSize = 75;
-    spotLabel = '⑦ 両袖（肩〜二の腕中央）';
-    stripDesc = '5・6本目：左右の袖';
+    spotLabel = '⑦ 両袖・二の腕中央（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（5・6本目：左右の袖中央に合わせて逆算）';
   }else if(sp === 'allParts'){
     S.daboCutMode = 'adult8_crest';
-    S.daboLogoTarget = 'all';
     S.daboShiftX = 0; S.daboShiftY = 0; S.daboSleeveShiftY = 0;
     targetU = 0.50; targetV = 0.22;
-    partTag = 'all';
     recLogoSize = 78;
     spotLabel = '⑧ 全パーツ共通（1種類の手ぬぐいで全身仕立て）';
-    stripDesc = '全手ぬぐい共通（背中中央・両胸・胸ポケ）';
+    stripDesc = '全8枚すべて同じ構図の手ぬぐいを使用（背中中央・両胸・袖・胸ポケ）';
   }
 
   const { px, py } = stripUVToTenuguiPct(targetU, targetV);
@@ -7980,6 +7960,9 @@ function applyDaboSpotPlacement(sp, preferText){
     S.logoX = px;
     S.logoY = py;
     S.daboSpotPart = partTag;
+    if(Array.isArray(S.logoSlots)){
+      S.logoSlots.forEach(sl => { if(sl) sl.daboSpotPart = 'all'; });
+    }
     if(recLogoSize && (!S.logoSize || S.logoSize === 85 || sp === 'chestPocket' || sp === 'backMid' || sp === 'backAndPocket')){
       S.logoSize = recLogoSize;
     }
@@ -8009,13 +7992,11 @@ function applyDaboSpotPlacement(sp, preferText){
 
   const infoBox = $('daboReverseMapInfo');
   if(infoBox){
-    const extraTip = (sp === 'backAndPocket')
-      ? `<br><span style="color:#15803d;font-weight:700">✨ 1種類の手ぬぐい（横${px}%・縦${py}%）だけで、1本目は「背紋」、8本目は「左胸ポケット」にロゴが入り、5・6本目の袖は下半分から取るため袖にはロゴが出ないベストな取り方です！</span>`
-      : '';
+    const totalSheets = (S.daboCutMode === 'adult8_crest') ? 8 : (S.daboCutMode === 'adult7' ? 7 : (S.daboCutMode === '5piece' ? 5 : 6));
     infoBox.innerHTML =
-      `<b style="color:#0284c7">🎯 ダボの「${spotLabel}」から手ぬぐい位置を逆算しました！</b><br>` +
-      `👉 使用する手ぬぐい：<b>${stripDesc}</b><br>` +
-      `👉 手ぬぐい上の位置：<b>横 ${px}%（左から ${mmX}mm） ／ 縦 ${py}%（上から ${mmY}mm）</b>${extraTip}`;
+      `<b style="color:#0284c7">🎯 ダボの「${spotLabel}」から手ぬぐい位置を逆算し、全${totalSheets}枚すべてに反映しました！</b><br>` +
+      `👉 手ぬぐいの構成：<b>${stripDesc}</b><br>` +
+      `👉 手ぬぐい上の位置（全${totalSheets}枚共通）：<b>横 ${px}%（左から ${mmX}mm） ／ 縦 ${py}%（上から ${mmY}mm）</b>`;
   }
   if(S.viewMode === 'fabric') S.viewMode = 'cut_dabo';
   if($('openDaboViewBtn')) $('openDaboViewBtn').textContent = '手ぬぐい画面へ戻る';
@@ -8034,7 +8015,7 @@ function describeDaboLandingSpot(pxPct, pyPct){
   const bw = 0.82;
   const by = clamp((isAdultFull ? 0.05 : 0.08) + sy * 0.20, 0.01, 0.20);
   const bh = isAdultFull ? 0.86 : 0.76;
-  const slvY1 = clamp(0.12 + ssy * 0.28, 0.02, 0.42);
+  const slvY1 = clamp(0.14 + ssy * 0.28, 0.02, 0.42);
   const slvH = 0.56;
 
   const { u, v } = tenuguiPctToStripUV(pxPct, pyPct);
@@ -8060,21 +8041,21 @@ function describeDaboLandingSpot(pxPct, pyPct){
         hits.push(`【背面】左右の後身頃の${vZone}（背中心の縫い目の左右両方に出ます）`);
       }
     }
-    if(['all', 'frontBack'].includes(target)){
+    if(['all', 'frontBack', 'frontOnly', 'frontLOnly', 'frontROnly'].includes(target)){
       hits.push(`【前面】左右の前身頃の${vZone}${relX > 0.35 && relX < 0.75 && relY > 0.22 && relY < 0.48 ? '（左胸ポケット付近）' : ''}`);
     }
   }
 
   // 2. 胸ポケット枠内かどうか（大人7枚・8枚取りの7/8本目、または6枚取りの下端）
   if(isAdultFull){
-    const pkU0 = clamp(0.48 + sx * 0.16, 0.44, 0.58), pkV0 = clamp(0.24 + sy * 0.18, 0.08, 0.52);
+    const pkU0 = clamp((bx + bw * 0.50) - 0.20, 0.04, 0.58), pkV0 = clamp((by + bh * 0.36) - 0.11, 0.04, 0.68);
     if(u >= pkU0 && u <= pkU0 + 0.40 && v >= pkV0 && v <= pkV0 + 0.22){
-      if(['all', 'backPocket', 'frontBack'].includes(target)){
+      if(['all', 'pocketOnly', 'backPocket', 'frontBack'].includes(target)){
         hits.push(`【前面】左胸ポケットの中（${cutMode === 'adult7' ? '7本目' : '8本目'}の柄合わせ胸ポケ枠）`);
       }
     }
   } else if(v >= 0.82 && v <= 0.99 && u >= 0.20 && u <= 0.76){
-    if(['all', 'backPocket', 'frontBack'].includes(target)){
+    if(['all', 'pocketOnly', 'backPocket', 'frontBack'].includes(target)){
       hits.push('【前面】左胸ポケットの中（および掛け襟のパーツ取り領域）');
     }
   }
@@ -12102,8 +12083,9 @@ function easyRenderImpl(){
     var mmY = Math.round(((S.logoY || 22) / 100) * S.H);
     var padTxt = (S.logoPadMode && S.logoPadMode !== 'none') ? ('／背景不透過枠:余白' + (S.logoPadMarginMm ?? 8) + 'mm') : '／背景透過';
     var baseTxt = (S.mode === 'arare') ? '大小あられ' : (S.kakuMotif === 'seinenkai' ? '仲羽田青年会(6文字)' : (S.kakuMotif === 'haneda_one_seinen' ? '仲羽田＋1個青年会' : '仲羽田のみ(3文字)'));
+    var sheetCnt = (S.daboCutMode === 'adult8_crest') ? 8 : (S.daboCutMode === 'adult7' ? 7 : (S.daboCutMode === '5piece' ? 5 : 6));
     $('eDaboReverseText').innerHTML =
-      'ベース柄：<b>' + baseTxt + '</b>' + padTxt + '<br>' +
+      'ベース柄：<b>' + baseTxt + '</b>' + padTxt + '（<b>全' + sheetCnt + '枚すべて同じ構図の手ぬぐい</b>）<br>' +
       '手ぬぐい座標：左から <b>' + mmX + 'mm (' + (S.logoX || 50) + '%)</b> ／ 上から <b>' + mmY + 'mm (' + (S.logoY || 22) + '%)</b>';
   }
   // プリント方法

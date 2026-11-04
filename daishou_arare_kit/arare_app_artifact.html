@@ -244,11 +244,59 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>3</b><span>色</span><button type="button" class="e-more" data-emore="step3">詳しく</button></div>
+        <div class="e-h"><b>3</b><span>色（地の色・仲羽田・あられ・札の色）</span><button type="button" class="e-more" data-emore="step3">詳しく</button></div>
         <div class="e-colors" id="eColors"></div>
         <div class="e-pick">
           <label><input type="color" id="eBg">地の色</label>
-          <label><input type="color" id="eFg">柄の色</label>
+          <label><input type="color" id="eFg">仲羽田の色</label>
+          <label><input type="color" id="eDotCol">あられの色</label>
+          <label><input type="color" id="eFudaCol">札の色</label>
+        </div>
+        <div class="e-subbox" id="eArareColorBox">
+          <div class="e-sublbl"><span>🟢 あられの色（粒の色・うしろ抜き色・周り枠の色）</span></div>
+          <div class="e-chips small" id="eDotColChips">
+            <button type="button" data-edot="#ffffff">白</button>
+            <button type="button" data-edot="#f3ecd8">生成り</button>
+            <button type="button" data-edot="#877028">羽田金</button>
+            <button type="button" data-edot="#f8b500">山吹</button>
+            <button type="button" data-edot="#00a3af">浅葱</button>
+            <button type="button" data-edot="#b7282e">茜</button>
+            <button type="button" data-edot="same">仲羽田と同じ</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:3px;border-top:1px dashed #cbd5e1">
+            <span style="font-size:11px;color:var(--muted)">うしろ色:</span>
+            <div class="e-chips small" id="eArarePadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
+              <button type="button" data-eapc="bg">地の色</button>
+              <button type="button" data-eapc="white">白</button>
+              <button type="button" data-eapc="black">黒</button>
+            </div>
+            <input type="color" id="eArarePadCustomCol" value="#046e7e" title="あられうしろ抜き色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+            <span style="font-size:11px;color:var(--muted)">周り枠線色:</span>
+            <input type="color" id="eArarePadStrokeCol" value="#877028" title="あられ周り枠線・外周枠の色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+          </div>
+        </div>
+        <div class="e-subbox" id="eFudaColorBox">
+          <div class="e-sublbl"><span>🏷️ 札の色（札ロゴ本体・うしろ色・周り枠の色）</span></div>
+          <div class="e-chips small" id="eFudaColChips">
+            <button type="button" data-efcol="teal" style="border-color:#00a3af;color:#007b86">浅葱(標準)</button>
+            <button type="button" data-efcol="white">白抜き</button>
+            <button type="button" data-efcol="#046e7e">羽田納戸</button>
+            <button type="button" data-efcol="#877028">羽田金</button>
+            <button type="button" data-efcol="#b7282e">茜</button>
+            <button type="button" data-efcol="#183574">藍</button>
+            <button type="button" data-efcol="#262626">墨</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:3px;border-top:1px dashed #cbd5e1">
+            <span style="font-size:11px;color:var(--muted)">うしろ色:</span>
+            <div class="e-chips small" id="eLogoPadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
+              <button type="button" data-epc="bg">地の色</button>
+              <button type="button" data-epc="white">白</button>
+              <button type="button" data-epc="black">黒</button>
+            </div>
+            <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="札のうしろ色を自由に選ぶ" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+            <span style="font-size:11px;color:var(--muted)">周り枠線色:</span>
+            <input type="color" id="eLogoPadStrokeCol" value="#ffffff" title="札の周り枠線の色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+          </div>
         </div>
         <p class="e-note" id="eColorNote" hidden>札入りタオル図案を入れているときは、図案の色は「札入りタオル図案から選ぶ」を開いて変えます。</p>
       </div>
@@ -276,17 +324,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <div id="eArarePadControls" style="display:flex;flex-direction:column;gap:5px" hidden>
             <div class="e-range" data-for="ararePadMarginMm"><span>あられ周り抜き幅</span><input type="range" min="0" max="10" step="0.2"><b></b></div>
             <div class="e-range" data-for="ararePadStrokeMm"><span>あられ周り枠線太さ</span><input type="range" min="0" max="6" step="0.2"><b></b></div>
-            <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-              <span style="font-size:11px;color:var(--muted)">うしろ色:</span>
-              <div class="e-chips small" id="eArarePadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
-                <button type="button" data-eapc="bg">地の色</button>
-                <button type="button" data-eapc="white">白</button>
-                <button type="button" data-eapc="black">黒</button>
-              </div>
-              <input type="color" id="eArarePadCustomCol" value="#046e7e" title="あられうしろ抜き色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
-              <span style="font-size:11px;color:var(--muted)">枠線色:</span>
-              <input type="color" id="eArarePadStrokeCol" value="#877028" title="あられ周り枠線の色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
-            </div>
+            <div style="font-size:11px;color:var(--muted)">💡 あられの粒色・うしろ色・周り枠線の色は上の「<b>3 色</b>」で変えられます。</div>
           </div>
           <div style="font-size:11px;font-weight:700;color:var(--muted);margin-top:3px">② あられ全体の外周周り枠（生地の周囲を囲む枠）:</div>
           <div class="e-chips" id="eArareOuterMode">
@@ -324,15 +362,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <div class="e-range" data-for="logoPadMarginMm"><span>周りの枠の広さ</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
             <div class="e-range" data-for="logoPadCornerMm" id="eLogoPadCornerRow"><span>四角枠の角丸</span><input type="range" min="0" max="30" step="1"><b></b></div>
             <div class="e-range" data-for="logoPadStrokeMm"><span>周りの枠線の太さ</span><input type="range" min="0" max="8" step="0.5"><b></b></div>
-            <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-              <span style="font-size:11.5px;color:var(--muted)">うしろ・枠の色:</span>
-              <div class="e-chips small" id="eLogoPadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
-                <button type="button" data-epc="bg">地の色</button>
-                <button type="button" data-epc="white">白</button>
-                <button type="button" data-epc="black">黒</button>
-              </div>
-              <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="枠の色を自由に選ぶ" style="width:28px;height:26px;border:1px solid var(--line);border-radius:6px;padding:0;background:none;cursor:pointer">
-            </div>
+            <div style="font-size:11px;color:var(--muted)">💡 札の色・うしろ色・周り枠線の色は上の「<b>3 色</b>」で変えられます。</div>
           </div>
         </div>
         <p class="e-note" id="eLogoNote">ロゴは手ぬぐいの上でもダボシャツの上でもドラッグして動かせます。</p>
@@ -354,24 +384,24 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <button type="button" data-dql="teal_trans">札ロゴ 色つき<small>透過のまま</small></button>
             <button type="button" data-dql="white_trans">札ロゴ 白抜き<small>透過のまま</small></button>
           </div>
-          <div class="e-sublbl" style="margin-top:2px"><span>③ ダボシャツのどこに札ロゴを入れる？（クリックで手ぬぐいを自動逆算）</span></div>
+          <div class="e-sublbl" style="margin-top:2px"><span>③ ダボシャツのロゴ位置から手ぬぐいを逆算（全枚すべて同じ構図の手ぬぐいに反映）</span></div>
           <div class="e-chips" id="eDaboSpotBtns">
-            <button type="button" data-dspot="backAndPocket" style="grid-column:span 2;background:#fef3c7;border-color:#f59e0b;color:#78350f">⭐ 王道おすすめ：背中(背紋)＋左胸ポケット同時<small>1種類の手ぬぐい(1型)で背中と胸ポケの両方にピタッと出し、袖や前身頃には出さない最良の取り方</small></button>
-            <button type="button" data-dspot="backCrest">① 背中・首下のみ<small>背紋（切れ目なし）</small></button>
-            <button type="button" data-dspot="backMid">② 背中・ど真ん中<small>背中に大きく1枚取</small></button>
-            <button type="button" data-dspot="frontChestL">③ 左胸（前身頃）<small>向かって右の胸</small></button>
-            <button type="button" data-dspot="frontChestR">④ 右胸（前身頃）<small>向かって左の胸</small></button>
-            <button type="button" data-dspot="chestPocket">⑤ 左胸ポケットのみ<small>ポケットの中に配置</small></button>
-            <button type="button" data-dspot="frontHem">⑥ 前後の裾<small>腰まわりに配置</small></button>
-            <button type="button" data-dspot="sleeves">⑦ 両袖（肩〜腕）<small>左右の袖に配置</small></button>
-            <button type="button" data-dspot="allParts">⑧ 全パーツ共通<small>全手ぬぐい共通</small></button>
+            <button type="button" data-dspot="backAndPocket" style="grid-column:span 2;background:#fef3c7;border-color:#f59e0b;color:#78350f">⭐ 王道おすすめ：背紋＋胸位置（袖は下半分から裁断）<small>全枚すべて同じ構図の手ぬぐいで、背中・胸・ポケットにロゴを出し袖は下側から取る配置</small></button>
+            <button type="button" data-dspot="backCrest">① 背中・首下の高さ<small>背紋位置（全枚共通）</small></button>
+            <button type="button" data-dspot="backMid">② 背中・ど真ん中<small>身頃中央（全枚共通）</small></button>
+            <button type="button" data-dspot="frontChestL">③ 左胸の高さ<small>向かって右の胸（全枚共通）</small></button>
+            <button type="button" data-dspot="frontChestR">④ 右胸の高さ<small>向かって左の胸（全枚共通）</small></button>
+            <button type="button" data-dspot="chestPocket">⑤ 左胸ポケット位置<small>胸ポケ中央（全枚共通）</small></button>
+            <button type="button" data-dspot="frontHem">⑥ 前後の裾まわり<small>腰元の高さ（全枚共通）</small></button>
+            <button type="button" data-dspot="sleeves">⑦ 両袖の中央<small>肩〜二の腕（全枚共通）</small></button>
+            <button type="button" data-dspot="allParts">⑧ 標準位置（上部）<small>全パーツ共通</small></button>
           </div>
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px">
-            <button type="button" class="mini-btn" id="eDaboPinAddBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:6px 8px;font-size:11.5px">📌 今のロゴ位置を固定して、別の場所にもう1つ追加</button>
+            <button type="button" class="mini-btn" id="eDaboPinAddBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:6px 8px;font-size:11.5px">📌 今のロゴ位置を固定して、手ぬぐいの別の場所にもう1つ追加</button>
           </div>
           <div id="eDaboSlotsBar" style="display:flex;flex-wrap:wrap;gap:4px"></div>
           <div class="e-dabo-card" id="eDaboReverseCard">
-            <div id="eDaboReverseText">💡 上の<b>部位ボタン</b>を押すか、右の<b>ダボシャツの上で札ロゴを直接ドラッグ</b>すると、その位置にぴったり合う<b>手ぬぐい図案が自動で作られます！</b><br>別の場所にも追加したい時は<b>「📌 今のロゴ位置を固定して、別の場所にもう1つ追加」</b>を押してください。</div>
+            <div id="eDaboReverseText">💡 上の<b>部位ボタン</b>を押すか、右の<b>ダボシャツの上で札ロゴを直接ドラッグ</b>すると、手ぬぐい上の位置が逆算され、<b>裁断図の全手ぬぐい（5〜8枚すべて同じ構図）とダボシャツ全体</b>に即座に反映されます！</div>
             <div class="e-dabo-switch">
               <button type="button" id="eDaboShowShirtBtn" aria-pressed="false">👕 ダボシャツで位置を決める</button>
               <button type="button" id="eDaboShowTenuguiBtn" aria-pressed="true">📜 できた手ぬぐい(1枚)を見る</button>
@@ -663,10 +693,10 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
       </div>
     </section>
 
-    <!-- 3. 色（地色・仲羽田の文字色・あられ色・全箇所対応 イラレ式カラーピッカー＆色マップ） -->
+    <!-- 3. 色（地色・仲羽田の文字色・あられ色・札の色・全箇所対応 イラレ式カラーピッカー＆色マップ） -->
     <section aria-labelledby="h-color" id="sec-color-main" data-cat="pattern">
       <h2 id="h-color">
-        <span>🎨 色（背景色・仲羽田の文字色・札・全箇所）</span>
+        <span>🎨 色（地の色・仲羽田・あられの色・札の色）</span>
         <button type="button" class="mini-btn" id="toggleAiPickerPanelBtn" style="background:#1e293b;color:#38bdf8;border-color:#0284c7;font-weight:700">🎨 イラレ色ピッカーを開く</button>
       </h2>
 
@@ -680,16 +710,21 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div class="chips" id="aiColorTargetTabs" style="gap:4px">
           <button type="button" class="mini-btn ai-target-chip" data-ckey="bgColor" style="background:#0284c7;color:#fff;border-color:#7dd3fc;font-weight:700"><span class="ai-dot" data-dot="bgColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>① 地色(背景)</button>
           <button type="button" class="mini-btn ai-target-chip" data-ckey="kakuColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569;font-weight:700"><span class="ai-dot" data-dot="kakuColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>② 仲羽田の文字</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="dotColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="dotColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>③ あられ粒</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>④ 札の文字色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaFrameColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaFrameColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑤ 札の枠線色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑥ 札の背景色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑦ 札の紐塗り</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordStroke" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordStroke" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑧ 札の紐フチ</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaAccentColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaAccentColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑨ 札の丸紋・差札</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestFg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestFg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑩ 丸紋の色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑪ 丸紋の背景</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑫ ロゴ単色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="dotColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="dotColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>③ あられ粒の色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="ararePadColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="ararePadColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>あられうしろ色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="ararePadStrokeColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="ararePadStrokeColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>あられ枠線色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="arareOuterColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="arareOuterColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>あられ外周枠色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>④ 札ロゴ本体の色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoPadColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoPadColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑤ 札のうしろ色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoPadStrokeColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoPadStrokeColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑥ 札の周り枠線色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑦ 木札の文字色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaFrameColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaFrameColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑧ 木札の枠線色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑨ 木札の背景色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑩ 木札の紐塗り</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordStroke" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordStroke" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑪ 木札の紐フチ</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaAccentColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaAccentColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑫ 札の丸紋・差札</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestFg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestFg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑬ 丸紋の色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑭ 丸紋の背景</button>
           <button type="button" class="mini-btn ai-target-chip" data-ckey="seinenSpotColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="seinenSpotColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>🌟 1個青年会色</button>
         </div>
 
@@ -753,12 +788,73 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <input type="text" id="kakuHex" class="hex" maxlength="7" spellcheck="false" aria-label="仲羽田の文字色カラーコード"></div>
         <div class="sw" id="kakuSw"></div>
       </div>
-      <div class="cgroup" id="dotColorGroup" hidden>
-        <div class="chead"><span class="clabel">あられ（粒）の色</span>
+      <div class="cgroup" id="dotColorGroup" style="border:1.5px solid #86efac;background:#f0fdf4">
+        <div class="chead"><span class="clabel" style="color:#166534;font-weight:800">🟢 あられの色（粒・うしろ・周り枠）</span>
           <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="dotColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           <input type="color" id="dotColor" value="#ffffff" aria-label="粒の色を選ぶ">
           <input type="text" id="dotHex" class="hex" maxlength="7" spellcheck="false" aria-label="粒のカラーコード"></div>
-        <div class="sw" id="dotSw"></div>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <div class="sw" id="dotSw" style="flex:1"></div>
+          <button type="button" class="mini-btn" id="dotSyncKakuBtn" title="仲羽田の文字色と同じ色にします">仲羽田と同色</button>
+        </div>
+        <div style="display:grid;gap:5px;margin-top:4px;padding-top:6px;border-top:1px dashed #86efac;font-size:11.5px">
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+            <span style="font-weight:700;color:#166534">あられうしろ抜き色:</span>
+            <input type="color" id="sec3ArarePadColor" value="#046e7e" aria-label="あられうしろ抜き色">
+            <button type="button" class="mini-btn" id="sec3ArarePadBgBtn">地の色と同色</button>
+            <button type="button" class="mini-btn" id="sec3ArarePadWhiteBtn">白</button>
+            <button type="button" class="mini-btn" id="sec3ArarePadBlackBtn">黒</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="ararePadColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+            <span style="font-weight:700;color:#166534">1粒周り枠線の色:</span>
+            <input type="color" id="sec3ArarePadStrokeColor" value="#877028" aria-label="あられ1粒周り枠線の色">
+            <button type="button" class="mini-btn" id="sec3ArareStrokeGoldBtn">羽田金</button>
+            <button type="button" class="mini-btn" id="sec3ArareStrokeWhiteBtn">白</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="ararePadStrokeColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+            <span style="font-weight:700;color:#166534;margin-left:4px">外周枠の色:</span>
+            <input type="color" id="sec3ArareOuterColor" value="#ffffff" aria-label="あられ外周枠の色">
+            <button type="button" class="mini-btn" id="sec3ArareOuterDotBtn">粒と同色</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="arareOuterColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          </div>
+        </div>
+      </div>
+      <div class="cgroup" id="fudaColorGroup" style="border:1.5px solid #7dd3fc;background:#f0f9ff">
+        <div class="chead"><span class="clabel" style="color:#0c4a6e;font-weight:800">🏷️ 札の色（本体・うしろ・周り枠）</span>
+          <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          <input type="color" id="sec3FudaLogoColor" value="#00a3af" aria-label="札ロゴ本体の色を選ぶ">
+          <input type="text" id="sec3FudaLogoHex" class="hex" maxlength="7" spellcheck="false" aria-label="札ロゴのカラーコード"></div>
+        <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+          <div class="sw" id="fudaLogoSw" style="flex:1"></div>
+          <button type="button" class="mini-btn" id="sec3FudaTealBtn" style="background:#e0f2fe;border-color:#00a3af;color:#007b86;font-weight:700">浅葱(標準)</button>
+          <button type="button" class="mini-btn" id="sec3FudaWhiteBtn">白抜き</button>
+        </div>
+        <div style="display:grid;gap:5px;margin-top:4px;padding-top:6px;border-top:1px dashed #7dd3fc;font-size:11.5px">
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+            <span style="font-weight:700;color:#0c4a6e">札のうしろ色(透過なし):</span>
+            <input type="color" id="sec3LogoPadColor" value="#046e7e" aria-label="札のうしろ色">
+            <button type="button" class="mini-btn" id="sec3LogoPadBgBtn">地の色と同色</button>
+            <button type="button" class="mini-btn" id="sec3LogoPadWhiteBtn">白</button>
+            <button type="button" class="mini-btn" id="sec3LogoPadBlackBtn">黒</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoPadColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+            <span style="font-weight:700;color:#0c4a6e">札の周り枠線の色:</span>
+            <input type="color" id="sec3LogoPadStrokeColor" value="#ffffff" aria-label="札の周り枠線の色">
+            <button type="button" class="mini-btn" id="sec3LogoStrokeGoldBtn">羽田金</button>
+            <button type="button" class="mini-btn" id="sec3LogoStrokeWhiteBtn">白</button>
+            <button type="button" class="mini-btn" id="sec3LogoStrokeBlackBtn">黒</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoPadStrokeColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding-top:3px;border-top:1px dotted #bae6fd">
+            <span style="font-weight:700;color:#0c4a6e">名入れ木札の色:</span>
+            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextFgColor" value="#ffffff">文字</label>
+            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextFrameColor" value="#ffffff">枠線</label>
+            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextBgColor" value="#046e7e">札背景</label>
+            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextCordColor" value="#046e7e">組紐</label>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="customTextColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          </div>
+        </div>
       </div>
       <div class="crow2">
         <button class="chip" id="swap">地色と文字（柄）を入れ替え</button>
@@ -1382,17 +1478,17 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <option value="5piece">⑤ 子ども用・最小5枚取り（前2・後2・5本目を上下分割して左右両袖）</option>
         </select>
 
-        <span class="clabel" style="font-size:12px;margin-top:4px">③ ロゴ・丸紋・名入れ文字入り手ぬぐいを使う部位</span>
+        <span class="clabel" style="font-size:12px;margin-top:4px">③ ロゴ・丸紋・名入れ文字入り手ぬぐいの使い方（標準：全枚すべて同じ構図の手ぬぐい）</span>
         <select id="daboLogoTarget" style="font-size:12px">
-          <option value="all">全パーツに同じロゴ・文字入り手ぬぐいを使う（5〜8枚すべて）</option>
-          <option value="backOnly">背中（後身頃）だけロゴ・文字入り手ぬぐいを使う（前・袖は総柄のみ）</option>
-          <option value="frontLOnly">左胸（左前身頃）だけロゴ・文字入り手ぬぐいを使う（1枚のみ）</option>
-          <option value="frontROnly">右胸（右前身頃）だけロゴ・文字入り手ぬぐいを使う（1枚のみ）</option>
-          <option value="pocketOnly">左胸ポケットだけロゴ・文字入り手ぬぐいを使う（小パーツ用7・8本目のみ）</option>
-          <option value="frontOnly">両胸（左右の前身頃）だけロゴ・文字入り手ぬぐいを使う（2枚）</option>
-          <option value="backPocket">背中＋左胸ポケット（小パーツ用7・8本目）だけロゴ・文字入りを使う</option>
-          <option value="frontBack">前身頃＋後身頃＋胸ポケにロゴ・文字入りを使う（袖は総柄のみ）</option>
-          <option value="sleevesOnly">両袖のみロゴ・文字入り手ぬぐいを使う</option>
+          <option value="all">★標準：全枚すべて同じ構図の手ぬぐいを使う（5〜8枚すべて同一の手ぬぐい）</option>
+          <option value="backOnly">【2型別注】背中（後身頃）だけロゴ入り・他は無地総柄にする</option>
+          <option value="frontLOnly">【2型別注】左胸（左前身頃）だけロゴ入り・他は無地総柄にする</option>
+          <option value="frontROnly">【2型別注】右胸（右前身頃）だけロゴ入り・他は無地総柄にする</option>
+          <option value="pocketOnly">【2型別注】左胸ポケットだけロゴ入り・他は無地総柄にする</option>
+          <option value="frontOnly">【2型別注】両胸（前身頃2枚）だけロゴ入り・他は無地総柄にする</option>
+          <option value="backPocket">【2型別注】背中＋左胸ポケットだけロゴ入り・他は無地総柄にする</option>
+          <option value="frontBack">【2型別注】前後身頃＋胸ポケにロゴ入り・袖だけ無地総柄にする</option>
+          <option value="sleevesOnly">【2型別注】両袖のみロゴ入り・他は無地総柄にする</option>
         </select>
 
         <!-- 📜 ダボ・手ぬぐいのベース柄ワンタッチ切替（仲羽田のみ ／ 仲羽田青年会） -->
@@ -1426,28 +1522,28 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <button type="button" class="mini-btn del" id="daboClearLogoBtn" style="font-weight:700" title="ダボ上に配置したロゴ・丸紋・文字を消します">🗑️ 消す</button>
           </div>
           <div id="daboReverseMapInfo" style="margin-top:5px;padding:5px 7px;background:#ffffff;border:1px solid #93c5fd;border-radius:4px;font-size:11px;line-height:1.45;color:#0f172a">
-            💡 <b>「✍️ ダボに直接文字を打つ」</b>を押すか、右の<b>ダボシャツの上をドラッグ</b>すると、その部位に札ロゴ・文字が配置され、<b>手ぬぐいのどこ（何本目の横X%・縦Y% / 何mm）に染めるか</b>がリアルタイムで手ぬぐいにも自動反映されます！
+            💡 <b>「✍️ ダボに直接文字を打つ」</b>を押すか、右の<b>ダボシャツの上をドラッグ</b>すると、手ぬぐい上の位置（横X%・縦Y% / 何mm）が逆算され、<b>裁断図の全手ぬぐい（5〜8枚すべて同じ構図）とダボ全体</b>に自動反映されます！
           </div>
         </div>
 
         <div class="cgroup" style="background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:7px 8px;margin-top:4px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
-            <span class="clabel" style="font-size:11.5px;color:#92400e">🎯 ダボシャツのロゴ位置から手ぬぐいを作る（一発逆算配置）</span>
+            <span class="clabel" style="font-size:11.5px;color:#92400e">🎯 ダボシャツのロゴ位置から手ぬぐいを作る（全枚すべて同じ構図の手ぬぐいに反映）</span>
             <button type="button" class="mini-btn" id="daboSwitchToTenuguiBtn" style="background:#046e7e;color:#fff;border-color:#035360;font-weight:700">📜 できた手ぬぐい(1枚)を見る ⇄</button>
           </div>
           <div class="chips" id="daboSmartLogoBtns" style="margin-top:4px">
-            <button type="button" class="mini-btn" data-spot="backAndPocket" style="background:#fef08a;border-color:#ca8a04;color:#713f12;font-weight:800;width:100%">⭐ 王道おすすめ：背中(背紋)＋左胸ポケ同時（1型で両方に出し袖には出さない！）</button>
+            <button type="button" class="mini-btn" data-spot="backAndPocket" style="background:#fef08a;border-color:#ca8a04;color:#713f12;font-weight:800;width:100%">⭐ 王道おすすめ：背紋＋胸位置（全枚同じ構図の手ぬぐい／袖は下半分から裁断）</button>
             <button type="button" class="mini-btn" data-spot="backCrest" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">① 背中・首下(背紋)</button>
             <button type="button" class="mini-btn" data-spot="backMid" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">② 背中ど真ん中(大)</button>
-            <button type="button" class="mini-btn" data-spot="frontChestL" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">③ 左胸(前身頃)</button>
-            <button type="button" class="mini-btn" data-spot="frontChestR" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">④ 右胸(前身頃)</button>
+            <button type="button" class="mini-btn" data-spot="frontChestL" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">③ 左胸の高さ</button>
+            <button type="button" class="mini-btn" data-spot="frontChestR" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">④ 右胸の高さ</button>
             <button type="button" class="mini-btn" data-spot="chestPocket" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">⑤ 左胸ポケット</button>
             <button type="button" class="mini-btn" data-spot="frontHem" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">⑥ 前後の裾(腰元)</button>
             <button type="button" class="mini-btn" data-spot="sleeves" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">⑦ 両袖の肩〜腕</button>
-            <button type="button" class="mini-btn" data-spot="allParts" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">⑧ 全パーツ共通</button>
+            <button type="button" class="mini-btn" data-spot="allParts" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">⑧ 標準位置(上部)</button>
           </div>
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:6px">
-            <button type="button" class="mini-btn" id="daboPinAddLogoBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:5px 8px">📌 今のロゴをこの場所に固定して、別の場所にもう1つ追加</button>
+            <button type="button" class="mini-btn" id="daboPinAddLogoBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:5px 8px">📌 今のロゴ位置を固定して、手ぬぐいの別の場所にもう1つ追加</button>
           </div>
           <div id="daboPinnedSlotsBar" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px"></div>
         </div>
@@ -2129,7 +2225,7 @@ const DEF={
   daboSize:'L', // 'S' | 'M' | 'L' | 'LL' | '3L'
   daboShiftY:0, daboShiftX:0, daboSleeveShiftY:0, daboPatScale:100,
   daboBodyPreset:'current', daboSleevePreset:'same', daboCollarMode:'same', daboPocketMode:'match',
-  showDaboZoneGuide:false, daboInteractiveLogo:false, daboDragItemType:'text',
+  showDaboZoneGuide:false, daboInteractiveLogo:false, daboDragItemType:'auto',
   // 大小あられパラメーター ＆ 大小あられの周り枠（1粒ごとの周り枠・外周周り枠）
   count:1220, gap:2.5, spread:15, grad:0, dmin:3.5, dmax:11, bigratio:32, scale:100, shape:'orig',
   ararePadMode:'none', // 'none' | 'pad' (うしろ抜き) | 'frame' (周り枠線) | 'padFrame' (うしろ抜き＋周り枠線)
@@ -2169,6 +2265,15 @@ try{
     S.customTextBg = '#00a3af';
     S.fudaCordColor = '#00a3af';
     localStorage.setItem('haneda-fix-fudasvgbase-v193', '1');
+    localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
+  }
+  if(!localStorage.getItem('haneda-fix-sametenugui-v1123')){
+    S.daboLogoTarget = 'all';
+    S.daboSpotPart = 'all';
+    if(Array.isArray(S.logoSlots)){
+      S.logoSlots.forEach(sl => { if(sl) sl.daboSpotPart = 'all'; });
+    }
+    localStorage.setItem('haneda-fix-sametenugui-v1123', '1');
     localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
   }
 }catch(e){}
@@ -2388,44 +2493,37 @@ function pinCurrentLogoAndAddAnother(){
   syncActiveSlotFromS();
   const curIdx = Math.max(0, Math.min(S.logoSlots.length - 1, S.activeLogoSlot || 0));
   const curSlot = S.logoSlots[curIdx] || extractLogoSlotFromS(S);
-  if(!curSlot.daboSpotPart || curSlot.daboSpotPart === 'auto'){
-    curSlot.daboSpotPart = inferCurrentDaboPartTag();
-    S.daboSpotPart = curSlot.daboSpotPart;
-    S.logoSlots[curIdx] = curSlot;
-  }
-  // 次のロゴは、前が背中なら「左胸(frontL)」、前が左胸なら「右胸(frontR)」または「背中(back)」へ初期配置
-  let nextPart = 'frontL';
-  let nextUV = { u: 0.68, v: 0.31 };
+  // 1種類の手ぬぐいに複数箇所ロゴを配置して全手ぬぐい共通にするため、daboSpotPart は常に 'all'（全手ぬぐい共通）
+  curSlot.daboSpotPart = 'all';
+  S.daboSpotPart = 'all';
+  S.logoSlots[curIdx] = curSlot;
+
+  // 次のロゴは、現在のロゴが上寄り（背紋・胸付近）なら下側、下寄りなら上側へずらして追加
+  let nextUV = { u: 0.68, v: 0.65 };
   let nextSize = Math.max(55, Math.min(82, Math.round((curSlot.logoSize || 85) * 0.78)));
-  if(curSlot.daboSpotPart === 'frontL'){
-    nextPart = 'back';
+  if((curSlot.logoY || 28) > 45){
     nextUV = { u: 0.50, v: 0.22 };
     nextSize = 85;
-  }else if(curSlot.daboSpotPart === 'back' && S.logoSlots.some(s => s.daboSpotPart === 'frontL')){
-    nextPart = 'pocket';
-    nextUV = { u: 0.68, v: 0.35 };
-    nextSize = 56;
+  }else if(S.logoSlots.length >= 2){
+    nextUV = { u: 0.32, v: 0.52 };
+    nextSize = 62;
   }
   const nextPct = stripUVToTenuguiPct(nextUV.u, nextUV.v);
   const newSlot = Object.assign({}, curSlot, {
     logoX: nextPct.px,
     logoY: nextPct.py,
     logoSize: nextSize,
-    daboSpotPart: nextPart
+    daboSpotPart: 'all'
   });
   S.logoSlots.push(newSlot);
   S.activeLogoSlot = S.logoSlots.length - 1;
   applySlotToS(newSlot);
-  // 背中と前身頃の両方にロゴが出るようにターゲットを自動拡張
-  if(['backOnly', 'frontLOnly', 'frontROnly', 'pocketOnly', 'frontOnly'].includes(S.daboLogoTarget)){
-    S.daboLogoTarget = 'frontBack';
-  }
+  // すべての手ぬぐい（1〜7/8本目すべて）が同じ構図になるよう常に 'all' に設定
+  S.daboLogoTarget = 'all';
   if(S.viewMode === 'fabric') S.viewMode = 'cut_dabo';
   PROC_LOGO_KEY = '';
   update(false);
-  const pinnedPartName = DABO_PART_SHORT_LABELS[curSlot.daboSpotPart] || '現在の位置';
-  const nextPartName = DABO_PART_SHORT_LABELS[nextPart] || '別の部位';
-  saySave(`📌 1つ目のロゴを「${pinnedPartName}」に固定し、2つ目のロゴを「${nextPartName}」に追加しました！①〜⑧ボタンやドラッグで2つ目の位置を自由に変えられます。`);
+  saySave(`📌 1枚の手ぬぐい図案の中に「${S.logoSlots.length}個目のロゴ」を追加しました！全${S.daboCutMode === 'adult8_crest' ? 8 : 7}枚すべての手ぬぐいに同じ構図で反映されます。`);
 }
 
 function renderLogoSlotsBar(){
@@ -2446,7 +2544,7 @@ function renderLogoSlotsBar(){
   syncActiveSlotFromS();
   bars.forEach(bar => {
     const isDaboBar = (bar.id === 'daboPinnedSlotsBar' || bar.id === 'eDaboSlotsBar');
-    if(isDaboBar && S.logoSlots.length <= 1 && (!S.logoSlots[0] || !S.logoSlots[0].daboSpotPart || S.logoSlots[0].daboSpotPart === 'auto')){
+    if(isDaboBar && S.logoSlots.length <= 0){
       return;
     }
     S.logoSlots.forEach((slot, idx) => {
@@ -3483,7 +3581,8 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
   const effStrokeColor = slot.logoPadStrokeColor || '#ffffff';
   const alpha = Math.max(0.05, Math.min(1, (slot.logoOpacity ?? 100) / 100));
   const isBuiltinFuda = (slot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || slot.logoName === 'fuda_logo_teal' || slot.logoName === 'fuda_logo_white');
-  const isTealFuda = (slot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || slot.logoName === 'fuda_logo_teal');
+  const effFudaBodyHex = (slot.logoMono ? (slot.logoColor || '#ffffff') : ((slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || slot.logoName === 'fuda_logo_white') ? '#ffffff' : '#00a3af')).toLowerCase();
+  const isTealFuda = isBuiltinFuda && effFudaBodyHex !== '#ffffff';
 
   const placements = generateScatterPlacementsMm({
     W, H,
@@ -4781,7 +4880,8 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
         const strokeMm = Math.max(0, effSlot.logoPadStrokeMm ?? 0);
         const effStrokeColor = effSlot.logoPadStrokeColor || '#ffffff';
         const isBuiltinFuda = (effSlot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || effSlot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || effSlot.logoName === 'fuda_logo_teal' || effSlot.logoName === 'fuda_logo_white');
-        const isTealFuda = (effSlot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || effSlot.logoName === 'fuda_logo_teal');
+        const effFudaBodyHex = (effSlot.logoMono ? (effSlot.logoColor || '#ffffff') : ((effSlot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || effSlot.logoName === 'fuda_logo_white') ? '#ffffff' : '#00a3af')).toLowerCase();
+        const isTealFuda = isBuiltinFuda && effFudaBodyHex !== '#ffffff';
 
         const pushRoundedRectPoly = (pw, ph, rCorner, fillCol, strkCol, strkW) => {
           const r = Math.min(rCorner, pw * 0.48, ph * 0.48);
@@ -6203,7 +6303,9 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
         x.fill(crestPath, 'evenodd');
       }
       let ovCfg = cfg;
-      if(partFilter && cfg.showLogo && Array.isArray(cfg.logoSlots) && cfg.logoSlots.length > 0){
+      // S.daboLogoTarget === 'all'（標準：全手ぬぐい同じ構図）のときは全ストリップに全ロゴをそのまま描画し、
+      // 部位別手ぬぐい分けモードを選んだときのみ daboSpotPart でフィルタリングする
+      if(partFilter && cfg.daboLogoTarget && cfg.daboLogoTarget !== 'all' && cfg.showLogo && Array.isArray(cfg.logoSlots) && cfg.logoSlots.length > 0){
         const hasSpecificTags = cfg.logoSlots.some(sl => sl && sl.daboSpotPart && sl.daboSpotPart !== 'auto' && sl.daboSpotPart !== 'all');
         if(hasSpecificTags){
           const matched = cfg.logoSlots.filter(sl => {
@@ -6286,36 +6388,32 @@ function buildDaboCutPlan(){
   const baseYPct = activeKey === 'logo' ? (S.logoY ?? 28) : (activeKey === 'text' ? (S.textY ?? 75) : (S.crestY ?? 80));
   const activeUV = tenuguiPctToStripUV(baseXPct, baseYPct);
 
-  // ポケット用ロゴのUV（胸ポケ専用ピン留めスロットがあればそれを優先、なければアクティブ要素のUV）
+  // ポケット用ロゴのUV（胸ポケ専用設定のときのみ窓をスライドし、全手ぬぐい共通('all')のときは左前身頃の胸ポケ位置と100%柄合わせになる位置に固定）
   let pkLogoUV = activeUV;
   if(S.showLogo && Array.isArray(S.logoSlots)){
     const pkSlot = S.logoSlots.find(sl => sl && sl.daboSpotPart === 'pocket');
     if(pkSlot) pkLogoUV = tenuguiPctToStripUV(pkSlot.logoX ?? 50, pkSlot.logoY ?? 28);
   }
-  // 7/8本目の左胸ポケット切り出し枠：ロゴ位置(pkLogoUV)を中心に40%×22%の窓を自動スライド！
-  // これにより「背紋位置(横50%, 縦22%)」に1つだけロゴを染めた手ぬぐい1種類で、1本目＝背紋ド真ん中、7/8本目＝左胸ポケットのド真ん中の両方にロゴを出せる！
-  const pkU = pocketHasLogo
-    ? clamp(pkLogoUV.u - 0.20 + sx * 0.16, 0.30, 0.58)
-    : clamp(0.48 + sx * 0.16, 0.30, 0.58);
-  const pkV = pocketHasLogo
-    ? clamp(pkLogoUV.v - 0.11 + sy * 0.18, 0.05, 0.56)
-    : clamp(0.24 + sy * 0.18, 0.06, 0.54);
+  // 左前身頃(frontL: u=bx, v=by, uw=bw, vh=bh)上の胸ポケ位置(pkX=14/90, pkY=56/188, pkW=36/90, pkH=42/188)に100%柄合わせする切り出し座標:
+  // u_center ≈ bx + bw * 0.50, v_center ≈ by + bh * 0.36
+  const matchPkU = clamp((bx + bw * 0.50) - 0.20, 0.04, 0.58);
+  const matchPkV = clamp((by + bh * 0.36) - 0.11, 0.04, 0.68);
+  const pkU = (target === 'pocketOnly' || target === 'backPocket')
+    ? clamp(pkLogoUV.u - 0.20 + sx * 0.16, 0.04, 0.58)
+    : matchPkU;
+  const pkV = (target === 'pocketOnly' || target === 'backPocket')
+    ? clamp(pkLogoUV.v - 0.11 + sy * 0.18, 0.04, 0.68)
+    : matchPkV;
 
-  // 袖の切り出し縦位置：袖にもロゴを入れる場合はロゴ位置を中心にし、袖にロゴを出したくない場合（または背紋位置v<0.34のとき）は下半分(v=0.36〜)から取ることで1種類の手ぬぐいでも袖を無地総柄に保てる！
-  let slvLogoUV = activeUV;
-  if(S.showLogo && Array.isArray(S.logoSlots)){
-    const slvSlot = S.logoSlots.find(sl => sl && sl.daboSpotPart === 'sleeves');
-    if(slvSlot) slvLogoUV = tenuguiPctToStripUV(slvSlot.logoX ?? 50, slvSlot.logoY ?? 28);
-  }
-  const slvBaseV = sleeveHasLogo
-    ? clamp(slvLogoUV.v - 0.28, 0.04, 0.40)
-    : (activeUV.v < 0.35 ? 0.36 : 0.06);
+  // 袖の切り出し縦位置：手ぬぐいガイド枠（drawDaboZoneGuideOverlayMm）と一致する固定位置（slvY=0.14+ssy*0.28）を基準にし、
+  // 全手ぬぐいが同じ構図でそのまま各パーツに切り出されるようにする
+  const slvBaseV = (target === 'backPocket' && activeUV.v < 0.35) ? 0.36 : 0.14;
   const slvY1 = clamp(slvBaseV + ssy * 0.28, 0.02, 0.42);
 
   if(cutMode === 'adult7'){
     // ① 大人用・標準7枚取り（お祭り用品店のオーダーメイド標準：身頃4本＋両袖2本＋7本目に前立て・襟・柄合わせ胸ポケ・袖下マチ）
     return {
-      modeTitle: '① 大人用・標準7枚取り（前2・後2・両袖2 ＋ 7本目：前立て・襟・柄合わせ胸ポケ・脇マチ）',
+      modeTitle: '① 大人用・標準7枚取り（全7枚すべて同じ構図の手ぬぐいを使用：前2・後2・両袖2・襟＆柄合せ胸ポケ1）',
       strips: [
         { title: '1本目：右後ろ身頃', hasLogo: backHasLogo, partFilter: 'back', parts: [
           { id: 'backR', label: '右後身頃(背中心接ぎ)', u: bx, v: by, uw: bw, vh: bh, shape: 'backR' }
@@ -6348,12 +6446,12 @@ function buildDaboCutPlan(){
   } else if(cutMode === 'adult8_crest'){
     // ② 大人用・背紋1枚＋ゆったり8枚取り（背中心で柄を切らずに背紋をド真ん中に配置＋後両脇マチ＋太袖マチ＋小パーツ専用）
     return {
-      modeTitle: '② 大人用・背紋1枚＋ゆったり8枚取り（背中央1・後両脇マチ1・前2・両袖2・袖下太マチ1・襟＆胸ポケ1）',
+      modeTitle: '② 大人用・背紋1枚＋ゆったり8枚取り（全8枚すべて同じ構図の手ぬぐいを使用：背中央1・後脇マチ1・前2・両袖2・袖下マチ1・胸ポケ1）',
       strips: [
         { title: '1本目：背中中央(背紋1枚取)', hasLogo: backHasLogo, partFilter: 'back', parts: [
           { id: 'backCenter', label: '後中央身頃(背紋)', u: clamp(0.04+sx*0.12,0,0.12), v: by, uw: 0.92, vh: bh, shape: 'backCenter' }
         ]},
-        { title: '2本目：後両脇マチ(身幅拡張)', hasLogo: false, parts: [
+        { title: '2本目：後両脇マチ(身幅拡張)', hasLogo: backHasLogo, partFilter: 'back', parts: [
           { id: 'backSideR', label: '右後脇マチ(大人幅)', u: 0.05, v: by, uw: 0.41, vh: bh, shape: 'rect' },
           { id: 'backSideL', label: '左後脇マチ(大人幅)', u: 0.54, v: by, uw: 0.41, vh: bh, shape: 'rect' }
         ]},
@@ -6369,7 +6467,7 @@ function buildDaboCutPlan(){
         { title: '6本目：左袖(広袖・七分)', hasLogo: sleeveHasLogo, isSleeve: true, partFilter: 'sleeves', parts: [
           { id: 'sleeveL', label: '左袖(主袖)', u: 0.05, v: slvY1, uw: 0.90, vh: 0.56, shape: 'sleeveL' }
         ]},
-        { title: '7本目：両袖下マチ(太袖ハギ)', hasLogo: false, isSleeve: true, parts: [
+        { title: '7本目：両袖下マチ(太袖ハギ)', hasLogo: sleeveHasLogo, isSleeve: true, partFilter: 'sleeves', parts: [
           { id: 'gussetR', label: '右袖下太マチ(ダボ袖)', u: 0.08, v: 0.06, uw: 0.84, vh: 0.40, shape: 'rect' },
           { id: 'gussetL', label: '左袖下太マチ(ダボ袖)', u: 0.08, v: 0.52, uw: 0.84, vh: 0.40, shape: 'rect' }
         ]},
@@ -6383,12 +6481,12 @@ function buildDaboCutPlan(){
     };
   } else if(cutMode === 'backCenter'){
     return {
-      modeTitle: '④ 6枚・背中中央1枚取り（背紋・中央ロゴを切らずに背中に配置＋両脇マチ）',
+      modeTitle: '④ 6枚・背中中央1枚取り（全6枚すべて同じ構図の手ぬぐいを使用：背紋・中央ロゴを切らずに背中に配置＋両脇マチ）',
       strips: [
         { title: '1本目：背中中央(背紋)', hasLogo: backHasLogo, partFilter: 'back', parts: [
           { id: 'backCenter', label: '後中央身頃(背紋)', u: clamp(0.04+sx*0.12,0,0.12), v: by, uw: 0.92, vh: bh, shape: 'backCenter' }
         ]},
-        { title: '2本目：後両脇マチ＋襟', hasLogo: false, parts: [
+        { title: '2本目：後両脇マチ＋襟', hasLogo: backHasLogo, partFilter: 'back', parts: [
           { id: 'backSideR', label: '右後脇マチ', u: 0.06, v: by, uw: 0.38, vh: bh, shape: 'rect' },
           { id: 'backSideL', label: '左後脇マチ', u: 0.54, v: by, uw: 0.38, vh: bh, shape: 'rect' },
           { id: 'collar', label: '掛け襟', u: 0.08, v: 0.86, uw: 0.84, vh: 0.11, shape: 'rect' }
@@ -6690,23 +6788,35 @@ function drawCuttingLayoutPanel(x, px, py, pw, ph, plan){
       x.restore();
     });
 
-    // ロゴ・丸紋・文字入りストリップの場合、手ぬぐい上のどこに中心があるかターゲット十字マーカーを描画
+    // ロゴ・丸紋・文字入りストリップの場合、手ぬぐい上のどこに中心があるかターゲット十字マーカーを描画（複数ロゴスロットがある場合は全ロゴ位置にマーカーを描画）
     if(st.hasLogo || isHighlightedStrip){
-      const lx = sx + uvLogo.u * dw;
-      const ly = sy + uvLogo.v * dh;
-      x.save();
-      x.strokeStyle = isHighlightedStrip ? '#38bdf8' : 'rgba(250, 204, 21, 0.85)';
-      x.lineWidth = isHighlightedStrip ? 1.8 : 1.1;
-      x.beginPath();
-      x.arc(lx, ly, isHighlightedStrip ? 7 : 4.5, 0, Math.PI * 2);
-      x.stroke();
-      if(isHighlightedStrip){
-        x.beginPath();
-        x.moveTo(sx, ly); x.lineTo(sx + dw, ly);
-        x.moveTo(lx, sy); x.lineTo(lx, sy + dh);
-        x.stroke();
+      const markerUVs = [];
+      if(activeKey === 'logo' && S.showLogo && Array.isArray(S.logoSlots) && S.logoSlots.length > 1){
+        S.logoSlots.forEach((sl, sIdx) => {
+          if(!sl) return;
+          const uv = tenuguiPctToStripUV(sl.logoX ?? 50, sl.logoY ?? 28);
+          markerUVs.push({ u: uv.u, v: uv.v, isActive: sIdx === (S.activeLogoSlot || 0) });
+        });
+      }else{
+        markerUVs.push({ u: uvLogo.u, v: uvLogo.v, isActive: true });
       }
-      x.restore();
+      markerUVs.forEach(mk => {
+        const lx = sx + mk.u * dw;
+        const ly = sy + mk.v * dh;
+        x.save();
+        x.strokeStyle = (isHighlightedStrip && mk.isActive) ? '#38bdf8' : 'rgba(250, 204, 21, 0.88)';
+        x.lineWidth = (isHighlightedStrip && mk.isActive) ? 1.8 : 1.2;
+        x.beginPath();
+        x.arc(lx, ly, (isHighlightedStrip && mk.isActive) ? 7 : 5, 0, Math.PI * 2);
+        x.stroke();
+        if(isHighlightedStrip && mk.isActive){
+          x.beginPath();
+          x.moveTo(sx, ly); x.lineTo(sx + dw, ly);
+          x.moveTo(lx, sy); x.lineTo(lx, sy + dh);
+          x.stroke();
+        }
+        x.restore();
+      });
     }
 
     x.strokeStyle = isHighlightedStrip ? '#38bdf8' : 'rgba(255,255,255,0.3)';
@@ -6717,7 +6827,7 @@ function drawCuttingLayoutPanel(x, px, py, pw, ph, plan){
   x.textAlign = 'left';
   x.fillStyle = '#bae6fd';
   x.font = '10px sans-serif';
-  x.fillText('👆 右のダボシャツ上をクリック/ドラッグすると、該当する手ぬぐい上の位置（水色十字）へ自動反映されます', px + 12, py + ph - 9, pw - 24);
+  x.fillText('👆 右のダボシャツ上をクリック/ドラッグすると、全' + plan.strips.length + '枚の手ぬぐいすべてに同じ構図の位置（黄色丸/水色十字）で即時反映されます', px + 12, py + ph - 9, pw - 24);
   x.restore();
 }
 
@@ -7243,8 +7353,8 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
       x.clip();
       if(S.daboPocketMode === 'bias'){
         drawCroppedPiece(x, partMap.pocket || partMap.frontL, pkX - 8, pkY - 8, pkW + 16, pkH + 16, 45);
-      }else if(partMap.frontL && partMap.frontL.hasLogo && (!partMap.pocket || !partMap.pocket.hasLogo || S.daboLogoTarget === 'frontLOnly' || S.daboLogoTarget === 'frontOnly')){
-        // 左前身頃(左胸)にロゴがあり胸ポケ単体指定でない場合は、左前身頃と100%柄合わせして左胸ロゴがポケットで隠れないようにする
+      }else if(partMap.frontL && (S.daboLogoTarget === 'all' || (partMap.frontL.hasLogo && (!partMap.pocket || !partMap.pocket.hasLogo || S.daboLogoTarget === 'frontLOnly' || S.daboLogoTarget === 'frontOnly')))){
+        // 全手ぬぐい共通('all')または左前身頃(左胸)モードのときは、左前身頃と100%柄合わせして胸ポケの境界で柄やロゴがズレないようにする
         drawCroppedPiece(x, partMap.frontL, -placketHalfW, bodyTop, shldrW + placketHalfW, bodyH, 0);
       }else{
         drawCroppedPiece(x, partMap.pocket || partMap.frontL, pkX, pkY, pkW, pkH, 0);
@@ -7389,9 +7499,9 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
     const placketHalfW = 5.5;
     const isBackCenter = (S.daboCutMode === 'backCenter' || S.daboCutMode === 'adult8_crest') && !!partMap.backCenter;
     if(side === 'front'){
-      // 優先度1: 左胸ポケット（ポケットありの場合。ただし左胸身頃モード中は左胸身頃全体のドラッグを優先）
+      // 優先度1: 左胸ポケット（胸ポケ単体モード時のみ優先度10にし、全手ぬぐい共通('all')や左胸モード中は左前身頃と連続してドラッグできるよう優先度4にする）
       if(S.daboPocketMode !== 'none'){
-        const pkPriority = (S.daboLogoTarget === 'frontLOnly' || S.daboLogoTarget === 'frontOnly') ? 4 : 10;
+        const pkPriority = (S.daboLogoTarget === 'pocketOnly' || S.daboLogoTarget === 'backPocket') ? 10 : 4;
         DABO_HIT_ZONES.push({
           priority: pkPriority, side: 'front', partId: 'pocket', label: '前面・左胸ポケット',
           entry: partMap.pocket || partMap.frontL,
@@ -7599,12 +7709,12 @@ function updateDaboSpecBox(plan){
 }
 
 // 現在ダボ上でのドラッグ操作の対象となっている要素種別 ('logo' | 'crest' | 'text' | null) を返す
-// ※ 何も表示ONになっていない場合は null を返し、勝手にロゴがONにならないようにする
+// ※ 優先指定されている種別が非表示(OFF)の場合は、現在表示ONになっているロゴ・丸紋・文字へ自動フォールバックする
 function getActiveLogoTypeKey(){
   const pref = S.daboDragItemType || 'auto';
-  if(pref === 'logo') return S.showLogo ? 'logo' : null;
-  if(pref === 'crest') return S.showCrest ? 'crest' : null;
-  if(pref === 'text') return S.showText ? 'text' : null;
+  if(pref === 'logo' && S.showLogo) return 'logo';
+  if(pref === 'crest' && S.showCrest) return 'crest';
+  if(pref === 'text' && S.showText) return 'text';
   if(S.showLogo) return 'logo';
   if(S.showCrest) return 'crest';
   if(S.showText) return 'text';
@@ -7682,15 +7792,11 @@ function applyReverseDaboPlacementAtStageXY(stageX, stageY, isInitialClick){
   const itemType = getActiveLogoTypeKey();
   // 現在ONになっているロゴ・丸紋・札がない場合は勝手に追加せず false を返す（通常の画面パン操作へ譲る）
   if(!itemType) return false;
-  const hasMultiplePinned = !!(S.showLogo && Array.isArray(S.logoSlots) && S.logoSlots.length > 1);
   if(itemType === 'logo'){
     S.logoX = px; S.logoY = py;
-    if(hasMultiplePinned || (S.daboSpotPart && S.daboSpotPart !== 'auto')){
-      if(hit.partId === 'frontL') S.daboSpotPart = 'frontL';
-      else if(hit.partId === 'frontR') S.daboSpotPart = 'frontR';
-      else if(hit.partId === 'pocket') S.daboSpotPart = 'pocket';
-      else if(hit.partId === 'sleeveL' || hit.partId === 'sleeveR') S.daboSpotPart = 'sleeves';
-      else if(hit.side === 'back') S.daboSpotPart = 'back';
+    S.daboSpotPart = 'all';
+    if(Array.isArray(S.logoSlots)){
+      S.logoSlots.forEach(sl => { if(sl) sl.daboSpotPart = 'all'; });
     }
     syncActiveSlotFromS();
   }else if(itemType === 'crest'){
@@ -7699,20 +7805,8 @@ function applyReverseDaboPlacementAtStageXY(stageX, stageY, isInitialClick){
     S.textX = px; S.textY = py;
   }
 
-  // 初回クリック時、クリックした部位にロゴ・文字が表示されるよう daboLogoTarget も自動調整
-  if(isInitialClick){
-    if(hit.partId === 'sleeveR' || hit.partId === 'sleeveL'){
-      if(!['all', 'sleevesOnly'].includes(S.daboLogoTarget)) S.daboLogoTarget = hasMultiplePinned ? 'all' : 'sleevesOnly';
-    }else if(hit.partId === 'frontL'){
-      if(!['all', 'frontBack', 'frontOnly', 'frontLOnly'].includes(S.daboLogoTarget)) S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'frontLOnly';
-    }else if(hit.partId === 'frontR'){
-      if(!['all', 'frontBack', 'frontOnly', 'frontROnly'].includes(S.daboLogoTarget)) S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'frontROnly';
-    }else if(hit.partId === 'pocket'){
-      if(!['all', 'pocketOnly', 'backPocket', 'frontBack'].includes(S.daboLogoTarget)) S.daboLogoTarget = hasMultiplePinned ? 'backPocket' : 'pocketOnly';
-    }else if(hit.side === 'back'){
-      if(!['all', 'backOnly', 'backPocket', 'frontBack'].includes(S.daboLogoTarget)) S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'backOnly';
-    }
-  }
+  // ダボシャツ用の手ぬぐいは1種類（全7枚/8枚すべて同じ構図の手ぬぐい）を使うため、常に S.daboLogoTarget = 'all' に保ち全ストリップへ即時反映する
+  S.daboLogoTarget = 'all';
 
   const mmX = Math.round((px / 100) * S.W);
   const mmY = Math.round((py / 100) * S.H);
@@ -7730,9 +7824,10 @@ function applyReverseDaboPlacementAtStageXY(stageX, stageY, isInitialClick){
   const infoBox = $('daboReverseMapInfo');
   if(infoBox){
     const itemName = itemType === 'logo' ? '🏷️ 札ロゴ・画像' : (itemType === 'text' ? '✍️ 名入れ文字' : '💮 丸紋「仲はねだ」');
+    const totalSheets = (S.daboCutMode === 'adult8_crest') ? 8 : (S.daboCutMode === 'adult7' ? 7 : (S.daboCutMode === '5piece' ? 5 : 6));
     infoBox.innerHTML =
-      `<b style="color:#0284c7">🎯 逆算完了！ ${hit.label} に ${itemName} を配置しました</b><br>` +
-      `👉 使用する手ぬぐい：<b>${DABO_ACTIVE_REVERSE_HIT.stripTitle}（${p.label}枠）</b><br>` +
+      `<b style="color:#0284c7">🎯 逆算完了！ ${hit.label} に合わせて全${totalSheets}枚の手ぬぐい（同じ構図）へ ${itemName} を反映しました</b><br>` +
+      `👉 基準にしたパーツ：<b>${DABO_ACTIVE_REVERSE_HIT.stripTitle}（${p.label}枠） ／ 全${totalSheets}枚すべての手ぬぐいに同じ位置で入ります</b><br>` +
       `👉 手ぬぐい上の反映位置：<b>横 ${px}%（左から ${mmX}mm） ／ 縦 ${py}%（上から ${mmY}mm）</b>`;
   }
   update(false);
@@ -7764,6 +7859,7 @@ function applyBasePatternPreset(dbp){
 }
 
 // 🎯 ダボシャツの希望部位（①〜⑧＋王道おすすめ）から手ぬぐい上のロゴ位置・取り方を一発逆算設定する
+// （手ぬぐいは全7枚/8枚すべて同じ構図の1種類を使用し、全ストリップに同じ構図で反映する）
 function applyDaboSpotPlacement(sp, preferText){
   if(!S.showCrest && !S.showLogo && !S.showText){
     if(preferText){
@@ -7780,93 +7876,75 @@ function applyDaboSpotPlacement(sp, preferText){
       S.daboDragItemType = 'logo';
     }
   }
-  const hasMultiplePinned = !!(S.showLogo && Array.isArray(S.logoSlots) && S.logoSlots.length > 1);
   let targetU = 0.50, targetV = 0.22;
   let spotLabel = '';
   let stripDesc = '';
-  let partTag = 'auto';
+  const partTag = 'all';
   let recLogoSize = null;
 
+  // 常に全手ぬぐい共通（1種類の手ぬぐいを全枚数に使用）
+  S.daboLogoTarget = 'all';
+  S.daboPocketMode = 'match';
+
   if(sp === 'backAndPocket'){
-    // ⭐ 王道おすすめ：1種類の手ぬぐい(1型)で「背中・首下(背紋)」と「左胸ポケット」の両方にピタッと出し、袖や前身頃には出さない最良の取り方
     S.daboCutMode = 'adult8_crest';
-    S.daboLogoTarget = 'backPocket';
-    S.daboPocketMode = 'match';
     S.daboShiftX = 0; S.daboShiftY = 0; S.daboSleeveShiftY = 0;
     targetU = 0.50; targetV = 0.22;
-    partTag = 'auto';
     recLogoSize = 76;
-    spotLabel = '⭐ 王道：背中（背紋）＋左胸ポケット同時（1型で最安！）';
-    stripDesc = '1本目（背中中央）＋8本目（左胸ポケット枠を自動位置合わせ）';
+    spotLabel = '⭐ 背中（背紋）＋両胸の位置（全8枚すべて同じ構図の手ぬぐい）';
+    stripDesc = '全8枚共通の手ぬぐい（1本目＝背中中央の背紋、3・4本目＝左右の上胸に配置）';
   }else if(sp === 'backCrest'){
     S.daboCutMode = 'adult8_crest';
-    S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'backOnly';
     S.daboShiftX = 0; S.daboShiftY = 0;
     targetU = 0.50; targetV = 0.22;
-    partTag = hasMultiplePinned ? 'back' : 'auto';
     recLogoSize = 85;
-    spotLabel = '① 背中・首下（背紋・切れ目なし）';
-    stripDesc = '1本目：背中中央身頃（背紋1枚取り）';
+    spotLabel = '① 背中・首下（背紋・全8枚すべて同じ構図の手ぬぐい）';
+    stripDesc = '全8枚共通の手ぬぐい（1本目：背中中央身頃の背紋位置に合わせて逆算）';
   }else if(sp === 'backMid'){
     S.daboCutMode = 'adult8_crest';
-    S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'backOnly';
     S.daboShiftX = 0; S.daboShiftY = 0;
     targetU = 0.50; targetV = 0.45;
-    partTag = hasMultiplePinned ? 'back' : 'auto';
     recLogoSize = 135;
-    spotLabel = '② 背中のど真ん中（大紋）';
-    stripDesc = '1本目：背中中央身頃（背紋1枚取り）';
+    spotLabel = '② 背中のど真ん中（大紋・全8枚すべて同じ構図の手ぬぐい）';
+    stripDesc = '全8枚共通の手ぬぐい（1本目：背中中央身頃のど真ん中に合わせて逆算）';
   }else if(sp === 'frontChestL'){
-    S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'frontLOnly';
     S.daboShiftX = 0; S.daboShiftY = 0;
-    targetU = 0.52; targetV = 0.30;
-    partTag = hasMultiplePinned ? 'frontL' : 'auto';
+    targetU = 0.49; targetV = 0.36;
     recLogoSize = 72;
-    spotLabel = '③ 左胸（左前身頃・向かって右の胸）';
-    stripDesc = '4本目：左前身頃（胸の高さ・ポケット柄合わせ）';
+    spotLabel = '③ 左胸・胸ポケット位置（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（4本目：左前身頃の胸＆胸ポケット位置に合わせて逆算）';
   }else if(sp === 'frontChestR'){
-    S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'frontROnly';
     S.daboShiftX = 0; S.daboShiftY = 0;
     targetU = 0.46; targetV = 0.30;
-    partTag = hasMultiplePinned ? 'frontR' : 'auto';
     recLogoSize = 72;
-    spotLabel = '④ 右胸（右前身頃・向かって左の胸）';
-    stripDesc = '3本目：右前身頃（胸の高さ）';
+    spotLabel = '④ 右胸（右前身頃・全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（3本目：右前身頃の胸の高さに合わせて逆算）';
   }else if(sp === 'chestPocket'){
     if(S.daboCutMode !== 'adult7' && S.daboCutMode !== 'adult8_crest') S.daboCutMode = 'adult7';
-    S.daboLogoTarget = hasMultiplePinned ? 'frontBack' : 'pocketOnly';
-    S.daboPocketMode = 'match';
     S.daboShiftX = 0; S.daboShiftY = 0;
-    targetU = 0.68; targetV = 0.35;
-    partTag = hasMultiplePinned ? 'pocket' : 'auto';
+    targetU = 0.49; targetV = 0.36;
     recLogoSize = 58;
-    spotLabel = '⑤ 左胸ポケットの中';
-    stripDesc = (S.daboCutMode === 'adult8_crest' ? '8本目' : '7本目') + '：左胸ポケット枠';
+    spotLabel = '⑤ 左胸ポケットの中（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（' + (S.daboCutMode === 'adult8_crest' ? '8本目' : '7本目') + '：左胸ポケット枠＆4本目：左胸に柄合わせ配置）';
   }else if(sp === 'frontHem'){
-    S.daboLogoTarget = 'frontBack';
     S.daboShiftX = 0; S.daboShiftY = 0;
     targetU = 0.52; targetV = 0.75;
-    partTag = 'auto';
     recLogoSize = 82;
-    spotLabel = '⑥ 前後の裾（腰まわり）';
-    stripDesc = '1〜4本目：前後身頃の裾まわり';
+    spotLabel = '⑥ 前後の裾・腰まわり（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（前後身頃の裾まわりに合わせて逆算）';
   }else if(sp === 'sleeves'){
-    S.daboLogoTarget = hasMultiplePinned ? 'all' : 'sleevesOnly';
     S.daboSleeveShiftY = 0;
-    targetU = 0.50; targetV = 0.40;
-    partTag = hasMultiplePinned ? 'sleeves' : 'auto';
+    targetU = 0.50; targetV = 0.42;
     recLogoSize = 75;
-    spotLabel = '⑦ 両袖（肩〜二の腕中央）';
-    stripDesc = '5・6本目：左右の袖';
+    spotLabel = '⑦ 両袖・二の腕中央（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（5・6本目：左右の袖中央に合わせて逆算）';
   }else if(sp === 'allParts'){
     S.daboCutMode = 'adult8_crest';
-    S.daboLogoTarget = 'all';
     S.daboShiftX = 0; S.daboShiftY = 0; S.daboSleeveShiftY = 0;
     targetU = 0.50; targetV = 0.22;
-    partTag = 'all';
     recLogoSize = 78;
     spotLabel = '⑧ 全パーツ共通（1種類の手ぬぐいで全身仕立て）';
-    stripDesc = '全手ぬぐい共通（背中中央・両胸・胸ポケ）';
+    stripDesc = '全8枚すべて同じ構図の手ぬぐいを使用（背中中央・両胸・袖・胸ポケ）';
   }
 
   const { px, py } = stripUVToTenuguiPct(targetU, targetV);
@@ -7874,6 +7952,9 @@ function applyDaboSpotPlacement(sp, preferText){
     S.logoX = px;
     S.logoY = py;
     S.daboSpotPart = partTag;
+    if(Array.isArray(S.logoSlots)){
+      S.logoSlots.forEach(sl => { if(sl) sl.daboSpotPart = 'all'; });
+    }
     if(recLogoSize && (!S.logoSize || S.logoSize === 85 || sp === 'chestPocket' || sp === 'backMid' || sp === 'backAndPocket')){
       S.logoSize = recLogoSize;
     }
@@ -7903,13 +7984,11 @@ function applyDaboSpotPlacement(sp, preferText){
 
   const infoBox = $('daboReverseMapInfo');
   if(infoBox){
-    const extraTip = (sp === 'backAndPocket')
-      ? `<br><span style="color:#15803d;font-weight:700">✨ 1種類の手ぬぐい（横${px}%・縦${py}%）だけで、1本目は「背紋」、8本目は「左胸ポケット」にロゴが入り、5・6本目の袖は下半分から取るため袖にはロゴが出ないベストな取り方です！</span>`
-      : '';
+    const totalSheets = (S.daboCutMode === 'adult8_crest') ? 8 : (S.daboCutMode === 'adult7' ? 7 : (S.daboCutMode === '5piece' ? 5 : 6));
     infoBox.innerHTML =
-      `<b style="color:#0284c7">🎯 ダボの「${spotLabel}」から手ぬぐい位置を逆算しました！</b><br>` +
-      `👉 使用する手ぬぐい：<b>${stripDesc}</b><br>` +
-      `👉 手ぬぐい上の位置：<b>横 ${px}%（左から ${mmX}mm） ／ 縦 ${py}%（上から ${mmY}mm）</b>${extraTip}`;
+      `<b style="color:#0284c7">🎯 ダボの「${spotLabel}」から手ぬぐい位置を逆算し、全${totalSheets}枚すべてに反映しました！</b><br>` +
+      `👉 手ぬぐいの構成：<b>${stripDesc}</b><br>` +
+      `👉 手ぬぐい上の位置（全${totalSheets}枚共通）：<b>横 ${px}%（左から ${mmX}mm） ／ 縦 ${py}%（上から ${mmY}mm）</b>`;
   }
   if(S.viewMode === 'fabric') S.viewMode = 'cut_dabo';
   if($('openDaboViewBtn')) $('openDaboViewBtn').textContent = '手ぬぐい画面へ戻る';
@@ -7928,7 +8007,7 @@ function describeDaboLandingSpot(pxPct, pyPct){
   const bw = 0.82;
   const by = clamp((isAdultFull ? 0.05 : 0.08) + sy * 0.20, 0.01, 0.20);
   const bh = isAdultFull ? 0.86 : 0.76;
-  const slvY1 = clamp(0.12 + ssy * 0.28, 0.02, 0.42);
+  const slvY1 = clamp(0.14 + ssy * 0.28, 0.02, 0.42);
   const slvH = 0.56;
 
   const { u, v } = tenuguiPctToStripUV(pxPct, pyPct);
@@ -7954,21 +8033,21 @@ function describeDaboLandingSpot(pxPct, pyPct){
         hits.push(`【背面】左右の後身頃の${vZone}（背中心の縫い目の左右両方に出ます）`);
       }
     }
-    if(['all', 'frontBack'].includes(target)){
+    if(['all', 'frontBack', 'frontOnly', 'frontLOnly', 'frontROnly'].includes(target)){
       hits.push(`【前面】左右の前身頃の${vZone}${relX > 0.35 && relX < 0.75 && relY > 0.22 && relY < 0.48 ? '（左胸ポケット付近）' : ''}`);
     }
   }
 
   // 2. 胸ポケット枠内かどうか（大人7枚・8枚取りの7/8本目、または6枚取りの下端）
   if(isAdultFull){
-    const pkU0 = clamp(0.48 + sx * 0.16, 0.44, 0.58), pkV0 = clamp(0.24 + sy * 0.18, 0.08, 0.52);
+    const pkU0 = clamp((bx + bw * 0.50) - 0.20, 0.04, 0.58), pkV0 = clamp((by + bh * 0.36) - 0.11, 0.04, 0.68);
     if(u >= pkU0 && u <= pkU0 + 0.40 && v >= pkV0 && v <= pkV0 + 0.22){
-      if(['all', 'backPocket', 'frontBack'].includes(target)){
+      if(['all', 'pocketOnly', 'backPocket', 'frontBack'].includes(target)){
         hits.push(`【前面】左胸ポケットの中（${cutMode === 'adult7' ? '7本目' : '8本目'}の柄合わせ胸ポケ枠）`);
       }
     }
   } else if(v >= 0.82 && v <= 0.99 && u >= 0.20 && u <= 0.76){
-    if(['all', 'backPocket', 'frontBack'].includes(target)){
+    if(['all', 'pocketOnly', 'backPocket', 'frontBack'].includes(target)){
       hits.push('【前面】左胸ポケットの中（および掛け襟のパーツ取り領域）');
     }
   }
@@ -9541,7 +9620,8 @@ function syncUI(){
   $('sec-haneda').hidden = (S.mode === 'arare' || S.mode === 'scatter');
   $('kakuColorGroup').hidden = (S.mode === 'arare' || S.mode === 'scatter');
   $('sec-arare').hidden = (S.mode === 'haneda' || S.mode === 'scatter');
-  $('dotColorGroup').hidden = (S.mode === 'haneda' || S.mode === 'scatter');
+  if($('dotColorGroup')) $('dotColorGroup').hidden = (S.mode === 'scatter');
+  if($('fudaColorGroup')) $('fudaColorGroup').hidden = false;
   if($('layerOrderBox')) $('layerOrderBox').hidden = (S.mode === 'scatter');
 
   // 🧣 タオルUI同期
@@ -9580,6 +9660,21 @@ function syncUI(){
   if($('ararePadParamsBox')) $('ararePadParamsBox').hidden = (!S.ararePadMode || S.ararePadMode === 'none');
   if($('ararePadColor')) $('ararePadColor').value = resolveArarePadColor(S);
   if($('ararePadStrokeColor')) $('ararePadStrokeColor').value = S.ararePadStrokeColor || '#877028';
+  if($('sec3ArarePadColor')) $('sec3ArarePadColor').value = resolveArarePadColor(S);
+  if($('sec3ArarePadStrokeColor')) $('sec3ArarePadStrokeColor').value = S.ararePadStrokeColor || '#877028';
+  if($('sec3ArareOuterColor')) $('sec3ArareOuterColor').value = S.arareOuterColor || S.dotColor || '#ffffff';
+  const curFudaMainHex = (typeof getCurrentFudaMainColor === 'function') ? getCurrentFudaMainColor() : (S.logoColor || '#00a3af');
+  if($('sec3FudaLogoColor')) $('sec3FudaLogoColor').value = curFudaMainHex;
+  if($('sec3FudaLogoHex') && document.activeElement !== $('sec3FudaLogoHex')){
+    $('sec3FudaLogoHex').value = curFudaMainHex.toUpperCase();
+    $('sec3FudaLogoHex').setAttribute('aria-invalid', 'false');
+  }
+  if($('sec3LogoPadColor')) $('sec3LogoPadColor').value = resolveLogoPadColor(S);
+  if($('sec3LogoPadStrokeColor')) $('sec3LogoPadStrokeColor').value = S.logoPadStrokeColor || '#ffffff';
+  if($('sec3TextFgColor')) $('sec3TextFgColor').value = S.customTextColor || '#ffffff';
+  if($('sec3TextFrameColor')) $('sec3TextFrameColor').value = S.fudaFrameColor || S.customTextColor || '#ffffff';
+  if($('sec3TextBgColor')) $('sec3TextBgColor').value = S.customTextBg || '#046e7e';
+  if($('sec3TextCordColor')) $('sec3TextCordColor').value = S.fudaCordColor || S.customTextBg || '#046e7e';
   for(const b of document.querySelectorAll('#arareOuterQuickChips button[data-aomode]')){
     b.setAttribute('aria-pressed', (b.dataset.aomode === (S.arareOuterMode || 'none')) + '');
   }
@@ -10993,25 +11088,136 @@ const FG_PAL=[
   ['金茶','#c89932'],['水色','#bce2e8'],['桜','#f6bfbc'],['羽田納戸','#046e7e'],
   ['藍','#183574'],['紺','#223a70'],['茜','#b7282e'],['墨','#262626']
 ];
+const FUDA_PAL=[
+  ['浅葱（標準札色）','#00a3af'],['白抜き','#ffffff'],['羽田納戸','#046e7e'],['羽田金','#877028'],
+  ['山吹','#f8b500'],['金茶','#c89932'],['茜','#b7282e'],['臙脂','#9e3d3f'],
+  ['藍','#183574'],['紺','#223a70'],['生成り','#f3ecd8'],['墨','#262626']
+];
+function getCurrentFudaMainColor(){
+  if(S.showLogo){
+    if(S.logoMono && S.logoColor) return S.logoColor.toLowerCase();
+    if(S.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || S.logoName === 'fuda_logo_white') return '#ffffff';
+    if(S.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || S.logoName === 'fuda_logo_teal') return '#00a3af';
+    return (S.logoColor || '#00a3af').toLowerCase();
+  }
+  if(S.showText) return (S.customTextBg || '#046e7e').toLowerCase();
+  return (S.logoColor || '#00a3af').toLowerCase();
+}
+function applyFudaMainColor(val){
+  const v = String(val || '').trim().toLowerCase();
+  if(!S.showLogo && !S.showText){
+    S.logoName = 'fuda_logo_teal';
+    S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+    S.showLogo = true;
+    S.logoRemoveBg = false;
+    S.logoBgMode = 'none';
+  }
+  if(v === 'teal' || v === '#00a3af'){
+    if(!S.logoDataUrl || isBuiltinFudaSlot(S)){
+      S.logoName = 'fuda_logo_teal';
+      S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+      S.logoRemoveBg = false;
+      S.logoBgMode = 'none';
+      S.logoInvert = false;
+      S.logoMono = false;
+    }else{
+      S.logoMono = true;
+    }
+    S.logoColor = '#00a3af';
+    S.showLogo = true;
+    ensureLogoLoaded(S.logoDataUrl);
+  }else if(v === 'white' || v === '#ffffff'){
+    if(!S.logoDataUrl || isBuiltinFudaSlot(S)){
+      S.logoName = 'fuda_logo_white';
+      S.logoDataUrl = '__BUILTIN_FUDA_WHITE__';
+      S.logoRemoveBg = false;
+      S.logoBgMode = 'none';
+      S.logoInvert = false;
+      S.logoMono = false;
+    }else{
+      S.logoMono = true;
+    }
+    S.logoColor = '#ffffff';
+    S.showLogo = true;
+    ensureLogoLoaded(S.logoDataUrl);
+  }else{
+    const h = normHex(v) || '#00a3af';
+    if(!S.logoDataUrl){
+      S.logoName = 'fuda_logo_teal';
+      S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+      S.logoRemoveBg = false;
+      S.logoBgMode = 'none';
+      S.logoInvert = false;
+    }
+    S.logoColor = h;
+    S.logoMono = true;
+    S.showLogo = true;
+    ensureLogoLoaded(S.logoDataUrl);
+    if(S.showText) S.customTextBg = h;
+  }
+  PROC_LOGO_KEY = '';
+  syncActiveSlotFromS();
+  update(false);
+}
 function buildSw(boxId,pal,key){
   const b=$(boxId); if(!b) return;
   for(const [n,h] of pal){
     const btn=document.createElement('button'); btn.type='button'; btn.style.background=h; btn.title=n+' '+h.toUpperCase();
     btn.setAttribute('aria-label',n); btn.dataset.hex=h.toLowerCase();
-    btn.addEventListener('click',()=>{S[key]=h; if(key==='kakuColor'&&S.mode==='haneda') S.dotColor=h; update(false);});
+    btn.addEventListener('click',()=>{
+      if(key==='fudaMain'){ applyFudaMainColor(h); return; }
+      S[key]=h;
+      if(key==='dotColor' && S.mode==='haneda'){ S.mode='both'; update(true); return; }
+      update(false);
+    });
     b.appendChild(btn);
   }
 }
 buildSw('bgSw',BG_PAL,'bgColor');
 buildSw('kakuSw',FG_PAL,'kakuColor');
 buildSw('dotSw',FG_PAL,'dotColor');
+buildSw('fudaLogoSw',FUDA_PAL,'fudaMain');
 
 function normHex(v){v=(v||'').trim();if(v[0]!=='#')v='#'+v;if(/^#[0-9a-f]{3}$/i.test(v))v='#'+v[1]+v[1]+v[2]+v[2]+v[3]+v[3];return /^#[0-9a-f]{6}$/i.test(v)?v.toLowerCase():null;}
 for(const [pick,hex,key] of [['bgColor','bgHex','bgColor'],['kakuColor','kakuHex','kakuColor'],['dotColor','dotHex','dotColor'],['crestFg','crestFgHex','crestFg'],['crestBg','crestBgHex','crestBg']]){
-  $(pick).addEventListener('input',e=>{S[key]=e.target.value;update(false);});
-  $(hex).addEventListener('input',e=>{const h=normHex(e.target.value);e.target.setAttribute('aria-invalid',h?'false':'true');if(h){S[key]=h;persist();$(pick).value=h;markSw();draw();}});
+  $(pick).addEventListener('input',e=>{
+    S[key]=e.target.value;
+    if(key==='dotColor' && S.mode==='haneda'){ S.mode='both'; update(true); return; }
+    update(false);
+  });
+  $(hex).addEventListener('input',e=>{const h=normHex(e.target.value);e.target.setAttribute('aria-invalid',h?'false':'true');if(h){S[key]=h;if(key==='dotColor'&&S.mode==='haneda'){S.mode='both';update(true);return;}persist();$(pick).value=h;markSw();draw();}});
   $(hex).addEventListener('change',()=>syncUI());
 }
+// Section 3 (🎨 色) 統合コントロール配線（あられ色・札の色）
+if($('dotSyncKakuBtn')) $('dotSyncKakuBtn').addEventListener('click',()=>{ S.dotColor = S.kakuColor || '#ffffff'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
+if($('sec3ArarePadColor')) $('sec3ArarePadColor').addEventListener('input',e=>{ S.ararePadColor = e.target.value; S.ararePadColorMode = 'custom'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
+if($('sec3ArarePadBgBtn')) $('sec3ArarePadBgBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'bg'; S.ararePadColor = S.bgColor; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
+if($('sec3ArarePadWhiteBtn')) $('sec3ArarePadWhiteBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'white'; S.ararePadColor = '#ffffff'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
+if($('sec3ArarePadBlackBtn')) $('sec3ArarePadBlackBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'black'; S.ararePadColor = '#111827'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
+if($('sec3ArarePadStrokeColor')) $('sec3ArarePadStrokeColor').addEventListener('input',e=>{ S.ararePadStrokeColor = e.target.value; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
+if($('sec3ArareStrokeGoldBtn')) $('sec3ArareStrokeGoldBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#877028'; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; update(false); });
+if($('sec3ArareStrokeWhiteBtn')) $('sec3ArareStrokeWhiteBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#ffffff'; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; update(false); });
+if($('sec3ArareOuterColor')) $('sec3ArareOuterColor').addEventListener('input',e=>{ S.arareOuterColor = e.target.value; if(!S.arareOuterMode || S.arareOuterMode==='none') S.arareOuterMode='single'; update(false); });
+if($('sec3ArareOuterDotBtn')) $('sec3ArareOuterDotBtn').addEventListener('click',()=>{ S.arareOuterColor = S.dotColor || '#ffffff'; if(!S.arareOuterMode || S.arareOuterMode==='none') S.arareOuterMode='single'; update(false); });
+if($('sec3FudaTealBtn')) $('sec3FudaTealBtn').addEventListener('click',()=>applyFudaMainColor('teal'));
+if($('sec3FudaWhiteBtn')) $('sec3FudaWhiteBtn').addEventListener('click',()=>applyFudaMainColor('white'));
+if($('sec3FudaLogoColor')) $('sec3FudaLogoColor').addEventListener('input',e=>applyFudaMainColor(e.target.value));
+if($('sec3FudaLogoHex')){
+  $('sec3FudaLogoHex').addEventListener('input',e=>{ const h=normHex(e.target.value); e.target.setAttribute('aria-invalid',h?'false':'true'); if(h) applyFudaMainColor(h); });
+  $('sec3FudaLogoHex').addEventListener('change',()=>syncUI());
+}
+if($('sec3LogoPadColor')) $('sec3LogoPadColor').addEventListener('input',e=>{ S.logoPadColor = e.target.value; S.logoPadColorMode = 'custom'; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoPadBgBtn')) $('sec3LogoPadBgBtn').addEventListener('click',()=>{ S.logoPadColorMode = 'bg'; S.logoPadColor = S.bgColor; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoPadWhiteBtn')) $('sec3LogoPadWhiteBtn').addEventListener('click',()=>{ S.logoPadColorMode = 'white'; S.logoPadColor = '#ffffff'; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoPadBlackBtn')) $('sec3LogoPadBlackBtn').addEventListener('click',()=>{ S.logoPadColorMode = 'black'; S.logoPadColor = '#111827'; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoPadStrokeColor')) $('sec3LogoPadStrokeColor').addEventListener('input',e=>{ S.logoPadStrokeColor = e.target.value; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoStrokeGoldBtn')) $('sec3LogoStrokeGoldBtn').addEventListener('click',()=>{ S.logoPadStrokeColor = '#877028'; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoStrokeWhiteBtn')) $('sec3LogoStrokeWhiteBtn').addEventListener('click',()=>{ S.logoPadStrokeColor = '#ffffff'; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoStrokeBlackBtn')) $('sec3LogoStrokeBlackBtn').addEventListener('click',()=>{ S.logoPadStrokeColor = '#111827'; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3TextFgColor')) $('sec3TextFgColor').addEventListener('input',e=>{ S.customTextColor = e.target.value; S.showText = true; update(false); });
+if($('sec3TextFrameColor')) $('sec3TextFrameColor').addEventListener('input',e=>{ S.fudaFrameColor = e.target.value; S.fudaFrameTransparent = false; S.showText = true; update(false); });
+if($('sec3TextBgColor')) $('sec3TextBgColor').addEventListener('input',e=>{ S.customTextBg = e.target.value; S.fudaBgTransparent = false; S.showText = true; update(false); });
+if($('sec3TextCordColor')) $('sec3TextCordColor').addEventListener('input',e=>{ S.fudaCordColor = e.target.value; S.fudaCordTransparent = false; S.fudaCordAllTransparent = false; S.showText = true; update(false); });
 $('swap').addEventListener('click',()=>{
   if(S.mode === 'arare'){
     const t=S.bgColor; S.bgColor=S.dotColor; S.dotColor=t;
@@ -11027,18 +11233,22 @@ const AI_COLOR_TARGETS = {
   kakuColor:       { label: '② 仲羽田の文字',     inputId: 'kakuColor' },
   seinenSpotColor: { label: '🌟 青年会1箇所の色', inputId: 'seinenSpotColor' },
   dotColor:        { label: '③ あられ粒の色',     inputId: 'dotColor' },
-  customTextColor: { label: '④ 札の文字色',       inputId: 'customTextColor', autoShow: 'showText' },
-  fudaFrameColor:  { label: '⑤ 札の枠線色',       inputId: 'fudaFrameColor',  autoShow: 'showText' },
-  customTextBg:    { label: '⑥ 札本体の地色',     inputId: 'customTextBg',    autoShow: 'showText' },
-  fudaCordColor:   { label: '⑦ 札の組紐塗り',     inputId: 'fudaCordColor',   autoShow: 'showText' },
-  fudaCordStroke:  { label: '⑧ 札の組紐フチ',     inputId: 'fudaCordStroke',  autoShow: 'showText' },
-  fudaAccentColor: { label: '⑨ 札の丸紋・差札',   inputId: 'fudaAccentColor', autoShow: 'showText' },
+  ararePadColor:   { label: 'あられうしろ抜き色', inputId: 'sec3ArarePadColor' },
+  ararePadStrokeColor: { label: 'あられ1粒枠線色', inputId: 'sec3ArarePadStrokeColor' },
+  arareOuterColor: { label: 'あられ外周枠色',     inputId: 'sec3ArareOuterColor' },
+  logoColor:       { label: '④ 札ロゴ本体の色',   inputId: 'sec3FudaLogoColor', autoShow: 'showLogo', isLogoMono: true },
+  logoPadColor:    { label: '⑤ 札のうしろ色',     inputId: 'sec3LogoPadColor',  autoShow: 'showLogo' },
+  logoPadStrokeColor: { label: '⑥ 札の周り枠線色', inputId: 'sec3LogoPadStrokeColor', autoShow: 'showLogo' },
+  customTextColor: { label: '⑦ 木札の文字色',     inputId: 'customTextColor', autoShow: 'showText' },
+  fudaFrameColor:  { label: '⑧ 木札の枠線色',     inputId: 'fudaFrameColor',  autoShow: 'showText' },
+  customTextBg:    { label: '⑨ 木札の背景色',     inputId: 'customTextBg',    autoShow: 'showText' },
+  fudaCordColor:   { label: '⑩ 木札の組紐塗り',   inputId: 'fudaCordColor',   autoShow: 'showText' },
+  fudaCordStroke:  { label: '⑪ 木札の組紐フチ',   inputId: 'fudaCordStroke',  autoShow: 'showText' },
+  fudaAccentColor: { label: '⑫ 札の丸紋・差札',   inputId: 'fudaAccentColor', autoShow: 'showText' },
   customTextOutlineColor: { label: '札の袋文字フチ', inputId: 'customTextOutlineColor', autoShow: 'showText' },
-  crestFg:         { label: '⑩ 丸紋の文字・枠',   inputId: 'crestFg',         autoShow: 'showCrest' },
-  crestBg:         { label: '⑪ 丸紋の背景',       inputId: 'crestBg',         autoShow: 'showCrest' },
-  logoColor:       { label: '⑫ ロゴ単色染め',     inputId: 'logoColor',       autoShow: 'showLogo', isLogoMono: true },
+  crestFg:         { label: '⑬ 丸紋の文字・枠',   inputId: 'crestFg',         autoShow: 'showCrest' },
+  crestBg:         { label: '⑭ 丸紋の背景',       inputId: 'crestBg',         autoShow: 'showCrest' },
   logoOutlineColor:{ label: 'ロゴ外フチ色',       inputId: 'logoOutlineColor',autoShow: 'showLogo' },
-  logoPadColor:    { label: 'ロゴ座布団色',       inputId: 'logoPadColor',    autoShow: 'showLogo' },
   logoKeyColor:    { label: 'ロゴ透過指定色',     inputId: 'logoKeyColor',    autoShow: 'showLogo' }
 };
 
@@ -11251,10 +11461,37 @@ function syncAiPickerUIFromState(keepHsb){
 function applyHexToActiveAiTarget(hexStr, keepHsb){
   const h = normHex(hexStr);
   if(!h) return;
+  if(activeAiColorKey === 'logoColor'){
+    applyFudaMainColor(h);
+    syncAiPickerUIFromState(keepHsb);
+    return;
+  }
   const meta = AI_COLOR_TARGETS[activeAiColorKey];
   S[activeAiColorKey] = h;
   let needRelayout = false;
-  if(activeAiColorKey === 'kakuColor' && S.mode === 'haneda') S.dotColor = h;
+  if(activeAiColorKey === 'dotColor' && S.mode === 'haneda'){
+    S.mode = 'both';
+    needRelayout = true;
+  }
+  if(activeAiColorKey === 'ararePadColor'){
+    S.ararePadColorMode = 'custom';
+    if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+  }
+  if(activeAiColorKey === 'ararePadStrokeColor'){
+    if(S.ararePadMode === 'none') S.ararePadMode = 'frame';
+    else if(S.ararePadMode === 'pad') S.ararePadMode = 'padFrame';
+  }
+  if(activeAiColorKey === 'arareOuterColor'){
+    if(!S.arareOuterMode || S.arareOuterMode === 'none') S.arareOuterMode = 'single';
+  }
+  if(activeAiColorKey === 'logoPadColor'){
+    S.logoPadColorMode = 'custom';
+    if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+  }
+  if(activeAiColorKey === 'logoPadStrokeColor'){
+    if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0;
+    if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+  }
   if(activeAiColorKey === 'seinenSpotColor'){
     S.kakuMotif = 'haneda_one_seinen';
     if(!S.seinenSpotMode || S.seinenSpotMode === 'same'){
@@ -11294,6 +11531,10 @@ function markSw(){
   for(const b of $('bgSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===S.bgColor.toLowerCase())+'');
   for(const b of $('kakuSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===S.kakuColor.toLowerCase())+'');
   for(const b of $('dotSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===S.dotColor.toLowerCase())+'');
+  if($('fudaLogoSw')){
+    const curFuda = getCurrentFudaMainColor();
+    for(const b of $('fudaLogoSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===curFuda)+'');
+  }
   const c=hexCmyk(S.bgColor).map(v=>Math.round(v*100));
   const fgHex = S.mode==='arare' ? S.dotColor : S.kakuColor;
   const d=hexCmyk(fgHex).map(v=>Math.round(v*100));
@@ -11712,7 +11953,33 @@ function easyRenderImpl(){
   $('eSize').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(+b.dataset.w === S.W && +b.dataset.h === S.H)); });
   $('eColors').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(eLow(b.dataset.bg) === eLow(bg) && eLow(b.dataset.fg) === eLow(fg))); });
   if(document.activeElement !== $('eBg')) $('eBg').value = eLow(bg);
-  if(document.activeElement !== $('eFg')) $('eFg').value = eLow(fg);
+  if(document.activeElement !== $('eFg')) $('eFg').value = eLow(S.kakuColor || '#ffffff');
+  if($('eDotCol') && document.activeElement !== $('eDotCol')) $('eDotCol').value = eLow(S.dotColor || '#ffffff');
+  var fudaHex = getCurrentFudaMainColor();
+  if($('eFudaCol') && document.activeElement !== $('eFudaCol')) $('eFudaCol').value = eLow(fudaHex);
+  if($('eDotColChips')){
+    var dotLow = eLow(S.dotColor || '#ffffff'), kakuLow = eLow(S.kakuColor || '#ffffff');
+    $('eDotColChips').querySelectorAll('button').forEach(function(b){
+      var v = eLow(b.dataset.edot);
+      var isPressed = (v === 'same') ? (dotLow === kakuLow) : (v === dotLow);
+      b.setAttribute('aria-pressed', String(isPressed));
+    });
+  }
+  if($('eFudaColChips')){
+    var isTealStd = !!(S.showLogo && !S.logoMono && (S.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || S.logoName === 'fuda_logo_teal'));
+    var isWhiteStd = !!(S.showLogo && !S.logoMono && (S.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || S.logoName === 'fuda_logo_white'));
+    $('eFudaColChips').querySelectorAll('button').forEach(function(b){
+      var v = eLow(b.dataset.efcol);
+      var isPressed = false;
+      if(v === 'teal') isPressed = isTealStd || (fudaHex === '#00a3af');
+      else if(v === 'white') isPressed = isWhiteStd || (fudaHex === '#ffffff');
+      else isPressed = (v === fudaHex);
+      b.setAttribute('aria-pressed', String(isPressed));
+    });
+  }
+  if($('eLogoPadStrokeCol') && document.activeElement !== $('eLogoPadStrokeCol')){
+    $('eLogoPadStrokeCol').value = eLow(S.logoPadStrokeColor || '#ffffff');
+  }
   var kaku = mode === 'haneda' || mode === 'both', arare = mode === 'arare' || mode === 'both';
   var hasPad = !!(S.showLogo && S.logoPadMode && S.logoPadMode !== 'none');
   var hasArarePad = !!(arare && S.ararePadMode && S.ararePadMode !== 'none');
@@ -11808,8 +12075,9 @@ function easyRenderImpl(){
     var mmY = Math.round(((S.logoY || 22) / 100) * S.H);
     var padTxt = (S.logoPadMode && S.logoPadMode !== 'none') ? ('／背景不透過枠:余白' + (S.logoPadMarginMm ?? 8) + 'mm') : '／背景透過';
     var baseTxt = (S.mode === 'arare') ? '大小あられ' : (S.kakuMotif === 'seinenkai' ? '仲羽田青年会(6文字)' : (S.kakuMotif === 'haneda_one_seinen' ? '仲羽田＋1個青年会' : '仲羽田のみ(3文字)'));
+    var sheetCnt = (S.daboCutMode === 'adult8_crest') ? 8 : (S.daboCutMode === 'adult7' ? 7 : (S.daboCutMode === '5piece' ? 5 : 6));
     $('eDaboReverseText').innerHTML =
-      'ベース柄：<b>' + baseTxt + '</b>' + padTxt + '<br>' +
+      'ベース柄：<b>' + baseTxt + '</b>' + padTxt + '（<b>全' + sheetCnt + '枚すべて同じ構図の手ぬぐい</b>）<br>' +
       '手ぬぐい座標：左から <b>' + mmX + 'mm (' + (S.logoX || 50) + '%)</b> ／ 上から <b>' + mmY + 'mm (' + (S.logoY || 22) + '%)</b>';
   }
   // プリント方法
@@ -11868,7 +12136,41 @@ function easyRenderImpl(){
     box.appendChild(b);
   });
   $('eBg').addEventListener('input', function(e){ S.bgColor = e.target.value; update(false); });
-  $('eFg').addEventListener('input', function(e){ S.kakuColor = e.target.value; S.dotColor = e.target.value; update(false); });
+  $('eFg').addEventListener('input', function(e){ S.kakuColor = e.target.value; if(S.mode === 'arare') S.dotColor = e.target.value; update(false); });
+  if($('eDotCol')){
+    $('eDotCol').addEventListener('input', function(e){
+      S.dotColor = e.target.value;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
+      update(false);
+    });
+  }
+  if($('eDotColChips')){
+    $('eDotColChips').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      var v = b.dataset.edot || '#ffffff';
+      S.dotColor = (v === 'same') ? (S.kakuColor || '#ffffff') : v;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
+      update(false);
+    }); });
+  }
+  if($('eFudaCol')){
+    $('eFudaCol').addEventListener('input', function(e){
+      applyFudaMainColor(e.target.value);
+    });
+  }
+  if($('eFudaColChips')){
+    $('eFudaColChips').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      applyFudaMainColor(b.dataset.efcol || 'teal');
+    }); });
+  }
+  if($('eLogoPadStrokeCol')){
+    $('eLogoPadStrokeCol').addEventListener('input', function(e){
+      S.logoPadStrokeColor = e.target.value;
+      if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0;
+      if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+      S.showLogo = true;
+      update(false);
+    });
+  }
   $('eStyles').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
     var keep = S.mode; var c = document.querySelector('#quickStyles .chip[data-style="' + b.dataset.style + '"]');
     if(c) c.click();
