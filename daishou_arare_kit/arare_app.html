@@ -252,11 +252,59 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>3</b><span>色</span><button type="button" class="e-more" data-emore="step3">詳しく</button></div>
+        <div class="e-h"><b>3</b><span>色（地の色・仲羽田・あられ・札の色）</span><button type="button" class="e-more" data-emore="step3">詳しく</button></div>
         <div class="e-colors" id="eColors"></div>
         <div class="e-pick">
           <label><input type="color" id="eBg">地の色</label>
-          <label><input type="color" id="eFg">柄の色</label>
+          <label><input type="color" id="eFg">仲羽田の色</label>
+          <label><input type="color" id="eDotCol">あられの色</label>
+          <label><input type="color" id="eFudaCol">札の色</label>
+        </div>
+        <div class="e-subbox" id="eArareColorBox">
+          <div class="e-sublbl"><span>🟢 あられの色（粒の色・うしろ抜き色・周り枠の色）</span></div>
+          <div class="e-chips small" id="eDotColChips">
+            <button type="button" data-edot="#ffffff">白</button>
+            <button type="button" data-edot="#f3ecd8">生成り</button>
+            <button type="button" data-edot="#877028">羽田金</button>
+            <button type="button" data-edot="#f8b500">山吹</button>
+            <button type="button" data-edot="#00a3af">浅葱</button>
+            <button type="button" data-edot="#b7282e">茜</button>
+            <button type="button" data-edot="same">仲羽田と同じ</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:3px;border-top:1px dashed #cbd5e1">
+            <span style="font-size:11px;color:var(--muted)">うしろ色:</span>
+            <div class="e-chips small" id="eArarePadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
+              <button type="button" data-eapc="bg">地の色</button>
+              <button type="button" data-eapc="white">白</button>
+              <button type="button" data-eapc="black">黒</button>
+            </div>
+            <input type="color" id="eArarePadCustomCol" value="#046e7e" title="あられうしろ抜き色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+            <span style="font-size:11px;color:var(--muted)">周り枠線色:</span>
+            <input type="color" id="eArarePadStrokeCol" value="#877028" title="あられ周り枠線・外周枠の色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+          </div>
+        </div>
+        <div class="e-subbox" id="eFudaColorBox">
+          <div class="e-sublbl"><span>🏷️ 札の色（札ロゴ本体・うしろ色・周り枠の色）</span></div>
+          <div class="e-chips small" id="eFudaColChips">
+            <button type="button" data-efcol="teal" style="border-color:#00a3af;color:#007b86">浅葱(標準)</button>
+            <button type="button" data-efcol="white">白抜き</button>
+            <button type="button" data-efcol="#046e7e">羽田納戸</button>
+            <button type="button" data-efcol="#877028">羽田金</button>
+            <button type="button" data-efcol="#b7282e">茜</button>
+            <button type="button" data-efcol="#183574">藍</button>
+            <button type="button" data-efcol="#262626">墨</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:3px;border-top:1px dashed #cbd5e1">
+            <span style="font-size:11px;color:var(--muted)">うしろ色:</span>
+            <div class="e-chips small" id="eLogoPadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
+              <button type="button" data-epc="bg">地の色</button>
+              <button type="button" data-epc="white">白</button>
+              <button type="button" data-epc="black">黒</button>
+            </div>
+            <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="札のうしろ色を自由に選ぶ" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+            <span style="font-size:11px;color:var(--muted)">周り枠線色:</span>
+            <input type="color" id="eLogoPadStrokeCol" value="#ffffff" title="札の周り枠線の色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+          </div>
         </div>
         <p class="e-note" id="eColorNote" hidden>札入りタオル図案を入れているときは、図案の色は「札入りタオル図案から選ぶ」を開いて変えます。</p>
       </div>
@@ -284,17 +332,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <div id="eArarePadControls" style="display:flex;flex-direction:column;gap:5px" hidden>
             <div class="e-range" data-for="ararePadMarginMm"><span>あられ周り抜き幅</span><input type="range" min="0" max="10" step="0.2"><b></b></div>
             <div class="e-range" data-for="ararePadStrokeMm"><span>あられ周り枠線太さ</span><input type="range" min="0" max="6" step="0.2"><b></b></div>
-            <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-              <span style="font-size:11px;color:var(--muted)">うしろ色:</span>
-              <div class="e-chips small" id="eArarePadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
-                <button type="button" data-eapc="bg">地の色</button>
-                <button type="button" data-eapc="white">白</button>
-                <button type="button" data-eapc="black">黒</button>
-              </div>
-              <input type="color" id="eArarePadCustomCol" value="#046e7e" title="あられうしろ抜き色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
-              <span style="font-size:11px;color:var(--muted)">枠線色:</span>
-              <input type="color" id="eArarePadStrokeCol" value="#877028" title="あられ周り枠線の色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
-            </div>
+            <div style="font-size:11px;color:var(--muted)">💡 あられの粒色・うしろ色・周り枠線の色は上の「<b>3 色</b>」で変えられます。</div>
           </div>
           <div style="font-size:11px;font-weight:700;color:var(--muted);margin-top:3px">② あられ全体の外周周り枠（生地の周囲を囲む枠）:</div>
           <div class="e-chips" id="eArareOuterMode">
@@ -332,15 +370,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <div class="e-range" data-for="logoPadMarginMm"><span>周りの枠の広さ</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
             <div class="e-range" data-for="logoPadCornerMm" id="eLogoPadCornerRow"><span>四角枠の角丸</span><input type="range" min="0" max="30" step="1"><b></b></div>
             <div class="e-range" data-for="logoPadStrokeMm"><span>周りの枠線の太さ</span><input type="range" min="0" max="8" step="0.5"><b></b></div>
-            <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-              <span style="font-size:11.5px;color:var(--muted)">うしろ・枠の色:</span>
-              <div class="e-chips small" id="eLogoPadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
-                <button type="button" data-epc="bg">地の色</button>
-                <button type="button" data-epc="white">白</button>
-                <button type="button" data-epc="black">黒</button>
-              </div>
-              <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="枠の色を自由に選ぶ" style="width:28px;height:26px;border:1px solid var(--line);border-radius:6px;padding:0;background:none;cursor:pointer">
-            </div>
+            <div style="font-size:11px;color:var(--muted)">💡 札の色・うしろ色・周り枠線の色は上の「<b>3 色</b>」で変えられます。</div>
           </div>
         </div>
         <p class="e-note" id="eLogoNote">ロゴは手ぬぐいの上でもダボシャツの上でもドラッグして動かせます。</p>
@@ -671,10 +701,10 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
       </div>
     </section>
 
-    <!-- 3. 色（地色・仲羽田の文字色・あられ色・全箇所対応 イラレ式カラーピッカー＆色マップ） -->
+    <!-- 3. 色（地色・仲羽田の文字色・あられ色・札の色・全箇所対応 イラレ式カラーピッカー＆色マップ） -->
     <section aria-labelledby="h-color" id="sec-color-main" data-cat="pattern">
       <h2 id="h-color">
-        <span>🎨 色（背景色・仲羽田の文字色・札・全箇所）</span>
+        <span>🎨 色（地の色・仲羽田・あられの色・札の色）</span>
         <button type="button" class="mini-btn" id="toggleAiPickerPanelBtn" style="background:#1e293b;color:#38bdf8;border-color:#0284c7;font-weight:700">🎨 イラレ色ピッカーを開く</button>
       </h2>
 
@@ -688,16 +718,21 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div class="chips" id="aiColorTargetTabs" style="gap:4px">
           <button type="button" class="mini-btn ai-target-chip" data-ckey="bgColor" style="background:#0284c7;color:#fff;border-color:#7dd3fc;font-weight:700"><span class="ai-dot" data-dot="bgColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>① 地色(背景)</button>
           <button type="button" class="mini-btn ai-target-chip" data-ckey="kakuColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569;font-weight:700"><span class="ai-dot" data-dot="kakuColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>② 仲羽田の文字</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="dotColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="dotColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>③ あられ粒</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>④ 札の文字色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaFrameColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaFrameColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑤ 札の枠線色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑥ 札の背景色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑦ 札の紐塗り</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordStroke" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordStroke" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑧ 札の紐フチ</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaAccentColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaAccentColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑨ 札の丸紋・差札</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestFg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestFg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑩ 丸紋の色</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑪ 丸紋の背景</button>
-          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑫ ロゴ単色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="dotColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="dotColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>③ あられ粒の色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="ararePadColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="ararePadColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>あられうしろ色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="ararePadStrokeColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="ararePadStrokeColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>あられ枠線色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="arareOuterColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="arareOuterColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>あられ外周枠色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>④ 札ロゴ本体の色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoPadColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoPadColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑤ 札のうしろ色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="logoPadStrokeColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="logoPadStrokeColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑥ 札の周り枠線色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑦ 木札の文字色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaFrameColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaFrameColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑧ 木札の枠線色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="customTextBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="customTextBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑨ 木札の背景色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑩ 木札の紐塗り</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaCordStroke" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaCordStroke" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑪ 木札の紐フチ</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="fudaAccentColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="fudaAccentColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑫ 札の丸紋・差札</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestFg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestFg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑬ 丸紋の色</button>
+          <button type="button" class="mini-btn ai-target-chip" data-ckey="crestBg" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="crestBg" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>⑭ 丸紋の背景</button>
           <button type="button" class="mini-btn ai-target-chip" data-ckey="seinenSpotColor" style="background:#0f172a;color:#e2e8f0;border-color:#475569"><span class="ai-dot" data-dot="seinenSpotColor" style="display:inline-block;width:10px;height:10px;border-radius:2px;border:1px solid #fff;margin-right:3px;vertical-align:middle"></span>🌟 1個青年会色</button>
         </div>
 
@@ -761,12 +796,73 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <input type="text" id="kakuHex" class="hex" maxlength="7" spellcheck="false" aria-label="仲羽田の文字色カラーコード"></div>
         <div class="sw" id="kakuSw"></div>
       </div>
-      <div class="cgroup" id="dotColorGroup" hidden>
-        <div class="chead"><span class="clabel">あられ（粒）の色</span>
+      <div class="cgroup" id="dotColorGroup" style="border:1.5px solid #86efac;background:#f0fdf4">
+        <div class="chead"><span class="clabel" style="color:#166534;font-weight:800">🟢 あられの色（粒・うしろ・周り枠）</span>
           <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="dotColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           <input type="color" id="dotColor" value="#ffffff" aria-label="粒の色を選ぶ">
           <input type="text" id="dotHex" class="hex" maxlength="7" spellcheck="false" aria-label="粒のカラーコード"></div>
-        <div class="sw" id="dotSw"></div>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <div class="sw" id="dotSw" style="flex:1"></div>
+          <button type="button" class="mini-btn" id="dotSyncKakuBtn" title="仲羽田の文字色と同じ色にします">仲羽田と同色</button>
+        </div>
+        <div style="display:grid;gap:5px;margin-top:4px;padding-top:6px;border-top:1px dashed #86efac;font-size:11.5px">
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+            <span style="font-weight:700;color:#166534">あられうしろ抜き色:</span>
+            <input type="color" id="sec3ArarePadColor" value="#046e7e" aria-label="あられうしろ抜き色">
+            <button type="button" class="mini-btn" id="sec3ArarePadBgBtn">地の色と同色</button>
+            <button type="button" class="mini-btn" id="sec3ArarePadWhiteBtn">白</button>
+            <button type="button" class="mini-btn" id="sec3ArarePadBlackBtn">黒</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="ararePadColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+            <span style="font-weight:700;color:#166534">1粒周り枠線の色:</span>
+            <input type="color" id="sec3ArarePadStrokeColor" value="#877028" aria-label="あられ1粒周り枠線の色">
+            <button type="button" class="mini-btn" id="sec3ArareStrokeGoldBtn">羽田金</button>
+            <button type="button" class="mini-btn" id="sec3ArareStrokeWhiteBtn">白</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="ararePadStrokeColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+            <span style="font-weight:700;color:#166534;margin-left:4px">外周枠の色:</span>
+            <input type="color" id="sec3ArareOuterColor" value="#ffffff" aria-label="あられ外周枠の色">
+            <button type="button" class="mini-btn" id="sec3ArareOuterDotBtn">粒と同色</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="arareOuterColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          </div>
+        </div>
+      </div>
+      <div class="cgroup" id="fudaColorGroup" style="border:1.5px solid #7dd3fc;background:#f0f9ff">
+        <div class="chead"><span class="clabel" style="color:#0c4a6e;font-weight:800">🏷️ 札の色（本体・うしろ・周り枠）</span>
+          <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          <input type="color" id="sec3FudaLogoColor" value="#00a3af" aria-label="札ロゴ本体の色を選ぶ">
+          <input type="text" id="sec3FudaLogoHex" class="hex" maxlength="7" spellcheck="false" aria-label="札ロゴのカラーコード"></div>
+        <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+          <div class="sw" id="fudaLogoSw" style="flex:1"></div>
+          <button type="button" class="mini-btn" id="sec3FudaTealBtn" style="background:#e0f2fe;border-color:#00a3af;color:#007b86;font-weight:700">浅葱(標準)</button>
+          <button type="button" class="mini-btn" id="sec3FudaWhiteBtn">白抜き</button>
+        </div>
+        <div style="display:grid;gap:5px;margin-top:4px;padding-top:6px;border-top:1px dashed #7dd3fc;font-size:11.5px">
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+            <span style="font-weight:700;color:#0c4a6e">札のうしろ色(透過なし):</span>
+            <input type="color" id="sec3LogoPadColor" value="#046e7e" aria-label="札のうしろ色">
+            <button type="button" class="mini-btn" id="sec3LogoPadBgBtn">地の色と同色</button>
+            <button type="button" class="mini-btn" id="sec3LogoPadWhiteBtn">白</button>
+            <button type="button" class="mini-btn" id="sec3LogoPadBlackBtn">黒</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoPadColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
+            <span style="font-weight:700;color:#0c4a6e">札の周り枠線の色:</span>
+            <input type="color" id="sec3LogoPadStrokeColor" value="#ffffff" aria-label="札の周り枠線の色">
+            <button type="button" class="mini-btn" id="sec3LogoStrokeGoldBtn">羽田金</button>
+            <button type="button" class="mini-btn" id="sec3LogoStrokeWhiteBtn">白</button>
+            <button type="button" class="mini-btn" id="sec3LogoStrokeBlackBtn">黒</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoPadStrokeColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding-top:3px;border-top:1px dotted #bae6fd">
+            <span style="font-weight:700;color:#0c4a6e">名入れ木札の色:</span>
+            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextFgColor" value="#ffffff">文字</label>
+            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextFrameColor" value="#ffffff">枠線</label>
+            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextBgColor" value="#046e7e">札背景</label>
+            <label style="display:inline-flex;align-items:center;gap:3px;cursor:pointer"><input type="color" id="sec3TextCordColor" value="#046e7e">組紐</label>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="customTextColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          </div>
+        </div>
       </div>
       <div class="crow2">
         <button class="chip" id="swap">地色と文字（柄）を入れ替え</button>
@@ -3491,7 +3587,8 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
   const effStrokeColor = slot.logoPadStrokeColor || '#ffffff';
   const alpha = Math.max(0.05, Math.min(1, (slot.logoOpacity ?? 100) / 100));
   const isBuiltinFuda = (slot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || slot.logoName === 'fuda_logo_teal' || slot.logoName === 'fuda_logo_white');
-  const isTealFuda = (slot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || slot.logoName === 'fuda_logo_teal');
+  const effFudaBodyHex = (slot.logoMono ? (slot.logoColor || '#ffffff') : ((slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || slot.logoName === 'fuda_logo_white') ? '#ffffff' : '#00a3af')).toLowerCase();
+  const isTealFuda = isBuiltinFuda && effFudaBodyHex !== '#ffffff';
 
   const placements = generateScatterPlacementsMm({
     W, H,
@@ -4789,7 +4886,8 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
         const strokeMm = Math.max(0, effSlot.logoPadStrokeMm ?? 0);
         const effStrokeColor = effSlot.logoPadStrokeColor || '#ffffff';
         const isBuiltinFuda = (effSlot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || effSlot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || effSlot.logoName === 'fuda_logo_teal' || effSlot.logoName === 'fuda_logo_white');
-        const isTealFuda = (effSlot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || effSlot.logoName === 'fuda_logo_teal');
+        const effFudaBodyHex = (effSlot.logoMono ? (effSlot.logoColor || '#ffffff') : ((effSlot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || effSlot.logoName === 'fuda_logo_white') ? '#ffffff' : '#00a3af')).toLowerCase();
+        const isTealFuda = isBuiltinFuda && effFudaBodyHex !== '#ffffff';
 
         const pushRoundedRectPoly = (pw, ph, rCorner, fillCol, strkCol, strkW) => {
           const r = Math.min(rCorner, pw * 0.48, ph * 0.48);
@@ -9549,7 +9647,8 @@ function syncUI(){
   $('sec-haneda').hidden = (S.mode === 'arare' || S.mode === 'scatter');
   $('kakuColorGroup').hidden = (S.mode === 'arare' || S.mode === 'scatter');
   $('sec-arare').hidden = (S.mode === 'haneda' || S.mode === 'scatter');
-  $('dotColorGroup').hidden = (S.mode === 'haneda' || S.mode === 'scatter');
+  if($('dotColorGroup')) $('dotColorGroup').hidden = (S.mode === 'scatter');
+  if($('fudaColorGroup')) $('fudaColorGroup').hidden = false;
   if($('layerOrderBox')) $('layerOrderBox').hidden = (S.mode === 'scatter');
 
   // 🧣 タオルUI同期
@@ -9588,6 +9687,21 @@ function syncUI(){
   if($('ararePadParamsBox')) $('ararePadParamsBox').hidden = (!S.ararePadMode || S.ararePadMode === 'none');
   if($('ararePadColor')) $('ararePadColor').value = resolveArarePadColor(S);
   if($('ararePadStrokeColor')) $('ararePadStrokeColor').value = S.ararePadStrokeColor || '#877028';
+  if($('sec3ArarePadColor')) $('sec3ArarePadColor').value = resolveArarePadColor(S);
+  if($('sec3ArarePadStrokeColor')) $('sec3ArarePadStrokeColor').value = S.ararePadStrokeColor || '#877028';
+  if($('sec3ArareOuterColor')) $('sec3ArareOuterColor').value = S.arareOuterColor || S.dotColor || '#ffffff';
+  const curFudaMainHex = (typeof getCurrentFudaMainColor === 'function') ? getCurrentFudaMainColor() : (S.logoColor || '#00a3af');
+  if($('sec3FudaLogoColor')) $('sec3FudaLogoColor').value = curFudaMainHex;
+  if($('sec3FudaLogoHex') && document.activeElement !== $('sec3FudaLogoHex')){
+    $('sec3FudaLogoHex').value = curFudaMainHex.toUpperCase();
+    $('sec3FudaLogoHex').setAttribute('aria-invalid', 'false');
+  }
+  if($('sec3LogoPadColor')) $('sec3LogoPadColor').value = resolveLogoPadColor(S);
+  if($('sec3LogoPadStrokeColor')) $('sec3LogoPadStrokeColor').value = S.logoPadStrokeColor || '#ffffff';
+  if($('sec3TextFgColor')) $('sec3TextFgColor').value = S.customTextColor || '#ffffff';
+  if($('sec3TextFrameColor')) $('sec3TextFrameColor').value = S.fudaFrameColor || S.customTextColor || '#ffffff';
+  if($('sec3TextBgColor')) $('sec3TextBgColor').value = S.customTextBg || '#046e7e';
+  if($('sec3TextCordColor')) $('sec3TextCordColor').value = S.fudaCordColor || S.customTextBg || '#046e7e';
   for(const b of document.querySelectorAll('#arareOuterQuickChips button[data-aomode]')){
     b.setAttribute('aria-pressed', (b.dataset.aomode === (S.arareOuterMode || 'none')) + '');
   }
@@ -11001,25 +11115,136 @@ const FG_PAL=[
   ['金茶','#c89932'],['水色','#bce2e8'],['桜','#f6bfbc'],['羽田納戸','#046e7e'],
   ['藍','#183574'],['紺','#223a70'],['茜','#b7282e'],['墨','#262626']
 ];
+const FUDA_PAL=[
+  ['浅葱（標準札色）','#00a3af'],['白抜き','#ffffff'],['羽田納戸','#046e7e'],['羽田金','#877028'],
+  ['山吹','#f8b500'],['金茶','#c89932'],['茜','#b7282e'],['臙脂','#9e3d3f'],
+  ['藍','#183574'],['紺','#223a70'],['生成り','#f3ecd8'],['墨','#262626']
+];
+function getCurrentFudaMainColor(){
+  if(S.showLogo){
+    if(S.logoMono && S.logoColor) return S.logoColor.toLowerCase();
+    if(S.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || S.logoName === 'fuda_logo_white') return '#ffffff';
+    if(S.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || S.logoName === 'fuda_logo_teal') return '#00a3af';
+    return (S.logoColor || '#00a3af').toLowerCase();
+  }
+  if(S.showText) return (S.customTextBg || '#046e7e').toLowerCase();
+  return (S.logoColor || '#00a3af').toLowerCase();
+}
+function applyFudaMainColor(val){
+  const v = String(val || '').trim().toLowerCase();
+  if(!S.showLogo && !S.showText){
+    S.logoName = 'fuda_logo_teal';
+    S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+    S.showLogo = true;
+    S.logoRemoveBg = false;
+    S.logoBgMode = 'none';
+  }
+  if(v === 'teal' || v === '#00a3af'){
+    if(!S.logoDataUrl || isBuiltinFudaSlot(S)){
+      S.logoName = 'fuda_logo_teal';
+      S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+      S.logoRemoveBg = false;
+      S.logoBgMode = 'none';
+      S.logoInvert = false;
+      S.logoMono = false;
+    }else{
+      S.logoMono = true;
+    }
+    S.logoColor = '#00a3af';
+    S.showLogo = true;
+    ensureLogoLoaded(S.logoDataUrl);
+  }else if(v === 'white' || v === '#ffffff'){
+    if(!S.logoDataUrl || isBuiltinFudaSlot(S)){
+      S.logoName = 'fuda_logo_white';
+      S.logoDataUrl = '__BUILTIN_FUDA_WHITE__';
+      S.logoRemoveBg = false;
+      S.logoBgMode = 'none';
+      S.logoInvert = false;
+      S.logoMono = false;
+    }else{
+      S.logoMono = true;
+    }
+    S.logoColor = '#ffffff';
+    S.showLogo = true;
+    ensureLogoLoaded(S.logoDataUrl);
+  }else{
+    const h = normHex(v) || '#00a3af';
+    if(!S.logoDataUrl){
+      S.logoName = 'fuda_logo_teal';
+      S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+      S.logoRemoveBg = false;
+      S.logoBgMode = 'none';
+      S.logoInvert = false;
+    }
+    S.logoColor = h;
+    S.logoMono = true;
+    S.showLogo = true;
+    ensureLogoLoaded(S.logoDataUrl);
+    if(S.showText) S.customTextBg = h;
+  }
+  PROC_LOGO_KEY = '';
+  syncActiveSlotFromS();
+  update(false);
+}
 function buildSw(boxId,pal,key){
   const b=$(boxId); if(!b) return;
   for(const [n,h] of pal){
     const btn=document.createElement('button'); btn.type='button'; btn.style.background=h; btn.title=n+' '+h.toUpperCase();
     btn.setAttribute('aria-label',n); btn.dataset.hex=h.toLowerCase();
-    btn.addEventListener('click',()=>{S[key]=h; if(key==='kakuColor'&&S.mode==='haneda') S.dotColor=h; update(false);});
+    btn.addEventListener('click',()=>{
+      if(key==='fudaMain'){ applyFudaMainColor(h); return; }
+      S[key]=h;
+      if(key==='dotColor' && S.mode==='haneda'){ S.mode='both'; update(true); return; }
+      update(false);
+    });
     b.appendChild(btn);
   }
 }
 buildSw('bgSw',BG_PAL,'bgColor');
 buildSw('kakuSw',FG_PAL,'kakuColor');
 buildSw('dotSw',FG_PAL,'dotColor');
+buildSw('fudaLogoSw',FUDA_PAL,'fudaMain');
 
 function normHex(v){v=(v||'').trim();if(v[0]!=='#')v='#'+v;if(/^#[0-9a-f]{3}$/i.test(v))v='#'+v[1]+v[1]+v[2]+v[2]+v[3]+v[3];return /^#[0-9a-f]{6}$/i.test(v)?v.toLowerCase():null;}
 for(const [pick,hex,key] of [['bgColor','bgHex','bgColor'],['kakuColor','kakuHex','kakuColor'],['dotColor','dotHex','dotColor'],['crestFg','crestFgHex','crestFg'],['crestBg','crestBgHex','crestBg']]){
-  $(pick).addEventListener('input',e=>{S[key]=e.target.value;update(false);});
-  $(hex).addEventListener('input',e=>{const h=normHex(e.target.value);e.target.setAttribute('aria-invalid',h?'false':'true');if(h){S[key]=h;persist();$(pick).value=h;markSw();draw();}});
+  $(pick).addEventListener('input',e=>{
+    S[key]=e.target.value;
+    if(key==='dotColor' && S.mode==='haneda'){ S.mode='both'; update(true); return; }
+    update(false);
+  });
+  $(hex).addEventListener('input',e=>{const h=normHex(e.target.value);e.target.setAttribute('aria-invalid',h?'false':'true');if(h){S[key]=h;if(key==='dotColor'&&S.mode==='haneda'){S.mode='both';update(true);return;}persist();$(pick).value=h;markSw();draw();}});
   $(hex).addEventListener('change',()=>syncUI());
 }
+// Section 3 (🎨 色) 統合コントロール配線（あられ色・札の色）
+if($('dotSyncKakuBtn')) $('dotSyncKakuBtn').addEventListener('click',()=>{ S.dotColor = S.kakuColor || '#ffffff'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
+if($('sec3ArarePadColor')) $('sec3ArarePadColor').addEventListener('input',e=>{ S.ararePadColor = e.target.value; S.ararePadColorMode = 'custom'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
+if($('sec3ArarePadBgBtn')) $('sec3ArarePadBgBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'bg'; S.ararePadColor = S.bgColor; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
+if($('sec3ArarePadWhiteBtn')) $('sec3ArarePadWhiteBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'white'; S.ararePadColor = '#ffffff'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
+if($('sec3ArarePadBlackBtn')) $('sec3ArarePadBlackBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'black'; S.ararePadColor = '#111827'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
+if($('sec3ArarePadStrokeColor')) $('sec3ArarePadStrokeColor').addEventListener('input',e=>{ S.ararePadStrokeColor = e.target.value; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
+if($('sec3ArareStrokeGoldBtn')) $('sec3ArareStrokeGoldBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#877028'; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; update(false); });
+if($('sec3ArareStrokeWhiteBtn')) $('sec3ArareStrokeWhiteBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#ffffff'; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; update(false); });
+if($('sec3ArareOuterColor')) $('sec3ArareOuterColor').addEventListener('input',e=>{ S.arareOuterColor = e.target.value; if(!S.arareOuterMode || S.arareOuterMode==='none') S.arareOuterMode='single'; update(false); });
+if($('sec3ArareOuterDotBtn')) $('sec3ArareOuterDotBtn').addEventListener('click',()=>{ S.arareOuterColor = S.dotColor || '#ffffff'; if(!S.arareOuterMode || S.arareOuterMode==='none') S.arareOuterMode='single'; update(false); });
+if($('sec3FudaTealBtn')) $('sec3FudaTealBtn').addEventListener('click',()=>applyFudaMainColor('teal'));
+if($('sec3FudaWhiteBtn')) $('sec3FudaWhiteBtn').addEventListener('click',()=>applyFudaMainColor('white'));
+if($('sec3FudaLogoColor')) $('sec3FudaLogoColor').addEventListener('input',e=>applyFudaMainColor(e.target.value));
+if($('sec3FudaLogoHex')){
+  $('sec3FudaLogoHex').addEventListener('input',e=>{ const h=normHex(e.target.value); e.target.setAttribute('aria-invalid',h?'false':'true'); if(h) applyFudaMainColor(h); });
+  $('sec3FudaLogoHex').addEventListener('change',()=>syncUI());
+}
+if($('sec3LogoPadColor')) $('sec3LogoPadColor').addEventListener('input',e=>{ S.logoPadColor = e.target.value; S.logoPadColorMode = 'custom'; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoPadBgBtn')) $('sec3LogoPadBgBtn').addEventListener('click',()=>{ S.logoPadColorMode = 'bg'; S.logoPadColor = S.bgColor; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoPadWhiteBtn')) $('sec3LogoPadWhiteBtn').addEventListener('click',()=>{ S.logoPadColorMode = 'white'; S.logoPadColor = '#ffffff'; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoPadBlackBtn')) $('sec3LogoPadBlackBtn').addEventListener('click',()=>{ S.logoPadColorMode = 'black'; S.logoPadColor = '#111827'; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoPadStrokeColor')) $('sec3LogoPadStrokeColor').addEventListener('input',e=>{ S.logoPadStrokeColor = e.target.value; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoStrokeGoldBtn')) $('sec3LogoStrokeGoldBtn').addEventListener('click',()=>{ S.logoPadStrokeColor = '#877028'; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoStrokeWhiteBtn')) $('sec3LogoStrokeWhiteBtn').addEventListener('click',()=>{ S.logoPadStrokeColor = '#ffffff'; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3LogoStrokeBlackBtn')) $('sec3LogoStrokeBlackBtn').addEventListener('click',()=>{ S.logoPadStrokeColor = '#111827'; if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0; if(!S.logoPadMode || S.logoPadMode==='none') S.logoPadMode='silhouette'; S.showLogo = true; update(false); });
+if($('sec3TextFgColor')) $('sec3TextFgColor').addEventListener('input',e=>{ S.customTextColor = e.target.value; S.showText = true; update(false); });
+if($('sec3TextFrameColor')) $('sec3TextFrameColor').addEventListener('input',e=>{ S.fudaFrameColor = e.target.value; S.fudaFrameTransparent = false; S.showText = true; update(false); });
+if($('sec3TextBgColor')) $('sec3TextBgColor').addEventListener('input',e=>{ S.customTextBg = e.target.value; S.fudaBgTransparent = false; S.showText = true; update(false); });
+if($('sec3TextCordColor')) $('sec3TextCordColor').addEventListener('input',e=>{ S.fudaCordColor = e.target.value; S.fudaCordTransparent = false; S.fudaCordAllTransparent = false; S.showText = true; update(false); });
 $('swap').addEventListener('click',()=>{
   if(S.mode === 'arare'){
     const t=S.bgColor; S.bgColor=S.dotColor; S.dotColor=t;
@@ -11035,18 +11260,22 @@ const AI_COLOR_TARGETS = {
   kakuColor:       { label: '② 仲羽田の文字',     inputId: 'kakuColor' },
   seinenSpotColor: { label: '🌟 青年会1箇所の色', inputId: 'seinenSpotColor' },
   dotColor:        { label: '③ あられ粒の色',     inputId: 'dotColor' },
-  customTextColor: { label: '④ 札の文字色',       inputId: 'customTextColor', autoShow: 'showText' },
-  fudaFrameColor:  { label: '⑤ 札の枠線色',       inputId: 'fudaFrameColor',  autoShow: 'showText' },
-  customTextBg:    { label: '⑥ 札本体の地色',     inputId: 'customTextBg',    autoShow: 'showText' },
-  fudaCordColor:   { label: '⑦ 札の組紐塗り',     inputId: 'fudaCordColor',   autoShow: 'showText' },
-  fudaCordStroke:  { label: '⑧ 札の組紐フチ',     inputId: 'fudaCordStroke',  autoShow: 'showText' },
-  fudaAccentColor: { label: '⑨ 札の丸紋・差札',   inputId: 'fudaAccentColor', autoShow: 'showText' },
+  ararePadColor:   { label: 'あられうしろ抜き色', inputId: 'sec3ArarePadColor' },
+  ararePadStrokeColor: { label: 'あられ1粒枠線色', inputId: 'sec3ArarePadStrokeColor' },
+  arareOuterColor: { label: 'あられ外周枠色',     inputId: 'sec3ArareOuterColor' },
+  logoColor:       { label: '④ 札ロゴ本体の色',   inputId: 'sec3FudaLogoColor', autoShow: 'showLogo', isLogoMono: true },
+  logoPadColor:    { label: '⑤ 札のうしろ色',     inputId: 'sec3LogoPadColor',  autoShow: 'showLogo' },
+  logoPadStrokeColor: { label: '⑥ 札の周り枠線色', inputId: 'sec3LogoPadStrokeColor', autoShow: 'showLogo' },
+  customTextColor: { label: '⑦ 木札の文字色',     inputId: 'customTextColor', autoShow: 'showText' },
+  fudaFrameColor:  { label: '⑧ 木札の枠線色',     inputId: 'fudaFrameColor',  autoShow: 'showText' },
+  customTextBg:    { label: '⑨ 木札の背景色',     inputId: 'customTextBg',    autoShow: 'showText' },
+  fudaCordColor:   { label: '⑩ 木札の組紐塗り',   inputId: 'fudaCordColor',   autoShow: 'showText' },
+  fudaCordStroke:  { label: '⑪ 木札の組紐フチ',   inputId: 'fudaCordStroke',  autoShow: 'showText' },
+  fudaAccentColor: { label: '⑫ 札の丸紋・差札',   inputId: 'fudaAccentColor', autoShow: 'showText' },
   customTextOutlineColor: { label: '札の袋文字フチ', inputId: 'customTextOutlineColor', autoShow: 'showText' },
-  crestFg:         { label: '⑩ 丸紋の文字・枠',   inputId: 'crestFg',         autoShow: 'showCrest' },
-  crestBg:         { label: '⑪ 丸紋の背景',       inputId: 'crestBg',         autoShow: 'showCrest' },
-  logoColor:       { label: '⑫ ロゴ単色染め',     inputId: 'logoColor',       autoShow: 'showLogo', isLogoMono: true },
+  crestFg:         { label: '⑬ 丸紋の文字・枠',   inputId: 'crestFg',         autoShow: 'showCrest' },
+  crestBg:         { label: '⑭ 丸紋の背景',       inputId: 'crestBg',         autoShow: 'showCrest' },
   logoOutlineColor:{ label: 'ロゴ外フチ色',       inputId: 'logoOutlineColor',autoShow: 'showLogo' },
-  logoPadColor:    { label: 'ロゴ座布団色',       inputId: 'logoPadColor',    autoShow: 'showLogo' },
   logoKeyColor:    { label: 'ロゴ透過指定色',     inputId: 'logoKeyColor',    autoShow: 'showLogo' }
 };
 
@@ -11259,10 +11488,37 @@ function syncAiPickerUIFromState(keepHsb){
 function applyHexToActiveAiTarget(hexStr, keepHsb){
   const h = normHex(hexStr);
   if(!h) return;
+  if(activeAiColorKey === 'logoColor'){
+    applyFudaMainColor(h);
+    syncAiPickerUIFromState(keepHsb);
+    return;
+  }
   const meta = AI_COLOR_TARGETS[activeAiColorKey];
   S[activeAiColorKey] = h;
   let needRelayout = false;
-  if(activeAiColorKey === 'kakuColor' && S.mode === 'haneda') S.dotColor = h;
+  if(activeAiColorKey === 'dotColor' && S.mode === 'haneda'){
+    S.mode = 'both';
+    needRelayout = true;
+  }
+  if(activeAiColorKey === 'ararePadColor'){
+    S.ararePadColorMode = 'custom';
+    if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+  }
+  if(activeAiColorKey === 'ararePadStrokeColor'){
+    if(S.ararePadMode === 'none') S.ararePadMode = 'frame';
+    else if(S.ararePadMode === 'pad') S.ararePadMode = 'padFrame';
+  }
+  if(activeAiColorKey === 'arareOuterColor'){
+    if(!S.arareOuterMode || S.arareOuterMode === 'none') S.arareOuterMode = 'single';
+  }
+  if(activeAiColorKey === 'logoPadColor'){
+    S.logoPadColorMode = 'custom';
+    if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+  }
+  if(activeAiColorKey === 'logoPadStrokeColor'){
+    if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0;
+    if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+  }
   if(activeAiColorKey === 'seinenSpotColor'){
     S.kakuMotif = 'haneda_one_seinen';
     if(!S.seinenSpotMode || S.seinenSpotMode === 'same'){
@@ -11302,6 +11558,10 @@ function markSw(){
   for(const b of $('bgSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===S.bgColor.toLowerCase())+'');
   for(const b of $('kakuSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===S.kakuColor.toLowerCase())+'');
   for(const b of $('dotSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===S.dotColor.toLowerCase())+'');
+  if($('fudaLogoSw')){
+    const curFuda = getCurrentFudaMainColor();
+    for(const b of $('fudaLogoSw').children) b.setAttribute('aria-pressed',(b.dataset.hex===curFuda)+'');
+  }
   const c=hexCmyk(S.bgColor).map(v=>Math.round(v*100));
   const fgHex = S.mode==='arare' ? S.dotColor : S.kakuColor;
   const d=hexCmyk(fgHex).map(v=>Math.round(v*100));
@@ -11720,7 +11980,33 @@ function easyRenderImpl(){
   $('eSize').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(+b.dataset.w === S.W && +b.dataset.h === S.H)); });
   $('eColors').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(eLow(b.dataset.bg) === eLow(bg) && eLow(b.dataset.fg) === eLow(fg))); });
   if(document.activeElement !== $('eBg')) $('eBg').value = eLow(bg);
-  if(document.activeElement !== $('eFg')) $('eFg').value = eLow(fg);
+  if(document.activeElement !== $('eFg')) $('eFg').value = eLow(S.kakuColor || '#ffffff');
+  if($('eDotCol') && document.activeElement !== $('eDotCol')) $('eDotCol').value = eLow(S.dotColor || '#ffffff');
+  var fudaHex = getCurrentFudaMainColor();
+  if($('eFudaCol') && document.activeElement !== $('eFudaCol')) $('eFudaCol').value = eLow(fudaHex);
+  if($('eDotColChips')){
+    var dotLow = eLow(S.dotColor || '#ffffff'), kakuLow = eLow(S.kakuColor || '#ffffff');
+    $('eDotColChips').querySelectorAll('button').forEach(function(b){
+      var v = eLow(b.dataset.edot);
+      var isPressed = (v === 'same') ? (dotLow === kakuLow) : (v === dotLow);
+      b.setAttribute('aria-pressed', String(isPressed));
+    });
+  }
+  if($('eFudaColChips')){
+    var isTealStd = !!(S.showLogo && !S.logoMono && (S.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || S.logoName === 'fuda_logo_teal'));
+    var isWhiteStd = !!(S.showLogo && !S.logoMono && (S.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || S.logoName === 'fuda_logo_white'));
+    $('eFudaColChips').querySelectorAll('button').forEach(function(b){
+      var v = eLow(b.dataset.efcol);
+      var isPressed = false;
+      if(v === 'teal') isPressed = isTealStd || (fudaHex === '#00a3af');
+      else if(v === 'white') isPressed = isWhiteStd || (fudaHex === '#ffffff');
+      else isPressed = (v === fudaHex);
+      b.setAttribute('aria-pressed', String(isPressed));
+    });
+  }
+  if($('eLogoPadStrokeCol') && document.activeElement !== $('eLogoPadStrokeCol')){
+    $('eLogoPadStrokeCol').value = eLow(S.logoPadStrokeColor || '#ffffff');
+  }
   var kaku = mode === 'haneda' || mode === 'both', arare = mode === 'arare' || mode === 'both';
   var hasPad = !!(S.showLogo && S.logoPadMode && S.logoPadMode !== 'none');
   var hasArarePad = !!(arare && S.ararePadMode && S.ararePadMode !== 'none');
@@ -11876,7 +12162,41 @@ function easyRenderImpl(){
     box.appendChild(b);
   });
   $('eBg').addEventListener('input', function(e){ S.bgColor = e.target.value; update(false); });
-  $('eFg').addEventListener('input', function(e){ S.kakuColor = e.target.value; S.dotColor = e.target.value; update(false); });
+  $('eFg').addEventListener('input', function(e){ S.kakuColor = e.target.value; if(S.mode === 'arare') S.dotColor = e.target.value; update(false); });
+  if($('eDotCol')){
+    $('eDotCol').addEventListener('input', function(e){
+      S.dotColor = e.target.value;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
+      update(false);
+    });
+  }
+  if($('eDotColChips')){
+    $('eDotColChips').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      var v = b.dataset.edot || '#ffffff';
+      S.dotColor = (v === 'same') ? (S.kakuColor || '#ffffff') : v;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
+      update(false);
+    }); });
+  }
+  if($('eFudaCol')){
+    $('eFudaCol').addEventListener('input', function(e){
+      applyFudaMainColor(e.target.value);
+    });
+  }
+  if($('eFudaColChips')){
+    $('eFudaColChips').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      applyFudaMainColor(b.dataset.efcol || 'teal');
+    }); });
+  }
+  if($('eLogoPadStrokeCol')){
+    $('eLogoPadStrokeCol').addEventListener('input', function(e){
+      S.logoPadStrokeColor = e.target.value;
+      if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0;
+      if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+      S.showLogo = true;
+      update(false);
+    });
+  }
   $('eStyles').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
     var keep = S.mode; var c = document.querySelector('#quickStyles .chip[data-style="' + b.dataset.style + '"]');
     if(c) c.click();
