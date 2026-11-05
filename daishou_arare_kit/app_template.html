@@ -93,13 +93,13 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 .save-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
 .save-input{width:100%;box-sizing:border-box;padding:6px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-size:12.5px}
 .preset-list{display:grid;gap:6px;max-height:220px;overflow-y:auto;padding-right:2px}
-.preset-item{display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:8px;padding:6px 8px;background:var(--bg);border:1px solid var(--line);border-radius:7px;font-size:12px}
+.preset-item{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:center;gap:4px 8px;padding:7px 9px;background:var(--bg);border:1px solid var(--line);border-radius:7px;font-size:12px}
 .preset-item.active{border-color:var(--ai);background:var(--ai-soft)}
-.preset-swatch{width:36px;height:36px;border-radius:5px;border:1px solid rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;overflow:hidden;background-size:cover;background-position:center;flex-shrink:0}
-.preset-info{min-width:0;cursor:pointer}
-.preset-title{font-weight:700;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
-.preset-meta{font-size:10.5px;color:var(--muted);display:block}
-.preset-btns{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end}
+.preset-swatch{width:38px;height:38px;border-radius:5px;border:1px solid rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;overflow:hidden;background-size:cover;background-position:center;flex-shrink:0;grid-row:1 / span 2;cursor:pointer}
+.preset-info{min-width:0;cursor:pointer;display:flex;align-items:baseline;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.preset-title{font-weight:700;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;font-size:12.5px}
+.preset-meta{font-size:10.5px;color:var(--muted);display:inline-block;white-space:nowrap}
+.preset-btns{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-start;grid-column:2}
 .pm-list{display:grid;gap:5px}
 .pm-it{display:grid;grid-template-columns:20px minmax(0,1fr);gap:6px;align-items:start;font-size:11.5px;line-height:1.45;padding:6px 8px;border-radius:6px;background:#ffffff;border:1px solid #fde68a}
 .pm-it b{color:#0f172a}
@@ -220,6 +220,21 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
 
     <!-- ✨ かんたんモード：よく使う操作だけ。設定（S）は詳細モードと共通 -->
     <div id="easyPanel" class="easy-panel">
+      <div class="e-step" id="easyTopSaveBox" style="background:#f0fdf4;border-bottom:2px solid #86efac;padding:10px 15px 12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+          <span style="font-size:13px;font-weight:800;color:#166534">💾 名前をつけてアプリ内に設定を保存 <span class="badge" id="eTopSavedCountBadge" style="background:#dcfce7;color:#166534;margin-left:3px">0件</span></span>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">
+            <button type="button" class="mini-btn" id="eTopLoadJsonBtn" style="background:#ffffff;color:#166534;border-color:#86efac;font-weight:700" title="パソコン内の設定ファイル(.json)を読み込んでアプリ内にも名前付きで保存します">📂 設定ファイル(.json)取込</button>
+            <button type="button" class="mini-btn" id="eTopRestorePresetBtn" hidden style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700" title="直前に削除した保存設定を元に戻します">↩️ 消した設定を戻す</button>
+          </div>
+        </div>
+        <div class="e-keep">
+          <input type="text" id="eTopPresetName" placeholder="設定名を入力（例：仲羽田・白札ダボ案1）" maxlength="40" style="border-color:#86efac;background:#ffffff">
+          <button type="button" class="btn" id="eTopSavePresetBtn" style="background:#16a34a;border-color:#15803d;white-space:nowrap">＋ アプリ内に保存</button>
+        </div>
+        <div id="eTopPresetList" class="preset-list" style="max-height:165px"></div>
+        <p class="e-msg" id="eTopSaveMsg" role="status" style="min-height:0"></p>
+      </div>
       <div class="e-step">
         <div class="e-h"><b>1</b><span>手ぬぐいのベース柄を選ぶ</span><button type="button" class="e-more" data-emore="step1">詳しく</button></div>
         <div class="e-pat" id="ePat">
@@ -252,27 +267,49 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <label><input type="color" id="eDotCol">あられの色</label>
           <label><input type="color" id="eFudaCol">札本体の色</label>
         </div>
-        <div class="e-subbox" id="eArareColorBox">
-          <div class="e-sublbl"><span>🟢 あられの色（粒の色・うしろ抜き色・周り枠の色）</span></div>
-          <div class="e-chips small" id="eDotColChips">
-            <button type="button" data-edot="#ffffff">白</button>
-            <button type="button" data-edot="#f3ecd8">生成り</button>
-            <button type="button" data-edot="#877028">羽田金</button>
-            <button type="button" data-edot="#f8b500">山吹</button>
-            <button type="button" data-edot="#00a3af">浅葱</button>
-            <button type="button" data-edot="#b7282e">茜</button>
-            <button type="button" data-edot="same">仲羽田と同じ</button>
+        <div class="e-subbox" id="eArareColorBox" style="border:1.5px solid #86efac;background:#f0fdf4">
+          <div class="e-sublbl"><span style="color:#166534">🟢 あられの色（①粒の色・②うしろ抜き色・③周り枠の色）</span></div>
+          <!-- ① あられ粒の色 -->
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#166534">① あられ粒の色:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="eArareDotPicker" value="#ffffff" title="あられ粒の色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #86efac;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eDotColChips">
+              <button type="button" data-edot="same">仲羽田と同じ</button>
+              <button type="button" data-edot="#ffffff">白</button>
+              <button type="button" data-edot="#f3ecd8">生成り</button>
+              <button type="button" data-edot="#877028">羽田金</button>
+              <button type="button" data-edot="#f8b500">山吹</button>
+              <button type="button" data-edot="#00a3af">浅葱</button>
+              <button type="button" data-edot="#b7282e">茜</button>
+            </div>
           </div>
-          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:3px;border-top:1px dashed #cbd5e1">
-            <span style="font-size:11px;color:var(--muted)">うしろ色:</span>
-            <div class="e-chips small" id="eArarePadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
+          <!-- ② あられうしろ抜き色 -->
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #86efac">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#166534">② うしろ抜き色（粒の周り余白）:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="eArarePadCustomCol" value="#046e7e" title="あられうしろ抜き色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #86efac;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eArarePadColBtns" style="grid-template-columns:repeat(4,1fr)">
+              <button type="button" data-eapc="none">抜きなし</button>
               <button type="button" data-eapc="bg">地の色</button>
               <button type="button" data-eapc="white">白</button>
               <button type="button" data-eapc="black">黒</button>
             </div>
-            <input type="color" id="eArarePadCustomCol" value="#046e7e" title="あられうしろ抜き色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
-            <span style="font-size:11px;color:var(--muted)">周り枠線色:</span>
-            <input type="color" id="eArarePadStrokeCol" value="#877028" title="あられ周り枠線・外周枠の色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+          </div>
+          <!-- ③ あられ周り枠線の色（1粒枠・外周枠） -->
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #86efac">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#166534">③ 周り枠の色（粒フチ・外周枠）:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="eArarePadStrokeCol" value="#877028" title="あられ周り枠線・外周枠の色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #86efac;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eArarePadStrokeBtns" style="grid-template-columns:repeat(4,1fr)">
+              <button type="button" data-eapsc="none">枠線なし</button>
+              <button type="button" data-eapsc="#877028">羽田金</button>
+              <button type="button" data-eapsc="#ffffff">白</button>
+              <button type="button" data-eapsc="#111827">黒</button>
+            </div>
           </div>
         </div>
         <div class="e-subbox" id="eFudaColorBox" style="border:1.5px solid #7dd3fc;background:#f0f9ff">
@@ -314,26 +351,30 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             </div>
           </div>
           <!-- ③ 札のうしろ背景色（周り枠の中） -->
-          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:5px;border-top:1px dashed #bae6fd">
-            <span style="font-size:11px;font-weight:700;color:#0c4a6e">③ うしろ背景:</span>
-            <div class="e-chips small" id="eLogoPadColBtns" style="flex:1;grid-template-columns:repeat(4,1fr)">
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #bae6fd">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#0c4a6e">③ うしろ背景色（枠の中）:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#0369a1;cursor:pointer">自由色 <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="札のうしろ背景色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #7dd3fc;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eLogoPadColBtns" style="grid-template-columns:repeat(4,1fr)">
               <button type="button" data-epc="bg">地の色</button>
               <button type="button" data-epc="white">白</button>
               <button type="button" data-epc="black">黒</button>
               <button type="button" data-epc="none">透過</button>
             </div>
-            <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="札のうしろ背景色を自由に選ぶ" style="width:28px;height:24px;border:1px solid #7dd3fc;border-radius:5px;padding:0;background:none;cursor:pointer">
           </div>
           <!-- ④ 札の周り枠線の色 -->
-          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:5px;border-top:1px dashed #bae6fd">
-            <span style="font-size:11px;font-weight:700;color:#0c4a6e">④ 周り枠線色:</span>
-            <div class="e-chips small" id="eLogoPadStrokeBtns" style="flex:1;grid-template-columns:repeat(4,1fr)">
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #bae6fd">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#0c4a6e">④ 周り枠線の色:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#0369a1;cursor:pointer">自由色 <input type="color" id="eLogoPadStrokeCol" value="#ffffff" title="札の周り枠線の色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #7dd3fc;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eLogoPadStrokeBtns" style="grid-template-columns:repeat(4,1fr)">
               <button type="button" data-epsc="none">枠線なし</button>
               <button type="button" data-epsc="#ffffff">白</button>
               <button type="button" data-epsc="#877028">羽田金</button>
               <button type="button" data-epsc="#111827">黒</button>
             </div>
-            <input type="color" id="eLogoPadStrokeCol" value="#ffffff" title="札の周り枠線の色" style="width:28px;height:24px;border:1px solid #7dd3fc;border-radius:5px;padding:0;background:none;cursor:pointer">
           </div>
         </div>
         <p class="e-note" id="eColorNote" hidden>札入りタオル図案を入れているときは、図案の色は「札入りタオル図案から選ぶ」を開いて変えます。</p>
@@ -392,12 +433,13 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div class="e-subbox" id="eLogoShelfBox" style="background:#eff6ff;border:1px solid #93c5fd">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
             <span style="font-size:11.5px;font-weight:800;color:#1e40af">📚 マイ・ロゴ保管棚（クリックで配置）</span>
-            <div style="display:flex;gap:4px">
+            <div style="display:flex;gap:4px;flex-wrap:wrap">
+              <a href="golden_logos.html" target="_blank" class="mini-btn" style="background:linear-gradient(135deg,#d97706,#92400e);color:#fff;border-color:#f59e0b;font-weight:700;font-size:10.5px;padding:2px 6px;text-decoration:none" title="黄金比（φ = 1 : 1.618）で設計した近代・仲羽田ロゴ6選の一覧ページを開きます">📐 黄金律ロゴ6選 ↗</a>
               <button type="button" class="mini-btn" id="eSaveCurrentToShelfBtn" style="background:#2563eb;color:#fff;border-color:#1d4ed8;font-weight:700;font-size:10.5px;padding:2px 6px">📌 今のロゴを登録</button>
               <button type="button" class="mini-btn" id="eRestoreLogoShelfBtn" style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;font-size:10.5px;padding:2px 6px" title="誤って消したマイロゴや初期ロゴを元に戻します">↩️ 消したマイロゴを戻す</button>
             </div>
           </div>
-          <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:4px;max-height:112px;overflow-y:auto"></div>
+          <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:4px;max-height:138px;overflow-y:auto"></div>
         </div>
         <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
         <div class="e-subbox" id="eLogoPadBox" hidden>
@@ -459,7 +501,18 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div id="ePmList" class="pm-list"></div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>8</b><span>保存する（手ぬぐい・ダボ・イラレ・設定）</span><button type="button" class="e-more" data-emore="step8">詳しく</button></div>
+        <div class="e-h"><b>8</b><span>保存する（アプリ内保存・手ぬぐい・ダボ・イラレ）</span><button type="button" class="e-more" data-emore="step8">詳しく</button></div>
+        <div class="e-subbox" style="background:#f0fdf4;border:1.5px solid #86efac">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+            <span style="font-size:12px;font-weight:800;color:#166534">💾 名前をつけてアプリ内に設定を保存・呼び出し <span class="badge" id="eStep8SavedCountBadge" style="background:#dcfce7;color:#166534">0件</span></span>
+            <button type="button" class="mini-btn" id="eRestorePresetBtn" hidden style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700">↩️ 消した設定を戻す</button>
+          </div>
+          <div class="e-keep">
+            <input type="text" id="eName" placeholder="設定名を入力（例：紺・細め案1）" maxlength="40" style="border-color:#86efac;background:#ffffff">
+            <button type="button" class="btn" id="eKeep" style="background:#16a34a;border-color:#15803d;white-space:nowrap">＋ アプリ内に保存</button>
+          </div>
+          <div class="preset-list" id="eList" style="max-height:185px"></div>
+        </div>
         <div class="e-save" style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
           <button type="button" class="btn" id="eSavePng" style="grid-column:span 2">📜 手ぬぐい画像で保存（300dpi PNG）</button>
           <button type="button" class="btn" id="eSaveDaboPng" style="background:#0284c7;border-color:#0369a1;color:#fff">👕 ダボ＆裁断図（PNG）</button>
@@ -467,13 +520,8 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <button type="button" class="btn ghost" id="eSaveSvg">📐 Illustrator（SVG）</button>
           <button type="button" class="btn ghost" id="eCopySvg">📋 SVG をコピー</button>
           <button type="button" class="btn ghost" id="eSaveJson">📥 設定ファイル保存(.json)</button>
-          <button type="button" class="btn ghost" id="eLoadJson">📂 設定ファイル読込</button>
+          <button type="button" class="btn ghost" id="eLoadJson">📂 設定ファイル読込(.json)</button>
         </div>
-        <div class="e-keep">
-          <input type="text" id="eName" placeholder="名前をつけてアプリ内に残す（例：紺・細め案）" maxlength="40">
-          <button type="button" class="btn" id="eKeep">残す</button>
-        </div>
-        <div class="e-list" id="eList"></div>
         <p class="e-msg" id="eMsg" role="status"></p>
       </div>
       <button type="button" class="e-tofull" data-emore="all">すべての機能を使う（詳細モードへ）</button>
@@ -600,15 +648,15 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
 
     <!-- 1-B. 名前を付けて保存・マイデザイン一覧 -->
     <section id="sec-save" aria-labelledby="h-save" data-cat="export">
-      <h2 id="h-save"><span>💾 名前を付けて保存・呼び出し</span><span class="badge" id="savedCountBadge">0件</span></h2>
+      <h2 id="h-save"><span>💾 名前を付けてアプリ内に保存・呼び出し</span><div style="display:flex;gap:5px;align-items:center"><button type="button" class="mini-btn" id="restorePresetTrashBtn" hidden style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;padding:2px 6px">↩️ 消した設定を戻す</button><span class="badge" id="savedCountBadge">0件</span></div></h2>
       <div class="save-bar">
         <input type="text" id="presetName" class="save-input" placeholder="保存名（例：羽田納戸・細線案1）" maxlength="40">
-        <button type="button" class="btn" id="savePresetBtn" style="padding:6px 11px;white-space:nowrap">＋ 保存</button>
+        <button type="button" class="btn" id="savePresetBtn" style="padding:6px 11px;white-space:nowrap">＋ アプリ内に保存</button>
       </div>
       <div id="savedList" class="preset-list"></div>
       <div class="crow2" style="justify-content:space-between;padding-top:2px">
         <button type="button" class="chip" id="exportJsonBtn" title="現在の設定値と保存リストをファイル(.json)としてパソコンに保存">📥 設定をファイル保存(.json)</button>
-        <button type="button" class="chip" id="importJsonBtn" title="保存した設定ファイル(.json)を読み込む">📂 設定ファイル読込</button>
+        <button type="button" class="chip" id="importJsonBtn" title="パソコン内の設定ファイル(.json)を読み込んでアプリ内にも登録します">📂 設定ファイル(.json)読込＆登録</button>
         <button type="button" class="chip" id="copyUrlBtn" title="現在の設定値を埋め込んだ共有URLをコピー">🔗 設定URLコピー</button>
         <input type="file" id="importJsonInput" accept=".json,application/json" hidden>
       </div>
@@ -827,9 +875,9 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div class="sw" id="kakuSw"></div>
       </div>
       <div class="cgroup" id="dotColorGroup" style="border:1.5px solid #86efac;background:#f0fdf4">
-        <div class="chead"><span class="clabel" style="color:#166534;font-weight:800">🟢 あられの色（粒・うしろ・周り枠）</span>
+        <div class="chead"><span class="clabel" style="color:#166534;font-weight:800">🟢 ① あられ粒の色（うしろ・周り枠）</span>
           <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="dotColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
-          <input type="color" id="dotColor" value="#ffffff" aria-label="粒の色を選ぶ">
+          <label style="display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="dotColor" value="#ffffff" aria-label="粒の色を選ぶ"></label>
           <input type="text" id="dotHex" class="hex" maxlength="7" spellcheck="false" aria-label="粒のカラーコード"></div>
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
           <div class="sw" id="dotSw" style="flex:1"></div>
@@ -837,21 +885,23 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
         <div style="display:grid;gap:5px;margin-top:4px;padding-top:6px;border-top:1px dashed #86efac;font-size:11.5px">
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-            <span style="font-weight:700;color:#166534">あられうしろ抜き色:</span>
-            <input type="color" id="sec3ArarePadColor" value="#046e7e" aria-label="あられうしろ抜き色">
+            <span style="font-weight:700;color:#166534">② あられうしろ抜き色:</span>
+            <label style="display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="sec3ArarePadColor" value="#046e7e" aria-label="あられうしろ抜き色"></label>
+            <button type="button" class="mini-btn" id="sec3ArarePadNoneBtn">抜きなし</button>
             <button type="button" class="mini-btn" id="sec3ArarePadBgBtn">地の色と同色</button>
             <button type="button" class="mini-btn" id="sec3ArarePadWhiteBtn">白</button>
             <button type="button" class="mini-btn" id="sec3ArarePadBlackBtn">黒</button>
             <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="ararePadColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           </div>
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-            <span style="font-weight:700;color:#166534">1粒周り枠線の色:</span>
-            <input type="color" id="sec3ArarePadStrokeColor" value="#877028" aria-label="あられ1粒周り枠線の色">
+            <span style="font-weight:700;color:#166534">③ 周り枠線の色:</span>
+            <label style="display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="sec3ArarePadStrokeColor" value="#877028" aria-label="あられ1粒周り枠線の色"></label>
+            <button type="button" class="mini-btn" id="sec3ArareStrokeNoneBtn">枠線なし</button>
             <button type="button" class="mini-btn" id="sec3ArareStrokeGoldBtn">羽田金</button>
             <button type="button" class="mini-btn" id="sec3ArareStrokeWhiteBtn">白</button>
             <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="ararePadStrokeColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
-            <span style="font-weight:700;color:#166534;margin-left:4px">外周枠の色:</span>
-            <input type="color" id="sec3ArareOuterColor" value="#ffffff" aria-label="あられ外周枠の色">
+            <span style="font-weight:700;color:#166534;margin-left:4px">外周枠:</span>
+            <label style="display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="sec3ArareOuterColor" value="#ffffff" aria-label="あられ外周枠の色"></label>
             <button type="button" class="mini-btn" id="sec3ArareOuterDotBtn">粒と同色</button>
             <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="arareOuterColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           </div>
@@ -958,6 +1008,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <button type="button" class="btn" id="quickUploadLogoTopBtn" style="padding:5px 10px;font-size:11.5px;background:#2563eb;border-color:#1d4ed8;color:#fff;font-weight:700" title="パソコン内のロゴ画像（.ai / PDF / PNG / JPG / SVG）を読み込んで手ぬぐい・ダボに配置し、マイ・ロゴ保管棚へ自動登録します">📁 ロゴ画像を登録・読込 (.ai/PDF/PNG/JPG/SVG)</button>
         <button type="button" class="mini-btn" id="quickUseFudaTealTopBtn" style="background:#00a3af;border-color:#00808a;color:#fff;font-weight:700;padding:5px 8px" title="仲羽田青年会 札ロゴ (fuda_logo_teal.svg / #00A3AF) をワンクリックで配置します">🏷️ 札ロゴ(ティール)</button>
         <button type="button" class="mini-btn" id="quickUseFudaWhiteTopBtn" style="background:#0f172a;border-color:#334155;color:#fff;font-weight:700;padding:5px 8px" title="仲羽田青年会 札ロゴ (fuda_logo_white.svg / #FFFFFF 白抜き) をワンクリックで配置します">🏷️ 札ロゴ(白抜き)</button>
+        <a href="golden_logos.html" target="_blank" class="mini-btn" style="background:linear-gradient(135deg,#d97706,#92400e);border-color:#f59e0b;color:#fff;font-weight:700;padding:5px 8px;text-decoration:none" title="黄金比（φ = 1 : 1.618）で設計した近代・仲羽田ロゴ6選の一覧ページを開きます">📐 黄金律ロゴ6選 ↗</a>
         <button type="button" class="mini-btn" id="quickOpenLogoShelfBtn" style="background:#fff;border-color:#3b82f6;color:#1d4ed8;font-weight:700;padding:5px 8px" title="登録済みのロゴ保管棚とロゴ設定パネルを開きます">📚 登録ロゴ保管棚・設定を開く</button>
         <button type="button" class="mini-btn" id="openDirectDaboTextFromPanelBtn" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700;padding:5px 8px;margin-left:auto">✍️ ダボに直接文字を打つ →</button>
       </div>
@@ -2007,9 +2058,87 @@ function buildFudaLogoSvgDataUrl(fillHex){
 }
 let FUDA_LOGO_TEAL_URL = buildFudaLogoSvgDataUrl('#00A3AF');
 let FUDA_LOGO_WHITE_URL = buildFudaLogoSvgDataUrl('#FFFFFF');
+
+// ★ 仲羽田 近代・黄金比ロゴ 6選（φ = (1+√5)/2 ≈ 1.618034）内蔵ベクターSVG生成
+const GOLDEN_LOGO_BUILDERS = (function(){
+  const gNaka = (x0, y0, w, h) => {
+    const rx = u => (x0 + u * w).toFixed(2), ry = v => (y0 + v * h).toFixed(2);
+    const rc = (u0, v0, uw, vh) => `M${rx(u0)},${ry(v0)}H${rx(u0+uw)}V${ry(v0+vh)}H${rx(u0)}Z`;
+    const s = 0.162, cx0 = 0.34, cx1 = 1.00, cy0 = 0.18, cy1 = 0.76, cs = 0.145, midX = (cx0 + cx1) * 0.5 - s * 0.5;
+    return `M${rx(0.08)},${ry(0.0)}H${rx(0.26)}V${ry(0.28)}L${rx(0.23)},${ry(0.32)}V${ry(1.0)}H${rx(0.07)}V${ry(0.36)}H${rx(0.0)}V${ry(0.20)}L${rx(0.08)},${ry(0.12)}Z`
+      + rc(cx0, cy0, cx1 - cx0, cs) + rc(cx0, cy1 - cs, cx1 - cx0, cs)
+      + rc(cx0, cy0, cs, cy1 - cy0) + rc(cx1 - cs, cy0, cs, cy1 - cy0)
+      + rc(midX, 0.0, s, 1.0);
+  };
+  const gHane = (x0, y0, w, h) => {
+    const rx = u => (x0 + u * w).toFixed(2), ry = v => (y0 + v * h).toFixed(2);
+    const rc = (u0, v0, uw, vh) => `M${rx(u0)},${ry(v0)}H${rx(u0+uw)}V${ry(v0+vh)}H${rx(u0)}Z`;
+    const s = 0.158, wW = 0.462;
+    let d = '';
+    for(const off of [0.0, 0.538]){
+      d += `M${rx(off + 0.06)},${ry(0.0)}H${rx(off + wW)}V${ry(s)}H${rx(off)}V${ry(0.06)}Z`
+        + `M${rx(off + wW - s)},${ry(0.0)}H${rx(off + wW)}V${ry(1.0)}H${rx(off + 0.12)}L${rx(off + 0.06)},${ry(1.0 - s)}H${rx(off + wW - s)}Z`
+        + rc(off + 0.02, 0.34, wW - s - 0.06, s * 0.85)
+        + rc(off + 0.02, 0.60, wW - s - 0.06, s * 0.85);
+    }
+    return d;
+  };
+  const gTa = (x0, y0, w, h) => {
+    const rx = u => (x0 + u * w).toFixed(2), ry = v => (y0 + v * h).toFixed(2);
+    const rc = (u0, v0, uw, vh) => `M${rx(u0)},${ry(v0)}H${rx(u0+uw)}V${ry(v0+vh)}H${rx(u0)}Z`;
+    const s = 0.184, m = 0.5 - s * 0.5;
+    return rc(0, 0, 1, s) + rc(0, 1 - s, 1, s) + rc(0, 0, s, 1) + rc(1 - s, 0, s, 1) + rc(m, 0, s, 1) + rc(0, m, 1, s);
+  };
+  const wrapSvg = body => 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000"><g fill="#FFFFFF">${body}</g></svg>`);
+  const oct = (x, y, w, h, c) => `M${x+c},${y}H${x+w-c}L${x+w},${y+c}V${y+h-c}L${x+w-c},${y+h}H${x+c}L${x},${y+h-c}V${y+c}Z`;
+  const wBlade = pts => 'M' + pts.map(p => `${p[0]},${p[1]}`).join('L') + 'Z M' + pts.map(p => `${1000-p[0]},${p[1]}`).join('L') + 'Z';
+  return {
+    '__BUILTIN_GOLD_1__': wrapSvg(
+      `<path fill-rule="evenodd" d="M500,40 A460,460 0 1,1 499.9,40 Z M500,88 A412,412 0 1,0 500.1,88 Z"/>` +
+      `<path fill-rule="evenodd" d="M500,108 A392,392 0 1,1 499.9,108 Z M500,120 A380,380 0 1,0 500.1,120 Z"/>` +
+      `<rect x="215" y="466" width="570" height="12"/><rect x="494" y="472" width="12" height="295"/>` +
+      `<path d="${gNaka(365,195,270,255)} ${gHane(215,495,255,255)} ${gTa(530,495,255,255)}"/>`
+    ),
+    '__BUILTIN_GOLD_2__': wrapSvg(
+      `<path fill-rule="evenodd" d="${oct(220,47,560,906,55)} ${oct(254,81,492,838,42)}"/>` +
+      `<path fill-rule="evenodd" d="${oct(270,97,460,806,34)} ${oct(280,107,440,786,30)}"/>` +
+      `<rect x="330" y="361" width="340" height="10"/><rect x="330" y="627" width="340" height="10"/>` +
+      `<rect x="330" y="128" width="14" height="744"/><rect x="656" y="128" width="14" height="744"/>` +
+      `<path d="${gNaka(390,128,220,212)} ${gHane(390,394,220,212)} ${gTa(390,660,220,212)}"/>`
+    ),
+    '__BUILTIN_GOLD_3__': wrapSvg(
+      `<path d="${[wBlade([[330,310],[45,195],[75,275],[330,378]]),wBlade([[330,412],[95,325],[125,398],[330,476]]),wBlade([[330,510],[155,448],[182,514],[330,570]]),wBlade([[345,604],[225,562],[248,618],[360,658]])].join(' ')}"/>` +
+      `<path fill-rule="evenodd" d="M500,135 L655,210 L655,775 L500,865 L345,775 L345,210 Z M500,165 L629,228 L629,757 L500,833 L371,757 L371,228 Z"/>` +
+      `<path d="${gNaka(412,230,176,165)} ${gHane(412,420,176,165)} ${gTa(412,610,176,165)}"/>`
+    ),
+    '__BUILTIN_GOLD_4__': wrapSvg(
+      `<path fill-rule="evenodd" d="M500,50 L720,165 L720,930 L280,930 L280,165 Z M500,82 L692,182 L692,902 L308,902 L308,182 Z"/>` +
+      `<path fill-rule="evenodd" d="M500,104 L672,194 L672,882 L328,882 L328,194 Z M500,116 L660,200 L660,870 L340,870 L340,200 Z"/>` +
+      `<path fill-rule="evenodd" d="M500,141 A34,34 0 1,1 499.9,141 Z M500,157 A18,18 0 1,0 500.1,157 Z"/>` +
+      `<rect x="491" y="30" width="18" height="115" rx="4"/><rect x="340" y="218" width="320" height="12"/>` +
+      `<path d="${gNaka(395,255,210,185)} ${gHane(395,465,210,185)} ${gTa(395,675,210,185)}"/>`
+    ),
+    '__BUILTIN_GOLD_5__': wrapSvg(
+      `<path fill-rule="evenodd" d="M500,40 L960,500 L500,960 L40,500 Z M500,92 L908,500 L500,908 L92,500 Z"/>` +
+      `<path fill-rule="evenodd" d="M500,118 L882,500 L500,882 L118,500 Z M500,134 L866,500 L500,866 L134,500 Z"/>` +
+      `<rect x="255" y="413" width="490" height="10"/><rect x="495" y="413" width="10" height="230"/>` +
+      `<path d="${gNaka(405,225,190,180)} ${gHane(255,435,215,200)} ${gTa(530,435,215,200)} M360,675 L500,815 L640,675 L640,715 L500,855 L360,715 Z M415,675 L500,760 L585,675 L585,705 L500,790 L415,705 Z"/>`
+    ),
+    '__BUILTIN_GOLD_6__': wrapSvg(
+      `<path fill-rule="evenodd" d="M200,348 A152,152 0 1,1 199.9,348 Z M200,372 A128,128 0 1,0 200.1,372 Z"/>` +
+      `<path fill-rule="evenodd" d="M200,384 A116,116 0 1,1 199.9,384 Z M200,394 A106,106 0 1,0 200.1,394 Z"/>` +
+      `<rect x="372" y="348" width="10" height="304"/>` +
+      `<rect x="400" y="348" width="534" height="16"/><rect x="400" y="572" width="534" height="10"/><rect x="400" y="636" width="534" height="16"/>` +
+      `<rect x="400" y="596" width="204" height="24"/><rect x="618" y="596" width="126" height="24"/><rect x="758" y="596" width="78" height="24"/><rect x="850" y="596" width="48" height="24"/><rect x="910" y="596" width="24" height="24"/>` +
+      `<path d="${gNaka(136,436,128,128)} ${gNaka(400,385,162,162)} ${gHane(586,385,162,162)} ${gTa(772,385,162,162)}"/>`
+    )
+  };
+})();
+
 function resolveLogoDataUrl(url){
   if(url === '__BUILTIN_FUDA_TEAL__') return FUDA_LOGO_TEAL_URL;
   if(url === '__BUILTIN_FUDA_WHITE__') return FUDA_LOGO_WHITE_URL;
+  if(url && GOLDEN_LOGO_BUILDERS[url]) return GOLDEN_LOGO_BUILDERS[url];
   return url || '';
 }
 
@@ -2805,6 +2934,78 @@ function getDefaultLogoShelfItems(){
         logoDataUrl: hUrl,
         logoRemoveBg: true, logoBgMode: 'white', logoThreshold: 225, logoSoftness: 18,
         logoMono: true, logoColor: '#877028', logoOutlineMm: 2.5, logoOutlineColor: '#ffffff'
+      })
+    },
+    {
+      id: 'shelf_gold_1_circle',
+      name: '📐 ①黄金円・モダン丸紋',
+      savedAt: Date.now() - 3000,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金円・仲羽田丸紋',
+        logoDataUrl: '__BUILTIN_GOLD_1__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'circle', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
+      id: 'shelf_gold_2_monolith',
+      name: '📐 ②黄金長方形・角字モノリス',
+      savedAt: Date.now() - 3100,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金長方形・仲羽田モノリス',
+        logoDataUrl: '__BUILTIN_GOLD_2__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'roundRect', logoPadColorMode: 'bg', logoPadMarginMm: 6, logoPadCornerMm: 6
+      })
+    },
+    {
+      id: 'shelf_gold_3_wings',
+      name: '📐 ③黄金螺旋・飛翔ウイング紋',
+      savedAt: Date.now() - 3200,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金螺旋・仲羽田ウイング紋',
+        logoDataUrl: '__BUILTIN_GOLD_3__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#d4af37', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 5
+      })
+    },
+    {
+      id: 'shelf_gold_4_fuda',
+      name: '📐 ④黄金六角・モダン千社札',
+      savedAt: Date.now() - 3300,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金六角・モダン千社札',
+        logoDataUrl: '__BUILTIN_GOLD_4__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
+      id: 'shelf_gold_5_diamond',
+      name: '📐 ⑤黄金菱・ダイヤモンド紋',
+      savedAt: Date.now() - 3400,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金菱・仲羽田ダイヤモンド紋',
+        logoDataUrl: '__BUILTIN_GOLD_5__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
+      id: 'shelf_gold_6_lockup',
+      name: '📐 ⑥黄金分割・横組みロックアップ',
+      savedAt: Date.now() - 3500,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金分割・仲羽田ロックアップ',
+        logoDataUrl: '__BUILTIN_GOLD_6__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'roundRect', logoPadColorMode: 'bg', logoPadMarginMm: 5, logoPadCornerMm: 4
       })
     }
   ];
@@ -9522,8 +9723,10 @@ const baseName=()=>{
 
 /* ---- 名前を付けて保存（マイデザイン管理 ＆ JSON入出力 ＆ URL共有） ---- */
 const PRESET_KEY='haneda-arare-presets-v1';
+const PRESET_TRASH_STORAGE='haneda-arare-presets-trash-v1';
 let PRESETS=[];
 let activePresetId=null;
+let editingPresetNameId=null;
 try{
   const raw=JSON.parse(localStorage.getItem(PRESET_KEY)||'null');
   if(Array.isArray(raw)) PRESETS=raw;
@@ -9540,10 +9743,62 @@ function savePresetsToStorage(){
   }
 }
 
+function getPresetTrashList(){
+  try{
+    const arr = JSON.parse(localStorage.getItem(PRESET_TRASH_STORAGE)||'[]');
+    return Array.isArray(arr) ? arr : [];
+  }catch(e){ return []; }
+}
+
+function pushPresetToTrash(item){
+  if(!item) return;
+  try{
+    const arr = getPresetTrashList().filter(x => x && x.id !== item.id);
+    arr.unshift(item);
+    if(arr.length > 15) arr.length = 15;
+    localStorage.setItem(PRESET_TRASH_STORAGE, JSON.stringify(arr));
+  }catch(e){}
+}
+
+function restoreDeletedPresetFromTrash(){
+  const arr = getPresetTrashList();
+  if(arr.length === 0){
+    saySave('復元できる削除済み設定はありません。');
+    return;
+  }
+  const item = arr.shift();
+  try{ localStorage.setItem(PRESET_TRASH_STORAGE, JSON.stringify(arr)); }catch(e){}
+  if(item && !PRESETS.some(p => p && p.id === item.id)){
+    PRESETS.unshift(item);
+    activePresetId = item.id;
+    savePresetsToStorage();
+  }
+  renderPresetList();
+  saySave(`↩️ 削除した設定「${item ? item.name : ''}」をアプリ内に復元しました！`);
+}
+
+function syncAllPresetNameInputs(val){
+  ['presetName','eTopPresetName','eName'].forEach(id=>{
+    const el = $(id);
+    if(el && document.activeElement !== el) el.value = val || '';
+  });
+}
+
+function getTypedPresetName(){
+  for(const id of ['eTopPresetName','eName','presetName']){
+    const el = $(id);
+    if(el && el.value && el.value.trim()) return el.value.trim();
+  }
+  return '';
+}
+
 function saySave(t,warn){
-  const m=$('saveMsg'); if(!m) return;
-  m.textContent=t; m.className='msg'+(warn?' warn':'');
-  setTimeout(()=>{if(m.textContent===t) m.textContent='';}, 4000);
+  ['saveMsg','eTopSaveMsg','eMsg'].forEach(id=>{
+    const m=$(id); if(!m) return;
+    m.textContent=t;
+    m.className=(id==='saveMsg'?'msg':'e-msg')+(warn?' warn':'');
+    setTimeout(()=>{if(m.textContent===t) m.textContent='';}, 4500);
+  });
 }
 
 function formatShortDate(ts){
@@ -9560,6 +9815,22 @@ function makePresetThumbDataUrl(){
     const tcv = renderArbitraryTenuguiCanvas(S, true, 0.22, 1);
     return tcv.toDataURL('image/jpeg', 0.82);
   }catch(e){ return ''; }
+}
+
+function exportSinglePresetToJsonFile(item){
+  if(!item) return;
+  const name = item.name || '手ぬぐい設定';
+  const payload = {
+    app: 'haneda-arare-studio',
+    version: 1,
+    name,
+    savedAt: new Date(item.savedAt || Date.now()).toISOString(),
+    currentSettings: item.settings || S
+  };
+  const safe = name.replace(/[\\/:*?"<>|\s]+/g, '_');
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+  save(safe + '.json', blob, safe + '.json');
+  saySave(`📥 設定「${name}」をファイル（${safe}.json）として保存しました。`);
 }
 
 function refreshDaboPresetDropdowns(){
@@ -9584,123 +9855,194 @@ function refreshDaboPresetDropdowns(){
   sSel.value = Array.from(sSel.options).some(o=>o.value===curS) ? curS : 'same';
 }
 
-function renderPresetList(){
-  const list=$('savedList'), badge=$('savedCountBadge');
-  if(!list) return;
-  badge.textContent=PRESETS.length+'件';
-  list.innerHTML='';
-  refreshDaboPresetDropdowns();
-  if(PRESETS.length===0){
-    const empty=document.createElement('div');
-    empty.className='note';
-    empty.textContent='まだ保存されたデザインはありません。上の欄に名前を入れて「＋ 保存」を押すとサムネイル付きでアプリ内に一覧保存されます。';
-    list.appendChild(empty);
-    return;
+function buildPresetItemRowElement(item){
+  const row=document.createElement('div');
+  row.className='preset-item'+(item.id===activePresetId?' active':'');
+  const st=item.settings||DEF;
+  const fg=st.mode==='arare'?st.dotColor:st.kakuColor;
+  const modeLabel=st.mode==='arare'?'あられ':(st.mode==='both'?'角字+あられ':'仲羽田');
+  const sw=document.createElement('div');
+  sw.className='preset-swatch';
+  if(item.thumb){
+    sw.style.backgroundImage=`url(${item.thumb})`;
+  }else{
+    sw.style.background=st.bgColor||'#046e7e';
+    sw.style.color=fg||'#ffffff';
+    sw.textContent=st.mode==='arare'?'霰':'仲';
   }
-  PRESETS.forEach(item=>{
-    const row=document.createElement('div');
-    row.className='preset-item'+(item.id===activePresetId?' active':'');
-    const st=item.settings||DEF;
-    const fg=st.mode==='arare'?st.dotColor:st.kakuColor;
-    const modeLabel=st.mode==='arare'?'あられ':(st.mode==='both'?'角字+あられ':'仲羽田');
-    const sw=document.createElement('div');
-    sw.className='preset-swatch';
-    if(item.thumb){
-      sw.style.backgroundImage=`url(${item.thumb})`;
-    }else{
-      sw.style.background=st.bgColor||'#046e7e';
-      sw.style.color=fg||'#ffffff';
-      sw.textContent=st.mode==='arare'?'霰':'仲';
-    }
 
-    const info=document.createElement('div');
-    info.className='preset-info';
-    info.title='クリックでこのデザインを読み込みます';
+  const loadFn=()=>{
+    activePresetId=item.id;
+    syncAllPresetNameInputs(item.name);
+    S=Object.assign({},DEF,JSON.parse(JSON.stringify(item.settings)));
+    if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
+    update(true);
+    renderPresetList();
+    saySave(`📂 アプリ内保存「${item.name}」を読み込みました！`);
+  };
+  sw.addEventListener('click',loadFn);
+
+  const info=document.createElement('div');
+  info.className='preset-info';
+  if(editingPresetNameId === item.id){
+    const editWrap = document.createElement('div');
+    editWrap.style.cssText = 'display:flex;gap:4px;align-items:center';
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.value = item.name || '';
+    inp.maxLength = 40;
+    inp.className = 'save-input preset-rename-input';
+    inp.style.cssText = 'padding:3px 6px;font-size:12px;border-color:#0284c7;background:#fff';
+    const okBtn = document.createElement('button');
+    okBtn.type = 'button';
+    okBtn.className = 'mini-btn';
+    okBtn.style.cssText = 'background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700';
+    okBtn.textContent = '決定';
+    const commitRename = () => {
+      const nextNm = inp.value.trim();
+      if(nextNm){
+        item.name = nextNm;
+        syncAllPresetNameInputs(nextNm);
+        savePresetsToStorage();
+        saySave(`✏️ 設定名を「${nextNm}」に変更しました。`);
+      }
+      editingPresetNameId = null;
+      renderPresetList();
+    };
+    okBtn.addEventListener('click', ev => { ev.stopPropagation(); commitRename(); });
+    inp.addEventListener('keydown', ev => {
+      if(ev.key === 'Enter'){ ev.preventDefault(); ev.stopPropagation(); commitRename(); }
+      else if(ev.key === 'Escape'){ ev.preventDefault(); ev.stopPropagation(); editingPresetNameId = null; renderPresetList(); }
+    });
+    inp.addEventListener('click', ev => ev.stopPropagation());
+    editWrap.appendChild(inp);
+    editWrap.appendChild(okBtn);
+    info.appendChild(editWrap);
+    setTimeout(() => { try{ inp.focus(); inp.select(); }catch(e){} }, 20);
+  }else{
+    info.title='クリックでこの設定を読み込みます';
     const title=document.createElement('span');
     title.className='preset-title';
     title.textContent=item.name;
     const meta=document.createElement('span');
     meta.className='preset-meta';
-    meta.textContent=`${modeLabel} ${(st.W||350)/10}×${(st.H||900)/10}cm | 角度${st.kakuAngle??-30.15}° 太さ${st.kakuWeight||100}% (${formatShortDate(item.savedAt)})`;
+    meta.textContent=`${modeLabel} ${(st.W||350)/10}×${(st.H||900)/10}cm (${formatShortDate(item.savedAt)})`;
     info.appendChild(title);
     info.appendChild(meta);
-
-    const loadFn=()=>{
-      activePresetId=item.id;
-      $('presetName').value=item.name;
-      S=Object.assign({},DEF,JSON.parse(JSON.stringify(item.settings)));
-      if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
-      update(true);
-      renderPresetList();
-      saySave(`「${item.name}」を読み込みました。`);
-    };
     info.addEventListener('click',loadFn);
-    sw.addEventListener('click',loadFn);
+  }
 
-    const btns=document.createElement('div');
-    btns.className='preset-btns';
+  const btns=document.createElement('div');
+  btns.className='preset-btns';
 
-    const daboBtn=document.createElement('button');
-    daboBtn.type='button'; daboBtn.className='mini-btn'; daboBtn.textContent='👕ダボ';
-    daboBtn.title='この保存デザインでダボ仕立て＆生地の取り方を確認します';
-    daboBtn.addEventListener('click',()=>{
-      activePresetId=item.id;
-      $('presetName').value=item.name;
-      S=Object.assign({},DEF,JSON.parse(JSON.stringify(item.settings)),{viewMode:'cut_dabo',daboBodyPreset:'current'});
-      if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
-      update(true);
-      renderPresetList();
-      saySave(`「${item.name}」でダボ仕立て＆生地取り図を開きました！`);
+  const loadBtn=document.createElement('button');
+  loadBtn.type='button'; loadBtn.className='mini-btn'; loadBtn.textContent='読込';
+  loadBtn.title='この保存設定を呼び出します';
+  loadBtn.addEventListener('click',loadFn);
+
+  const daboBtn=document.createElement('button');
+  daboBtn.type='button'; daboBtn.className='mini-btn'; daboBtn.textContent='👕ダボ';
+  daboBtn.title='この保存設定でダボ仕立て＆生地の取り方を確認します';
+  daboBtn.addEventListener('click',()=>{
+    activePresetId=item.id;
+    syncAllPresetNameInputs(item.name);
+    S=Object.assign({},DEF,JSON.parse(JSON.stringify(item.settings)),{viewMode:'cut_dabo',daboBodyPreset:'current'});
+    if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
+    update(true);
+    renderPresetList();
+    saySave(`👕 「${item.name}」でダボ仕立て＆生地取り図を開きました！`);
+  });
+
+  const upBtn=document.createElement('button');
+  upBtn.type='button'; upBtn.className='mini-btn'; upBtn.textContent='上書';
+  upBtn.title='現在の設定値でこの保存データを上書き更新します';
+  upBtn.addEventListener('click',()=>{
+    item.settings=JSON.parse(JSON.stringify(S));
+    item.thumb=makePresetThumbDataUrl();
+    item.savedAt=Date.now();
+    const typed = getTypedPresetName();
+    if(typed) item.name = typed;
+    activePresetId=item.id;
+    savePresetsToStorage();
+    renderPresetList();
+    saySave(`💾 「${item.name}」を現在の設定で上書き保存しました！`);
+  });
+
+  const renBtn=document.createElement('button');
+  renBtn.type='button'; renBtn.className='mini-btn'; renBtn.textContent='✏️名変';
+  renBtn.title='この保存設定の名前を変更します';
+  renBtn.addEventListener('click',()=>{
+    editingPresetNameId = (editingPresetNameId === item.id) ? null : item.id;
+    renderPresetList();
+  });
+
+  const dlBtn=document.createElement('button');
+  dlBtn.type='button'; dlBtn.className='mini-btn'; dlBtn.textContent='📥.json';
+  dlBtn.title='この保存設定を個別の設定ファイル(.json)として書き出します';
+  dlBtn.addEventListener('click',()=>{
+    exportSinglePresetToJsonFile(item);
+  });
+
+  const delBtn=document.createElement('button');
+  delBtn.type='button'; delBtn.className='mini-btn del'; delBtn.textContent='×';
+  delBtn.title='この保存データを削除（誤って消しても「↩️ 消した設定を戻す」で復元できます）';
+  delBtn.addEventListener('click',()=>{
+    pushPresetToTrash(item);
+    PRESETS=PRESETS.filter(p=>p.id!==item.id);
+    if(activePresetId===item.id) activePresetId=null;
+    savePresetsToStorage();
+    renderPresetList();
+    saySave(`🗑️ 「${item.name}」を削除しました（「↩️ 消した設定を戻す」で復元可能）。`);
+  });
+
+  btns.appendChild(loadBtn);
+  btns.appendChild(daboBtn);
+  btns.appendChild(upBtn);
+  btns.appendChild(renBtn);
+  btns.appendChild(dlBtn);
+  btns.appendChild(delBtn);
+
+  row.appendChild(sw);
+  row.appendChild(info);
+  row.appendChild(btns);
+  return row;
+}
+
+function renderPresetList(){
+  const countStr = PRESETS.length + '件';
+  ['savedCountBadge','eTopSavedCountBadge','eStep8SavedCountBadge'].forEach(id=>{
+    if($(id)) $(id).textContent = countStr;
+  });
+  const hasTrash = getPresetTrashList().length > 0;
+  ['restorePresetTrashBtn','eTopRestorePresetBtn','eRestorePresetBtn'].forEach(id=>{
+    if($(id)) $(id).hidden = !hasTrash;
+  });
+  refreshDaboPresetDropdowns();
+  ['savedList','eTopPresetList','eList'].forEach(listId=>{
+    const container = $(listId);
+    if(!container) return;
+    container.innerHTML = '';
+    if(PRESETS.length === 0){
+      const empty = document.createElement('div');
+      empty.className = 'note';
+      empty.textContent = 'まだアプリ内に保存された設定はありません。上の欄に名前を入れて「＋ アプリ内に保存」を押すと、サムネイル付きでいつでも呼び出せます。';
+      container.appendChild(empty);
+      return;
+    }
+    PRESETS.forEach(item => {
+      container.appendChild(buildPresetItemRowElement(item));
     });
-
-    const loadBtn=document.createElement('button');
-    loadBtn.type='button'; loadBtn.className='mini-btn'; loadBtn.textContent='読込';
-    loadBtn.addEventListener('click',loadFn);
-
-    const upBtn=document.createElement('button');
-    upBtn.type='button'; upBtn.className='mini-btn'; upBtn.textContent='上書';
-    upBtn.title='現在の設定値でこの保存データを上書き更新します';
-    upBtn.addEventListener('click',()=>{
-      item.settings=JSON.parse(JSON.stringify(S));
-      item.thumb=makePresetThumbDataUrl();
-      item.savedAt=Date.now();
-      if($('presetName').value.trim()) item.name=$('presetName').value.trim();
-      activePresetId=item.id;
-      savePresetsToStorage();
-      renderPresetList();
-      saySave(`「${item.name}」を上書き保存しました。`);
-    });
-
-    const delBtn=document.createElement('button');
-    delBtn.type='button'; delBtn.className='mini-btn del'; delBtn.textContent='×';
-    delBtn.title='この保存データを削除';
-    delBtn.addEventListener('click',()=>{
-      PRESETS=PRESETS.filter(p=>p.id!==item.id);
-      if(activePresetId===item.id) activePresetId=null;
-      savePresetsToStorage();
-      renderPresetList();
-      saySave(`「${item.name}」を削除しました。`);
-    });
-
-    btns.appendChild(daboBtn);
-    btns.appendChild(loadBtn);
-    btns.appendChild(upBtn);
-    btns.appendChild(delBtn);
-
-    row.appendChild(sw);
-    row.appendChild(info);
-    row.appendChild(btns);
-    list.appendChild(row);
   });
 }
 
-$('savePresetBtn').addEventListener('click',()=>{
-  let name=$('presetName').value.trim();
+function saveCurrentSettingsToAppWithName(customNameInput){
+  let name = (customNameInput !== undefined ? String(customNameInput).trim() : '') || getTypedPresetName();
   if(!name){
-    const modeJp=S.mode==='arare'?'大小あられ':(S.mode==='both'?'仲羽田とあられ':'仲羽田');
-    name=`${modeJp}_${S.W/10}x${S.H/10}cm_角${S.kakuAngle}度`;
-    $('presetName').value=name;
+    const modeJp=S.mode==='arare'?'大小あられ':(S.mode==='both'?'仲羽田とあられ':(S.kakuMotif==='seinenkai'?'仲羽田青年会':'仲羽田'));
+    const logoJp=S.showLogo ? '_ロゴ入' : '';
+    name=`${modeJp}${logoJp}_${S.W/10}x${S.H/10}cm`;
   }
+  syncAllPresetNameInputs(name);
   const newItem={
     id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),
     name,
@@ -9712,16 +10054,24 @@ $('savePresetBtn').addEventListener('click',()=>{
   activePresetId=newItem.id;
   savePresetsToStorage();
   renderPresetList();
-  saySave(`「${name}」をアプリ内に保存しました！`);
+  saySave(`💾 設定「${name}」をアプリ内に名前をつけて保存しました！`);
+}
+
+$('savePresetBtn').addEventListener('click',()=>{
+  saveCurrentSettingsToAppWithName($('presetName') ? $('presetName').value : '');
 });
 
 $('presetName').addEventListener('keydown',e=>{
-  if(e.key==='Enter'){ e.preventDefault(); $('savePresetBtn').click(); }
+  if(e.key==='Enter'){ e.preventDefault(); saveCurrentSettingsToAppWithName($('presetName').value); }
+});
+['restorePresetTrashBtn','eTopRestorePresetBtn','eRestorePresetBtn'].forEach(id=>{
+  if($(id)) $(id).addEventListener('click',()=>restoreDeletedPresetFromTrash());
 });
 
-// JSON設定ファイルとして名前を付けて保存
+// JSON設定ファイルとして名前を付けて保存（アプリ内にも同時保存）
 $('exportJsonBtn').addEventListener('click',()=>{
-  const name=$('presetName').value.trim()||`手ぬぐい設定_${S.mode}_${S.W}x${S.H}`;
+  const name=getTypedPresetName()||`手ぬぐい設定_${S.mode}_${S.W}x${S.H}`;
+  syncAllPresetNameInputs(name);
   const payload={
     app:'haneda-arare-studio',
     version:1,
@@ -9733,11 +10083,12 @@ $('exportJsonBtn').addEventListener('click',()=>{
   const safe=name.replace(/[\\/:*?"<>|\s]+/g,'_');
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'});
   save(safe+'.json',blob,safe+'.json');
-  saySave(`「${safe}.json」をダウンロード保存しました。`);
+  saySave(`📥 設定ファイル「${safe}.json」をダウンロード保存しました。`);
 });
 
-// JSON設定ファイル読み込み
+// JSON設定ファイル読み込み（読み込んだ設定ファイルを名前付きでアプリ内の保存一覧にも自動登録）
 $('importJsonBtn').addEventListener('click',()=>$('importJsonInput').click());
+if($('eTopLoadJsonBtn')) $('eTopLoadJsonBtn').addEventListener('click',()=>$('importJsonInput').click());
 $('importJsonInput').addEventListener('change',e=>{
   const f=e.target.files&&e.target.files[0];
   if(!f) return;
@@ -9750,16 +10101,28 @@ $('importJsonInput').addEventListener('change',e=>{
       }else if(data.W && data.H){
         S=Object.assign({},DEF,data);
       }
-      if(data.name) $('presetName').value=data.name;
-      else $('presetName').value=f.name.replace(/\.json$/i,'');
+      const typedNm = getTypedPresetName();
+      const loadedName = typedNm || (data.name && String(data.name).trim()) || f.name.replace(/\.json$/i,'') || '読込設定';
+      syncAllPresetNameInputs(loadedName);
       if(Array.isArray(data.savedPresets)){
         const existingIds=new Set(PRESETS.map(p=>p.id));
         data.savedPresets.forEach(p=>{if(p&&p.id&&!existingIds.has(p.id)) PRESETS.push(p);});
-        savePresetsToStorage();
       }
+      if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
       update(true);
+      // 読み込んだ設定ファイルをアプリ内 PRESETS にも名前付きで登録
+      const importedItem = {
+        id: 'p_imp_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+        name: loadedName,
+        savedAt: Date.now(),
+        thumb: makePresetThumbDataUrl(),
+        settings: JSON.parse(JSON.stringify(S))
+      };
+      PRESETS.unshift(importedItem);
+      activePresetId = importedItem.id;
+      savePresetsToStorage();
       renderPresetList();
-      saySave(`設定ファイル「${f.name}」を読み込みました！`);
+      saySave(`📂 設定ファイル「${loadedName}」を読み込み、アプリ内に名前をつけて保存しました！`);
     }catch(err){
       saySave('設定ファイルの形式が正しくありません。',true);
     }
@@ -11690,13 +12053,15 @@ for(const [pick,hex,key] of [['bgColor','bgHex','bgColor'],['kakuColor','kakuHex
 }
 // Section 3 (🎨 色) 統合コントロール配線（あられ色・札の4パート色）
 if($('dotSyncKakuBtn')) $('dotSyncKakuBtn').addEventListener('click',()=>{ S.dotColor = S.kakuColor || '#ffffff'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
-if($('sec3ArarePadColor')) $('sec3ArarePadColor').addEventListener('input',e=>{ S.ararePadColor = e.target.value; S.ararePadColorMode = 'custom'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
-if($('sec3ArarePadBgBtn')) $('sec3ArarePadBgBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'bg'; S.ararePadColor = S.bgColor; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
-if($('sec3ArarePadWhiteBtn')) $('sec3ArarePadWhiteBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'white'; S.ararePadColor = '#ffffff'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
-if($('sec3ArarePadBlackBtn')) $('sec3ArarePadBlackBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'black'; S.ararePadColor = '#111827'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
-if($('sec3ArarePadStrokeColor')) $('sec3ArarePadStrokeColor').addEventListener('input',e=>{ S.ararePadStrokeColor = e.target.value; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
-if($('sec3ArareStrokeGoldBtn')) $('sec3ArareStrokeGoldBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#877028'; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; update(false); });
-if($('sec3ArareStrokeWhiteBtn')) $('sec3ArareStrokeWhiteBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#ffffff'; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; update(false); });
+if($('sec3ArarePadColor')) $('sec3ArarePadColor').addEventListener('input',e=>{ S.ararePadColor = e.target.value; S.ararePadColorMode = 'custom'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; else if(S.ararePadMode==='frame') S.ararePadMode='padFrame'; if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
+if($('sec3ArarePadNoneBtn')) $('sec3ArarePadNoneBtn').addEventListener('click',()=>{ if(S.ararePadMode==='pad') S.ararePadMode='none'; else if(S.ararePadMode==='padFrame') S.ararePadMode='frame'; update(false); });
+if($('sec3ArarePadBgBtn')) $('sec3ArarePadBgBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'bg'; S.ararePadColor = S.bgColor; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; else if(S.ararePadMode==='frame') S.ararePadMode='padFrame'; if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0; update(false); });
+if($('sec3ArarePadWhiteBtn')) $('sec3ArarePadWhiteBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'white'; S.ararePadColor = '#ffffff'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; else if(S.ararePadMode==='frame') S.ararePadMode='padFrame'; if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0; update(false); });
+if($('sec3ArarePadBlackBtn')) $('sec3ArarePadBlackBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'black'; S.ararePadColor = '#111827'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; else if(S.ararePadMode==='frame') S.ararePadMode='padFrame'; if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0; update(false); });
+if($('sec3ArarePadStrokeColor')) $('sec3ArarePadStrokeColor').addEventListener('input',e=>{ S.ararePadStrokeColor = e.target.value; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; if(!(S.ararePadStrokeMm > 0)) S.ararePadStrokeMm = 1.0; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
+if($('sec3ArareStrokeNoneBtn')) $('sec3ArareStrokeNoneBtn').addEventListener('click',()=>{ if(S.ararePadMode==='frame') S.ararePadMode='none'; else if(S.ararePadMode==='padFrame') S.ararePadMode='pad'; update(false); });
+if($('sec3ArareStrokeGoldBtn')) $('sec3ArareStrokeGoldBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#877028'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; if(!(S.ararePadStrokeMm > 0)) S.ararePadStrokeMm = 1.0; update(false); });
+if($('sec3ArareStrokeWhiteBtn')) $('sec3ArareStrokeWhiteBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#ffffff'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; if(!(S.ararePadStrokeMm > 0)) S.ararePadStrokeMm = 1.0; update(false); });
 if($('sec3ArareOuterColor')) $('sec3ArareOuterColor').addEventListener('input',e=>{ S.arareOuterColor = e.target.value; if(!S.arareOuterMode || S.arareOuterMode==='none') S.arareOuterMode='single'; update(false); });
 if($('sec3ArareOuterDotBtn')) $('sec3ArareOuterDotBtn').addEventListener('click',()=>{ S.arareOuterColor = S.dotColor || '#ffffff'; if(!S.arareOuterMode || S.arareOuterMode==='none') S.arareOuterMode='single'; update(false); });
 if($('sec3FudaSameKakuBtn')) $('sec3FudaSameKakuBtn').addEventListener('click',()=>applyFudaMainColor('same'));
@@ -12482,6 +12847,7 @@ function easyRenderImpl(){
   if(document.activeElement !== $('eBg')) $('eBg').value = eLow(bg);
   if(document.activeElement !== $('eFg')) $('eFg').value = eLow(S.kakuColor || '#ffffff');
   if($('eDotCol') && document.activeElement !== $('eDotCol')) $('eDotCol').value = eLow(S.dotColor || '#ffffff');
+  if($('eArareDotPicker') && document.activeElement !== $('eArareDotPicker')) $('eArareDotPicker').value = eLow(S.dotColor || '#ffffff');
   var fudaHex = getCurrentFudaMainColor();
   var fudaTxtHex = getCurrentFudaTextColor();
   if($('eFudaCol') && document.activeElement !== $('eFudaCol')) $('eFudaCol').value = eLow(fudaHex);
@@ -12551,7 +12917,9 @@ function easyRenderImpl(){
     });
   }
   if($('eArarePadColBtns')){
-    var apcm = S.ararePadColorMode || 'bg';
+    var apModeCur = S.ararePadMode || 'none';
+    var hasApPad = (apModeCur === 'pad' || apModeCur === 'padFrame');
+    var apcm = hasApPad ? (S.ararePadColorMode || 'bg') : 'none';
     $('eArarePadColBtns').querySelectorAll('button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.dataset.eapc === apcm));
     });
@@ -12561,6 +12929,16 @@ function easyRenderImpl(){
   }
   if($('eArarePadStrokeCol') && document.activeElement !== $('eArarePadStrokeCol')){
     $('eArarePadStrokeCol').value = S.ararePadStrokeColor || '#877028';
+  }
+  if($('eArarePadStrokeBtns')){
+    var apModeStrk = S.ararePadMode || 'none';
+    var hasApStrk = (apModeStrk === 'frame' || apModeStrk === 'padFrame') && (S.ararePadStrokeMm > 0);
+    var apStrkHex = eLow(S.ararePadStrokeColor || '#877028');
+    $('eArarePadStrokeBtns').querySelectorAll('button').forEach(function(b){
+      var v = eLow(b.dataset.eapsc);
+      var isPressed = (v === 'none') ? !hasApStrk : (hasApStrk && v === apStrkHex);
+      b.setAttribute('aria-pressed', String(isPressed));
+    });
   }
   if($('eArareOuterMode')){
     var aom = S.arareOuterMode || 'none';
@@ -12664,16 +13042,7 @@ function easyRenderImpl(){
   else { sum.className = 'e-pmsum ok'; sum.textContent = '✓ この太さなら ' + p.short + ' で印刷できます'; }
   // 保存
   $('eSaveSvg').hidden = $('saveSvg').hidden;
-  var el = $('eList'); el.textContent = '';
-  (PRESETS || []).slice(0, 8).forEach(function(item, i){
-    var b = document.createElement('button'); b.type = 'button'; b.title = item.name + ' を読み込む';
-    var t = document.createElement('i'); if(item.thumb) t.style.backgroundImage = 'url(' + item.thumb + ')'; else t.style.background = (item.settings && item.settings.bgColor) || '#046e7e';
-    var n = document.createElement('span'); n.textContent = item.name;
-    b.appendChild(t); b.appendChild(n);
-    if(item.id === activePresetId) b.setAttribute('aria-pressed', 'true');
-    b.addEventListener('click', function(){ var row = document.querySelectorAll('#savedList .preset-item')[i]; var info = row && row.querySelector('.preset-info'); if(info) info.click(); });
-    el.appendChild(b);
-  });
+  renderPresetList();
 }
 (function(){
   if(!$('easyPanel')) return;
@@ -12724,6 +13093,13 @@ function easyRenderImpl(){
   });
   if($('eDotCol')){
     $('eDotCol').addEventListener('input', function(e){
+      S.dotColor = e.target.value;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
+      update(false);
+    });
+  }
+  if($('eArareDotPicker')){
+    $('eArareDotPicker').addEventListener('input', function(e){
       S.dotColor = e.target.value;
       if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
       update(false);
@@ -12802,11 +13178,20 @@ function easyRenderImpl(){
   if($('eArarePadColBtns')){
     $('eArarePadColBtns').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       var c = b.dataset.eapc || 'bg';
+      if(c === 'none'){
+        if(S.ararePadMode === 'pad') S.ararePadMode = 'none';
+        else if(S.ararePadMode === 'padFrame') S.ararePadMode = 'frame';
+        update(false);
+        return;
+      }
       S.ararePadColorMode = c;
       if(c === 'bg') S.ararePadColor = S.bgColor;
       else if(c === 'white') S.ararePadColor = '#ffffff';
       else if(c === 'black') S.ararePadColor = '#111827';
       if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+      else if(S.ararePadMode === 'frame') S.ararePadMode = 'padFrame';
+      if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
       update(false);
     }); });
   }
@@ -12815,14 +13200,38 @@ function easyRenderImpl(){
       S.ararePadColor = e.target.value;
       S.ararePadColorMode = 'custom';
       if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+      else if(S.ararePadMode === 'frame') S.ararePadMode = 'padFrame';
+      if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
       update(false);
     });
+  }
+  if($('eArarePadStrokeBtns')){
+    $('eArarePadStrokeBtns').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      var v = b.dataset.eapsc || 'none';
+      if(v === 'none'){
+        if(S.ararePadMode === 'frame') S.ararePadMode = 'none';
+        else if(S.ararePadMode === 'padFrame') S.ararePadMode = 'pad';
+        update(false);
+        return;
+      }
+      S.ararePadStrokeColor = v;
+      S.arareOuterColor = v;
+      if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'frame';
+      else if(S.ararePadMode === 'pad') S.ararePadMode = 'padFrame';
+      if(!(S.ararePadStrokeMm > 0)) S.ararePadStrokeMm = 1.0;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
+      update(false);
+    }); });
   }
   if($('eArarePadStrokeCol')){
     $('eArarePadStrokeCol').addEventListener('input', function(e){
       S.ararePadStrokeColor = e.target.value;
-      if(S.ararePadMode === 'none') S.ararePadMode = 'frame';
+      S.arareOuterColor = e.target.value;
+      if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'frame';
       else if(S.ararePadMode === 'pad') S.ararePadMode = 'padFrame';
+      if(!(S.ararePadStrokeMm > 0)) S.ararePadStrokeMm = 1.0;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
       update(false);
     });
   }
@@ -12969,9 +13378,16 @@ function easyRenderImpl(){
   $('eCopySvg').addEventListener('click', function(){ $('copySvg').click(); });
   if($('eSaveJson')) $('eSaveJson').addEventListener('click', function(){ $('exportJsonBtn').click(); });
   if($('eLoadJson')) $('eLoadJson').addEventListener('click', function(){ $('importJsonBtn').click(); });
-  function keep(){ $('presetName').value = $('eName').value.trim(); $('savePresetBtn').click(); $('eName').value = ''; easyRender(); }
-  $('eKeep').addEventListener('click', keep);
-  $('eName').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); keep(); } });
+  function keepFromStep8(){
+    saveCurrentSettingsToAppWithName($('eName') ? $('eName').value : '');
+  }
+  function keepFromTop(){
+    saveCurrentSettingsToAppWithName($('eTopPresetName') ? $('eTopPresetName').value : '');
+  }
+  if($('eKeep')) $('eKeep').addEventListener('click', keepFromStep8);
+  if($('eName')) $('eName').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); keepFromStep8(); } });
+  if($('eTopSavePresetBtn')) $('eTopSavePresetBtn').addEventListener('click', keepFromTop);
+  if($('eTopPresetName')) $('eTopPresetName').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); keepFromTop(); } });
   // 詳細モード側のお知らせ（保存しました 等）をかんたん側にも出す
   var em = $('eMsg');
   ['msg', 'saveMsg', 'pmMsgA'].forEach(function(id){

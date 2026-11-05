@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>仲羽田 近代・黄金比ロゴ 6選（φ = 1 : 1.618 Geometric Logo Collection）</title>
+<style>
+:root{
+  --bg:#0b1120;
+  --card:#111827;
+  --line:#1e293b;
+  --fg:#f8fafc;
+  --muted:#94a3b8;
+  --gold:#d4af37;
+  --teal:#00a3af;
+  --nando:#046e7e;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic UI","Meiryo",sans-serif;
+  background:var(--bg);
+  color:var(--fg);
+  line-height:1.5;
+}
+header{
+  padding:18px 24px;
+  background:linear-gradient(135deg,#0f172a 0%,#083344 100%);
+  border-bottom:1px solid #1e293b;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:14px;
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.title-wrap h1{
+  margin:0;
+  font-size:20px;
+  letter-spacing:0.04em;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.phi-badge{
+  background:linear-gradient(135deg,#f59e0b,#b45309);
+  color:#fff;
+  font-size:12px;
+  padding:2px 10px;
+  border-radius:999px;
+  font-weight:800;
+}
+.title-wrap p{
+  margin:4px 0 0;
+  font-size:12.5px;
+  color:#cbd5e1;
+}
+.controls{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.ctrl-group{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  background:#0f172a;
+  padding:6px 10px;
+  border-radius:8px;
+  border:1px solid #334155;
+  font-size:12px;
+}
+.sw-btn{
+  width:26px;
+  height:26px;
+  border-radius:6px;
+  border:2px solid rgba(255,255,255,0.25);
+  cursor:pointer;
+  transition:transform .12s,border-color .12s;
+}
+.sw-btn:hover,.sw-btn.active{
+  transform:scale(1.12);
+  border-color:#38bdf8;
+}
+.btn{
+  background:#0284c7;
+  color:#fff;
+  border:1px solid #0369a1;
+  padding:7px 13px;
+  border-radius:7px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+}
+.btn:hover{background:#0369a1}
+.btn.gold{background:linear-gradient(135deg,#d97706,#92400e);border-color:#f59e0b}
+.btn.ghost{background:#1e293b;border-color:#475569;color:#e2e8f0}
+.grid{
+  max-width:1400px;
+  margin:22px auto;
+  padding:0 20px 40px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(410px,1fr));
+  gap:20px;
+}
+.card{
+  background:var(--card);
+  border:1px solid #1e293b;
+  border-radius:14px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 10px 28px rgba(0,0,0,0.35);
+}
+.card-head{
+  padding:12px 16px;
+  background:#0f172a;
+  border-bottom:1px solid #1e293b;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+.card-head h2{
+  margin:0;
+  font-size:15px;
+  color:#f8fafc;
+}
+.card-head .ratio-tag{
+  font-size:11px;
+  font-family:monospace;
+  background:#1e293b;
+  color:#fde047;
+  padding:2px 8px;
+  border-radius:6px;
+  border:1px solid #475569;
+}
+.stage{
+  position:relative;
+  height:340px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:var(--stage-bg,#046e7e);
+  background-image:radial-gradient(rgba(255,255,255,0.06) 1px, transparent 0);
+  background-size:20px 20px;
+  transition:background-color .2s;
+}
+.stage svg{
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:285px;
+  filter:drop-shadow(0 6px 16px rgba(0,0,0,0.28));
+}
+.guide-layer{
+  pointer-events:none;
+  transition:opacity .2s;
+}
+body.hide-guides .guide-layer{
+  opacity:0 !important;
+}
+.card-body{
+  padding:14px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  flex:1;
+}
+.desc{
+  margin:0;
+  font-size:12px;
+  color:#cbd5e1;
+  line-height:1.55;
+}
+.math-note{
+  font-size:11px;
+  color:#fcd34d;
+  background:rgba(245,158,11,0.1);
+  border:1px solid rgba(245,158,11,0.3);
+  border-radius:6px;
+  padding:5px 8px;
+}
+.card-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:auto;
+  padding-top:6px;
+}
+.card-actions .btn{
+  flex:1;
+  justify-content:center;
+}
+.toast{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#0284c7;
+  color:#fff;
+  padding:10px 18px;
+  border-radius:10px;
+  font-weight:700;
+  font-size:13px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.4);
+  display:none;
+  z-index:100;
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="title-wrap">
+    <h1><span>📐 仲羽田 近代・黄金比ロゴ 6選</span><span class="phi-badge">φ = 1 : 1.618034</span></h1>
+    <p>江戸角字「仲・羽・田」の骨格を、黄金比（φ = (1+√5)/2 ≈ 1.618）とフィボナッチ数列（1, 1, 2, 3, 5, 8, 13）で再構築した6通りの近代ベクターロゴ</p>
+  </div>
+  <div class="controls">
+    <div class="ctrl-group">
+      <span>ロゴ色:</span>
+      <button type="button" class="sw-btn active" data-fg="#ffffff" style="background:#ffffff" title="白 (#FFFFFF)"></button>
+      <button type="button" class="sw-btn" data-fg="#d4af37" style="background:#d4af37" title="黄金・羽田金 (#D4AF37)"></button>
+      <button type="button" class="sw-btn" data-fg="#00a3af" style="background:#00a3af" title="浅葱 (#00A3AF)"></button>
+      <button type="button" class="sw-btn" data-fg="#046e7e" style="background:#046e7e" title="羽田納戸 (#046E7E)"></button>
+      <button type="button" class="sw-btn" data-fg="#b7282e" style="background:#b7282e" title="茜 (#B7282E)"></button>
+      <button type="button" class="sw-btn" data-fg="#111827" style="background:#111827" title="墨黒 (#111827)"></button>
+      <input type="color" id="customFgPicker" value="#ffffff" style="width:26px;height:26px;border:none;background:none;cursor:pointer">
+    </div>
+    <div class="ctrl-group">
+      <span>背景色:</span>
+      <button type="button" class="sw-btn active" data-bg="#046e7e" style="background:#046e7e" title="羽田納戸 (#046E7E)"></button>
+      <button type="button" class="sw-btn" data-bg="#0f172a" style="background:#0f172a" title="濃紺・墨 (#0F172A)"></button>
+      <button type="button" class="sw-btn" data-bg="#183574" style="background:#183574" title="藍 (#183574)"></button>
+      <button type="button" class="sw-btn" data-bg="#f8fafc" style="background:#f8fafc" title="白生地 (#F8FAFC)"></button>
+    </div>
+    <label class="ctrl-group" style="cursor:pointer;font-weight:700;color:#fde047">
+      <input type="checkbox" id="toggleGuideChk" checked> 📐 黄金比ガイド線(φ)を表示
+    </label>
+    <a href="arare_app.html" class="btn ghost">← 手ぬぐい・ダボ工房へ戻る</a>
+  </div>
+</header>
+
+<main class="grid" id="logoGrid"></main>
+<div class="toast" id="toast"></div>
+
+<script>
+const PHI = (1 + Math.sqrt(5)) / 2; // 1.6180339887...
+
+// 黄金比グリッド（線幅 : 空間 = φ : 1）に基づくモダン「仲・羽・田」単体グリフパス生成
+// (x0, y0) を左上とし、幅 w, 高さ h の矩形内に描画する SVG path 文字列を返す
+function glyphNakaPath(x0, y0, w, h){
+  const rx = (u) => (x0 + u * w).toFixed(2);
+  const ry = (v) => (y0 + v * h).toFixed(2);
+  const rect = (u0, v0, uw, vh) => `M${rx(u0)},${ry(v0)}H${rx(u0+uw)}V${ry(v0+vh)}H${rx(u0)}Z`;
+  // 黄金比ストローク s = 0.165, ギャップ g = s / φ = 0.102
+  const s = 0.162;
+  let d = '';
+  // 「亻」（にんべん）：上部に45°モダンベベルを持つ垂直ピラー
+  d += `M${rx(0.08)},${ry(0.0)}H${rx(0.26)}V${ry(0.28)}L${rx(0.23)},${ry(0.32)}V${ry(1.0)}H${rx(0.07)}V${ry(0.36)}H${rx(0.0)}V${ry(0.20)}L${rx(0.08)},${ry(0.12)}Z`;
+  // 「中」の外枠（黄金長方形プロポーション y: 0.191..0.764）
+  const cx0 = 0.34, cx1 = 1.00, cy0 = 0.18, cy1 = 0.76;
+  const cs = 0.145;
+  // 上辺・下辺・左柱・右柱
+  d += rect(cx0, cy0, cx1 - cx0, cs);
+  d += rect(cx0, cy1 - cs, cx1 - cx0, cs);
+  d += rect(cx0, cy0, cs, cy1 - cy0);
+  d += rect(cx1 - cs, cy0, cs, cy1 - cy0);
+  // 中央を貫く黄金縦軸
+  const midX = (cx0 + cx1) * 0.5 - s * 0.5;
+  d += rect(midX, 0.0, s, 1.0);
+  return d;
+}
+
+function glyphHanePath(x0, y0, w, h){
+  const rx = (u) => (x0 + u * w).toFixed(2);
+  const ry = (v) => (y0 + v * h).toFixed(2);
+  const rect = (u0, v0, uw, vh) => `M${rx(u0)},${ry(v0)}H${rx(u0+uw)}V${ry(v0+vh)}H${rx(u0)}Z`;
+  const s = 0.158;
+  let d = '';
+  // 左右シンメトリー黄金ウイング（左翼 0..0.462, 右翼 0.538..1.000）
+  for(const off of [0.0, 0.538]){
+    const wWing = 0.462;
+    // 上辺（左角をシャープに斜めカット）
+    d += `M${rx(off + 0.06)},${ry(0.0)}H${rx(off + wWing)}V${ry(s)}H${rx(off)}V${ry(0.06)}Z`;
+    // 右主柱（下端に黄金比の跳ね）
+    d += `M${rx(off + wWing - s)},${ry(0.0)}H${rx(off + wWing)}V${ry(1.0)}H${rx(off + 0.12)}L${rx(off + 0.06)},${ry(1.0 - s)}H${rx(off + wWing - s)}Z`;
+    // 内部の2本の羽根バー（黄金分割位置 0.382 と 0.618）
+    d += rect(off + 0.02, 0.34, wWing - s - 0.06, s * 0.85);
+    d += rect(off + 0.02, 0.60, wWing - s - 0.06, s * 0.85);
+  }
+  return d;
+}
+
+function glyphTaPath(x0, y0, w, h){
+  const rx = (u) => (x0 + u * w).toFixed(2);
+  const ry = (v) => (y0 + v * h).toFixed(2);
+  const rect = (u0, v0, uw, vh) => `M${rx(u0)},${ry(v0)}H${rx(u0+uw)}V${ry(v0+vh)}H${rx(u0)}Z`;
+  // 3本のストローク s = 0.184, 2つの黄金窓 g = (1 - 3s)/2 = 0.224
+  const s = 0.184;
+  const m = 0.5 - s * 0.5;
+  let d = '';
+  // 外周4辺
+  d += rect(0, 0, 1, s);
+  d += rect(0, 1 - s, 1, s);
+  d += rect(0, 0, s, 1);
+  d += rect(1 - s, 0, s, 1);
+  // 中央十字
+  d += rect(m, 0, s, 1);
+  d += rect(0, m, 1, s);
+  return d;
+}
+
+const GOLDEN_LOGOS = [
+  {
+    id: 'gold_1_circle',
+    token: '__BUILTIN_GOLD_1__',
+    title: '① 黄金円・モダン丸紋（Golden Circle Monogram）',
+    ratioLabel: 'D : d : c = 1 : 1/φ : 1/φ²',
+    desc: '外円(1000)と内円(618 = 1/φ)の二重黄金リングの中に、黄金比グリッドで設計した「仲（上段 φ⁻²）」「羽・田（下段シンメトリー）」を品字紋配置した現代的な丸紋。背紋・胸紋のどちらにも格調高く収まります。',
+    math: '外径 1000 : 内径 618 (1/φ) : 核 382 (1/φ²) ／ 文字線幅 : 窓 = φ : 1',
+    buildSvg(fg, showGuide){
+      const pNaka = glyphNakaPath(365, 195, 270, 255);
+      const pHane = glyphHanePath(215, 495, 255, 255);
+      const pTa   = glyphTaPath(530, 495, 255, 255);
+      const guide = `<g class="guide-layer" fill="none" stroke="#fde047" stroke-width="2" stroke-dasharray="7 5" opacity="0.78">
+        <circle cx="500" cy="500" r="460"/>
+        <circle cx="500" cy="500" r="${(460/PHI).toFixed(1)}"/>
+        <circle cx="500" cy="500" r="${(460/(PHI*PHI)).toFixed(1)}"/>
+        <line x1="40" y1="472" x2="960" y2="472"/>
+        <line x1="500" y1="40" x2="500" y2="960"/>
+        <text x="512" y="82" fill="#fde047" font-size="22" font-family="monospace" stroke="none">R = 1.000</text>
+        <text x="512" y="242" fill="#fde047" font-size="22" font-family="monospace" stroke="none">R/φ = 0.618</text>
+      </g>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+        <g fill="${fg}" fill-rule="nonzero">
+          <!-- 外周黄金リング (外R=460, 内R=412) + 4方向の黄金スリット -->
+          <path fill-rule="evenodd" d="M500,40 A460,460 0 1,1 499.9,40 Z M500,88 A412,412 0 1,0 500.1,88 Z"/>
+          <!-- 内側ファインリング (外R=392, 内R=380) -->
+          <path fill-rule="evenodd" d="M500,108 A392,392 0 1,1 499.9,108 Z M500,120 A380,380 0 1,0 500.1,120 Z"/>
+          <!-- 黄金分割ホリゾンタルブリッジ -->
+          <rect x="215" y="466" width="570" height="12"/>
+          <rect x="494" y="472" width="12" height="295"/>
+          <!-- 仲・羽・田 モダン角字 -->
+          <path d="${pNaka}"/>
+          <path d="${pHane}"/>
+          <path d="${pTa}"/>
+        </g>
+        ${showGuide ? guide : ''}
+      </svg>`;
+    }
+  },
+  {
+    id: 'gold_2_monolith',
+    token: '__BUILTIN_GOLD_2__',
+    title: '② 黄金長方形・ネオ角字モノリス（Golden Monolith 1:φ）',
+    ratioLabel: 'W : H = 1 : φ (618 : 1000)',
+    desc: '外形そのものが厳密な黄金長方形（618×1000）で構成された現代建築風モノリスロゴ。四隅を黄金比（1/φ⁴）で45°面取りした二重フレーム内に「仲・羽・田」を縦一列でシンメトリー配置しています。',
+    math: '外枠 560 × 906 (1 : 1.618) ／ 面取り 55px (フィボナッチ数) ／ 3文字等ピッチ黄金配置',
+    buildSvg(fg, showGuide){
+      // 外枠 560 x 906 (560 * 1.618034 = 906.1), 左上 (220, 47)
+      const pNaka = glyphNakaPath(390, 128, 220, 212);
+      const pHane = glyphHanePath(390, 394, 220, 212);
+      const pTa   = glyphTaPath(390, 660, 220, 212);
+      const oct = (x, y, w, h, c) => `M${x+c},${y}H${x+w-c}L${x+w},${y+c}V${y+h-c}L${x+w-c},${y+h}H${x+c}L${x},${y+h-c}V${y+c}Z`;
+      const outerOct = oct(220, 47, 560, 906, 55);
+      const innerOct = oct(254, 81, 492, 838, 42);
+      const thinOct1 = oct(270, 97, 460, 806, 34);
+      const thinOct2 = oct(280, 107, 440, 786, 30);
+      const guide = `<g class="guide-layer" fill="none" stroke="#fde047" stroke-width="2" stroke-dasharray="7 5" opacity="0.78">
+        <rect x="220" y="47" width="560" height="906"/>
+        <line x1="220" y1="607" x2="780" y2="607"/>
+        <line x1="566" y1="607" x2="566" y2="953"/>
+        <text x="232" y="38" fill="#fde047" font-size="22" font-family="monospace" stroke="none">W=1.000 : H=φ(1.618)</text>
+      </g>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+        <g fill="${fg}">
+          <path fill-rule="evenodd" d="${outerOct} ${innerOct}"/>
+          <path fill-rule="evenodd" d="${thinOct1} ${thinOct2}"/>
+          <!-- 黄金比セパレーターバー -->
+          <rect x="330" y="361" width="340" height="10"/>
+          <rect x="330" y="627" width="340" height="10"/>
+          <!-- 左右の縦アクセントピラー -->
+          <rect x="330" y="128" width="14" height="744"/>
+          <rect x="656" y="128" width="14" height="744"/>
+          <path d="${pNaka}"/>
+          <path d="${pHane}"/>
+          <path d="${pTa}"/>
+        </g>
+        ${showGuide ? guide : ''}
+      </svg>`;
+    }
+  },
+  {
+    id: 'gold_3_wings',
+    token: '__BUILTIN_GOLD_3__',
+    title: '③ 黄金螺旋・飛翔ウイング紋（Golden Wing Crest）',
+    ratioLabel: 'Fibonacci Arcs: 89 : 144 : 233 : 377',
+    desc: '「仲羽田」の「羽（HANE）」を象徴する左右一対の飛翔ウイングをフィボナッチ黄金円弧（89, 144, 233, 377）で構成し、中央の黄金コアに「仲・羽・田」を収めたダイナミックなエンブレム。ダボシャツの背紋や胸に圧倒的な存在感を放ちます。',
+    math: '翼スパン 920 : 中央盾 354 (1/φ²) ／ 3枚の黄金フェザーブレード角度 φ比率',
+    buildSvg(fg, showGuide){
+      const pNaka = glyphNakaPath(412, 230, 176, 165);
+      const pHane = glyphHanePath(412, 420, 176, 165);
+      const pTa   = glyphTaPath(412, 610, 176, 165);
+      // 左ウイング 3枚の黄金フェザーブレード (右ウイングは x=1000-x で完全対称)
+      const wingBlade = (pts) => {
+        const L = 'M' + pts.map(p => `${p[0]},${p[1]}`).join('L') + 'Z';
+        const R = 'M' + pts.map(p => `${1000 - p[0]},${p[1]}`).join('L') + 'Z';
+        return L + ' ' + R;
+      };
+      const blades = [
+        // 第1翼（上段メインブレード：長さ377）
+        wingBlade([[330, 310], [45, 195], [75, 275], [330, 378]]),
+        // 第2翼（中段ブレード：長さ288）
+        wingBlade([[330, 412], [95, 325], [125, 398], [330, 476]]),
+        // 第3翼（下段ブレード：長さ210）
+        wingBlade([[330, 510], [155, 448], [182, 514], [330, 570]]),
+        // 第4翼（下部サブブレード：長さ144）
+        wingBlade([[345, 604], [225, 562], [248, 618], [360, 658]])
+      ].join(' ');
+      // 中央の黄金六角シールド
+      const shieldOuter = `M500,135 L655,210 L655,775 L500,865 L345,775 L345,210 Z`;
+      const shieldInner = `M500,165 L629,228 L629,757 L500,833 L371,757 L371,228 Z`;
+      const guide = `<g class="guide-layer" fill="none" stroke="#fde047" stroke-width="2" stroke-dasharray="7 5" opacity="0.78">
+        <circle cx="500" cy="500" r="377"/>
+        <circle cx="500" cy="500" r="233"/>
+        <circle cx="500" cy="500" r="144"/>
+        <line x1="45" y1="500" x2="955" y2="500"/>
+        <text x="510" y="115" fill="#fde047" font-size="22" font-family="monospace" stroke="none">Fibonacci R = 377 / 233 / 144</text>
+      </g>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+        <g fill="${fg}">
+          <path d="${blades}"/>
+          <path fill-rule="evenodd" d="${shieldOuter} ${shieldInner}"/>
+          <path d="${pNaka}"/>
+          <path d="${pHane}"/>
+          <path d="${pTa}"/>
+        </g>
+        ${showGuide ? guide : ''}
+      </svg>`;
+    }
+  },
+  {
+    id: 'gold_4_fuda',
+    token: '__BUILTIN_GOLD_4__',
+    title: '④ 黄金六角・モダン千社札（Golden Modern Senjafuda）',
+    ratioLabel: 'Crown 1/φ³ : Body 1/φ : Base 1/φ⁴',
+    desc: '伝統の木札・千社札を黄金比でモダンに再設計したネオ千社札。上部の山形角度・組紐ホール・二重枠の余白すべてが φ 比率で統一され、下部の黄金セクションには「SEINENKAI」の幾何学レタリングまたは格子紋が収まります。',
+    math: '札高 900 : 札幅 440 ／ 頂角高 131 (1/φ⁴) ／ 内枠余白 21 : 34 (フィボナッチ比)',
+    buildSvg(fg, showGuide){
+      const pNaka = glyphNakaPath(395, 255, 210, 185);
+      const pHane = glyphHanePath(395, 465, 210, 185);
+      const pTa   = glyphTaPath(395, 675, 210, 185);
+      // 山形五角〜六角札の外枠と内枠
+      const fOuter = `M500,50 L720,165 L720,930 L280,930 L280,165 Z`;
+      const fInner = `M500,82 L692,182 L692,902 L308,902 L308,182 Z`;
+      const fCoreOuter = `M500,104 L672,194 L672,882 L328,882 L328,194 Z`;
+      const fCoreInner = `M500,116 L660,200 L660,870 L340,870 L340,200 Z`;
+      const guide = `<g class="guide-layer" fill="none" stroke="#fde047" stroke-width="2" stroke-dasharray="7 5" opacity="0.78">
+        <rect x="280" y="50" width="440" height="880"/>
+        <line x1="240" y1="182" x2="760" y2="182"/>
+        <line x1="240" y1="594" x2="760" y2="594"/>
+        <circle cx="500" cy="175" r="34"/>
+        <text x="285" y="38" fill="#fde047" font-size="22" font-family="monospace" stroke="none">Golden Fuda (1 : φ Section)</text>
+      </g>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+        <g fill="${fg}">
+          <path fill-rule="evenodd" d="${fOuter} ${fInner}"/>
+          <path fill-rule="evenodd" d="${fCoreOuter} ${fCoreInner}"/>
+          <!-- 上部の黄金組紐リング＆モダン水引ノット -->
+          <path fill-rule="evenodd" d="M500,141 A34,34 0 1,1 499.9,141 Z M500,157 A18,18 0 1,0 500.1,157 Z"/>
+          <rect x="491" y="30" width="18" height="115" rx="4"/>
+          <rect x="340" y="218" width="320" height="12"/>
+          <path d="${pNaka}"/>
+          <path d="${pHane}"/>
+          <path d="${pTa}"/>
+        </g>
+        ${showGuide ? guide : ''}
+      </svg>`;
+    }
+  },
+  {
+    id: 'gold_5_diamond',
+    token: '__BUILTIN_GOLD_5__',
+    title: '⑤ 黄金菱・ダイヤモンド紋（Golden Diamond / Rhombus）',
+    ratioLabel: 'Inner Square : Outer Diamond = 1 : φ',
+    desc: '45°回転した黄金ダイヤモンド（菱紋）の中に、水平・垂直の黄金比グリッドで「仲（上）・羽（左）・田（右）」と黄金角字紋をインターロック配置したシャープな紋章。左胸・ポケット・襟元・袖に最適です。',
+    math: '外菱対角 920 : 内菱対角 568 (1/φ) : 中心核 351 (1/φ²)',
+    buildSvg(fg, showGuide){
+      const pNaka = glyphNakaPath(405, 225, 190, 180);
+      const pHane = glyphHanePath(255, 435, 215, 200);
+      const pTa   = glyphTaPath(530, 435, 215, 200);
+      const dOuter = `M500,40 L960,500 L500,960 L40,500 Z`;
+      const dMid1  = `M500,92 L908,500 L500,908 L92,500 Z`;
+      const dMid2  = `M500,118 L882,500 L500,882 L118,500 Z`;
+      const dInner = `M500,134 L866,500 L500,866 L134,500 Z`;
+      // 下部頂点の黄金シェブロン（V字）
+      const chev = `M360,675 L500,815 L640,675 L640,715 L500,855 L360,715 Z M415,675 L500,760 L585,675 L585,705 L500,790 L415,705 Z`;
+      const guide = `<g class="guide-layer" fill="none" stroke="#fde047" stroke-width="2" stroke-dasharray="7 5" opacity="0.78">
+        <polygon points="500,40 960,500 500,960 40,500"/>
+        <rect x="215" y="215" width="570" height="570"/>
+        <line x1="40" y1="500" x2="960" y2="500"/>
+        <line x1="500" y1="40" x2="500" y2="960"/>
+      </g>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+        <g fill="${fg}">
+          <path fill-rule="evenodd" d="${dOuter} ${dMid1}"/>
+          <path fill-rule="evenodd" d="${dMid2} ${dInner}"/>
+          <rect x="255" y="413" width="490" height="10"/>
+          <rect x="495" y="413" width="10" height="230"/>
+          <path d="${pNaka}"/>
+          <path d="${pHane}"/>
+          <path d="${pTa}"/>
+          <path d="${chev}"/>
+        </g>
+        ${showGuide ? guide : ''}
+      </svg>`;
+    }
+  },
+  {
+    id: 'gold_6_lockup',
+    token: '__BUILTIN_GOLD_6__',
+    title: '⑥ 黄金分割・横組みモダンロックアップ（Golden Horizontal Lockup）',
+    ratioLabel: 'Seal 1/φ² (38.2%) : Type 1/φ (61.8%)',
+    desc: '全体を黄金比で左右分割（左38.2% : 右61.8%）し、左側に黄金二重円の落款エンブレム、右側にモダン角字「仲 羽 田」と幾何学ラインを水平配置した現代ブランド風ロックアップ。手ぬぐいの上部・下部帯や胸ロゴに最適です。',
+    math: '全体 920 × 351 (φ² : 1) ／ 左落款 351 (1/φ²) : 右タイポ 569 (1/φ)',
+    buildSvg(fg, showGuide){
+      // 左側 (x=40..360, cy=500): 黄金丸紋シール (外R=150, 内R=93=150/φ) の中に「仲」
+      const pSealNaka = glyphNakaPath(136, 436, 128, 128);
+      // 右側 (x=395..950): 横並びの「仲・羽・田」+ 上下黄金比バー
+      const pNaka = glyphNakaPath(400, 385, 162, 162);
+      const pHane = glyphHanePath(586, 385, 162, 162);
+      const pTa   = glyphTaPath(772, 385, 162, 162);
+      const guide = `<g class="guide-layer" fill="none" stroke="#fde047" stroke-width="2" stroke-dasharray="7 5" opacity="0.78">
+        <rect x="40" y="324" width="920" height="352"/>
+        <line x1="391" y1="300" x2="391" y2="700"/>
+        <circle cx="200" cy="500" r="152"/>
+        <circle cx="200" cy="500" r="94"/>
+        <text x="45" y="310" fill="#fde047" font-size="21" font-family="monospace" stroke="none">1/φ² (38.2%)</text>
+        <text x="405" y="310" fill="#fde047" font-size="21" font-family="monospace" stroke="none">1/φ (61.8%)</text>
+      </g>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+        <g fill="${fg}">
+          <!-- 左：黄金二重リング落款 -->
+          <path fill-rule="evenodd" d="M200,348 A152,152 0 1,1 199.9,348 Z M200,372 A128,128 0 1,0 200.1,372 Z"/>
+          <path fill-rule="evenodd" d="M200,384 A116,116 0 1,1 199.9,384 Z M200,394 A106,106 0 1,0 200.1,394 Z"/>
+          <path d="${pSealNaka}"/>
+          <!-- 黄金分割点 (x=376) の垂直ディバイダー -->
+          <rect x="372" y="348" width="10" height="304"/>
+          <!-- 右：上下の黄金比アーキテクチャルバー＆「仲 羽 田」 -->
+          <rect x="400" y="348" width="534" height="16"/>
+          <rect x="400" y="572" width="534" height="10"/>
+          <rect x="400" y="636" width="534" height="16"/>
+          <!-- 下段の黄金比ジオメトリック・ストライプ装飾 -->
+          <rect x="400" y="596" width="204" height="24"/>
+          <rect x="618" y="596" width="126" height="24"/>
+          <rect x="758" y="596" width="78" height="24"/>
+          <rect x="850" y="596" width="48" height="24"/>
+          <rect x="910" y="596" width="24" height="24"/>
+          <path d="${pNaka}"/>
+          <path d="${pHane}"/>
+          <path d="${pTa}"/>
+        </g>
+        ${showGuide ? guide : ''}
+      </svg>`;
+    }
+  }
+];
+
+let curFg = '#ffffff';
+let curBg = '#046e7e';
+let showGuide = true;
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(showToast._tm);
+  showToast._tm = setTimeout(() => { t.style.display = 'none'; }, 2800);
+}
+
+function renderAllCards(){
+  const grid = document.getElementById('logoGrid');
+  grid.innerHTML = '';
+  GOLDEN_LOGOS.forEach((item, idx) => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-head">
+        <h2>${item.title}</h2>
+        <span class="ratio-tag">${item.ratioLabel}</span>
+      </div>
+      <div class="stage" style="--stage-bg:${curBg}">
+        ${item.buildSvg(curFg, showGuide)}
+      </div>
+      <div class="card-body">
+        <p class="desc">${item.desc}</p>
+        <div class="math-note">📐 黄金律設計: ${item.math}</div>
+        <div class="card-actions">
+          <button type="button" class="btn gold use-in-app-btn" data-idx="${idx}">⚡ 手ぬぐい・ダボに配置する</button>
+          <button type="button" class="btn ghost dl-svg-btn" data-idx="${idx}">📐 SVG保存</button>
+          <button type="button" class="btn ghost dl-png-btn" data-idx="${idx}">🖼️ PNG保存</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.querySelectorAll('.use-in-app-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = GOLDEN_LOGOS[+btn.dataset.idx];
+      sendLogoToMainApp(item);
+    });
+  });
+  document.querySelectorAll('.dl-svg-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = GOLDEN_LOGOS[+btn.dataset.idx];
+      const svgStr = item.buildSvg(curFg, false);
+      const blob = new Blob([svgStr], { type: 'image/svg+xml;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `nakahaneda_${item.id}.svg`;
+      a.click();
+      showToast(`📐 「${item.title}」のSVGを保存しました`);
+    });
+  });
+  document.querySelectorAll('.dl-png-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = GOLDEN_LOGOS[+btn.dataset.idx];
+      const svgStr = item.buildSvg(curFg, false);
+      const img = new Image();
+      img.onload = () => {
+        const cv = document.createElement('canvas');
+        cv.width = 1600; cv.height = 1600;
+        const ctx = cv.getContext('2d');
+        ctx.drawImage(img, 0, 0, 1600, 1600);
+        cv.toBlob(blob => {
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = `nakahaneda_${item.id}.png`;
+          a.click();
+          showToast(`🖼️ 「${item.title}」の高解像度PNGを保存しました`);
+        }, 'image/png');
+      };
+      img.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(svgStr);
+    });
+  });
+}
+
+function sendLogoToMainApp(item){
+  const cleanSvg = item.buildSvg(curFg, false);
+  const dataUrl = 'data:image/svg+xml;utf8,' + encodeURIComponent(cleanSvg);
+  try{
+    // 1. マイ・ロゴ保管棚 (haneda-logo-shelf-v1) に追加・更新
+    const shelfStorageId = 'haneda-logo-shelf-v1';
+    const shelf = JSON.parse(localStorage.getItem(shelfStorageId) || '[]');
+    const cleanTitle = item.title.replace(/^[①-⑥]\s*/, '');
+    const slotObj = {
+      logoName: cleanTitle,
+      logoDataUrl: dataUrl,
+      logoRemoveBg: false,
+      logoBgMode: 'none',
+      logoInvert: false,
+      logoMono: false,
+      logoColor: curFg,
+      logoOutlineMm: 0,
+      logoPadMode: 'silhouette',
+      logoPadColorMode: 'bg',
+      logoPadColor: '#046e7e',
+      logoPadMarginMm: 6,
+      logoSize: 88,
+      logoX: 50,
+      logoY: 22,
+      daboSpotPart: 'all'
+    };
+    const existIdx = shelf.findIndex(x => x && x.id === 'shelf_' + item.id);
+    const entry = { id: 'shelf_' + item.id, name: '📐 ' + cleanTitle, savedAt: Date.now(), slot: slotObj };
+    if(existIdx >= 0) shelf[existIdx] = entry;
+    else shelf.unshift(entry);
+    localStorage.setItem(shelfStorageId, JSON.stringify(shelf));
+
+    // 2. 現在のアプリ設定 (haneda-arare-settings) にアクティブ配置して手ぬぐい・ダボ画面を開く
+    const stStorageId = 'haneda-arare-settings';
+    const st = JSON.parse(localStorage.getItem(stStorageId) || '{}');
+    Object.assign(st, slotObj, {
+      showLogo: true,
+      logoSlots: [ slotObj ],
+      activeLogoSlot: 0,
+      daboLogoTarget: 'all'
+    });
+    localStorage.setItem(stStorageId, JSON.stringify(st));
+    showToast(`⚡ 「${item.title}」を手ぬぐい＆ダボに配置しました！移動します...`);
+    setTimeout(() => { window.location.href = 'arare_app.html'; }, 550);
+  }catch(e){
+    alert('設定の保存に失敗しました: ' + e.message);
+  }
+}
+
+document.querySelectorAll('[data-fg]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-fg]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    curFg = btn.dataset.fg;
+    document.getElementById('customFgPicker').value = curFg;
+    renderAllCards();
+  });
+});
+document.getElementById('customFgPicker').addEventListener('input', e => {
+  curFg = e.target.value;
+  renderAllCards();
+});
+document.querySelectorAll('[data-bg]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-bg]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    curBg = btn.dataset.bg;
+    renderAllCards();
+  });
+});
+document.getElementById('toggleGuideChk').addEventListener('change', e => {
+  showGuide = e.target.checked;
+  document.body.classList.toggle('hide-guides', !showGuide);
+  renderAllCards();
+});
+
+renderAllCards();
+</script>
+</body>
+</html>
