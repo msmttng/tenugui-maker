@@ -195,13 +195,13 @@
       logos.forEach(function (pl) {
         var wq = rp(pl, pl.cx + (cfg.winDX || 0), pl.cy + (cfg.winDY || 0)), wx = wq[0], wy = wq[1];
         var wpl = { cx: wx, cy: wy, rot: pl.rot, c: pl.c, sn: pl.sn };
-        var ww = pl.w + 2 * ((cfg.padX != null ? cfg.padX : 9) + bgRim);
-        var hh = pl.h + 2 * ((cfg.padY != null ? cfg.padY : 27) + bgRim);
+        var ww = pl.w + 2 * (cfg.padX != null ? cfg.padX : 9);
+        var hh = pl.h + 2 * (cfg.padY != null ? cfg.padY : 27);
         var x = wx - ww / 2, y = wy - hh / 2;
         var o = null;
 
         if (st === 'maru') {
-          var effWinR = (cfg.winR || Math.round(cfg.logoH * 0.66)) + bgRim;
+          var effWinR = cfg.winR || Math.round(cfg.logoH * 0.66);
           o = circle(wx, wy, effWinR);
           win.push(o);
           knock.push(circle(wx, wy, effWinR + cfg.gap));
@@ -344,14 +344,13 @@
 
     function winShapesForStyle(cfg, logos, st) {
       var out = [];
-      var bgRim = Math.max(0, cfg.bgRim || 0);
       logos.forEach(function (pl) {
         var wq = rp(pl, pl.cx + (cfg.winDX || 0), pl.cy + (cfg.winDY || 0)), wx = wq[0], wy = wq[1];
         var wpl = { cx: wx, cy: wy, rot: pl.rot, c: pl.c, sn: pl.sn };
-        var ww = pl.w + 2 * ((cfg.padX != null ? cfg.padX : 9) + bgRim);
-        var hh = pl.h + 2 * ((cfg.padY != null ? cfg.padY : 27) + bgRim);
+        var ww = pl.w + 2 * (cfg.padX != null ? cfg.padX : 9);
+        var hh = pl.h + 2 * (cfg.padY != null ? cfg.padY : 27);
         var x = wx - ww / 2, y = wy - hh / 2;
-        if (st === 'maru') out.push(circle(wx, wy, (cfg.winR || Math.round(cfg.logoH * 0.66)) + bgRim));
+        if (st === 'maru') out.push(circle(wx, wy, cfg.winR || Math.round(cfg.logoH * 0.66)));
         else if (st === 'koban') out.push(rotPath(wpl, ellipse(wx, wy, ww / 2, hh / 2)));
         else if (st === 'fuda') out.push(rotPath(wpl, rrect(x, y, ww, hh, cfg.corner != null ? cfg.corner : 16)));
         else if (st === 'yama') out.push(rotPath(wpl, yamaShape(x, y, ww, hh, cfg.corner != null ? cfg.corner : 16)));
