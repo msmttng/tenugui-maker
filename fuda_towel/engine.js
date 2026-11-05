@@ -176,29 +176,35 @@
 
     function build(cfg) {
       var W = cfg.W, H = cfg.H, b = cfg.border || 0;
+      var bgRim = Math.max(0, cfg.bgRim || 0);
       var logos = [place(cfg.logoH, cfg.logoX, cfg.logoY, cfg.logoRot)];
       if (cfg.twin) logos.push(place(cfg.logoH, W - cfg.logoX, cfg.logoY, -(cfg.logoRot || 0)));   // 2つ目は左右対称の傾き
       var sil = union([].concat.apply([], logos.map(silPaths)));
-      // 札内部（文字や厚みの隙間）を埋めた札シルエット（札の抜き色用）
+      // 札内部（文字や厚みの隙間）を埋めた札シルエット＋背景の縁（bgRim mm）
       var closeMm = Math.max(1.2, (cfg.logoH || 200) / LH * 4.2);
-      var logoBack = offset(offset(sil, closeMm), -closeMm);
+      var logoBackBase = offset(offset(sil, closeMm), -closeMm);
+      var logoBack = bgRim >= closeMm ? offset(sil, bgRim) : (bgRim > 0 ? offset(offset(sil, closeMm), bgRim - closeMm) : logoBackBase);
 
       var knock = [], win = [], frame = [], lines = [], fuchi = [], borderFrame = [], gapFill = [];
       var st = cfg.style;
       var inner = [rect(b, b, W - b, H - b)];
+      if (b > 0 && logoBack.length) {
+        logoBack = bool(CL.ClipType.ctIntersection, logoBack, inner);
+      }
 
       logos.forEach(function (pl) {
         var wq = rp(pl, pl.cx + (cfg.winDX || 0), pl.cy + (cfg.winDY || 0)), wx = wq[0], wy = wq[1];
         var wpl = { cx: wx, cy: wy, rot: pl.rot, c: pl.c, sn: pl.sn };
-        var ww = pl.w + 2 * (cfg.padX != null ? cfg.padX : 9);
-        var hh = pl.h + 2 * (cfg.padY != null ? cfg.padY : 27);
+        var ww = pl.w + 2 * ((cfg.padX != null ? cfg.padX : 9) + bgRim);
+        var hh = pl.h + 2 * ((cfg.padY != null ? cfg.padY : 27) + bgRim);
         var x = wx - ww / 2, y = wy - hh / 2;
         var o = null;
 
         if (st === 'maru') {
-          o = circle(wx, wy, cfg.winR);
+          var effWinR = (cfg.winR || Math.round(cfg.logoH * 0.66)) + bgRim;
+          o = circle(wx, wy, effWinR);
           win.push(o);
-          knock.push(circle(wx, wy, cfg.winR + cfg.gap));
+          knock.push(circle(wx, wy, effWinR + cfg.gap));
         } else if (st === 'koban') {
           o = rotPath(wpl, ellipse(wx, wy, ww / 2, hh / 2));
           win.push(o);
@@ -239,19 +245,20 @@
       });
 
       if (st === 'gaikei') {
-        var effGap = cfg.gap;
+        var effGap = bgRim + (cfg.gap || 0);
         if (cfg.fuchi) {
-          var f1 = bool(CL.ClipType.ctDifference, offset(sil, cfg.fuchiIn + cfg.fuchiW), offset(sil, cfg.fuchiIn));
+          var fIn = bgRim + (cfg.fuchiIn || 0);
+          var f1 = bool(CL.ClipType.ctDifference, offset(sil, fIn + cfg.fuchiW), offset(sil, fIn));
           if (cfg.fuchiDouble) {
-            var fStep = Math.max(cfg.fuchiIn * 0.65, cfg.minGap || 1.5);
-            var in2 = cfg.fuchiIn + cfg.fuchiW + fStep;
+            var fStep = Math.max((cfg.fuchiIn || 3.2) * 0.65, cfg.minGap || 1.5);
+            var in2 = fIn + cfg.fuchiW + fStep;
             var w2 = Math.max(cfg.fuchiW * 0.8, cfg.minLine || 0.8);
             var f2 = bool(CL.ClipType.ctDifference, offset(sil, in2 + w2), offset(sil, in2));
             fuchi = union(f1.concat(f2));
             effGap = Math.max(effGap, in2 + w2 + Math.max(1.5, cfg.minGap || 0));
           } else {
             fuchi = f1;
-            effGap = Math.max(effGap, cfg.fuchiIn + cfg.fuchiW + Math.max(1.2, cfg.minGap || 0));
+            effGap = Math.max(effGap, fIn + cfg.fuchiW + Math.max(1.2, cfg.minGap || 0));
           }
         }
         knock = offset(sil, effGap);
@@ -294,8 +301,15 @@
       }
 
       if (st !== 'gaikei') knock = union(knock);
-      if (st === 'gaikei' || isWinStyle(st)) {
-        gapFill = knock.length ? bool(CL.ClipType.ctIntersection, knock, inner) : [];
+      if (st === 'gaikei') {
+        var innerCore = cfg.fuchi
+          ? offset(sil, bgRim + (cfg.fuchiIn || 3.2) + (cfg.fuchiW || 1.5))
+          : (bgRim > 0 ? logoBack : offset(sil, Math.min(2.0, Math.max(1.0, (cfg.gap || 0) * 0.3))));
+        var kClip = knock.length ? bool(CL.ClipType.ctIntersection, knock, inner) : [];
+        gapFill = kClip.length ? bool(CL.ClipType.ctDifference, kClip, innerCore) : [];
+      } else if (isWinStyle(st)) {
+        var kClipW = knock.length ? bool(CL.ClipType.ctIntersection, knock, inner) : [];
+        gapFill = kClipW.length ? bool(CL.ClipType.ctDifference, kClipW, win) : [];
       }
       if (b > 0 && isWinStyle(st) && win.length) {
         win = bool(CL.ClipType.ctIntersection, win, inner);
@@ -323,20 +337,21 @@
         cfg: cfg, logos: logos, keep: keep, clipped: clipped,
         sil: sil, knock: knock, inner: inner,
         win: win, frame: frame, lines: lines, fuchi: fuchi,
-        gapFill: gapFill, logoBack: logoBack, borderFrame: borderFrame,
+        gapFill: gapFill, logoBack: logoBack, logoBackBase: logoBackBase, borderFrame: borderFrame,
         logoBox: bounds(sil), over: over > 0.05 ? over : 0
       };
     }
 
     function winShapesForStyle(cfg, logos, st) {
       var out = [];
+      var bgRim = Math.max(0, cfg.bgRim || 0);
       logos.forEach(function (pl) {
         var wq = rp(pl, pl.cx + (cfg.winDX || 0), pl.cy + (cfg.winDY || 0)), wx = wq[0], wy = wq[1];
         var wpl = { cx: wx, cy: wy, rot: pl.rot, c: pl.c, sn: pl.sn };
-        var ww = pl.w + 2 * (cfg.padX != null ? cfg.padX : 9);
-        var hh = pl.h + 2 * (cfg.padY != null ? cfg.padY : 27);
+        var ww = pl.w + 2 * ((cfg.padX != null ? cfg.padX : 9) + bgRim);
+        var hh = pl.h + 2 * ((cfg.padY != null ? cfg.padY : 27) + bgRim);
         var x = wx - ww / 2, y = wy - hh / 2;
-        if (st === 'maru') out.push(circle(wx, wy, cfg.winR || Math.round(cfg.logoH * 0.66)));
+        if (st === 'maru') out.push(circle(wx, wy, (cfg.winR || Math.round(cfg.logoH * 0.66)) + bgRim));
         else if (st === 'koban') out.push(rotPath(wpl, ellipse(wx, wy, ww / 2, hh / 2)));
         else if (st === 'fuda') out.push(rotPath(wpl, rrect(x, y, ww, hh, cfg.corner != null ? cfg.corner : 16)));
         else if (st === 'yama') out.push(rotPath(wpl, yamaShape(x, y, ww, hh, cfg.corner != null ? cfg.corner : 16)));
@@ -365,6 +380,7 @@
     function highlight(res, key) {
       if (!res || !key) return null;
       var cfg = res.cfg, st = cfg.style, W = cfg.W, H = cfg.H;
+      var bgRim = Math.max(0, cfg.bgRim || 0);
       var wBase = (res.win && res.win.length && isWinStyle(st)) ? res.win : winShapesForStyle(cfg, res.logos, isWinStyle(st) ? st : 'fuda');
 
       if (key.indexOf('style:') === 0) {
@@ -380,53 +396,57 @@
           none: 'くり抜きなし（柄の上にそのまま札を置く）'
         };
         if (stT === 'gaikei') {
-          var gPreview = bool(CL.ClipType.ctDifference, offset(res.sil, Math.max(cfg.gap || 6, 5)), res.logoBack);
+          var gPreview = bool(CL.ClipType.ctDifference, offset(res.sil, Math.max(bgRim + (cfg.gap || 6), 5)), res.logoBackBase || res.logoBack);
           return { d: dOf(gPreview), subD: dOf(res.logoBack), label: stNames[stT] };
         }
         if (isWinStyle(stT)) {
           var wp = winShapesForStyle(cfg, res.logos, stT);
-          var wpArea = bool(CL.ClipType.ctDifference, wp, res.logoBack);
+          var wpArea = bool(CL.ClipType.ctDifference, wp, res.logoBackBase || res.logoBack);
           return { d: dOf(wpArea.length ? wpArea : wp), subD: dOf(wp), label: stNames[stT] };
         }
         if (stT === 'obi') {
           var e = cfg.obiSize || 200, side = cfg.obiSide || (W > H ? 'right' : 'bottom');
           var ob = side === 'right' ? [rect(W - e, 0, W, H)] : (side === 'left' ? [rect(0, 0, e, H)] : (side === 'top' ? [rect(0, 0, W, e)] : [rect(0, H - e, W, H)]));
-          return { d: dOf(bool(CL.ClipType.ctDifference, ob, res.logoBack)), subD: dOf(ob), label: stNames[stT] };
+          return { d: dOf(bool(CL.ClipType.ctDifference, ob, res.logoBackBase || res.logoBack)), subD: dOf(ob), label: stNames[stT] };
         }
         if (stT === 'none') {
-          return { d: dOf(res.logoBack), label: stNames[stT] };
+          return { d: dOf(res.logoBackBase || res.logoBack), label: stNames[stT] };
         }
       }
 
-      if (key === 'gap' || key === 'gapCol') {
+      if (key === 'gap') {
         if (st === 'gaikei') {
-          var gOuter = (res.gapFill && res.gapFill.length && cfg.gap > 0) ? res.gapFill : offset(res.sil, Math.max(cfg.gap || 0, 5));
-          var gInner = res.logoBack;
-          if (key === 'gap' && cfg.fuchi) {
-            var fInG = cfg.fuchiIn || 3.2, fWG = cfg.fuchiW || 1.5;
-            var fOutEdge = cfg.fuchiDouble ? (fInG + fWG + Math.max(fInG * 0.65, cfg.minGap || 1.5) + Math.max(fWG * 0.8, cfg.minLine || 0.8)) : (fInG + fWG);
-            gInner = offset(res.sil, fOutEdge);
-          }
-          var gRing = bool(CL.ClipType.ctDifference, gOuter, gInner);
-          if (key === 'gapCol' && res.fuchi && res.fuchi.length) {
-            gRing = bool(CL.ClipType.ctDifference, gRing, res.fuchi);
-          }
+          var gRing = (res.gapFill && res.gapFill.length) ? res.gapFill : bool(CL.ClipType.ctDifference, offset(res.sil, bgRim + 6), offset(res.sil, bgRim + 1.8));
           return {
             d: dOf(gRing),
             subD: dOf((res.fuchi && res.fuchi.length) ? res.fuchi : res.logoBack),
-            label: key === 'gapCol' ? '柄との間の色（柄と札のあいだのくり抜き余白全体）' : '柄との間（' + (cfg.fuchi ? 'フチ線の外側〜柄までのすき間 ' : '札のまわり ') + (cfg.gap || 0) + 'mm）'
+            label: '柄との間（柄をくり抜いて最背景を見せる幅 ' + (cfg.gap || 0) + 'mm）'
           };
         }
         if (isWinStyle(st)) {
-          var kOuter = (cfg.gap > 0 && res.gapFill && res.gapFill.length) ? res.gapFill : offset(wBase, 6);
-          var wRing = bool(CL.ClipType.ctDifference, kOuter, wBase);
-          return { d: dOf(wRing), subD: dOf(wBase), label: '柄との間（窓の外側 ' + (cfg.gap || 0) + 'mm のくり抜き余白）' };
+          var wRing = (res.gapFill && res.gapFill.length) ? res.gapFill : bool(CL.ClipType.ctDifference, offset(wBase, 6), wBase);
+          return { d: dOf(wRing), subD: dOf(wBase), label: '柄との間（窓の外側 ' + (cfg.gap || 0) + 'mm の最背景のすき間）' };
         }
         if (st === 'obi') {
           var obiBand = bool(CL.ClipType.ctDifference, res.gapFill || [], union((res.win || []).concat(res.lines || [])));
-          return { d: dOf(obiBand.length ? obiBand : (res.lines || [])), label: '柄との間（帯と柄のあいだのくり抜き余白）' };
+          return { d: dOf(obiBand.length ? obiBand : (res.lines || [])), label: '柄との間（帯と柄のあいだのすき間）' };
         }
-        return { d: dOf(bool(CL.ClipType.ctDifference, offset(res.sil, 6), res.logoBack)), label: '柄との間（くり抜き余白）' };
+        return { d: dOf(bool(CL.ClipType.ctDifference, offset(res.sil, 6), offset(res.sil, 1.8))), label: '柄との間（くり抜き余白）' };
+      }
+
+      if (key === 'bgRim') {
+        if (isWinStyle(st)) {
+          var wRim = bool(CL.ClipType.ctDifference, wBase, offset(wBase, -Math.max(bgRim, 5)));
+          return { d: dOf(wRim.length ? wRim : wBase), subD: dOf(wBase), label: '背景の縁（窓・背景を外へ広げる幅 ' + bgRim + 'mm）' };
+        }
+        var effRim = Math.max(bgRim, 4.5);
+        var rimOuter = offset(res.logoBackBase || res.sil, effRim);
+        var rimBand = bool(CL.ClipType.ctDifference, rimOuter, res.logoBackBase || res.sil);
+        return {
+          d: dOf(rimBand.length ? rimBand : res.logoBack),
+          subD: dOf(res.logoBack),
+          label: '札の背景の縁（札の背景を外側に広げる幅 ' + bgRim + 'mm）'
+        };
       }
 
       if (key === 'alignM') {
@@ -436,29 +456,29 @@
       }
 
       if (key === 'fuchi' || key === 'fuchiW') {
-        var fIn1 = cfg.fuchiIn || 3.2, fW1 = cfg.fuchiW || 1.5;
+        var fIn1 = bgRim + (cfg.fuchiIn || 3.2), fW1 = cfg.fuchiW || 1.5;
         var fp1 = (res.fuchi && res.fuchi.length) ? res.fuchi : bool(CL.ClipType.ctDifference, offset(res.sil, fIn1 + fW1), offset(res.sil, fIn1));
         return { d: dOf(fp1), subD: dOf(res.logoBack), label: key === 'fuchiW' ? 'フチの太さ（' + fW1 + 'mm — ロゴ外周のフチ線）' : 'ロゴのまわりのフチ線' };
       }
 
       if (key === 'fuchiDouble') {
-        var fIn2 = cfg.fuchiIn || 3.2, fW2 = cfg.fuchiW || 1.5;
-        var fStep = Math.max(fIn2 * 0.65, cfg.minGap || 1.5), in2 = fIn2 + fW2 + fStep, w2 = Math.max(fW2 * 0.8, cfg.minLine || 0.8);
+        var fIn2 = bgRim + (cfg.fuchiIn || 3.2), fW2 = cfg.fuchiW || 1.5;
+        var fStep = Math.max((cfg.fuchiIn || 3.2) * 0.65, cfg.minGap || 1.5), in2 = fIn2 + fW2 + fStep, w2 = Math.max(fW2 * 0.8, cfg.minLine || 0.8);
         var fa = bool(CL.ClipType.ctDifference, offset(res.sil, fIn2 + fW2), offset(res.sil, fIn2));
         var fb2 = bool(CL.ClipType.ctDifference, offset(res.sil, in2 + w2), offset(res.sil, in2));
         return { d: dOf(union(fa.concat(fb2))), label: '二重フチ線（ロゴのまわりの二重線）' };
       }
 
       if (key === 'fuchiIn') {
-        var fIn3 = cfg.fuchiIn || 3.2, fW3 = cfg.fuchiW || 1.5;
+        var fIn3 = bgRim + (cfg.fuchiIn || 3.2), fW3 = cfg.fuchiW || 1.5;
         var inGap = bool(CL.ClipType.ctDifference, offset(res.sil, fIn3), res.logoBack);
         var fLine3 = (res.fuchi && res.fuchi.length) ? res.fuchi : bool(CL.ClipType.ctDifference, offset(res.sil, fIn3 + fW3), offset(res.sil, fIn3));
-        return { d: dOf(inGap), subD: dOf(fLine3), label: 'フチの位置（札の輪郭からフチ線までのすき間 ' + fIn3 + 'mm）' };
+        return { d: dOf(inGap), subD: dOf(fLine3), label: 'フチの位置（札の背景からフチ線までのすき間 ' + (cfg.fuchiIn || 3.2) + 'mm）' };
       }
 
       if (key === 'win' || key === 'winR' || key === 'winDX' || key === 'winDY') {
         var wUse = (res.win && res.win.length) ? res.win : wBase;
-        var wSub = bool(CL.ClipType.ctDifference, wUse, res.logoBack);
+        var wSub = bool(CL.ClipType.ctDifference, wUse, res.logoBackBase || res.logoBack);
         var wLabels = {
           win: '窓・無地帯の領域（窓の塗り色）',
           winR: '丸窓の半径（中心から窓の縁まで ' + (cfg.winR || 0) + 'mm）',
@@ -473,8 +493,8 @@
         res.logos.forEach(function (pl) {
           var wq = rp(pl, pl.cx + (cfg.winDX || 0), pl.cy + (cfg.winDY || 0)), wx = wq[0], wy = wq[1];
           var wpl = { cx: wx, cy: wy, rot: pl.rot, c: pl.c, sn: pl.sn };
-          var ww = pl.w + 2 * (cfg.padX != null ? cfg.padX : 9) + 20;
-          var hh = pl.h + 2 * (cfg.padY != null ? cfg.padY : 27) + 20;
+          var ww = pl.w + 2 * ((cfg.padX != null ? cfg.padX : 9) + bgRim) + 20;
+          var hh = pl.h + 2 * ((cfg.padY != null ? cfg.padY : 27) + bgRim) + 20;
           if (key === 'padX') {
             var lx = pl.w * 0.36;
             padClips.push(rotPath(wpl, rect(wx - ww / 2, wy - hh / 2, wx - lx, wy + hh / 2)));
@@ -485,7 +505,7 @@
             padClips.push(rotPath(wpl, rect(wx - ww / 2, wy + ly, wx + ww / 2, wy + hh / 2)));
           }
         });
-        var wDiff = bool(CL.ClipType.ctDifference, wBase, res.logoBack);
+        var wDiff = bool(CL.ClipType.ctDifference, wBase, res.logoBackBase || res.logoBack);
         var padZone = bool(CL.ClipType.ctIntersection, wDiff, padClips);
         return {
           d: dOf(padZone.length ? padZone : wDiff),
@@ -544,8 +564,18 @@
       }
 
       if (key === 'logoBg') {
+        if (isWinStyle(st) || st === 'obi') {
+          var wUse2 = (res.win && res.win.length) ? res.win : wBase;
+          var wSub2 = bool(CL.ClipType.ctDifference, wUse2, res.logoBackBase || res.logoBack);
+          return { d: dOf(wSub2.length ? wSub2 : wUse2), subD: dOf(wUse2), label: '札の背景（窓・帯の塗り色）' };
+        }
         var holes = bool(CL.ClipType.ctDifference, res.logoBack, res.sil);
-        return { d: dOf(holes.length ? holes : res.logoBack), subD: dOf(res.logoBack), label: '札の抜き（中）— 札シルエット内部・文字まわりの下地' };
+        var lds = res.logos.map(logoD).join(' ');
+        return {
+          d: dOf(holes.length ? holes : res.logoBack),
+          subD: lds || dOf(res.logoBack),
+          label: '札の背景（札のうしろ・文字の抜きと背景の縁の色）'
+        };
       }
 
       if (key === 'logo' || key === 'tagL' || key === 'tagR' || key === 'side' || key === 'logoText' || key === 'knot' || key === 'shake') {
@@ -572,7 +602,7 @@
           }
         });
         var partLabels = {
-          logo: '札（基本）— 札ロゴ全体',
+          logo: '札の色（元の色）— 札ロゴ全体',
           tagL: '左札（仲羽田）の札面',
           tagR: '右札（青年会）の札面',
           side: '札の厚み（立体側面・斜線ハッチング影）',
@@ -593,43 +623,44 @@
     function toSVG(res, opts) {
       opts = opts || {};
       var c = res.cfg, W = c.W, H = c.H, b = c.border || 0, st = c.style;
+      var bgRim = Math.max(0, c.bgRim || 0);
       var col = c.colors || {};
       var cBg = col.bg || '#00A3AF';
       var cPat = col.pat || '#FFFFFF';
       var cLogo = col.logo || '#FFFFFF';
       var cWin = col.win || cPat;
-      var cGap = col.gap || cBg;
       var cFrame = col.frame || cLogo;
       var cBorder = col.border || cBg;
-      // 札の抜き色（文字・内部隙間の下地色）：未指定なら窓/帯の上では cWin、外形では cGap、なしでは cBg
-      var defLogoBg = ( isWinStyle(st) || st === 'obi' ) ? cWin : (st === 'gaikei' ? cGap : cBg);
+      // 札の背景色：窓・帯のときは cWin、外形・なしのときは col.logoBg（未指定なら最背景の地色 cBg）
+      var defLogoBg = (isWinStyle(st) || st === 'obi') ? cWin : cBg;
       var cLogoBg = col.logoBg || defLogoBg;
 
       var o = [];
       if (opts.standalone !== false) o.push('<?xml version="1.0" encoding="UTF-8"?>');
       o.push('<svg xmlns="http://www.w3.org/2000/svg" width="' + W + 'mm" height="' + H + 'mm" viewBox="0 0 ' + W + ' ' + H + '"' + (opts.attrs || '') + '>');
 
-      // 1. 背景＆端の無地色
+      // 1. 最背景（地色）＆端の無地色
       if (b > 0 && !sameCol(cBorder, cBg)) {
         o.push('<g id="Background"><rect x="0" y="0" width="' + W + '" height="' + H + '" fill="' + cBorder + '"/><rect x="' + b + '" y="' + b + '" width="' + (W - 2 * b) + '" height="' + (H - 2 * b) + '" fill="' + cBg + '"/></g>');
       } else {
         o.push('<g id="Background"><rect x="0" y="0" width="' + W + '" height="' + H + '" fill="' + cBg + '"/></g>');
       }
 
-      // 2. 柄との間（くり抜き余白）の塗り
-      if (res.gapFill && res.gapFill.length && !sameCol(cGap, cBg)) {
-        o.push('<g id="Knockout_Gap" fill="' + cGap + '"><path d="' + dOf(res.gapFill) + '"/></g>');
-      }
-
-      // 3. 仲羽田（角字柄）
+      // 2. 仲羽田（角字柄）— くり抜き部分（柄との間）には最背景（Background）がそのまま見える
       o.push('<g id="HanedaNaka_Kakuji" fill="' + cPat + '">');
       res.keep.forEach(function (p) { o.push('<path d="M' + p.map(function (q) { return q[0].toFixed(2) + ' ' + q[1].toFixed(2); }).join('L') + 'Z"/>'); });
       if (res.clipped.length) o.push('<path d="' + dOf(res.clipped) + '"/>');
       o.push('</g>');
 
-      // 4. 窓・無地の帯の塗り
-      if (res.win.length && (isWinStyle(st) || (st === 'obi' && !sameCol(cWin, cBg)))) {
-        o.push('<g id="Window" fill="' + cWin + '"><path d="' + dOf(res.win) + '"/></g>');
+      // 3. 窓・無地の帯の塗り
+      var winCol = (isWinStyle(st) || st === 'obi') ? (col.logoBg || cWin) : cWin;
+      if (res.win.length && (isWinStyle(st) || (st === 'obi' && !sameCol(winCol, cBg)))) {
+        o.push('<g id="Window" fill="' + winCol + '"><path d="' + dOf(res.win) + '"/></g>');
+      }
+
+      // 4. 札の背景（外形・くり抜きなしのときの札シルエット＋背景の縁 bgRim）
+      if (!isWinStyle(st) && st !== 'obi' && res.logoBack && res.logoBack.length && (!sameCol(cLogoBg, cBg) || (st === 'none' && bgRim > 0))) {
+        o.push('<g id="Logo_Back" fill="' + cLogoBg + '"><path d="' + dOf(res.logoBack) + '"/></g>');
       }
 
       // 5. 帯の境界線・窓の内枠線・外形のフチ線・端の無地内枠線
@@ -638,12 +669,7 @@
       if (res.fuchi.length) o.push('<g id="Outline" fill="' + cFrame + '"><path d="' + dOf(res.fuchi) + '"/></g>');
       if (res.borderFrame && res.borderFrame.length) o.push('<g id="Border_Frame" fill="' + cFrame + '"><path d="' + dOf(res.borderFrame) + '"/></g>');
 
-      // 6. 札の抜き色（札シルエット内部の下地色）
-      if (res.logoBack && res.logoBack.length && !sameCol(cLogoBg, defLogoBg)) {
-        o.push('<g id="Logo_Back" fill="' + cLogoBg + '"><path d="' + dOf(res.logoBack) + '"/></g>');
-      }
-
-      // 7. 札ロゴ（単色 または 部位別色分け）
+      // 6. 札ロゴ
       var cTagL = col.tagL || cLogo;
       var cTagR = col.tagR || cLogo;
       var cSide = col.side || '';

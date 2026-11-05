@@ -149,7 +149,7 @@ dialog#lb p{color:#fff;margin:8px 0 0;font-size:13px;text-align:center}
 #__hlOverlay .hl-sub{fill:none;stroke:#ffd166;stroke-width:2;stroke-dasharray:4 3;stroke-opacity:.95;vector-effect:non-scaling-stroke}
 [data-hl]{transition:background-color .12s,box-shadow .12s;border-radius:8px}
 .row[data-hl],.row2[data-hl]{padding:3px 6px;margin-left:-6px;margin-right:-6px}
-[data-hl]:hover,[data-hl]:focus-within{background-color:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
+[data-hl]:hover{background-color:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
 .seg button[data-hl]:hover{border-color:#ff5a3c;box-shadow:0 0 0 1.5px rgba(255,90,60,.45)}
 .hl-tip{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink);background:var(--accent-soft);border:1px solid var(--accent);border-radius:8px;padding:6px 10px;margin:6px 0 8px}
 .stage .bar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;margin-top:10px;font-size:13px;color:var(--ink-2)}
@@ -360,7 +360,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
 
         <fieldset id="knockFs" data-st="4">
           <legend data-n="4" data-e="札のまわり（くり抜き方）">くり抜き方（札のまわり）</legend>
-          <div class="hl-tip"><span>💡 各ボタンやスライダーにカーソルを当てると、左のプレビュー上で<b>「どこの部分か」が赤オレンジ色に光って</b>表示されます。</span></div>
+          <div class="hl-tip"><span>💡 ボタンやスライダーにカーソルを当てると、左のプレビュー上で<b>どこの部分か</b>が光ります。</span></div>
           <div class="seg" id="styleSeg">
             <button data-s="gaikei" data-hl="style:gaikei" type="button">外形</button>
             <button data-s="maru" data-hl="style:maru" type="button">丸窓</button>
@@ -373,37 +373,17 @@ html.easy #ed .stage .bar{justify-content:flex-start}
           </div>
           <div id="gapRow">
             <div class="row" data-hl="gap"><label for="gap">柄との間 mm</label><input type="range" id="gap" min="0" max="35" step="0.5"><input type="number" data-for="gap" step="0.5"></div>
-            <div class="subbox" id="gapColBox" data-hl="gapCol">
-              <div class="subbox-hd">
-                <span>🎨 柄との間（くり抜き余白）の色</span>
-                <button class="btn" type="button" id="gapColSameBg" style="font-size:11.5px;min-height:26px;padding:2px 8px">地色と同じに戻す</button>
-              </div>
-              <div class="row2" style="margin-top:4px">
-                <label class="cpick" style="flex:1"><input type="color" id="c_gap_quick"><span class="clbl">柄との間の色</span><code data-c="gap"></code></label>
-              </div>
-              <div class="qchips" id="gapQuickChips">
-                <button type="button" data-gcol="bg">地と同じ</button>
-                <button type="button" data-gcol="#FFFFFF"><i style="background:#FFFFFF"></i>白</button>
-                <button type="button" data-gcol="#F6F1E3"><i style="background:#F6F1E3"></i>生成り</button>
-                <button type="button" data-gcol="#0032AD"><i style="background:#0032AD"></i>紺</button>
-                <button type="button" data-gcol="#1E3550"><i style="background:#1E3550"></i>藍</button>
-                <button type="button" data-gcol="#00A3AF"><i style="background:#00A3AF"></i>ティール</button>
-                <button type="button" data-gcol="#D4AF37"><i style="background:#D4AF37"></i>金</button>
-                <button type="button" data-gcol="#D9442B"><i style="background:#D9442B"></i>朱</button>
-                <button type="button" data-gcol="#1A1A1A"><i style="background:#1A1A1A"></i>墨黒</button>
-              </div>
-              <p class="hint">柄と札（または窓）のあいだのくり抜き余白に別の色を敷けます（後光・太フチ効果）。札の中の抜き色は下の「② 色」の「札の抜き（中）」で別々に変えられます。</p>
-            </div>
+            <p class="hint" style="margin-top:2px">柄（仲羽田）をくり抜いて、いちばん後ろの「地（最背景）」を見せる幅です。</p>
           </div>
           <div class="only o-gaikei">
+            <div class="row" data-hl="bgRim"><label for="bgRim_k">背景の縁 mm</label><input type="range" id="bgRim_k" min="0" max="25" step="0.5"><input type="number" id="bgRim_kn" step="0.5"></div>
             <div class="row2">
-              <label class="chk" style="margin:0;padding:2px 6px" data-hl="fuchi"><input type="checkbox" id="fuchi">ロゴのまわりにフチ線</label>
-              <label class="chk" style="margin:0;padding:2px 6px" data-hl="fuchiDouble"><input type="checkbox" id="fuchiDouble">二重フチ線</label>
+              <label class="chk" style="margin:0;padding:2px 6px" data-hl="fuchi"><input type="checkbox" id="fuchi">ロゴのまわりにフチ線を入れる</label>
+              <label class="chk" id="fuchiDoubleWrap" style="margin:0;padding:2px 6px" data-hl="fuchiDouble"><input type="checkbox" id="fuchiDouble">二重フチ線</label>
             </div>
-            <div class="row" data-hl="fuchiIn"><label for="fuchiIn">フチの位置</label><input type="range" id="fuchiIn" min="1" max="18" step="0.1"><input type="number" data-for="fuchiIn" step="0.1"></div>
-            <div class="row" data-hl="fuchiW"><label for="fuchiW">フチの太さ</label><input type="range" id="fuchiW" min="0.5" max="8" step="0.1"><input type="number" data-for="fuchiW" step="0.1"></div>
-            <div class="row2">
-              <label class="cpick" style="flex:1" data-hl="fuchi"><input type="color" id="c_frame_quick"><span class="clbl">フチ線の色</span><code data-c="frame"></code><button type="button" class="cbtn" data-reset-col="frame">札と同じ</button></label>
+            <div id="fuchiSubRows">
+              <div class="row" data-hl="fuchiIn"><label for="fuchiIn">フチの位置</label><input type="range" id="fuchiIn" min="1" max="18" step="0.1"><input type="number" data-for="fuchiIn" step="0.1"></div>
+              <div class="row" data-hl="fuchiW"><label for="fuchiW">フチの太さ</label><input type="range" id="fuchiW" min="0.5" max="8" step="0.1"><input type="number" data-for="fuchiW" step="0.1"></div>
             </div>
           </div>
           <div class="only o-maru">
@@ -418,13 +398,13 @@ html.easy #ed .stage .bar{justify-content:flex-start}
           </div>
           <div class="only o-win">
             <div class="row2">
-              <label class="chk" style="margin:0;padding:2px 6px" data-hl="frame"><input type="checkbox" id="frame">窓の内側に枠線</label>
-              <label class="chk" style="margin:0;padding:2px 6px" data-hl="frameDouble"><input type="checkbox" id="frameDouble">二重枠線</label>
+              <label class="chk" style="margin:0;padding:2px 6px" data-hl="frame"><input type="checkbox" id="frame">窓の内側に枠線を入れる</label>
+              <label class="chk" id="frameDoubleWrap" style="margin:0;padding:2px 6px" data-hl="frameDouble"><input type="checkbox" id="frameDouble">二重枠線</label>
             </div>
             <div class="row" id="frameInsetRow" data-hl="frameInset"><label for="frameInset">枠の位置 mm</label><input type="range" id="frameInset" min="2" max="30" step="0.5"><input type="number" data-for="frameInset" step="0.5"></div>
             <div class="row" id="frameWRow" data-hl="frameW"><label for="frameW">枠の太さ mm</label><input type="range" id="frameW" min="0.6" max="8" step="0.1"><input type="number" data-for="frameW" step="0.1"></div>
-            <div class="row" data-hl="winDX"><label for="winDX">窓の左右ずれ</label><input type="range" id="winDX" min="-40" max="40" step="0.5"><input type="number" data-for="winDX" step="0.5"></div>
-            <div class="row" data-hl="winDY"><label for="winDY">窓の上下ずれ</label><input type="range" id="winDY" min="-40" max="40" step="0.5"><input type="number" data-for="winDY" step="0.5"></div>
+            <div class="row adv" data-hl="winDX"><label for="winDX">窓の左右ずれ</label><input type="range" id="winDX" min="-40" max="40" step="0.5"><input type="number" data-for="winDX" step="0.5"></div>
+            <div class="row adv" data-hl="winDY"><label for="winDY">窓の上下ずれ</label><input type="range" id="winDY" min="-40" max="40" step="0.5"><input type="number" data-for="winDY" step="0.5"></div>
           </div>
           <div class="only o-obi">
             <div class="row2" data-hl="obi"><span style="color:var(--ink-2)">帯の位置</span>
@@ -434,38 +414,43 @@ html.easy #ed .stage .bar{justify-content:flex-start}
             <div class="row" data-hl="obiGap"><label for="obiGap">柄との間 mm</label><input type="range" id="obiGap" min="0" max="30" step="0.5"><input type="number" data-for="obiGap" step="0.5"></div>
           </div>
           <div class="row" data-hl="border"><label for="border">端の無地 mm</label><input type="range" id="border" min="0" max="25" step="0.5"><input type="number" data-for="border" step="0.5"></div>
-          <div class="row2">
-            <label class="chk" style="margin:0;padding:2px 6px" data-hl="borderFrame"><input type="checkbox" id="borderFrame">端の無地の内側に枠線を入れる</label>
+          <div class="row2" id="borderFrameWrap">
+            <label class="chk" style="margin:0;padding:2px 6px" data-hl="borderFrame"><input type="checkbox" id="borderFrame">端の無地の内側に外周枠線を入れる</label>
           </div>
           <div class="row" id="borderFrameWRow" data-hl="borderFrameW"><label for="borderFrameW">外周枠の太さ</label><input type="range" id="borderFrameW" min="0.8" max="8" step="0.1"><input type="number" data-for="borderFrameW" step="0.1"></div>
-          <p class="hint">「端の無地」は周囲の縁（外周）。柄もロゴも入らず、「端の無地」の色で塗られます。</p>
         </fieldset>
 
         <fieldset data-st="2">
-          <legend data-n="2" data-e="色（地・柄・間・窓・札パーツ）">色（地・柄・柄との間・窓・枠・札パーツ）</legend>
+          <legend data-n="2" data-e="色（地・柄・札）">色（地・柄・札の色と背景）</legend>
           <div class="cols">
-            <label class="cpick"><input type="color" id="c_bg"><span class="clbl">地（背景）</span><code data-c="bg"></code></label>
+            <label class="cpick"><input type="color" id="c_bg"><span class="clbl">地（最背景）</span><code data-c="bg"></code></label>
             <label class="cpick"><input type="color" id="c_pat"><span class="clbl">柄（仲羽田）</span><code data-c="pat"></code></label>
-            <label class="cpick" id="gapPick" data-hl="gap"><input type="color" id="c_gap"><span class="clbl">柄との間</span><code data-c="gap"></code><button type="button" class="cbtn" data-reset-col="gap">地と同じ</button></label>
-            <label class="cpick" id="winPick" data-hl="win"><input type="color" id="c_win"><span class="clbl">窓・無地帯</span><code data-c="win"></code><button type="button" class="cbtn" data-reset-col="win">柄と同じ</button></label>
-            <label class="cpick" data-hl="logo"><input type="color" id="c_logo"><span class="clbl">札（基本）</span><code data-c="logo"></code></label>
-            <label class="cpick" data-hl="logoBg"><input type="color" id="c_logoBg"><span class="clbl">札の抜き(中)</span><code data-c="logoBg"></code><button type="button" class="cbtn" data-reset-col="logoBg">自動</button></label>
-            <label class="cpick" data-hl="frame"><input type="color" id="c_frame"><span class="clbl">枠・フチ・帯線</span><code data-c="frame"></code><button type="button" class="cbtn" data-reset-col="frame">札と同じ</button></label>
-            <label class="cpick" data-hl="border"><input type="color" id="c_border"><span class="clbl">端の無地</span><code data-c="border"></code><button type="button" class="cbtn" data-reset-col="border">地と同じ</button></label>
           </div>
           <div class="subbox">
             <div class="subbox-hd">
-              <span>🎨 札ロゴの部位別色分け（左右札・厚み・文字・結び・揺れ線）</span>
-              <button class="btn" type="button" id="resetLogoParts" style="font-size:11.5px;min-height:26px;padding:2px 8px">札の基本色にそろえる</button>
+              <span>🏷️ 札の色・背景・縁の大きさ</span>
+              <button class="btn" type="button" id="logoBgSameBg" style="font-size:11.5px;min-height:26px;padding:2px 8px">背景を最背景と同じに戻す</button>
             </div>
-            <div class="cols">
-              <label class="cpick" data-hl="tagL"><input type="color" id="c_tagL"><span class="clbl">左札(仲羽田)</span><code data-c="tagL"></code><button type="button" class="cbtn" data-reset-col="tagL">基本</button></label>
-              <label class="cpick" data-hl="tagR"><input type="color" id="c_tagR"><span class="clbl">右札(青年会)</span><code data-c="tagR"></code><button type="button" class="cbtn" data-reset-col="tagR">基本</button></label>
-              <label class="cpick" data-hl="side"><input type="color" id="c_side"><span class="clbl">札の厚み(影)</span><code data-c="side"></code><button type="button" class="cbtn" data-reset-col="side">札と同じ</button></label>
-              <label class="cpick" data-hl="logoText"><input type="color" id="c_logoText"><span class="clbl">札の彫り文字</span><code data-c="logoText"></code><button type="button" class="cbtn" data-reset-col="logoText">抜き</button></label>
-              <label class="cpick" data-hl="knot"><input type="color" id="c_knot"><span class="clbl">結び(組紐)</span><code data-c="knot"></code><button type="button" class="cbtn" data-reset-col="knot">基本</button></label>
-              <label class="cpick" data-hl="shake"><input type="color" id="c_shake"><span class="clbl">揺れ線</span><code data-c="shake"></code><button type="button" class="cbtn" data-reset-col="shake">基本</button></label>
+            <div class="cols" style="margin-top:4px">
+              <label class="cpick" data-hl="logo"><input type="color" id="c_logo"><span class="clbl">札の色（元）</span><code data-c="logo"></code></label>
+              <label class="cpick" data-hl="logoBg"><input type="color" id="c_logoBg"><span class="clbl" id="logoBgLbl">札の背景</span><code data-c="logoBg"></code></label>
             </div>
+            <div class="qchips" id="logoBgQuickChips">
+              <span style="font-size:11px;color:var(--ink-2);margin-right:2px">背景色：</span>
+              <button type="button" data-bgcol="bg">最背景と同じ</button>
+              <button type="button" data-bgcol="#FFFFFF"><i style="background:#FFFFFF"></i>白</button>
+              <button type="button" data-bgcol="#0032AD"><i style="background:#0032AD"></i>紺</button>
+              <button type="button" data-bgcol="#1E3550"><i style="background:#1E3550"></i>藍</button>
+              <button type="button" data-bgcol="#00A3AF"><i style="background:#00A3AF"></i>ティール</button>
+              <button type="button" data-bgcol="#D4AF37"><i style="background:#D4AF37"></i>金</button>
+              <button type="button" data-bgcol="#D9442B"><i style="background:#D9442B"></i>朱</button>
+              <button type="button" data-bgcol="#1A1A1A"><i style="background:#1A1A1A"></i>墨黒</button>
+            </div>
+            <div class="row" data-hl="bgRim" style="margin-top:8px"><label for="bgRim">背景の縁 mm</label><input type="range" id="bgRim" min="0" max="25" step="0.5"><input type="number" data-for="bgRim" step="0.5"></div>
+            <div class="row2" id="frameColRow" style="margin-top:6px">
+              <label class="cpick" style="flex:1" data-hl="frame"><input type="color" id="c_frame"><span class="clbl">フチ・枠線の色</span><code data-c="frame"></code><button type="button" class="cbtn" data-reset-col="frame">札と同じ</button></label>
+            </div>
+            <p class="hint" style="margin-top:6px">札の元の色・札のうしろの背景色・背景の縁の広さを変えられます。柄との間には常に「地（最背景）」の色が見えます。</p>
           </div>
           <div class="sw" id="swatch"></div>
         </fieldset>
@@ -663,9 +648,9 @@ html.easy #ed .stage .bar{justify-content:flex-start}
 
 <script src="vendor/clipper.js"></script>
 <script src="vendor/jszip.min.js"></script>
-<script src="towel_data.js?v=20261105b"></script>
-<script src="engine.js?v=20261105b"></script>
-<script src="presets.js?v=20261105b"></script>
+<script src="towel_data.js?v=20261105c"></script>
+<script src="engine.js?v=20261105c"></script>
+<script src="presets.js?v=20261105c"></script>
 <script src="fuda_data.js?v=20261105b"></script>
 <script src="fuda.js?v=20261105b"></script>
 <script src="fuda_presets.js?v=20261105b"></script>
@@ -876,24 +861,30 @@ html.easy #ed .stage .bar{justify-content:flex-start}
 
   /* ---------------- editor ---------------- */
   var eng = null, cfg = null, curPreset = null, last = null;
-  var NUM = ['patScale', 'patRot', 'patDX', 'patDY', 'logoH', 'logoX', 'logoY', 'logoRot', 'gap', 'fuchiIn', 'fuchiW', 'winR', 'padX', 'padY', 'corner', 'frameInset', 'frameW', 'winDX', 'winDY', 'obiSize', 'obiGap', 'border', 'borderFrameW'];
+  var NUM = ['patScale', 'patRot', 'patDX', 'patDY', 'logoH', 'logoX', 'logoY', 'logoRot', 'gap', 'bgRim', 'fuchiIn', 'fuchiW', 'winR', 'padX', 'padY', 'corner', 'frameInset', 'frameW', 'winDX', 'winDY', 'obiSize', 'obiGap', 'border', 'borderFrameW'];
   var CHK = ['twin', 'fuchi', 'fuchiDouble', 'frame', 'frameDouble', 'borderFrame'];
-  var COL_KEYS = ['bg', 'pat', 'gap', 'win', 'logo', 'logoBg', 'frame', 'border', 'tagL', 'tagR', 'side', 'logoText', 'knot', 'shake'];
+  var COL_KEYS = ['bg', 'pat', 'logo', 'logoBg', 'frame'];
   function isWin(st) { return st === 'maru' || st === 'koban' || st === 'fuda' || st === 'yama' || st === 'kado'; }
+  function sameHex(a, b) { return String(a || '').toUpperCase() === String(b || '').toUpperCase(); }
+  function pickContrast(avoid, c1, c2) {
+    if (c1 && !sameHex(c1, avoid)) return c1;
+    if (c2 && !sameHex(c2, avoid)) return c2;
+    return sameHex(avoid, '#FFFFFF') ? '#0032AD' : '#FFFFFF';
+  }
   var CANVAS = { tate: { W: 340, H: 850, patRot: 0, patDY: 0 }, yoko: { W: 850, H: 340, patRot: 90, patDY: 0 }, tnv: { W: 350, H: 900, patRot: 0, patDY: 0 }, tnh: { W: 900, H: 350, patRot: 90, patDY: 0 }, tenugui: { W: 340, H: 840, patRot: 0, patDY: 5 } };
   var SW = [
-    ['ティール×白', { bg: '#00A3AF', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }],
-    ['紺×白', { bg: '#0032AD', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }],
-    ['藍×白', { bg: '#1E3550', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }],
-    ['朱×白', { bg: '#D9442B', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }],
-    ['墨×白', { bg: '#222222', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }],
-    ['白×ティール', { bg: '#FFFFFF', pat: '#00A3AF', logo: '#00A3AF', win: '#00A3AF' }],
-    ['白×紺', { bg: '#FFFFFF', pat: '#0032AD', logo: '#0032AD', win: '#0032AD' }],
-    ['ティール×柄薄め', { bg: '#00A3AF', pat: '#7FD1D7', logo: '#FFFFFF', win: '#FFFFFF' }],
-    ['ティール×間・紺抜き', { bg: '#00A3AF', pat: '#FFFFFF', gap: '#0032AD', logo: '#FFFFFF', logoBg: '#0032AD', win: '#FFFFFF' }],
-    ['藍×間・金後光', { bg: '#1E3550', pat: '#FFFFFF', gap: '#D4AF37', logo: '#1E3550', logoBg: '#FFFBEB', frame: '#D4AF37', win: '#FFFBEB' }],
-    ['墨×紅白二色札', { bg: '#1F2422', pat: '#E5E0D5', gap: '#111413', logo: '#FFFFFF', tagL: '#FFFFFF', tagR: '#D9442B', knot: '#D4AF37', shake: '#38BDF8', win: '#FFFFFF' }],
-    ['紺×金枠・朱紐', { bg: '#0032AD', pat: '#FFFFFF', gap: '#0B1D51', logo: '#FFFFFF', frame: '#D4AF37', knot: '#D9442B', shake: '#FBBF24', win: '#FFFFFF' }]
+    ['ティール×白', { bg: '#00A3AF', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
+    ['紺×白', { bg: '#0032AD', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
+    ['藍×白', { bg: '#1E3550', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
+    ['朱×白', { bg: '#D9442B', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
+    ['墨×白', { bg: '#222222', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
+    ['白×ティール', { bg: '#FFFFFF', pat: '#00A3AF', logo: '#00A3AF', win: '#00A3AF' }, 0],
+    ['白×紺', { bg: '#FFFFFF', pat: '#0032AD', logo: '#0032AD', win: '#0032AD' }, 0],
+    ['ティール×柄薄め', { bg: '#00A3AF', pat: '#7FD1D7', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
+    ['ティール×紺札（白縁）', { bg: '#00A3AF', pat: '#FFFFFF', logo: '#0032AD', logoBg: '#FFFFFF', win: '#FFFFFF' }, 5],
+    ['ティール×白札（紺縁）', { bg: '#00A3AF', pat: '#FFFFFF', logo: '#FFFFFF', logoBg: '#0032AD', win: '#0032AD' }, 5],
+    ['藍×白札（朱縁）', { bg: '#1E3550', pat: '#FFFFFF', logo: '#FFFFFF', logoBg: '#D9442B', win: '#D9442B' }, 5],
+    ['墨×黒札（金縁）', { bg: '#222222', pat: '#FFFFFF', logo: '#222222', logoBg: '#D4AF37', win: '#D4AF37' }, 5]
   ];
 
   function effColor(k) {
@@ -903,24 +894,44 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     var cPat = col.pat || '#FFFFFF';
     var cLogo = col.logo || '#FFFFFF';
     var cWin = col.win || cPat;
-    var cGap = col.gap || cBg;
-    var defLogoBg = (isWin(st) || st === 'obi') ? cWin : (st === 'gaikei' ? cGap : cBg);
+    var defLogoBg = (isWin(st) || st === 'obi') ? cWin : cBg;
     var cLogoBg = col.logoBg || defLogoBg;
     if (k === 'bg') return cBg;
     if (k === 'pat') return cPat;
     if (k === 'logo') return cLogo;
-    if (k === 'win') return cWin;
-    if (k === 'gap') return cGap;
     if (k === 'logoBg') return cLogoBg;
     if (k === 'frame') return col.frame || cLogo;
-    if (k === 'border') return col.border || cBg;
-    if (k === 'tagL') return col.tagL || cLogo;
-    if (k === 'tagR') return col.tagR || cLogo;
-    if (k === 'side') return col.side || cLogo;
-    if (k === 'logoText') return col.logoText || cLogoBg;
-    if (k === 'knot') return col.knot || cLogo;
-    if (k === 'shake') return col.shake || cLogo;
     return '#FFFFFF';
+  }
+
+  // 札の背景色を変える（札の色と同じになって消えてしまうのを自動で防ぐ）
+  function applyLogoBgColor(val) {
+    var st = cfg.style || 'gaikei';
+    var cBg = cfg.colors.bg || '#00A3AF';
+    var cPat = cfg.colors.pat || '#FFFFFF';
+    if (val === 'bg' || !val) {
+      delete cfg.colors.logoBg;
+      delete cfg.colors.gap;
+      if (isWin(st) || st === 'obi') {
+        cfg.colors.win = cBg;
+        if (sameHex(cfg.colors.logo, cBg)) cfg.colors.logo = pickContrast(cBg, cPat, '#FFFFFF');
+      } else {
+        cfg.bgRim = 0;
+        if (sameHex(cfg.colors.logo, cBg)) cfg.colors.logo = pickContrast(cBg, cPat, '#FFFFFF');
+      }
+    } else {
+      var hex = val.toUpperCase();
+      if (isWin(st) || st === 'obi') {
+        cfg.colors.win = hex;
+        cfg.colors.logoBg = hex;
+      } else {
+        cfg.colors.logoBg = hex;
+        if (!sameHex(hex, cBg) && !(cfg.bgRim > 0)) cfg.bgRim = 5;
+      }
+      if (sameHex(cfg.colors.logo, hex)) {
+        cfg.colors.logo = pickContrast(hex, cBg, cPat);
+      }
+    }
   }
 
   // プリセット一覧
@@ -935,14 +946,15 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     SW.forEach(function (s) {
       var b = document.createElement('button'); b.type = 'button';
       var i = document.createElement('i');
-      var gcol = s[1].gap || s[1].tagR || s[1].pat;
+      var gcol = s[1].logoBg || s[1].pat;
       i.style.background = 'linear-gradient(90deg,' + s[1].bg + ' 45%,' + gcol + ' 45% 72%,' + s[1].pat + ' 72%)';
       b.appendChild(i); b.appendChild(document.createTextNode(s[0]));
       b.addEventListener('click', function () {
         var c = Object.assign({}, s[1]);
-        // 窓のある案は「窓＝柄色・札＝地色」のまま入れ替える（単色系プリセットの場合）
-        if (isWin(cfg.style) && !s[1].logoBg && !s[1].tagR) { c.win = s[1].pat; c.logo = s[1].bg; }
-        cfg.colors = c; syncUI(); schedule();
+        if (isWin(cfg.style) && !s[1].logoBg) { c.win = s[1].pat; c.logo = s[1].bg; }
+        cfg.colors = c;
+        if (s[2] !== undefined) cfg.bgRim = s[2];
+        syncUI(); schedule();
       });
       sw.appendChild(b);
     });
@@ -1014,6 +1026,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     if (pm === 'chusen' && (isWin(cfg.style) || cfg.style === 'obi')) item('cau', '色の境目', '注染では色と色の間を 1cm 以上離すのが目安です。窓や帯の縁は業者に相談してください。');
   }
   function ensureDefaults() {
+    if (cfg.bgRim == null) cfg.bgRim = 0;
     if (cfg.frameInset == null) cfg.frameInset = 9;
     if (cfg.frameW == null) cfg.frameW = 1.6;
     if (cfg.winDX == null) cfg.winDX = 0;
@@ -1044,6 +1057,8 @@ html.easy #ed .stage .bar{justify-content:flex-start}
       var r = $('#' + k); if (r && k !== 'patScale') r.value = v;
       var n = $('input[data-for="' + k + '"]'); if (n) n.value = +(+v).toFixed(2);
     });
+    if ($('#bgRim_k')) $('#bgRim_k').value = cfg.bgRim || 0;
+    if ($('#bgRim_kn')) $('#bgRim_kn').value = +(cfg.bgRim || 0).toFixed(2);
     $('#logoX').max = cfg.W; $('#logoY').max = cfg.H;
     Object.keys(MIN0).forEach(function (k) { var m = pmMin(k); if ($('#' + k)) $('#' + k).min = m; var n = $('input[data-for="' + k + '"]'); if (n) n.min = m; });
     CHK.forEach(function (k) { var el = $('#' + k); if (el) el.checked = !!cfg[k]; });
@@ -1054,11 +1069,17 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     $('#tnNote').hidden = !(isTn && curPreset && curPreset.cfg.W !== cfg.W);
     var kf = $('#knockFs'); kf.className = (kf.className.replace(/(^|\s)st-\S+/g, ' ').trim() + ' st-' + cfg.style).trim();
     $('#gapRow').style.display = (cfg.style === 'obi' || cfg.style === 'none') ? 'none' : '';
-    $('#winPick').style.display = (isWin(cfg.style) || cfg.style === 'obi') ? '' : 'none';
     $('#cornerLbl').textContent = cfg.style === 'kado' ? '角落とし量 mm' : '角の丸み mm';
+    if ($('#logoBgLbl')) $('#logoBgLbl').textContent = (isWin(cfg.style) || cfg.style === 'obi') ? '窓・帯の色' : '札の背景';
+    if ($('#fuchiDoubleWrap')) $('#fuchiDoubleWrap').style.display = cfg.fuchi ? '' : 'none';
+    if ($('#fuchiSubRows')) $('#fuchiSubRows').style.display = cfg.fuchi ? '' : 'none';
+    if ($('#frameDoubleWrap')) $('#frameDoubleWrap').style.display = cfg.frame ? '' : 'none';
     $('#frameInsetRow').style.display = cfg.frame ? '' : 'none';
     $('#frameWRow').style.display = cfg.frame ? '' : 'none';
-    $('#borderFrameWRow').style.display = cfg.borderFrame ? '' : 'none';
+    if ($('#borderFrameWrap')) $('#borderFrameWrap').style.display = (cfg.border > 0) ? '' : 'none';
+    $('#borderFrameWRow').style.display = (cfg.border > 0 && cfg.borderFrame) ? '' : 'none';
+    var hasAnyLine = (cfg.style === 'gaikei' && cfg.fuchi) || (isWin(cfg.style) && cfg.frame) || cfg.style === 'obi' || (cfg.border > 0 && cfg.borderFrame);
+    if ($('#frameColRow')) $('#frameColRow').style.display = hasAnyLine ? '' : 'none';
 
     COL_KEYS.forEach(function (k) {
       var hex = effColor(k);
@@ -1067,8 +1088,6 @@ html.easy #ed .stage .bar{justify-content:flex-start}
         cd.textContent = hex.toUpperCase();
       });
     });
-    if ($('#c_gap_quick')) $('#c_gap_quick').value = effColor('gap').toLowerCase();
-    if ($('#c_frame_quick')) $('#c_frame_quick').value = effColor('frame').toLowerCase();
     if (window.__easySync) window.__easySync();
   }
 
@@ -1085,9 +1104,43 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   NUM.forEach(function (k) {
     var r = $('#' + k), n = $('input[data-for="' + k + '"]');
     if (!r || !n) return;
-    r.addEventListener('input', function () { var v = setVal(k, r.value); n.value = v; schedule(); });
-    n.addEventListener('change', function () { var v = setVal(k, n.value); n.value = v; r.value = v; schedule(); });
+    r.addEventListener('input', function () {
+      var v = setVal(k, r.value); n.value = v;
+      if (k === 'bgRim') {
+        if ($('#bgRim_k')) $('#bgRim_k').value = v;
+        if ($('#bgRim_kn')) $('#bgRim_kn').value = v;
+        if (v > 0 && !isWin(cfg.style) && cfg.style !== 'obi' && !cfg.colors.logoBg) {
+          // 背景色が最背景と同じまま縁を広げたときは、はっきり分かるように柄色（または対比色）を背景に敷く
+          var autoBg = pickContrast(cfg.colors.bg || '#00A3AF', cfg.colors.pat || '#FFFFFF', '#FFFFFF');
+          cfg.colors.logoBg = autoBg;
+          if (sameHex(cfg.colors.logo, autoBg)) cfg.colors.logo = pickContrast(autoBg, cfg.colors.bg || '#00A3AF', '#0032AD');
+          syncUI();
+        }
+      }
+      if (k === 'border') syncUI();
+      schedule();
+    });
+    n.addEventListener('change', function () {
+      var v = setVal(k, n.value); n.value = v; r.value = v;
+      if (k === 'bgRim' || k === 'border') syncUI();
+      schedule();
+    });
   });
+  if ($('#bgRim_k') && $('#bgRim_kn')) {
+    $('#bgRim_k').addEventListener('input', function () {
+      var v = setVal('bgRim', $('#bgRim_k').value);
+      if (v > 0 && !isWin(cfg.style) && cfg.style !== 'obi' && !cfg.colors.logoBg) {
+        var autoBg = pickContrast(cfg.colors.bg || '#00A3AF', cfg.colors.pat || '#FFFFFF', '#FFFFFF');
+        cfg.colors.logoBg = autoBg;
+        if (sameHex(cfg.colors.logo, autoBg)) cfg.colors.logo = pickContrast(autoBg, cfg.colors.bg || '#00A3AF', '#0032AD');
+      }
+      syncUI(); schedule();
+    });
+    $('#bgRim_kn').addEventListener('change', function () {
+      setVal('bgRim', $('#bgRim_kn').value);
+      syncUI(); schedule();
+    });
+  }
   var am = $('#alignM'), amn = $('input[data-for="alignM"]');
   am.addEventListener('input', function () { amn.value = am.value; });
   amn.addEventListener('change', function () { am.value = amn.value; });
@@ -1106,7 +1159,9 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     el.addEventListener('change', function (e) {
       cfg[k] = e.target.checked;
       if (k === 'fuchiDouble' && cfg.fuchiDouble) cfg.fuchi = true;
+      if (k === 'fuchi' && !cfg.fuchi) cfg.fuchiDouble = false;
       if (k === 'frameDouble' && cfg.frameDouble) cfg.frame = true;
+      if (k === 'frame' && !cfg.frame) cfg.frameDouble = false;
       if (k === 'borderFrame' && cfg.borderFrame && (!cfg.border || cfg.border < 4)) cfg.border = 8;
       var ch = pmEnforce(); if (ch.length) pmSay(ch.join('、') + ' に上げました。');
       syncUI(); schedule();
@@ -1114,8 +1169,10 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   });
   $$('#styleSeg button').forEach(function (b) { b.addEventListener('click', function () {
     var s = b.dataset.s; cfg.style = s;
-    if (isWin(s) && cfg.colors.logo.toUpperCase() === (cfg.colors.win || cfg.colors.pat).toUpperCase()) { cfg.colors.logo = cfg.colors.bg; }
-    if ((s === 'gaikei' || s === 'obi' || s === 'none') && cfg.colors.logo.toUpperCase() === cfg.colors.bg.toUpperCase()) { cfg.colors.logo = cfg.colors.pat; }
+    var under = (isWin(s) || s === 'obi') ? (cfg.colors.logoBg || cfg.colors.win || cfg.colors.pat) : (cfg.colors.logoBg || cfg.colors.bg);
+    if (sameHex(cfg.colors.logo, under)) {
+      cfg.colors.logo = pickContrast(under, cfg.colors.bg, cfg.colors.pat);
+    }
     if (s === 'maru' && cfg.winR < cfg.logoH * 0.55) cfg.winR = Math.round(cfg.logoH * 0.66);
     if ((s === 'koban' || s === 'fuda' || s === 'yama' || s === 'kado') && !cfg.padX && !cfg.padY) { cfg.padX = 12; cfg.padY = 24; }
     if (s === 'kado' && (!cfg.corner || cfg.corner < 4)) cfg.corner = 18;
@@ -1165,33 +1222,35 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   COL_KEYS.forEach(function (k) {
     var el = $('#c_' + k); if (!el) return;
     el.addEventListener('input', function (e) {
-      cfg.colors[k] = e.target.value.toUpperCase();
+      var val = e.target.value.toUpperCase();
+      if (k === 'logoBg') {
+        applyLogoBgColor(val);
+      } else if (k === 'logo') {
+        cfg.colors.logo = val;
+        var under = effColor('logoBg');
+        if (sameHex(val, under)) {
+          applyLogoBgColor(pickContrast(val, cfg.colors.pat || '#FFFFFF', cfg.colors.bg || '#00A3AF'));
+        }
+      } else if (k === 'bg') {
+        cfg.colors.bg = val;
+        if (!cfg.colors.logoBg && !isWin(cfg.style) && cfg.style !== 'obi' && sameHex(cfg.colors.logo, val)) {
+          cfg.colors.logo = pickContrast(val, cfg.colors.pat || '#FFFFFF', '#FFFFFF');
+        }
+      } else {
+        cfg.colors[k] = val;
+      }
       syncUI(); schedule();
     });
   });
-  if ($('#c_gap_quick')) {
-    $('#c_gap_quick').addEventListener('input', function (e) {
-      cfg.colors.gap = e.target.value.toUpperCase();
+  if ($('#logoBgSameBg')) {
+    $('#logoBgSameBg').addEventListener('click', function () {
+      applyLogoBgColor('bg');
       syncUI(); schedule();
     });
   }
-  if ($('#c_frame_quick')) {
-    $('#c_frame_quick').addEventListener('input', function (e) {
-      cfg.colors.frame = e.target.value.toUpperCase();
-      syncUI(); schedule();
-    });
-  }
-  if ($('#gapColSameBg')) {
-    $('#gapColSameBg').addEventListener('click', function () {
-      delete cfg.colors.gap;
-      syncUI(); schedule();
-    });
-  }
-  $$('#gapQuickChips button[data-gcol]').forEach(function (b) {
+  $$('#logoBgQuickChips button[data-bgcol]').forEach(function (b) {
     b.addEventListener('click', function () {
-      var v = b.dataset.gcol;
-      if (v === 'bg') delete cfg.colors.gap;
-      else cfg.colors.gap = v.toUpperCase();
+      applyLogoBgColor(b.dataset.bgcol);
       syncUI(); schedule();
     });
   });
@@ -1199,21 +1258,14 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     b.addEventListener('click', function (e) {
       e.preventDefault(); e.stopPropagation();
       var k = b.dataset.resetCol;
-      if (k === 'win') cfg.colors.win = cfg.colors.pat;
-      else delete cfg.colors[k];
+      delete cfg.colors[k];
       syncUI(); schedule();
     });
   });
-  if ($('#resetLogoParts')) {
-    $('#resetLogoParts').addEventListener('click', function () {
-      ['tagL', 'tagR', 'side', 'logoText', 'knot', 'shake'].forEach(function (k) { delete cfg.colors[k]; });
-      syncUI(); schedule();
-    });
-  }
   $('#guide').addEventListener('change', function () { if (last) paint(last); });
   $('#reset').addEventListener('click', function () { if (curPreset) loadPreset(curPreset.id); say('元の案に戻しました。'); });
 
-  var curHlKey = null;
+  var curHlKey = null, hlTimer = null;
   function renderHighlight() {
     var g = $('#__hlOverlay'), badge = $('#hlBadge'), btxt = $('#hlBadgeTxt');
     if (!g || !badge) return;
@@ -1234,16 +1286,26 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     badge.classList.add('on');
   }
   function setHighlight(key) {
+    clearTimeout(hlTimer);
     if (curHlKey === key) return;
     curHlKey = key;
     renderHighlight();
   }
   $$('[data-hl]').forEach(function (el) {
     var k = el.dataset.hl;
-    el.addEventListener('pointerenter', function () { setHighlight(k); });
-    el.addEventListener('pointerleave', function () { if (curHlKey === k) setHighlight(null); });
-    el.addEventListener('focusin', function () { setHighlight(k); });
-    el.addEventListener('focusout', function () { if (curHlKey === k) setHighlight(null); });
+    el.addEventListener('pointerenter', function (e) {
+      if (e.pointerType !== 'touch') setHighlight(k);
+    });
+    el.addEventListener('pointerleave', function (e) {
+      if (e.pointerType !== 'touch' && curHlKey === k) setHighlight(null);
+    });
+    el.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'touch') {
+        setHighlight(k);
+        clearTimeout(hlTimer);
+        hlTimer = setTimeout(function () { if (curHlKey === k) setHighlight(null); }, 1200);
+      }
+    });
   });
 
   var timer = null;
