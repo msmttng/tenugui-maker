@@ -233,6 +233,25 @@ html.easy .e-top{margin-top:2px}
 .pick button[aria-pressed="true"]{border-color:var(--accent);color:var(--ink);font-weight:700;background:var(--accent-soft)}
 .pick button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .pick .ng{color:var(--warn);font-weight:700}
+.my-pick-wrap{margin-top:10px;padding:8px 10px;border:1.5px solid var(--accent);border-radius:10px;background:var(--accent-soft)}
+.my-pick-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.my-pick{margin-top:0;max-height:220px;grid-template-columns:repeat(auto-fill,minmax(128px,1fr))}
+.my-pick .my-card{position:relative}
+.my-pick .my-card button.my-load{width:100%;height:100%;background:var(--surface)}
+.my-pick .my-card button.my-del{position:absolute;top:4px;right:4px;z-index:2;width:22px;height:22px;min-height:22px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);font-size:12px;line-height:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.my-pick .my-card button.my-del:hover{background:var(--warn);color:#fff;border-color:var(--warn)}
+.my-saved-box{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.my-saved-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;font-weight:700}
+.my-saved-list{display:flex;flex-direction:column;gap:6px;margin-top:8px;max-height:280px;overflow:auto}
+.my-saved-item{display:grid;grid-template-columns:60px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.my-saved-item.active{border-color:var(--accent);background:var(--accent-soft)}
+.my-saved-th{width:60px;height:40px;border-radius:5px;background:var(--surface-2);border:0;padding:2px;display:flex;align-items:center;justify-content:center;cursor:zoom-in;overflow:hidden}
+.my-saved-th img{max-width:100%;max-height:36px;display:block;box-shadow:0 1px 3px rgba(0,0,0,.18)}
+.my-saved-meta{min-width:0}
+.my-saved-nm{font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.my-saved-sub{font-size:11px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.my-saved-acts{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.my-saved-acts .btn{font-size:11.5px;padding:3px 8px;min-height:28px}
 html.easy #ed .stage .bar{justify-content:flex-start}
 @media (max-width:900px){
   .uimode{order:-1;margin-left:auto}
@@ -281,6 +300,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
       </div>
       <div class="strip" id="shareStrip"></div>
     </div>
+    <div id="myGalBody"></div>
     <div id="galBody"></div>
   </section>
 
@@ -308,6 +328,10 @@ html.easy #ed .stage .bar{justify-content:flex-start}
             </div>
           </div>
           <p class="hint" id="tnNote" hidden>タオルの図案を手ぬぐいの大きさに移しました。札の位置は同じ割合のところに置き直しています。</p>
+          <div class="my-pick-wrap" id="myPickWrap" hidden>
+            <div class="my-pick-hd"><span>★ 保存したマイ図案</span><span id="myPickCount" style="font-weight:500;color:var(--ink-2);font-size:11.5px"></span></div>
+            <div class="pick my-pick" id="myPick" role="group" aria-label="保存したマイ図案"></div>
+          </div>
           <div class="pick easy-only" id="easyPick" role="group" aria-label="図案"></div>
         </fieldset>
 
@@ -434,15 +458,33 @@ html.easy #ed .stage .bar{justify-content:flex-start}
 
         <fieldset class="out" data-st="7">
           <legend data-n="7" data-e="保存">保存</legend>
-          <input type="text" id="fname" class="adv" aria-label="ファイル名">
-          <div class="btns">
-            <button class="btn pri dl" id="saveSvg">SVG を保存（Illustrator 用）</button>
-            <button class="btn dl" id="savePng">PNG を保存（確認用）</button>
-            <button class="btn" id="reset">元の案に戻す</button>
+          <div class="row2" style="margin-top:2px">
+            <input type="text" id="fname" placeholder="図案の名前（例：ティール×白札・本番案）" aria-label="図案の名前・ファイル名" style="flex:1">
+          </div>
+          <div class="btns" style="margin-top:8px">
+            <button class="btn pri" id="saveMyBtn" type="button">💾 この図案を保存（マイ図案に追加）</button>
+            <button class="btn" id="overwriteMyBtn" type="button" hidden>🔄 いまのマイ図案に上書き</button>
+          </div>
+          <div class="btns" style="margin-top:8px">
+            <button class="btn pri dl" id="saveSvg" type="button">SVG を保存（Illustrator 用）</button>
+            <button class="btn dl" id="savePng" type="button">PNG を保存（確認用）</button>
+            <button class="btn" id="reset" type="button">元の案に戻す</button>
             <button class="btn pri kobo-only" id="toKobo" type="button">📥 手ぬぐい工房の生地に入れる</button>
           </div>
           <div class="msg" id="msg"></div>
-          <p class="hint easy-only">SVG は Illustrator 用の実寸データ、PNG は確認用の画像です。</p>
+          <div class="my-saved-box" id="mySavedBox">
+            <div class="my-saved-hd">
+              <span style="white-space:nowrap">★ 保存したマイ図案（<span id="mySavedCount">0</span>件）</span>
+              <div style="display:flex;gap:4px;flex-shrink:0">
+                <button class="btn" id="exportMyJson" type="button" style="font-size:11px;padding:2px 8px;min-height:26px;white-space:nowrap" title="保存したマイ図案をファイルとして書き出します">📤 出力</button>
+                <button class="btn" id="importMyJson" type="button" style="font-size:11px;padding:2px 8px;min-height:26px;white-space:nowrap" title="書き出した設定ファイルを読み込みます">📂 読込</button>
+                <input type="file" id="importMyFile" accept=".json,application/json" hidden>
+              </div>
+            </div>
+            <p class="hint" id="mySavedEmpty" style="margin-top:4px">「💾 この図案を保存」を押すと、作った図案がここに残り、「① 図案を選ぶ」や「図案一覧」からいつでも呼び出せます。</p>
+            <div class="my-saved-list" id="mySavedList"></div>
+          </div>
+          <p class="hint easy-only">SVG は Illustrator 用の実寸データ、PNG は確認用の画像です。作業中の図案は自動で保存されます。</p>
           <p class="hint adv">SVG は実寸・アウトライン済み（塗りのみ）。Illustrator で開き、必要なら「別名で保存」で EPS / PDF にしてください。レイヤー名：Background／HanedaNaka_Kakuji（柄）／Window（窓）／Fuda_Logo（札）。</p>
         </fieldset>
       </div>
@@ -838,6 +880,9 @@ html.easy #ed .stage .bar{justify-content:flex-start}
 
   /* ---------------- editor ---------------- */
   var eng = null, cfg = null, curPreset = null, last = null;
+  var MY_KEY = 'towel_my_designs_v1', WORK_KEY = 'towel_working_cfg_v1';
+  var myDesigns = [], curMyId = null;
+  var STYLE_NAMES = { gaikei: '外形', maru: '丸窓', koban: '小判窓', fuda: '札形の窓', yama: '駒形窓', kado: '八角窓', obi: '無地の帯', none: 'くり抜きなし' };
   var NUM = ['patScale', 'patRot', 'patDX', 'patDY', 'logoH', 'logoX', 'logoY', 'logoRot', 'gap', 'bgRim', 'fuchiIn', 'fuchiW', 'winR', 'padX', 'padY', 'corner', 'frameInset', 'frameW', 'winDX', 'winDY', 'obiSize', 'obiGap', 'border', 'borderFrameW'];
   var CHK = ['twin', 'fuchi', 'fuchiDouble', 'frame', 'frameDouble', 'borderFrame'];
   var COL_KEYS = ['bg', 'pat', 'logo', 'logoBg', 'frame'];
@@ -847,6 +892,77 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     if (c1 && !sameHex(c1, avoid)) return c1;
     if (c2 && !sameHex(c2, avoid)) return c2;
     return sameHex(avoid, '#FFFFFF') ? '#0032AD' : '#FFFFFF';
+  }
+  function loadMyStorage() {
+    try {
+      var raw = JSON.parse(localStorage.getItem(MY_KEY) || '[]');
+      if (Array.isArray(raw)) myDesigns = raw.filter(function (x) { return x && x.id && x.cfg; });
+    } catch (e) { myDesigns = []; }
+  }
+  function saveMyStorage() {
+    try { localStorage.setItem(MY_KEY, JSON.stringify(myDesigns)); } catch (e) {}
+  }
+  function saveWorkingState() {
+    if (!cfg) return;
+    try {
+      localStorage.setItem(WORK_KEY, JSON.stringify({
+        presetId: curPreset ? curPreset.id : '',
+        myId: curMyId || '',
+        fname: $('#fname') ? $('#fname').value : '',
+        cfg: cfg
+      }));
+    } catch (e) {}
+  }
+  function myDesignSummary(c) {
+    if (!c) return '';
+    return Math.round(c.W) + '×' + Math.round(c.H) + 'mm・' + (STYLE_NAMES[c.style] || c.style) + '・札' + Math.round(c.logoH) + 'mm';
+  }
+  function safeFileName(s) {
+    return String(s || 'towel').replace(/[\\/:*?"<>|]/g, '_').replace(/\.(svg|png|json)$/i, '') || 'towel';
+  }
+  function autoMyName(c) {
+    var raw = ($('#fname') && $('#fname').value || '').trim();
+    var isDefault = !raw || (curPreset && raw === curPreset.id + '_edit') || /^towel_(yoko|tate)_.*_(edit|tenugui_\d+x\d+)$/.test(raw);
+    if (!isDefault) return raw;
+    var idx = myDesigns.length + 1;
+    var orient = c.W > c.H ? '横' : '縦';
+    var stName = STYLE_NAMES[c.style] || c.style;
+    return 'マイ図案' + idx + '（' + orient + '・' + stName + '・札' + Math.round(c.logoH) + 'mm）';
+  }
+  function makeThumbDataUrl(res, cb) {
+    if (!res || !eng) { cb(''); return; }
+    var c = res.cfg, maxSide = 320;
+    var scale = maxSide / Math.max(c.W, c.H);
+    var w = Math.max(1, Math.round(c.W * scale)), h = Math.max(1, Math.round(c.H * scale));
+    var svg = eng.toSVG(res).replace(/width="[^"]+mm" height="[^"]+mm"/, 'width="' + w + '" height="' + h + '"');
+    var img = new Image(), url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+    img.onload = function () {
+      var cvs = document.createElement('canvas'); cvs.width = w; cvs.height = h;
+      cvs.getContext('2d').drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      var out = '';
+      try { out = cvs.toDataURL('image/webp', 0.82); } catch (e) {}
+      if (!out || out.indexOf('data:image/') !== 0) {
+        try { out = cvs.toDataURL('image/png'); } catch (e2) {}
+      }
+      cb(out || '');
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); cb(''); };
+    img.src = url;
+  }
+  function downloadPngFromRes(res, name) {
+    if (!res || !eng) return;
+    var c = res.cfg, px = 5;
+    var svg = eng.toSVG(res).replace(/width="[^"]+mm" height="[^"]+mm"/, 'width="' + c.W * px + '" height="' + c.H * px + '"');
+    var img = new Image(), url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+    say('PNG を作成中…');
+    img.onload = function () {
+      var cvs = document.createElement('canvas'); cvs.width = c.W * px; cvs.height = c.H * px;
+      cvs.getContext('2d').drawImage(img, 0, 0); URL.revokeObjectURL(url);
+      cvs.toBlob(function (b) { save(safeFileName(name) + '.png', b); }, 'image/png');
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); say('PNG を作れませんでした。'); };
+    img.src = url;
   }
   var CANVAS = { tate: { W: 340, H: 850, patRot: 0, patDY: 0 }, yoko: { W: 850, H: 340, patRot: 90, patDY: 0 }, tnv: { W: 350, H: 900, patRot: 0, patDY: 0 }, tnh: { W: 900, H: 350, patRot: 90, patDY: 0 }, tenugui: { W: 340, H: 840, patRot: 0, patDY: 5 } };
   var SW = [
@@ -1013,13 +1129,34 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     if (!cfg.colors) cfg.colors = { bg: '#00A3AF', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' };
   }
   function loadPreset(id) {
+    if (String(id || '').indexOf('my_') === 0) {
+      loadMyDesign(id);
+      return;
+    }
     var p = PRESETS.filter(function (x) { return x.id === id; })[0] || PRESETS[0];
+    curMyId = null;
     curPreset = p; cfg = clone(p.cfg); ensureDefaults(); $('#preset').value = p.id;
     $('#fname').value = p.id + '_edit';
     var ch = pmEnforce();
     pmSay(ch.length ? 'この案は' + PM[pm].name + 'には細すぎるので、' + ch.join('、') + ' に上げました。' : '');
-    syncUI(); schedule();
+    syncUI(); renderMyUI(); schedule();
     try { localStorage.setItem('towel_preset', p.id); } catch (e) {}
+    saveWorkingState();
+  }
+  function loadMyDesign(id) {
+    var it = myDesigns.filter(function (x) { return x.id === id; })[0];
+    if (!it) return;
+    curMyId = it.id;
+    curPreset = PRESETS.filter(function (x) { return x.id === it.baseId; })[0] || PRESETS[0];
+    cfg = clone(it.cfg); ensureDefaults();
+    if (it.pm && PM[it.pm]) { pm = it.pm; $('#pmethod').value = pm; try { localStorage.setItem('towel_pm', pm); } catch (e) {} }
+    if ($('#preset')) $('#preset').value = it.id;
+    if ($('#fname')) $('#fname').value = it.label;
+    var ch = pmEnforce();
+    pmSay(ch.length ? 'この案は' + PM[pm].name + 'には細すぎるので、' + ch.join('、') + ' に上げました。' : '');
+    syncUI(); renderMyUI(); schedule();
+    saveWorkingState();
+    say('保存したマイ図案「' + it.label + '」を開きました。');
   }
   function canvasKey() {
     for (var k in CANVAS) { if (CANVAS[k].W === cfg.W && CANVAS[k].H === cfg.H) return k; }
@@ -1271,6 +1408,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     paint(last); pmStatus();
     $('#info').textContent = cfg.W + '×' + cfg.H + 'mm・札 高さ' + Math.round(cfg.logoH) + '×幅' + Math.round(cfg.logoH * LOGO_R) + 'mm・' + Math.round(performance.now() - t0) + 'ms';
     $('#cv').classList.remove('working');
+    saveWorkingState();
   }
   function paint(res) {
     var svg = eng.toSVG(res, { standalone: false, attrs: ' role="img" aria-label="プレビュー"' });
@@ -1293,6 +1431,363 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     else if (res.over > 0) msgs.push('札または窓が「端の無地 ' + b + 'mm」に ' + res.over.toFixed(1) + 'mm 入っています。印字が欠ける恐れがあります。');
     w.hidden = !msgs.length; w.textContent = msgs.join(' ');
   }
+
+  /* ---------------- マイ図案（作ったタオルの保存・呼び出し） ---------------- */
+  function renderMyUI() {
+    var n = myDesigns.length;
+    // 1. 詳細モードの #preset ドロップダウン先頭グループ
+    var sel = $('#preset');
+    if (sel) {
+      var og = $('#myPresetOptGroup', sel);
+      if (!n) {
+        if (og) og.remove();
+      } else {
+        if (!og) {
+          og = document.createElement('optgroup');
+          og.id = 'myPresetOptGroup';
+          og.label = '★ 保存したマイ図案';
+          sel.insertBefore(og, sel.firstChild);
+        }
+        og.textContent = '';
+        myDesigns.forEach(function (it) {
+          var o = document.createElement('option');
+          o.value = it.id;
+          o.textContent = '★ ' + it.label + '（' + myDesignSummary(it.cfg) + '）';
+          og.appendChild(o);
+        });
+      }
+      if (curMyId && myDesigns.some(function (x) { return x.id === curMyId; })) sel.value = curMyId;
+      else if (curPreset) sel.value = curPreset.id;
+    }
+
+    // 2. ① 図案を選ぶ 内の「★ 保存したマイ図案」カード一覧
+    var wrap = $('#myPickWrap'), pick = $('#myPick'), cnt = $('#myPickCount');
+    if (wrap && pick) {
+      wrap.hidden = !n;
+      if (cnt) cnt.textContent = n + '件（タップで呼び出し）';
+      pick.textContent = '';
+      myDesigns.forEach(function (it) {
+        var card = document.createElement('div');
+        card.className = 'my-card';
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'my-load';
+        b.setAttribute('aria-pressed', String(curMyId === it.id));
+        b.title = it.label + '（' + myDesignSummary(it.cfg) + '）';
+        if (it.thumb) {
+          var im = document.createElement('img');
+          im.src = it.thumb;
+          im.alt = '';
+          im.setAttribute('data-my-thumb', it.id);
+          b.appendChild(im);
+        }
+        var sp = document.createElement('span');
+        sp.textContent = it.label;
+        b.appendChild(sp);
+        b.addEventListener('click', function () { loadMyDesign(it.id); });
+
+        var del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'my-del';
+        del.textContent = '×';
+        del.title = 'この保存図案を削除';
+        del.addEventListener('click', function (e) {
+          e.stopPropagation();
+          deleteMyDesign(it.id);
+        });
+        card.appendChild(b);
+        card.appendChild(del);
+        pick.appendChild(card);
+      });
+    }
+
+    // 3. ⑦ 保存 内の「★ 保存したマイ図案」リスト
+    var sCnt = $('#mySavedCount'), sEmpty = $('#mySavedEmpty'), sList = $('#mySavedList'), owBtn = $('#overwriteMyBtn');
+    if (sCnt) sCnt.textContent = String(n);
+    if (sEmpty) sEmpty.hidden = n > 0;
+    if (owBtn) owBtn.hidden = !(curMyId && myDesigns.some(function (x) { return x.id === curMyId; }));
+    if (sList) {
+      sList.textContent = '';
+      myDesigns.forEach(function (it) {
+        var row = document.createElement('div');
+        row.className = 'my-saved-item' + (curMyId === it.id ? ' active' : '');
+        var th = document.createElement('button');
+        th.type = 'button';
+        th.className = 'my-saved-th';
+        th.title = '拡大プレビュー';
+        if (it.thumb) {
+          var im = document.createElement('img');
+          im.src = it.thumb;
+          im.alt = it.label;
+          im.setAttribute('data-my-thumb', it.id);
+          th.appendChild(im);
+        }
+        th.addEventListener('click', function () {
+          if (it.thumb) openLb(it.id, it.thumb, it.label + '（' + myDesignSummary(it.cfg) + '）');
+          else loadMyDesign(it.id);
+        });
+
+        var meta = document.createElement('div');
+        meta.className = 'my-saved-meta';
+        var nm = document.createElement('div');
+        nm.className = 'my-saved-nm';
+        nm.textContent = it.label;
+        var sub = document.createElement('div');
+        sub.className = 'my-saved-sub';
+        sub.textContent = myDesignSummary(it.cfg);
+        meta.appendChild(nm);
+        meta.appendChild(sub);
+
+        var acts = document.createElement('div');
+        acts.className = 'my-saved-acts';
+        var bOpen = document.createElement('button');
+        bOpen.type = 'button';
+        bOpen.className = 'btn' + (curMyId === it.id ? ' pri' : '');
+        bOpen.textContent = curMyId === it.id ? '編集中' : '開く';
+        bOpen.addEventListener('click', function () { loadMyDesign(it.id); });
+
+        var bSvg = document.createElement('button');
+        bSvg.type = 'button';
+        bSvg.className = 'btn dl';
+        bSvg.textContent = 'SVG';
+        bSvg.title = 'Illustrator用SVGを保存';
+        bSvg.addEventListener('click', function () {
+          if (!eng) return;
+          var r = eng.build(clone(it.cfg));
+          save(safeFileName(it.label) + '.svg', eng.toSVG(r));
+        });
+
+        var bPng = document.createElement('button');
+        bPng.type = 'button';
+        bPng.className = 'btn dl';
+        bPng.textContent = 'PNG';
+        bPng.title = '確認用PNG画像を保存';
+        bPng.addEventListener('click', function () {
+          if (!eng) return;
+          var r = eng.build(clone(it.cfg));
+          downloadPngFromRes(r, it.label);
+        });
+
+        var bDel = document.createElement('button');
+        bDel.type = 'button';
+        bDel.className = 'btn';
+        bDel.textContent = '×';
+        bDel.title = '削除';
+        bDel.addEventListener('click', function () { deleteMyDesign(it.id); });
+
+        acts.appendChild(bOpen);
+        acts.appendChild(bSvg);
+        acts.appendChild(bPng);
+        acts.appendChild(bDel);
+
+        row.appendChild(th);
+        row.appendChild(meta);
+        row.appendChild(acts);
+        sList.appendChild(row);
+      });
+    }
+
+    // 4. 図案一覧タブ (#gal) の「★ 保存したマイ図案」セクション
+    var gBody = $('#myGalBody');
+    if (gBody) {
+      gBody.textContent = '';
+      if (n > 0) {
+        var h = document.createElement('h2');
+        h.textContent = '★ 保存したマイ図案';
+        var sp = document.createElement('span');
+        sp.textContent = '作成したタオル・手ぬぐい図案・' + n + '点';
+        h.appendChild(sp);
+        gBody.appendChild(h);
+        var grid = document.createElement('div');
+        grid.className = 'grid yoko';
+        myDesigns.forEach(function (it) {
+          var card = document.createElement('div');
+          card.className = 'card';
+          var ph = document.createElement('button');
+          ph.className = 'ph';
+          ph.type = 'button';
+          ph.setAttribute('aria-label', '拡大：' + it.label);
+          if (it.thumb) {
+            var im = document.createElement('img');
+            im.src = it.thumb;
+            im.alt = it.label;
+            im.setAttribute('data-my-thumb', it.id);
+            ph.appendChild(im);
+          }
+          ph.addEventListener('click', function () {
+            if (it.thumb) openLb(it.id, it.thumb, it.label + '（' + myDesignSummary(it.cfg) + '）');
+          });
+          var meta = document.createElement('div');
+          meta.className = 'meta';
+          var nm = document.createElement('div');
+          nm.className = 'nm';
+          nm.textContent = '★ ' + it.label;
+          var fn = document.createElement('div');
+          fn.className = 'fn';
+          fn.textContent = myDesignSummary(it.cfg);
+          var ch = document.createElement('div');
+          ch.className = 'chips';
+          ['silk', 'fuchi', 'zenmen', 'chusen'].forEach(function (k) {
+            var bad = pmProblems(it.cfg, k), i = document.createElement('i');
+            i.className = bad.length ? 'ng' : 'ok';
+            i.textContent = PM[k].short + (bad.length ? '✕' : '○');
+            if (bad.length) i.title = PM[k].name + '：' + bad.join('・') + 'が細すぎます';
+            ch.appendChild(i);
+          });
+          var bt = document.createElement('div');
+          bt.className = 'btns';
+          bt.appendChild(mkBtn('SVG を保存', 'dl', function () {
+            if (!eng) return;
+            var r = eng.build(clone(it.cfg));
+            save(safeFileName(it.label) + '.svg', eng.toSVG(r));
+          }));
+          bt.appendChild(mkBtn('PNG を保存', 'dl', function () {
+            if (!eng) return;
+            var r = eng.build(clone(it.cfg));
+            downloadPngFromRes(r, it.label);
+          }));
+          bt.appendChild(mkBtn('この案を編集', 'pri', function () {
+            loadMyDesign(it.id);
+            showTab('ed');
+            window.scrollTo(0, 0);
+          }));
+          bt.appendChild(mkBtn('削除', '', function () {
+            deleteMyDesign(it.id);
+          }));
+          meta.appendChild(nm);
+          meta.appendChild(fn);
+          meta.appendChild(ch);
+          meta.appendChild(bt);
+          card.appendChild(ph);
+          card.appendChild(meta);
+          grid.appendChild(card);
+        });
+        gBody.appendChild(grid);
+      }
+    }
+    if (window.__easySync) window.__easySync();
+  }
+
+  function saveMyDesign(asOverwrite) {
+    if (!cfg || !eng) return;
+    if (!last) { try { last = eng.build(cfg); } catch (e) { return; } }
+    var existing = asOverwrite && curMyId ? myDesigns.filter(function (x) { return x.id === curMyId; })[0] : null;
+    var label = existing ? (($('#fname') && $('#fname').value.trim()) || existing.label) : autoMyName(cfg);
+    var item = existing || {
+      id: 'my_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6)
+    };
+    item.label = label;
+    item.cfg = clone(cfg);
+    item.pm = pm;
+    item.baseId = curPreset ? curPreset.id : 'towel_yoko_Y1_h200_fuchi8';
+    item.updatedAt = Date.now();
+    if (!existing) {
+      myDesigns.unshift(item);
+    }
+    curMyId = item.id;
+    if ($('#fname')) $('#fname').value = label;
+    saveMyStorage();
+    saveWorkingState();
+    renderMyUI();
+    say(existing ? 'マイ図案「' + label + '」を上書き保存しました。' : 'マイ図案「' + label + '」を保存しました（「① 図案を選ぶ」や「図案一覧」からいつでも開けます）。');
+    makeThumbDataUrl(last, function (dataUrl) {
+      if (!dataUrl) return;
+      item.thumb = dataUrl;
+      saveMyStorage();
+      renderMyUI();
+    });
+  }
+
+  function deleteMyDesign(id) {
+    var idx = -1;
+    for (var i = 0; i < myDesigns.length; i++) {
+      if (myDesigns[i].id === id) { idx = i; break; }
+    }
+    if (idx < 0) return;
+    var removed = myDesigns.splice(idx, 1)[0];
+    if (curMyId === id) curMyId = null;
+    saveMyStorage();
+    saveWorkingState();
+    renderMyUI();
+    say('マイ図案「' + removed.label + '」を削除しました。');
+  }
+
+  if ($('#saveMyBtn')) {
+    $('#saveMyBtn').addEventListener('click', function () { saveMyDesign(false); });
+  }
+  if ($('#overwriteMyBtn')) {
+    $('#overwriteMyBtn').addEventListener('click', function () { saveMyDesign(true); });
+  }
+  if ($('#fname')) {
+    $('#fname').addEventListener('change', function () { saveWorkingState(); });
+  }
+  if ($('#exportMyJson')) {
+    $('#exportMyJson').addEventListener('click', function () {
+      var payload = {
+        version: '1.13.4',
+        exportedAt: new Date().toISOString(),
+        current: cfg ? { label: autoMyName(cfg), cfg: cfg, pm: pm, baseId: curPreset ? curPreset.id : '' } : null,
+        myDesigns: myDesigns
+      };
+      var fname = safeFileName(($('#fname') && $('#fname').value) || 'towel_saved_designs') + '.json';
+      save(fname, new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }));
+    });
+  }
+  if ($('#importMyJson') && $('#importMyFile')) {
+    $('#importMyJson').addEventListener('click', function () { $('#importMyFile').click(); });
+    $('#importMyFile').addEventListener('change', function (e) {
+      var f = e.target.files && e.target.files[0];
+      if (!f) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var data = JSON.parse(String(reader.result || '{}'));
+          var added = 0;
+          if (Array.isArray(data.myDesigns)) {
+            data.myDesigns.forEach(function (d) {
+              if (d && d.cfg) {
+                var id = d.id && !myDesigns.some(function (x) { return x.id === d.id; }) ? d.id : ('my_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6));
+                myDesigns.unshift({
+                  id: id,
+                  label: d.label || '読込図案',
+                  cfg: d.cfg,
+                  pm: d.pm || pm,
+                  baseId: d.baseId || 'towel_yoko_Y1_h200_fuchi8',
+                  thumb: d.thumb || '',
+                  updatedAt: Date.now()
+                });
+                added++;
+              }
+            });
+          } else if (data && data.cfg) {
+            var id2 = 'my_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+            myDesigns.unshift({
+              id: id2,
+              label: data.label || f.name.replace(/\.json$/i, ''),
+              cfg: data.cfg,
+              pm: data.pm || pm,
+              baseId: data.baseId || 'towel_yoko_Y1_h200_fuchi8',
+              thumb: data.thumb || '',
+              updatedAt: Date.now()
+            });
+            added = 1;
+          }
+          if (added > 0) {
+            saveMyStorage();
+            loadMyDesign(myDesigns[0].id);
+            say('設定ファイルから ' + added + ' 件のマイ図案を読み込みました。');
+          } else {
+            say('読み込める図案データが見つかりませんでした。');
+          }
+        } catch (err) {
+          say('設定ファイルを読み込めませんでした。');
+        }
+        e.target.value = '';
+      };
+      reader.readAsText(f);
+    });
+  }
+
   $('#toKobo').addEventListener('click', function () {
     if (!last) return;
     var c = last.cfg, nm = (curPreset ? curPreset.label : '札タオル図案');
@@ -1301,34 +1796,45 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   });
   $('#saveSvg').addEventListener('click', function () {
     if (!last) return;
-    var name = ($('#fname').value || 'towel').replace(/[\\/:*?"<>|]/g, '_').replace(/\.svg$/i, '');
+    var name = safeFileName($('#fname').value || 'towel');
     save(name + '.svg', eng.toSVG(last));
   });
   $('#savePng').addEventListener('click', function () {
     if (!last) return;
-    var name = ($('#fname').value || 'towel').replace(/[\\/:*?"<>|]/g, '_').replace(/\.svg$/i, '');
-    var c = last.cfg, px = 5;                        // 5px/mm ≒ 127dpi
-    var svg = eng.toSVG(last).replace(/width="[^"]+mm" height="[^"]+mm"/, 'width="' + c.W * px + '" height="' + c.H * px + '"');
-    var img = new Image(), url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
-    say('PNG を作成中…');
-    img.onload = function () {
-      var cvs = document.createElement('canvas'); cvs.width = c.W * px; cvs.height = c.H * px;
-      cvs.getContext('2d').drawImage(img, 0, 0); URL.revokeObjectURL(url);
-      cvs.toBlob(function (b) { save(name + '.png', b); }, 'image/png');
-    };
-    img.onerror = function () { say('PNG を作れませんでした。'); };
-    img.src = url;
+    downloadPngFromRes(last, $('#fname').value || 'towel');
   });
 
   /* ---------------- start ---------------- */
   function start() {
     if (!window.ClipperLib || !window.TOWEL_DATA || !window.makeTowelEngine) { $('#cv').textContent = '部品を読み込めませんでした。再読み込みしてください。'; return; }
     eng = window.makeTowelEngine(window.TOWEL_DATA, window.ClipperLib);
-    var pid = null; try { pid = localStorage.getItem('towel_preset'); } catch (e) {}
-    if (QS.get('preset') && PRESETS.some(function (p) { return p.id === QS.get('preset'); })) pid = QS.get('preset');
-    loadPreset(pid || 'towel_yoko_Y1_h200_fuchi8');
-    var sz = QS.get('size');
-    if (sz && CANVAS[sz]) { var sb = $('#canvasSeg button[data-c="' + sz + '"]'); if (sb) sb.click(); }
+    loadMyStorage();
+    var hasUrlPreset = !!(QS.get('preset') && PRESETS.some(function (p) { return p.id === QS.get('preset'); }));
+    var restored = false;
+    if (!hasUrlPreset && !QS.get('size')) {
+      try {
+        var wk = JSON.parse(localStorage.getItem(WORK_KEY) || 'null');
+        if (wk && wk.cfg && wk.cfg.W && wk.cfg.H) {
+          curPreset = PRESETS.filter(function (x) { return x.id === wk.presetId; })[0] || PRESETS[0];
+          curMyId = (wk.myId && myDesigns.some(function (x) { return x.id === wk.myId; })) ? wk.myId : null;
+          cfg = clone(wk.cfg);
+          ensureDefaults();
+          if ($('#fname')) $('#fname').value = wk.fname || (curPreset.id + '_edit');
+          pmEnforce();
+          syncUI();
+          renderMyUI();
+          schedule();
+          restored = true;
+        }
+      } catch (e) {}
+    }
+    if (!restored) {
+      var pid = null; try { pid = localStorage.getItem('towel_preset'); } catch (e) {}
+      if (hasUrlPreset) pid = QS.get('preset');
+      loadPreset(pid || 'towel_yoko_Y1_h200_fuchi8');
+      var sz = QS.get('size');
+      if (sz && CANVAS[sz]) { var sb = $('#canvasSeg button[data-c="' + sz + '"]'); if (sb) sb.click(); }
+    }
     var t = null; try { t = localStorage.getItem('towel_tab'); } catch (e) {}
     if (QS.get('tab')) t = QS.get('tab');
     showTab(t === 'ed' || t === 'fuda' ? t : 'gal');
@@ -1336,7 +1842,9 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   // かんたんモード（ui_easy.js）とのつなぎ
   window.__towelEasy = {
     presets: PRESETS, load: loadPreset,
-    cur: function () { return curPreset; }, canvas: function () { return cfg ? canvasKey() : 'yoko'; },
+    cur: function () { return curPreset; },
+    curMy: function () { return curMyId; },
+    canvas: function () { return cfg ? canvasKey() : 'yoko'; },
     problems: function (c) { return pmProblems(c, pm); }
   };
   // 札の調整ツールとのつなぎ
@@ -1363,7 +1871,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
 </script>
 <script src="fuda_ui.js?v=20261105a"></script>
 <script src="ui_fold.js?v=20261105a"></script>
-<script src="ui_easy.js?v=20261105a"></script>
+<script src="ui_easy.js?v=20261105d"></script>
 
 </body>
 </html>

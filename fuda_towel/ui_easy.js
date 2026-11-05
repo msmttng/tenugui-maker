@@ -77,9 +77,10 @@
         pick.appendChild(b);
       });
     }
+    var myId = T.curMy ? T.curMy() : null;
     $$('#easyPick button').forEach(function (b) {
       var p = T.presets.filter(function (x) { return x.id === b.dataset.id; })[0];
-      b.setAttribute('aria-pressed', String(!!cur && cur.id === b.dataset.id));
+      b.setAttribute('aria-pressed', String(!myId && !!cur && cur.id === b.dataset.id));
       var ng = p ? T.problems(p.cfg) : [];
       b.lastChild.textContent = ng.length ? '※自動で太くします' : '';
       b.title = p.label + (ng.length ? '（いまのプリント方法では ' + ng.join('・') + ' を太らせます）' : '');
