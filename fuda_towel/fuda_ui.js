@@ -745,7 +745,7 @@
     window.__ftPost({ type: 'fudaTowel:logo', svg: svgOut(ensure(), st.color, '仲羽田青年会 札ロゴ（調整版）'), name: fname() });
     say('手ぬぐい工房のロゴ保管棚に送りました。');
   });
-  function toTowel(paths, label) { var t = eng.forTowel(paths); window.__towelSetLogo(t.logo, t.sil, label); return t; }
+  function toTowel(paths, label) { var t = eng.forTowel(paths); window.__towelSetLogo(t.logo, t.sil, label, t.parts); return t; }
   $('#fuseTowel').addEventListener('click', function () {
     toTowel(ensure(), '調整した札');
     try { localStorage.setItem('towel_logo_custom', JSON.stringify(st)); } catch (e) {}

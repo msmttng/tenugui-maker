@@ -480,15 +480,30 @@
       return '<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="' + (D.W * mm).toFixed(2) + 'mm" height="' + (D.H * mm).toFixed(2) +
         'mm" viewBox="0 0 ' + D.W + ' ' + D.H + '">\n  <title>' + (title || '仲羽田青年会 札ロゴ') + '</title>\n  <path id="logo" fill="' + color + '" fill-rule="nonzero" d="' + toD(paths) + '"/>\n</svg>\n';
     }
-    // タオル作成ツール用：ロゴの命令列と外形
+    // タオル作成ツール用：ロゴの命令列と外形（および部位別レイヤー）
+    function pathsToCmds(ps) {
+      var o = [];
+      (ps || []).forEach(function (p) { p.forEach(function (q, i) { o.push([i ? 'L' : 'M', q.X / SC, q.Y / SC]); }); o.push(['Z']); });
+      return o;
+    }
     function forTowel(paths) {
-      var logo = [];
-      paths.forEach(function (p) { p.forEach(function (q, i) { logo.push([i ? 'L' : 'M', q.X / SC, q.Y / SC]); }); logo.push(['Z']); });
+      var logo = pathsToCmds(paths);
       var big = paths.reduce(function (m, p) { var a = Math.abs(CL.Clipper.Area(p)); return a > m.a ? { a: a, o: CL.Clipper.Orientation(p) } : m; }, { a: 0, o: true });
       var outers = paths.filter(function (p) { return CL.Clipper.Orientation(p) === big.o && Math.abs(CL.Clipper.Area(p)) > 4 * SC * SC; });
       var sil = U(outers).filter(function (p) { return CL.Clipper.Orientation(p) === big.o; })
         .map(function (p) { return p.map(function (q) { return [q.X / SC, q.Y / SC]; }); });
-      return { logo: logo, sil: sil };
+      var parts = null;
+      if (paths.layers && paths.layers.tagL && paths.layers.tagL.length && paths.layers.tagR && paths.layers.tagR.length) {
+        var L = paths.layers;
+        parts = {
+          tagL: pathsToCmds(Dif(L.tagL || [], L.textL || [])),
+          tagR: pathsToCmds(Dif(L.tagR || [], L.textR || [])),
+          text: pathsToCmds((L.textL || []).concat(L.textR || [])),
+          knot: pathsToCmds(L.knot || []),
+          shake: pathsToCmds(L.lines || [])
+        };
+      }
+      return { logo: logo, sil: sil, parts: parts };
     }
     return { build: build, toD: toD, toSVG: toSVG, forTowel: forTowel, frame: frame, lineGeom: lineGeom, knotGeom: knotGeom, strokeGeom: strokeGeom, lineObjs: lineObjs, knots: D.knots || [], SC: SC, ORDER: ORDER, aroundFn: aroundFn, invFn: invFn, bboxC: bboxC };
   }
