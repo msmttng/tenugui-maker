@@ -139,6 +139,19 @@ dialog#lb p{color:#fff;margin:8px 0 0;font-size:13px;text-align:center}
 .canvas.tall svg{max-height:72vh;width:auto}
 .canvas .busy{position:absolute;top:10px;right:12px;font-size:12px;color:var(--ink-2);opacity:0;transition:opacity .15s}
 .canvas.working .busy{opacity:1}
+.hl-badge{position:absolute;top:10px;left:12px;z-index:4;background:rgba(20,24,23,.92);color:#fff;font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;box-shadow:0 3px 12px rgba(0,0,0,.32);border:1.5px solid #ff6b4a;pointer-events:none;display:inline-flex;align-items:center;gap:6px;opacity:0;transform:translateY(-4px);transition:opacity .14s,transform .14s}
+.hl-badge.on{opacity:1;transform:translateY(0)}
+.hl-badge i{width:10px;height:10px;border-radius:50%;background:#ff5a3c;box-shadow:0 0 0 2px #fff;display:inline-block}
+@keyframes hlPulse{0%,100%{fill-opacity:.38}50%{fill-opacity:.62}}
+@keyframes hlDash{to{stroke-dashoffset:-18}}
+#__hlOverlay .hl-main{fill:#ff4d2a;fill-opacity:.48;stroke:#ff2a00;stroke-width:2.2;stroke-dasharray:6 3; vector-effect:non-scaling-stroke;animation:hlPulse 1.1s ease-in-out infinite,hlDash .7s linear infinite}
+#__hlOverlay .hl-halo{fill:none;stroke:#ffffff;stroke-width:4.4;stroke-opacity:.92;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+#__hlOverlay .hl-sub{fill:none;stroke:#ffd166;stroke-width:2;stroke-dasharray:4 3;stroke-opacity:.95;vector-effect:non-scaling-stroke}
+[data-hl]{transition:background-color .12s,box-shadow .12s;border-radius:8px}
+.row[data-hl],.row2[data-hl]{padding:3px 6px;margin-left:-6px;margin-right:-6px}
+[data-hl]:hover,[data-hl]:focus-within{background-color:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
+.seg button[data-hl]:hover{border-color:#ff5a3c;box-shadow:0 0 0 1.5px rgba(255,90,60,.45)}
+.hl-tip{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink);background:var(--accent-soft);border:1px solid var(--accent);border-radius:8px;padding:6px 10px;margin:6px 0 8px}
 .stage .bar{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;margin-top:10px;font-size:13px;color:var(--ink-2)}
 .warn{background:var(--warn-soft);color:var(--warn);border-radius:8px;padding:8px 12px;font-size:13px;font-weight:700;margin-top:10px}
 .panel{display:flex;flex-direction:column;gap:12px}
@@ -274,7 +287,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   <section id="ed" hidden>
     <div class="ed">
       <div class="stage">
-        <div class="canvas" id="cv"><span class="busy">作成中…</span></div>
+        <div class="canvas" id="cv"><span class="hl-badge" id="hlBadge"><i></i><span id="hlBadgeTxt"></span></span><span class="busy">作成中…</span></div>
         <div class="bar"><span id="info"></span><label class="chk" style="margin:0"><input type="checkbox" id="guide" checked>端の無地の目安線（保存されません）</label></div>
         <div class="warn" id="warn" hidden></div>
         <button class="btn pri kobo-only easy-only e-kobo" id="toKobo2" type="button">📥 この図案を手ぬぐい工房の生地に入れる</button>
@@ -325,41 +338,42 @@ html.easy #ed .stage .bar{justify-content:flex-start}
         <fieldset data-st="3">
           <legend data-n="3" data-e="札の大きさと位置">札（ロゴ）</legend>
           <div class="row2" style="margin-top:0"><span id="logoSrc" style="color:var(--ink-2)">使っている札：採用ロゴ</span><button class="btn" id="logoReset" type="button" hidden>採用ロゴに戻す</button></div>
-          <div class="row"><label for="logoH">高さ mm</label><input type="range" id="logoH" min="40" max="330" step="1"><input type="number" data-for="logoH" step="1"></div>
-          <div class="row adv"><label for="logoX">中心 左右</label><input type="range" id="logoX" min="0" max="850" step="0.5"><input type="number" data-for="logoX" step="0.5"></div>
-          <div class="row adv"><label for="logoY">中心 上下</label><input type="range" id="logoY" min="0" max="850" step="0.5"><input type="number" data-for="logoY" step="0.5"></div>
-          <div class="row adv"><label for="logoRot">傾き（度）</label><input type="range" id="logoRot" min="-180" max="180" step="1"><input type="number" data-for="logoRot" step="1"></div>
-          <div class="row2 adv"><span style="color:var(--ink-2)">傾き</span>
+          <div class="row" data-hl="logo"><label for="logoH">高さ mm</label><input type="range" id="logoH" min="40" max="330" step="1"><input type="number" data-for="logoH" step="1"></div>
+          <div class="row adv" data-hl="logo"><label for="logoX">中心 左右</label><input type="range" id="logoX" min="0" max="850" step="0.5"><input type="number" data-for="logoX" step="0.5"></div>
+          <div class="row adv" data-hl="logo"><label for="logoY">中心 上下</label><input type="range" id="logoY" min="0" max="850" step="0.5"><input type="number" data-for="logoY" step="0.5"></div>
+          <div class="row adv" data-hl="logo"><label for="logoRot">傾き（度）</label><input type="range" id="logoRot" min="-180" max="180" step="1"><input type="number" data-for="logoRot" step="1"></div>
+          <div class="row2 adv" data-hl="logo"><span style="color:var(--ink-2)">傾き</span>
             <div class="seg rotSeg" data-key="logoRot">
               <button data-d="-5">−5°</button><button data-d="5">＋5°</button><button data-v="-15">−15°</button><button data-v="0">0°</button><button data-v="15">15°</button><button data-v="90">90°</button>
             </div>
           </div>
           <p class="hint adv">＋は右回り。札形の窓は札と一緒に傾きます。2つ置くときは左右対称に傾きます。</p>
-          <div class="row2">
+          <div class="row2" data-hl="logo">
             <span style="color:var(--ink-2)">寄せる</span>
             <div class="seg" id="alignSeg">
               <button data-a="c">中央</button><button data-a="r">右寄せ</button><button data-a="br">右下</button><button data-a="b">下寄せ</button>
             </div>
           </div>
-          <div class="row adv"><label for="alignM">寄せ余白</label><input type="range" id="alignM" min="8" max="120" step="1" value="28"><input type="number" data-for="alignM" step="1" value="28"></div>
-          <label class="chk adv"><input type="checkbox" id="twin">左右対称に2つ置く</label>
+          <div class="row adv" data-hl="alignM"><label for="alignM">寄せ余白</label><input type="range" id="alignM" min="8" max="120" step="1" value="28"><input type="number" data-for="alignM" step="1" value="28"></div>
+          <label class="chk adv" data-hl="logo"><input type="checkbox" id="twin">左右対称に2つ置く</label>
         </fieldset>
 
         <fieldset id="knockFs" data-st="4">
           <legend data-n="4" data-e="札のまわり（くり抜き方）">くり抜き方（札のまわり）</legend>
+          <div class="hl-tip"><span>💡 各ボタンやスライダーにカーソルを当てると、左のプレビュー上で<b>「どこの部分か」が赤オレンジ色に光って</b>表示されます。</span></div>
           <div class="seg" id="styleSeg">
-            <button data-s="gaikei" type="button">外形</button>
-            <button data-s="maru" type="button">丸窓</button>
-            <button data-s="koban" type="button">小判窓</button>
-            <button data-s="fuda" type="button">札形の窓</button>
-            <button data-s="yama" type="button">駒形窓</button>
-            <button data-s="kado" type="button">八角窓</button>
-            <button data-s="obi" type="button">無地の帯</button>
-            <button data-s="none" type="button">なし</button>
+            <button data-s="gaikei" data-hl="style:gaikei" type="button">外形</button>
+            <button data-s="maru" data-hl="style:maru" type="button">丸窓</button>
+            <button data-s="koban" data-hl="style:koban" type="button">小判窓</button>
+            <button data-s="fuda" data-hl="style:fuda" type="button">札形の窓</button>
+            <button data-s="yama" data-hl="style:yama" type="button">駒形窓</button>
+            <button data-s="kado" data-hl="style:kado" type="button">八角窓</button>
+            <button data-s="obi" data-hl="style:obi" type="button">無地の帯</button>
+            <button data-s="none" data-hl="style:none" type="button">なし</button>
           </div>
           <div id="gapRow">
-            <div class="row"><label for="gap">柄との間 mm</label><input type="range" id="gap" min="0" max="35" step="0.5"><input type="number" data-for="gap" step="0.5"></div>
-            <div class="subbox" id="gapColBox">
+            <div class="row" data-hl="gap"><label for="gap">柄との間 mm</label><input type="range" id="gap" min="0" max="35" step="0.5"><input type="number" data-for="gap" step="0.5"></div>
+            <div class="subbox" id="gapColBox" data-hl="gapCol">
               <div class="subbox-hd">
                 <span>🎨 柄との間（くり抜き余白）の色</span>
                 <button class="btn" type="button" id="gapColSameBg" style="font-size:11.5px;min-height:26px;padding:2px 8px">地色と同じに戻す</button>
@@ -383,47 +397,47 @@ html.easy #ed .stage .bar{justify-content:flex-start}
           </div>
           <div class="only o-gaikei">
             <div class="row2">
-              <label class="chk" style="margin:0"><input type="checkbox" id="fuchi">ロゴのまわりにフチ線</label>
-              <label class="chk" style="margin:0"><input type="checkbox" id="fuchiDouble">二重フチ線</label>
+              <label class="chk" style="margin:0;padding:2px 6px" data-hl="fuchi"><input type="checkbox" id="fuchi">ロゴのまわりにフチ線</label>
+              <label class="chk" style="margin:0;padding:2px 6px" data-hl="fuchiDouble"><input type="checkbox" id="fuchiDouble">二重フチ線</label>
             </div>
-            <div class="row"><label for="fuchiIn">フチの位置</label><input type="range" id="fuchiIn" min="1" max="18" step="0.1"><input type="number" data-for="fuchiIn" step="0.1"></div>
-            <div class="row"><label for="fuchiW">フチの太さ</label><input type="range" id="fuchiW" min="0.5" max="8" step="0.1"><input type="number" data-for="fuchiW" step="0.1"></div>
+            <div class="row" data-hl="fuchiIn"><label for="fuchiIn">フチの位置</label><input type="range" id="fuchiIn" min="1" max="18" step="0.1"><input type="number" data-for="fuchiIn" step="0.1"></div>
+            <div class="row" data-hl="fuchiW"><label for="fuchiW">フチの太さ</label><input type="range" id="fuchiW" min="0.5" max="8" step="0.1"><input type="number" data-for="fuchiW" step="0.1"></div>
             <div class="row2">
-              <label class="cpick" style="flex:1"><input type="color" id="c_frame_quick"><span class="clbl">フチ線の色</span><code data-c="frame"></code><button type="button" class="cbtn" data-reset-col="frame">札と同じ</button></label>
+              <label class="cpick" style="flex:1" data-hl="fuchi"><input type="color" id="c_frame_quick"><span class="clbl">フチ線の色</span><code data-c="frame"></code><button type="button" class="cbtn" data-reset-col="frame">札と同じ</button></label>
             </div>
           </div>
           <div class="only o-maru">
-            <div class="row"><label for="winR">窓の半径 mm</label><input type="range" id="winR" min="30" max="220" step="0.5"><input type="number" data-for="winR" step="0.5"></div>
+            <div class="row" data-hl="winR"><label for="winR">窓の半径 mm</label><input type="range" id="winR" min="30" max="220" step="0.5"><input type="number" data-for="winR" step="0.5"></div>
           </div>
           <div class="only o-rectwin">
-            <div class="row"><label for="padX">窓の余白 左右</label><input type="range" id="padX" min="0" max="80" step="0.5"><input type="number" data-for="padX" step="0.5"></div>
-            <div class="row"><label for="padY">窓の余白 上下</label><input type="range" id="padY" min="0" max="80" step="0.5"><input type="number" data-for="padY" step="0.5"></div>
+            <div class="row" data-hl="padX"><label for="padX">窓の余白 左右</label><input type="range" id="padX" min="0" max="80" step="0.5"><input type="number" data-for="padX" step="0.5"></div>
+            <div class="row" data-hl="padY"><label for="padY">窓の余白 上下</label><input type="range" id="padY" min="0" max="80" step="0.5"><input type="number" data-for="padY" step="0.5"></div>
           </div>
           <div class="only o-corner">
-            <div class="row"><label for="corner" id="cornerLbl">角の丸み</label><input type="range" id="corner" min="0" max="70" step="0.5"><input type="number" data-for="corner" step="0.5"></div>
+            <div class="row" data-hl="corner"><label for="corner" id="cornerLbl">角の丸み</label><input type="range" id="corner" min="0" max="70" step="0.5"><input type="number" data-for="corner" step="0.5"></div>
           </div>
           <div class="only o-win">
             <div class="row2">
-              <label class="chk" style="margin:0"><input type="checkbox" id="frame">窓の内側に枠線</label>
-              <label class="chk" style="margin:0"><input type="checkbox" id="frameDouble">二重枠線</label>
+              <label class="chk" style="margin:0;padding:2px 6px" data-hl="frame"><input type="checkbox" id="frame">窓の内側に枠線</label>
+              <label class="chk" style="margin:0;padding:2px 6px" data-hl="frameDouble"><input type="checkbox" id="frameDouble">二重枠線</label>
             </div>
-            <div class="row" id="frameInsetRow"><label for="frameInset">枠の位置 mm</label><input type="range" id="frameInset" min="2" max="30" step="0.5"><input type="number" data-for="frameInset" step="0.5"></div>
-            <div class="row" id="frameWRow"><label for="frameW">枠の太さ mm</label><input type="range" id="frameW" min="0.6" max="8" step="0.1"><input type="number" data-for="frameW" step="0.1"></div>
-            <div class="row"><label for="winDX">窓の左右ずれ</label><input type="range" id="winDX" min="-40" max="40" step="0.5"><input type="number" data-for="winDX" step="0.5"></div>
-            <div class="row"><label for="winDY">窓の上下ずれ</label><input type="range" id="winDY" min="-40" max="40" step="0.5"><input type="number" data-for="winDY" step="0.5"></div>
+            <div class="row" id="frameInsetRow" data-hl="frameInset"><label for="frameInset">枠の位置 mm</label><input type="range" id="frameInset" min="2" max="30" step="0.5"><input type="number" data-for="frameInset" step="0.5"></div>
+            <div class="row" id="frameWRow" data-hl="frameW"><label for="frameW">枠の太さ mm</label><input type="range" id="frameW" min="0.6" max="8" step="0.1"><input type="number" data-for="frameW" step="0.1"></div>
+            <div class="row" data-hl="winDX"><label for="winDX">窓の左右ずれ</label><input type="range" id="winDX" min="-40" max="40" step="0.5"><input type="number" data-for="winDX" step="0.5"></div>
+            <div class="row" data-hl="winDY"><label for="winDY">窓の上下ずれ</label><input type="range" id="winDY" min="-40" max="40" step="0.5"><input type="number" data-for="winDY" step="0.5"></div>
           </div>
           <div class="only o-obi">
-            <div class="row2"><span style="color:var(--ink-2)">帯の位置</span>
+            <div class="row2" data-hl="obi"><span style="color:var(--ink-2)">帯の位置</span>
               <div class="seg" id="obiSeg"><button data-o="bottom" type="button">下</button><button data-o="top" type="button">上</button><button data-o="right" type="button">右</button><button data-o="left" type="button">左</button></div>
             </div>
-            <div class="row"><label for="obiSize">帯の幅 mm</label><input type="range" id="obiSize" min="60" max="500" step="1"><input type="number" data-for="obiSize" step="1"></div>
-            <div class="row"><label for="obiGap">柄との間 mm</label><input type="range" id="obiGap" min="0" max="30" step="0.5"><input type="number" data-for="obiGap" step="0.5"></div>
+            <div class="row" data-hl="obiSize"><label for="obiSize">帯の幅 mm</label><input type="range" id="obiSize" min="60" max="500" step="1"><input type="number" data-for="obiSize" step="1"></div>
+            <div class="row" data-hl="obiGap"><label for="obiGap">柄との間 mm</label><input type="range" id="obiGap" min="0" max="30" step="0.5"><input type="number" data-for="obiGap" step="0.5"></div>
           </div>
-          <div class="row"><label for="border">端の無地 mm</label><input type="range" id="border" min="0" max="25" step="0.5"><input type="number" data-for="border" step="0.5"></div>
+          <div class="row" data-hl="border"><label for="border">端の無地 mm</label><input type="range" id="border" min="0" max="25" step="0.5"><input type="number" data-for="border" step="0.5"></div>
           <div class="row2">
-            <label class="chk" style="margin:0"><input type="checkbox" id="borderFrame">端の無地の内側に枠線を入れる</label>
+            <label class="chk" style="margin:0;padding:2px 6px" data-hl="borderFrame"><input type="checkbox" id="borderFrame">端の無地の内側に枠線を入れる</label>
           </div>
-          <div class="row" id="borderFrameWRow"><label for="borderFrameW">外周枠の太さ</label><input type="range" id="borderFrameW" min="0.8" max="8" step="0.1"><input type="number" data-for="borderFrameW" step="0.1"></div>
+          <div class="row" id="borderFrameWRow" data-hl="borderFrameW"><label for="borderFrameW">外周枠の太さ</label><input type="range" id="borderFrameW" min="0.8" max="8" step="0.1"><input type="number" data-for="borderFrameW" step="0.1"></div>
           <p class="hint">「端の無地」は周囲の縁（外周）。柄もロゴも入らず、「端の無地」の色で塗られます。</p>
         </fieldset>
 
@@ -432,12 +446,12 @@ html.easy #ed .stage .bar{justify-content:flex-start}
           <div class="cols">
             <label class="cpick"><input type="color" id="c_bg"><span class="clbl">地（背景）</span><code data-c="bg"></code></label>
             <label class="cpick"><input type="color" id="c_pat"><span class="clbl">柄（仲羽田）</span><code data-c="pat"></code></label>
-            <label class="cpick" id="gapPick"><input type="color" id="c_gap"><span class="clbl">柄との間</span><code data-c="gap"></code><button type="button" class="cbtn" data-reset-col="gap">地と同じ</button></label>
-            <label class="cpick" id="winPick"><input type="color" id="c_win"><span class="clbl">窓・無地帯</span><code data-c="win"></code><button type="button" class="cbtn" data-reset-col="win">柄と同じ</button></label>
-            <label class="cpick"><input type="color" id="c_logo"><span class="clbl">札（基本）</span><code data-c="logo"></code></label>
-            <label class="cpick"><input type="color" id="c_logoBg"><span class="clbl">札の抜き(中)</span><code data-c="logoBg"></code><button type="button" class="cbtn" data-reset-col="logoBg">自動</button></label>
-            <label class="cpick"><input type="color" id="c_frame"><span class="clbl">枠・フチ・帯線</span><code data-c="frame"></code><button type="button" class="cbtn" data-reset-col="frame">札と同じ</button></label>
-            <label class="cpick"><input type="color" id="c_border"><span class="clbl">端の無地</span><code data-c="border"></code><button type="button" class="cbtn" data-reset-col="border">地と同じ</button></label>
+            <label class="cpick" id="gapPick" data-hl="gap"><input type="color" id="c_gap"><span class="clbl">柄との間</span><code data-c="gap"></code><button type="button" class="cbtn" data-reset-col="gap">地と同じ</button></label>
+            <label class="cpick" id="winPick" data-hl="win"><input type="color" id="c_win"><span class="clbl">窓・無地帯</span><code data-c="win"></code><button type="button" class="cbtn" data-reset-col="win">柄と同じ</button></label>
+            <label class="cpick" data-hl="logo"><input type="color" id="c_logo"><span class="clbl">札（基本）</span><code data-c="logo"></code></label>
+            <label class="cpick" data-hl="logoBg"><input type="color" id="c_logoBg"><span class="clbl">札の抜き(中)</span><code data-c="logoBg"></code><button type="button" class="cbtn" data-reset-col="logoBg">自動</button></label>
+            <label class="cpick" data-hl="frame"><input type="color" id="c_frame"><span class="clbl">枠・フチ・帯線</span><code data-c="frame"></code><button type="button" class="cbtn" data-reset-col="frame">札と同じ</button></label>
+            <label class="cpick" data-hl="border"><input type="color" id="c_border"><span class="clbl">端の無地</span><code data-c="border"></code><button type="button" class="cbtn" data-reset-col="border">地と同じ</button></label>
           </div>
           <div class="subbox">
             <div class="subbox-hd">
@@ -445,12 +459,12 @@ html.easy #ed .stage .bar{justify-content:flex-start}
               <button class="btn" type="button" id="resetLogoParts" style="font-size:11.5px;min-height:26px;padding:2px 8px">札の基本色にそろえる</button>
             </div>
             <div class="cols">
-              <label class="cpick"><input type="color" id="c_tagL"><span class="clbl">左札(仲羽田)</span><code data-c="tagL"></code><button type="button" class="cbtn" data-reset-col="tagL">基本</button></label>
-              <label class="cpick"><input type="color" id="c_tagR"><span class="clbl">右札(青年会)</span><code data-c="tagR"></code><button type="button" class="cbtn" data-reset-col="tagR">基本</button></label>
-              <label class="cpick"><input type="color" id="c_side"><span class="clbl">札の厚み(影)</span><code data-c="side"></code><button type="button" class="cbtn" data-reset-col="side">札と同じ</button></label>
-              <label class="cpick"><input type="color" id="c_logoText"><span class="clbl">札の彫り文字</span><code data-c="logoText"></code><button type="button" class="cbtn" data-reset-col="logoText">抜き</button></label>
-              <label class="cpick"><input type="color" id="c_knot"><span class="clbl">結び(組紐)</span><code data-c="knot"></code><button type="button" class="cbtn" data-reset-col="knot">基本</button></label>
-              <label class="cpick"><input type="color" id="c_shake"><span class="clbl">揺れ線</span><code data-c="shake"></code><button type="button" class="cbtn" data-reset-col="shake">基本</button></label>
+              <label class="cpick" data-hl="tagL"><input type="color" id="c_tagL"><span class="clbl">左札(仲羽田)</span><code data-c="tagL"></code><button type="button" class="cbtn" data-reset-col="tagL">基本</button></label>
+              <label class="cpick" data-hl="tagR"><input type="color" id="c_tagR"><span class="clbl">右札(青年会)</span><code data-c="tagR"></code><button type="button" class="cbtn" data-reset-col="tagR">基本</button></label>
+              <label class="cpick" data-hl="side"><input type="color" id="c_side"><span class="clbl">札の厚み(影)</span><code data-c="side"></code><button type="button" class="cbtn" data-reset-col="side">札と同じ</button></label>
+              <label class="cpick" data-hl="logoText"><input type="color" id="c_logoText"><span class="clbl">札の彫り文字</span><code data-c="logoText"></code><button type="button" class="cbtn" data-reset-col="logoText">抜き</button></label>
+              <label class="cpick" data-hl="knot"><input type="color" id="c_knot"><span class="clbl">結び(組紐)</span><code data-c="knot"></code><button type="button" class="cbtn" data-reset-col="knot">基本</button></label>
+              <label class="cpick" data-hl="shake"><input type="color" id="c_shake"><span class="clbl">揺れ線</span><code data-c="shake"></code><button type="button" class="cbtn" data-reset-col="shake">基本</button></label>
             </div>
           </div>
           <div class="sw" id="swatch"></div>
@@ -649,12 +663,12 @@ html.easy #ed .stage .bar{justify-content:flex-start}
 
 <script src="vendor/clipper.js"></script>
 <script src="vendor/jszip.min.js"></script>
-<script src="towel_data.js?v=20261105a"></script>
-<script src="engine.js?v=20261105a"></script>
-<script src="presets.js?v=20261105a"></script>
-<script src="fuda_data.js?v=20261105a"></script>
-<script src="fuda.js?v=20261105a"></script>
-<script src="fuda_presets.js?v=20261105a"></script>
+<script src="towel_data.js?v=20261105b"></script>
+<script src="engine.js?v=20261105b"></script>
+<script src="presets.js?v=20261105b"></script>
+<script src="fuda_data.js?v=20261105b"></script>
+<script src="fuda.js?v=20261105b"></script>
+<script src="fuda_presets.js?v=20261105b"></script>
 <script>
 (function () {
   'use strict';
@@ -1199,6 +1213,39 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   $('#guide').addEventListener('change', function () { if (last) paint(last); });
   $('#reset').addEventListener('click', function () { if (curPreset) loadPreset(curPreset.id); say('元の案に戻しました。'); });
 
+  var curHlKey = null;
+  function renderHighlight() {
+    var g = $('#__hlOverlay'), badge = $('#hlBadge'), btxt = $('#hlBadgeTxt');
+    if (!g || !badge) return;
+    if (!curHlKey || !last || !eng || !eng.highlight) {
+      g.innerHTML = ''; badge.classList.remove('on'); return;
+    }
+    var h = eng.highlight(last, curHlKey);
+    if (!h || !h.d) {
+      g.innerHTML = ''; badge.classList.remove('on'); return;
+    }
+    var fr = h.fillRule ? ' fill-rule="' + h.fillRule + '"' : '';
+    var parts = [];
+    if (h.subD) parts.push('<path class="hl-sub" d="' + h.subD + '"/>');
+    parts.push('<path class="hl-halo" d="' + h.d + '"/>');
+    parts.push('<path class="hl-main"' + fr + ' d="' + h.d + '"/>');
+    g.innerHTML = parts.join('');
+    btxt.textContent = h.label || '';
+    badge.classList.add('on');
+  }
+  function setHighlight(key) {
+    if (curHlKey === key) return;
+    curHlKey = key;
+    renderHighlight();
+  }
+  $$('[data-hl]').forEach(function (el) {
+    var k = el.dataset.hl;
+    el.addEventListener('pointerenter', function () { setHighlight(k); });
+    el.addEventListener('pointerleave', function () { if (curHlKey === k) setHighlight(null); });
+    el.addEventListener('focusin', function () { setHighlight(k); });
+    el.addEventListener('focusout', function () { if (curHlKey === k) setHighlight(null); });
+  });
+
   var timer = null;
   function schedule() {
     if (!eng || !cfg || $('#ed').hidden) return;
@@ -1215,13 +1262,18 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   function paint(res) {
     var svg = eng.toSVG(res, { standalone: false, attrs: ' role="img" aria-label="プレビュー"' });
     var c = res.cfg, b = c.border;
+    var extra = '';
     if ($('#guide').checked && b > 0) {
-      var g = '<rect x="' + b + '" y="' + b + '" width="' + (c.W - 2 * b) + '" height="' + (c.H - 2 * b) + '" fill="none" stroke="#ff5a3c" stroke-width="0.8" stroke-dasharray="4 3"/>';
-      svg = svg.replace('</svg>', g + '</svg>');
+      extra += '<rect x="' + b + '" y="' + b + '" width="' + (c.W - 2 * b) + '" height="' + (c.H - 2 * b) + '" fill="none" stroke="#ff5a3c" stroke-width="0.8" stroke-dasharray="4 3"/>';
     }
-    var cv = $('#cv'), busy = $('.busy', cv);
-    cv.innerHTML = svg; cv.appendChild(busy);
+    extra += '<g id="__hlOverlay" pointer-events="none"></g>';
+    svg = svg.replace('</svg>', extra + '</svg>');
+    var cv = $('#cv'), busy = $('.busy', cv), badge = $('#hlBadge', cv);
+    cv.innerHTML = svg;
+    if (badge) cv.appendChild(badge);
+    if (busy) cv.appendChild(busy);
     cv.classList.toggle('tall', c.H > c.W);
+    renderHighlight();
     var w = $('#warn'), msgs = [];
     var lb = res.logoBox;
     if (lb[0] < 0 || lb[1] < 0 || lb[2] > c.W || lb[3] > c.H) msgs.push('札がタオルの外にはみ出しています。');
