@@ -442,7 +442,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
             <span style="font-size:11.5px;font-weight:800;color:#1e40af">📚 マイ・ロゴ保管棚（クリックで配置）</span>
             <div style="display:flex;gap:4px;flex-wrap:wrap">
-              <a href="golden_logos.html" target="_blank" class="mini-btn" style="background:linear-gradient(135deg,#d97706,#92400e);color:#fff;border-color:#f59e0b;font-weight:700;font-size:10.5px;padding:2px 6px;text-decoration:none" title="黄金比（φ = 1 : 1.618）で設計した近代・仲羽田ロゴ6選の一覧ページを開きます">📐 黄金律ロゴ6選 ↗</a>
+              <a href="golden_logos.html" target="_blank" class="mini-btn" style="background:linear-gradient(135deg,#0284c7,#b45309);color:#fff;border-color:#38bdf8;font-weight:700;font-size:10.5px;padding:2px 6px;text-decoration:none" title="黄金比（φ = 1 : 1.618）と波・揺れ（青海波・観世水・横揺れ）で設計した近代・仲羽田ロゴ12選の一覧ページを開きます">🌊📐 波・揺れ＆黄金律ロゴ12選 ↗</a>
               <button type="button" class="mini-btn" id="eSaveCurrentToShelfBtn" style="background:#2563eb;color:#fff;border-color:#1d4ed8;font-weight:700;font-size:10.5px;padding:2px 6px">📌 今のロゴを登録</button>
               <button type="button" class="mini-btn" id="eRestoreLogoShelfBtn" style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;font-size:10.5px;padding:2px 6px" title="誤って消したマイロゴや初期ロゴを元に戻します">↩️ 消したマイロゴを戻す</button>
             </div>
@@ -1083,7 +1083,8 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
             <span style="font-size:11px;font-weight:700;color:#1e40af">📚 マイ・ロゴ保管棚（登録済みロゴ一覧）</span>
-            <div style="display:flex;gap:4px;align-items:center">
+            <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+              <a href="golden_logos.html" target="_blank" class="mini-btn" style="background:linear-gradient(135deg,#0284c7,#b45309);color:#fff;border-color:#38bdf8;font-weight:700;padding:2px 6px;text-decoration:none" title="黄金比（φ = 1 : 1.618）と波・揺れで設計した近代・仲羽田ロゴ12選の一覧ページを開きます">🌊📐 波・揺れ＆黄金律ロゴ12選 ↗</a>
               <button type="button" class="mini-btn" id="restoreLogoShelfBtn" style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;padding:2px 6px" title="誤って消したマイロゴや初期ロゴをすべて元に戻します">↩️ 消したマイロゴを戻す</button>
               <span id="logoShelfCountBadge" class="badge" style="background:#dbeafe;color:#1e40af">0個</span>
             </div>
@@ -2067,39 +2068,105 @@ function buildFudaLogoSvgDataUrl(fillHex){
 let FUDA_LOGO_TEAL_URL = buildFudaLogoSvgDataUrl('#00A3AF');
 let FUDA_LOGO_WHITE_URL = buildFudaLogoSvgDataUrl('#FFFFFF');
 
-// ★ 仲羽田 近代・黄金比ロゴ 6選（φ = (1+√5)/2 ≈ 1.618034）内蔵ベクターSVG生成
+// ★ 仲羽田 近代・黄金比ロゴ 6選 ＆ 🌊 波・揺れ×黄金律ロゴ 6選（計12選）内蔵ベクターSVG生成
 const GOLDEN_LOGO_BUILDERS = (function(){
-  const gNaka = (x0, y0, w, h) => {
-    const rx = u => (x0 + u * w).toFixed(2), ry = v => (y0 + v * h).toFixed(2);
-    const rc = (u0, v0, uw, vh) => `M${rx(u0)},${ry(v0)}H${rx(u0+uw)}V${ry(v0+vh)}H${rx(u0)}Z`;
-    const s = 0.162, cx0 = 0.34, cx1 = 1.00, cy0 = 0.18, cy1 = 0.76, cs = 0.145, midX = (cx0 + cx1) * 0.5 - s * 0.5;
-    return `M${rx(0.08)},${ry(0.0)}H${rx(0.26)}V${ry(0.28)}L${rx(0.23)},${ry(0.32)}V${ry(1.0)}H${rx(0.07)}V${ry(0.36)}H${rx(0.0)}V${ry(0.20)}L${rx(0.08)},${ry(0.12)}Z`
-      + rc(cx0, cy0, cx1 - cx0, cs) + rc(cx0, cy1 - cs, cx1 - cx0, cs)
-      + rc(cx0, cy0, cs, cy1 - cy0) + rc(cx1 - cs, cy0, cs, cy1 - cy0)
-      + rc(midX, 0.0, s, 1.0);
+  const makeWarped = (x0, y0, w, h, warpFn) => {
+    const mapPt = (u, v) => {
+      const px = x0 + u * w, py = y0 + v * h;
+      return warpFn ? warpFn(px, py, u, v) : [px, py];
+    };
+    const poly = (ptsUV, segs = 8) => {
+      const out = [];
+      for(let i = 0; i < ptsUV.length; i++){
+        const a = ptsUV[i], b = ptsUV[(i + 1) % ptsUV.length];
+        for(let s = 0; s < segs; s++){
+          const t = s / segs;
+          out.push(mapPt(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t));
+        }
+      }
+      return 'M' + out.map(p => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join('L') + 'Z';
+    };
+    const rc = (u0, v0, uw, vh, segs = 8) => poly([[u0, v0], [u0 + uw, v0], [u0 + uw, v0 + vh], [u0, v0 + vh]], segs);
+    return { poly, rc };
   };
-  const gHane = (x0, y0, w, h) => {
-    const rx = u => (x0 + u * w).toFixed(2), ry = v => (y0 + v * h).toFixed(2);
-    const rc = (u0, v0, uw, vh) => `M${rx(u0)},${ry(v0)}H${rx(u0+uw)}V${ry(v0+vh)}H${rx(u0)}Z`;
+  const gNaka = (x0, y0, w, h, warpFn) => {
+    const { poly, rc } = makeWarped(x0, y0, w, h, warpFn);
+    const sg = warpFn ? 8 : 1;
+    const s = 0.162, cx0 = 0.34, cx1 = 1.00, cy0 = 0.18, cy1 = 0.76, cs = 0.145, midX = (cx0 + cx1) * 0.5 - s * 0.5;
+    return poly([[0.08,0.0],[0.26,0.0],[0.26,0.28],[0.23,0.32],[0.23,1.0],[0.07,1.0],[0.07,0.36],[0.0,0.36],[0.0,0.20],[0.08,0.12]], sg)
+      + rc(cx0, cy0, cx1 - cx0, cs, sg) + rc(cx0, cy1 - cs, cx1 - cx0, cs, sg)
+      + rc(cx0, cy0, cs, cy1 - cy0, sg) + rc(cx1 - cs, cy0, cs, cy1 - cy0, sg)
+      + rc(midX, 0.0, s, 1.0, sg);
+  };
+  const gHane = (x0, y0, w, h, warpFn) => {
+    const { poly, rc } = makeWarped(x0, y0, w, h, warpFn);
+    const sg = warpFn ? 7 : 1;
     const s = 0.158, wW = 0.462;
     let d = '';
     for(const off of [0.0, 0.538]){
-      d += `M${rx(off + 0.06)},${ry(0.0)}H${rx(off + wW)}V${ry(s)}H${rx(off)}V${ry(0.06)}Z`
-        + `M${rx(off + wW - s)},${ry(0.0)}H${rx(off + wW)}V${ry(1.0)}H${rx(off + 0.12)}L${rx(off + 0.06)},${ry(1.0 - s)}H${rx(off + wW - s)}Z`
-        + rc(off + 0.02, 0.34, wW - s - 0.06, s * 0.85)
-        + rc(off + 0.02, 0.60, wW - s - 0.06, s * 0.85);
+      d += poly([[off + 0.06, 0.0], [off + wW, 0.0], [off + wW, s], [off, s], [off, 0.06]], sg)
+        + poly([[off + wW - s, 0.0], [off + wW, 0.0], [off + wW, 1.0], [off + 0.12, 1.0], [off + 0.06, 1.0 - s], [off + wW - s, 1.0 - s]], sg)
+        + rc(off + 0.02, 0.34, wW - s - 0.06, s * 0.85, sg)
+        + rc(off + 0.02, 0.60, wW - s - 0.06, s * 0.85, sg);
     }
     return d;
   };
-  const gTa = (x0, y0, w, h) => {
-    const rx = u => (x0 + u * w).toFixed(2), ry = v => (y0 + v * h).toFixed(2);
-    const rc = (u0, v0, uw, vh) => `M${rx(u0)},${ry(v0)}H${rx(u0+uw)}V${ry(v0+vh)}H${rx(u0)}Z`;
+  const gTa = (x0, y0, w, h, warpFn) => {
+    const { rc } = makeWarped(x0, y0, w, h, warpFn);
+    const sg = warpFn ? 8 : 1;
     const s = 0.184, m = 0.5 - s * 0.5;
-    return rc(0, 0, 1, s) + rc(0, 1 - s, 1, s) + rc(0, 0, s, 1) + rc(1 - s, 0, s, 1) + rc(m, 0, s, 1) + rc(0, m, 1, s);
+    return rc(0, 0, 1, s, sg) + rc(0, 1 - s, 1, s, sg) + rc(0, 0, s, 1, sg) + rc(1 - s, 0, s, 1, sg) + rc(m, 0, s, 1, sg) + rc(0, m, 1, s, sg);
+  };
+  const waveRibbonH = (x0, x1, yMid, amp, cycles, phaseRad, thStart, thMid, thEnd, steps = 44) => {
+    const topPts = [], botPts = [];
+    for(let i = 0; i <= steps; i++){
+      const t = i / steps;
+      const x = x0 + (x1 - x0) * t;
+      const y = yMid + amp * Math.sin(t * cycles * Math.PI * 2 + phaseRad);
+      const th = (t < 0.5) ? (thStart + (thMid - thStart) * (t * 2)) : (thMid + (thEnd - thMid) * ((t - 0.5) * 2));
+      const half = Math.max(1.2, th * 0.5);
+      topPts.push(`${x.toFixed(1)},${(y - half).toFixed(1)}`);
+      botPts.push(`${x.toFixed(1)},${(y + half).toFixed(1)}`);
+    }
+    botPts.reverse();
+    return `M${topPts.join('L')}L${botPts.join('L')}Z`;
+  };
+  const waveRibbonV = (y0, y1, xMid, amp, cycles, phaseRad, thStart, thMid, thEnd, steps = 44) => {
+    const leftPts = [], rightPts = [];
+    for(let i = 0; i <= steps; i++){
+      const t = i / steps;
+      const y = y0 + (y1 - y0) * t;
+      const x = xMid + amp * Math.sin(t * cycles * Math.PI * 2 + phaseRad);
+      const th = (t < 0.5) ? (thStart + (thMid - thStart) * (t * 2)) : (thMid + (thEnd - thMid) * ((t - 0.5) * 2));
+      const half = Math.max(1.2, th * 0.5);
+      leftPts.push(`${(x - half).toFixed(1)},${y.toFixed(1)}`);
+      rightPts.push(`${(x + half).toFixed(1)},${y.toFixed(1)}`);
+    }
+    rightPts.reverse();
+    return `M${leftPts.join('L')}L${rightPts.join('L')}Z`;
+  };
+  const waveArcBand = (cx, cy, rOuter, rInner, deg0, deg1, waveAmp, waveCycles, phaseRad = 0, steps = 60) => {
+    const outPts = [], inPts = [];
+    for(let i = 0; i <= steps; i++){
+      const t = i / steps;
+      const rad = ((deg0 + (deg1 - deg0) * t) * Math.PI) / 180;
+      const wOff = waveAmp * Math.sin(t * Math.PI) * Math.sin(t * waveCycles * Math.PI * 2 + phaseRad);
+      const ro = rOuter + wOff, ri = rInner + wOff * 0.65;
+      outPts.push(`${(cx + Math.cos(rad) * ro).toFixed(1)},${(cy + Math.sin(rad) * ro).toFixed(1)}`);
+      inPts.push(`${(cx + Math.cos(rad) * ri).toFixed(1)},${(cy + Math.sin(rad) * ri).toFixed(1)}`);
+    }
+    inPts.reverse();
+    return `M${outPts.join('L')}L${inPts.join('L')}Z`;
   };
   const wrapSvg = body => 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000"><g fill="#FFFFFF">${body}</g></svg>`);
   const oct = (x, y, w, h, c) => `M${x+c},${y}H${x+w-c}L${x+w},${y+c}V${y+h-c}L${x+w-c},${y+h}H${x+c}L${x},${y+h-c}V${y+c}Z`;
   const wBlade = pts => 'M' + pts.map(p => `${p[0]},${p[1]}`).join('L') + 'Z M' + pts.map(p => `${1000-p[0]},${p[1]}`).join('L') + 'Z';
+  const swellFn = (px, py) => [px, py + 9 * Math.sin(((px - 500) / 480) * Math.PI * 2)];
+  const swayFn = (px, py) => [px + 13 * Math.sin(((py - 100) / 380) * Math.PI * 2), py];
+  const swayCoreFn = (px, py) => [px + 6 * Math.sin(((py - 200) / 300) * Math.PI * 2), py];
+  const vortexFn = (px, py) => [px + 8 * Math.sin(((py - 500) / 420) * Math.PI * 2), py + 8 * Math.cos(((px - 500) / 420) * Math.PI * 2)];
+  const fullWaveFn = (px, py) => [px + 22 * Math.sin(((py - 80) / 440) * Math.PI * 2), py + 9 * Math.sin(((px - 220) / 360) * Math.PI * 2)];
+  const waveTypeFn = (px, py) => [px + 6 * Math.sin(((py - 380) / 180) * Math.PI * 2), py + 12 * Math.sin(((px - 400) / 520) * Math.PI * 2)];
   return {
     '__BUILTIN_GOLD_1__': wrapSvg(
       `<path fill-rule="evenodd" d="M500,40 A460,460 0 1,1 499.9,40 Z M500,88 A412,412 0 1,0 500.1,88 Z"/>` +
@@ -2139,6 +2206,35 @@ const GOLDEN_LOGO_BUILDERS = (function(){
       `<rect x="400" y="348" width="534" height="16"/><rect x="400" y="572" width="534" height="10"/><rect x="400" y="636" width="534" height="16"/>` +
       `<rect x="400" y="596" width="204" height="24"/><rect x="618" y="596" width="126" height="24"/><rect x="758" y="596" width="78" height="24"/><rect x="850" y="596" width="48" height="24"/><rect x="910" y="596" width="24" height="24"/>` +
       `<path d="${gNaka(136,436,128,128)} ${gNaka(400,385,162,162)} ${gHane(586,385,162,162)} ${gTa(772,385,162,162)}"/>`
+    ),
+    '__BUILTIN_WAVE_1__': wrapSvg(
+      `<path d="${waveArcBand(500,500,462,416,152,388,8,5,0,64)} ${waveArcBand(500,500,396,382,158,382,5,5,Math.PI,56)}"/>` +
+      `<path d="${gNaka(370,155,260,235,swellFn)} ${gHane(205,420,260,230,swellFn)} ${gTa(535,420,260,230,swellFn)}"/>` +
+      `<path d="${waveRibbonH(95,905,700,28,2.5,0.0,8,30,8,48)} ${waveRibbonH(125,875,756,24,2.5,0.85,6,26,6,48)} ${waveRibbonH(168,832,810,20,2.5,1.70,5,22,5,44)} ${waveRibbonH(228,772,860,16,2.0,2.55,4,18,4,40)} ${waveRibbonH(310,690,906,12,1.5,3.40,3,14,3,36)}"/>`
+    ),
+    '__BUILTIN_WAVE_2__': wrapSvg(
+      `<path d="M500,52 L720,168 L700,192 L500,86 L300,192 L280,168 Z ${waveRibbonV(165,920,292,13,2.0,0,22,24,22,40)} ${waveRibbonV(165,920,708,13,2.0,0,22,24,22,40)} ${waveRibbonV(185,900,326,13,2.0,0,10,11,10,40)} ${waveRibbonV(185,900,674,13,2.0,0,10,11,10,40)} ${waveRibbonH(280,720,916,6,1.5,0,22,24,22,28)} ${waveRibbonH(335,665,426,7,1.5,0.5,10,12,10,24)} ${waveRibbonH(335,665,656,7,1.5,1.5,10,12,10,24)}"/>` +
+      `<path fill-rule="evenodd" d="M500,126 A30,30 0 1,1 499.9,126 Z M500,140 A16,16 0 1,0 500.1,140 Z"/>` +
+      `<path d="${[waveRibbonH(65,295,265,14,1.5,0.0,4,18,20,28),waveRibbonH(95,298,365,13,1.5,0.9,4,17,19,28),waveRibbonH(48,292,465,16,1.8,1.8,4,19,21,28),waveRibbonH(85,296,565,14,1.5,2.7,4,17,19,28),waveRibbonH(55,292,665,15,1.7,3.6,4,18,20,28),waveRibbonH(115,298,765,12,1.4,4.5,4,16,18,28),waveRibbonH(702,935,265,14,1.5,0.5,20,18,4,28),waveRibbonH(705,905,365,13,1.5,1.4,19,17,4,28),waveRibbonH(700,952,465,16,1.8,2.3,21,19,4,28),waveRibbonH(704,915,565,14,1.5,3.2,19,17,4,28),waveRibbonH(700,945,665,15,1.7,4.1,20,18,4,28),waveRibbonH(706,885,765,12,1.4,5.0,18,16,4,28)].join(' ')}"/>` +
+      `<path d="${gNaka(395,215,210,195,swayFn)} ${gHane(395,445,210,195,swayFn)} ${gTa(395,675,210,195,swayFn)}"/>`
+    ),
+    '__BUILTIN_WAVE_3__': wrapSvg(
+      `<path d="${[waveRibbonH(42,352,290,28,1.25,0.2,4,34,24,40),waveRibbonH(78,352,415,24,1.25,1.1,4,30,22,40),waveRibbonH(118,352,540,20,1.25,2.0,4,26,20,40),waveRibbonH(175,352,660,16,1.15,2.9,4,22,18,36),waveRibbonH(648,958,290,28,1.25,2.9,24,34,4,40),waveRibbonH(648,922,415,24,1.25,2.0,22,30,4,40),waveRibbonH(648,882,540,20,1.25,1.1,20,26,4,40),waveRibbonH(648,825,660,16,1.15,0.2,18,22,4,36)].join(' ')}"/>` +
+      `<path d="${waveRibbonV(195,795,355,8,1.5,0,18,22,18,36)} ${waveRibbonV(195,795,645,8,1.5,Math.PI,18,22,18,36)} M500,125 L662,202 L648,224 L500,152 L352,224 L338,202 Z M500,875 L662,792 L648,770 L500,848 L352,770 L338,792 Z"/>` +
+      `<path d="${gNaka(412,220,176,168,swayCoreFn)} ${gHane(412,416,176,168,swayCoreFn)} ${gTa(412,612,176,168,swayCoreFn)}"/>`
+    ),
+    '__BUILTIN_WAVE_4__': wrapSvg(
+      `<path d="${waveArcBand(500,500,464,404,115,395,16,4,0.4,72)} ${waveArcBand(500,500,386,356,135,370,12,4,1.6,64)} ${waveArcBand(500,500,458,422,-10,125,14,3,0.8,44)} ${waveRibbonH(145,855,768,26,2.0,0.3,6,30,8,44)} ${waveRibbonH(205,795,832,22,2.0,1.2,6,25,6,40)} ${waveRibbonH(285,715,892,16,1.5,2.1,4,18,4,36)}"/>` +
+      `<path d="${gNaka(375,225,250,225,vortexFn)} ${gHane(225,480,240,220,vortexFn)} ${gTa(535,480,240,220,vortexFn)}"/>`
+    ),
+    '__BUILTIN_WAVE_5__': wrapSvg(
+      `<path d="${waveRibbonV(70,930,235,22,2.0,0.0,10,26,10,48)} ${waveRibbonV(95,905,285,22,2.0,0.0,8,16,8,48)} ${waveRibbonV(120,880,325,22,2.0,0.0,6,12,6,48)} ${waveRibbonV(70,930,765,22,2.0,0.0,10,26,10,48)} ${waveRibbonV(95,905,715,22,2.0,0.0,8,16,8,48)} ${waveRibbonV(120,880,675,22,2.0,0.0,6,12,6,48)} ${waveRibbonH(225,775,82,12,1.5,0.2,14,22,14,36)} ${waveRibbonH(320,680,366,10,1.5,1.2,8,14,8,32)} ${waveRibbonH(320,680,630,10,1.5,2.4,8,14,8,32)} ${waveRibbonH(225,775,918,12,1.5,3.4,14,22,14,36)}"/>` +
+      `<path d="${gNaka(385,130,230,212,fullWaveFn)} ${gHane(385,394,230,212,fullWaveFn)} ${gTa(385,658,230,212,fullWaveFn)}"/>`
+    ),
+    '__BUILTIN_WAVE_6__': wrapSvg(
+      `<path d="${waveArcBand(200,500,156,130,140,400,5,4,0,48)} ${waveRibbonH(72,328,576,12,2.0,0.0,4,16,4,32)} ${waveRibbonH(98,302,612,10,2.0,1.2,4,13,4,28)} ${gNaka(136,412,128,128,(px,py)=>[px+5*Math.sin((py-412)/60),py])}"/>` +
+      `<path d="${waveRibbonV(336,658,372,8,1.5,0,6,12,6,28)} ${waveRibbonH(392,948,342,14,2.0,0.0,6,20,6,44)} ${waveRibbonH(405,935,376,10,2.0,0.8,4,12,4,44)} ${waveRibbonH(392,948,612,14,2.0,1.5,6,20,6,44)} ${waveRibbonH(405,935,646,10,2.0,2.3,4,12,4,44)}"/>` +
+      `<path d="${gNaka(400,410,160,160,waveTypeFn)} ${gHane(586,410,160,160,waveTypeFn)} ${gTa(772,410,160,160,waveTypeFn)}"/>`
     )
   };
 })();
@@ -3015,6 +3111,78 @@ function getDefaultLogoShelfItems(){
         logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
         logoPadMode: 'roundRect', logoPadColorMode: 'bg', logoPadMarginMm: 5, logoPadCornerMm: 4
       })
+    },
+    {
+      id: 'shelf_wave_1_seigaiha',
+      name: '🌊 ⑦黄金青海波・波頭丸紋',
+      savedAt: Date.now() - 3600,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金青海波・仲羽田波丸紋',
+        logoDataUrl: '__BUILTIN_WAVE_1__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'circle', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
+      id: 'shelf_wave_2_ripple_fuda',
+      name: '🌊 ⑧黄金揺らぎ・横揺れ波千社札',
+      savedAt: Date.now() - 3700,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金揺らぎ・横揺れ波千社札',
+        logoDataUrl: '__BUILTIN_WAVE_2__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 5
+      })
+    },
+    {
+      id: 'shelf_wave_3_kanzemizu',
+      name: '🌊 ⑨黄金観世水・流線うねり紋',
+      savedAt: Date.now() - 3800,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金観世水・流線うねり紋',
+        logoDataUrl: '__BUILTIN_WAVE_3__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 5
+      })
+    },
+    {
+      id: 'shelf_wave_4_vortex',
+      name: '🌊 ⑩黄金怒涛・大波うねり丸紋',
+      savedAt: Date.now() - 3900,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金怒涛・大波うねり丸紋',
+        logoDataUrl: '__BUILTIN_WAVE_4__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'circle', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
+      id: 'shelf_wave_5_undulating',
+      name: '🌊 ⑪黄金揺れ文字・波紋モノリス',
+      savedAt: Date.now() - 4000,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金揺れ文字・波紋三連モノリス',
+        logoDataUrl: '__BUILTIN_WAVE_5__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'roundRect', logoPadColorMode: 'bg', logoPadMarginMm: 6, logoPadCornerMm: 6
+      })
+    },
+    {
+      id: 'shelf_wave_6_lockup',
+      name: '🌊 ⑫黄金潮波・横組みウェーブ紋',
+      savedAt: Date.now() - 4100,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金潮波・横組みウェーブ紋',
+        logoDataUrl: '__BUILTIN_WAVE_6__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'roundRect', logoPadColorMode: 'bg', logoPadMarginMm: 5, logoPadCornerMm: 4
+      })
     }
   ];
 }
@@ -3190,7 +3358,7 @@ async function addOrSaveLogoToShelf(customName, slotSource){
     slot: srcSlot
   };
   LOGO_SHELF.unshift(newItem);
-  if(LOGO_SHELF.length > 16) LOGO_SHELF = LOGO_SHELF.slice(0, 16);
+  if(LOGO_SHELF.length > 36) LOGO_SHELF = LOGO_SHELF.slice(0, 36);
   saveLogoShelfToStorage();
   renderLogoShelf();
 }
