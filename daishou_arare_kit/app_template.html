@@ -32,7 +32,8 @@ header p{margin:3px 0 0;color:var(--muted);font-size:11.5px}
 .focused-detail-bar[hidden]{display:none !important}
 .focused-detail-title{font-size:12px;font-weight:800;color:#0c4a6e;display:flex;align-items:center;gap:5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .focused-detail-btns{display:flex;gap:5px;flex-shrink:0}
-section{padding:11px 15px;border-bottom:1px solid var(--line);display:grid;gap:8px}
+section{padding:11px 15px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0}
+section>*{min-width:0}
 h2{font-size:11.5px;letter-spacing:.08em;color:var(--muted);margin:0;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
 h2 .badge{font-size:10.5px;background:var(--ai-soft);color:var(--ai);padding:1px 7px;border-radius:99px;letter-spacing:0;white-space:nowrap}
 .row{display:grid;grid-template-columns:108px minmax(0,1fr) 62px;align-items:center;gap:7px}
@@ -59,10 +60,10 @@ input[type=color]{width:32px;height:26px;border:1px solid var(--line);border-rad
 .sw button[aria-pressed=true]{outline:2px solid var(--ai);outline-offset:2px}
 .crow2{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
 .chk{display:flex;gap:5px;align-items:center;font-size:12px;cursor:pointer}
-.btn{font:inherit;font-weight:600;border-radius:7px;padding:7px 10px;cursor:pointer;border:1px solid var(--ai);background:var(--ai);color:#ffffff;font-size:12px}
+.btn{font:inherit;font-weight:600;border-radius:7px;padding:7px 8px;cursor:pointer;border:1px solid var(--ai);background:var(--ai);color:#ffffff;font-size:11.5px;line-height:1.25;min-width:0}
 .btn.ghost{background:transparent;color:var(--ai)}
 .btn:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;min-width:0}
 .actions .wide{grid-column:1/-1}
 .note{font-size:11px;color:var(--muted);margin:0;line-height:1.4}
 .msg{font-size:12px;min-height:1.3em;margin:0;font-weight:500}
@@ -78,7 +79,7 @@ details.adv-details>.adv-body{display:grid;gap:6px;margin-top:7px;padding-top:7p
 .stats-left{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
 .stats-right{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
 .stats b{color:var(--fg);font-weight:700;font-variant-numeric:tabular-nums;font-size:13px}
-.canvasbox{position:relative;min-height:0;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:12px;background:rgba(0,0,0,.04);border-radius:10px;border:1px solid var(--line);user-select:none;cursor:grab}
+.canvasbox{position:relative;min-height:0;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:12px;background:rgba(0,0,0,.04);border-radius:10px;border:1px solid var(--line);user-select:none;cursor:grab;touch-action:none}
 .canvasbox.dragging{cursor:grabbing}
 canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,40,.18);transform-origin:center center;will-change:transform}
 .float-zoom-hud{position:absolute;bottom:12px;right:12px;display:flex;align-items:center;gap:5px;background:rgba(15,23,42,.9);backdrop-filter:blur(6px);color:#fff;padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:20;font-size:11.5px}
@@ -89,7 +90,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 .stage-direct-text-bar{position:absolute;top:10px;left:10px;right:10px;z-index:25;display:flex;flex-direction:column;gap:6px;pointer-events:none}
 .stage-direct-text-bar>*{pointer-events:auto}
 .direct-text-card{background:rgba(15,23,42,.94);backdrop-filter:blur(8px);color:#f8fafc;border:1.5px solid #38bdf8;border-radius:10px;padding:8px 11px;box-shadow:0 8px 24px rgba(0,0,0,.45);display:grid;gap:6px;max-width:780px}
-.subbox{display:grid;gap:7px;padding:8px 10px;background:var(--bg);border-radius:8px;border:1px solid var(--line)}
+.subbox{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;padding:8px 10px;background:var(--bg);border-radius:8px;border:1px solid var(--line);min-width:0}
 .save-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
 .save-input{width:100%;box-sizing:border-box;padding:6px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-size:12.5px}
 .preset-list{display:grid;gap:6px;max-height:220px;overflow-y:auto;padding-right:2px}
@@ -116,6 +117,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 .ft-card .ft-chip.ok{border-color:#16a34a;color:#15803d}.ft-card .ft-chip.ng{border-color:#dc2626;color:#b91c1c}
 .mini-btn{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:5px;padding:3px 6px;font:inherit;font-size:11px;cursor:pointer;white-space:nowrap}
 .mini-btn:hover{border-color:var(--ai);color:var(--ai)}
+.mini-btn[aria-pressed="true"]{background:var(--ai);color:#fff;border-color:var(--ai)}
 .mini-btn.del:hover{border-color:#dc2626;color:#dc2626}
 .view-bar{display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:6px;background:var(--panel);padding:7px 10px;border-radius:8px;border:1px solid var(--line)}
 .view-bar .chip{text-align:center;padding:7px 8px;border-radius:7px;font-weight:700;font-size:12.5px}
@@ -132,8 +134,9 @@ html.ui-easy .panel > :not(header):not(#easyPanel){display:none !important}
 html.ui-easy #stageDirectTextBar,html.ui-easy #stageDirectTextCard,html.ui-easy #stageHelpPill,html.ui-easy #zoomChips{display:none !important}
 html.ui-easy header{padding:11px 14px}
 html.ui-easy h1{font-size:19px}
-.easy-panel{display:grid;gap:0;padding:2px 0 14px}
-.e-step{padding:12px 15px 14px;border-bottom:1px solid var(--line);display:grid;gap:9px}
+.easy-panel{display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding:2px 0 14px;min-width:0}
+.e-step{padding:12px 15px 14px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr);gap:9px;min-width:0}
+.e-step>*{min-width:0}
 .e-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px}
 .e-h b{width:22px;height:22px;border-radius:50%;background:var(--ai);color:#fff;font-size:12px;display:inline-flex;align-items:center;justify-content:center;flex:none}
 .e-h span{flex:1}
@@ -169,8 +172,8 @@ html.ui-easy h1{font-size:19px}
 .e-save{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .e-save .btn{padding:9px 8px;font-size:12.5px}
 .e-save .btn:first-child{grid-column:1 / -1}
-.e-keep{display:flex;gap:6px}
-.e-keep input{flex:1;min-width:0;font:inherit;font-size:12.5px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg)}
+.e-keep{display:flex;gap:6px;flex-wrap:wrap}
+.e-keep input{flex:1 1 165px;min-width:0;font:inherit;font-size:12.5px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg)}
 .e-list{display:flex;flex-wrap:wrap;gap:6px}
 .e-list button{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:8px;padding:3px 8px 3px 3px;font:inherit;font-size:12px;cursor:pointer;max-width:100%}
 .e-list button i{width:26px;height:26px;border-radius:5px;background-size:cover;background-position:center;flex:none;background-color:var(--bg)}
@@ -181,23 +184,49 @@ html.ui-easy h1{font-size:19px}
 .e-subbox.dabo-box{background:#f0f9ff;border-color:#7dd3fc}
 .e-sublbl{font-size:11.5px;font-weight:700;color:#1e293b;display:flex;align-items:center;justify-content:space-between;gap:4px}
 .e-dabo-card{background:#ffffff;border:1.5px solid #38bdf8;border-radius:8px;padding:8px 10px;font-size:11.5px;line-height:1.5;color:#0f172a;display:flex;flex-direction:column;gap:6px}
-.e-dabo-switch{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.e-dabo-switch button{border:1.5px solid var(--ai);background:#ffffff;color:var(--ai);border-radius:8px;padding:7px 6px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;text-align:center}
+.e-dabo-switch{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.e-dabo-switch button{border:1.5px solid var(--ai);background:#ffffff;color:var(--ai);border-radius:8px;padding:6px 4px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;text-align:center}
 .e-dabo-switch button[aria-pressed="true"]{background:var(--ai);color:#ffffff;box-shadow:0 0 0 1px var(--ai)}
 .e-tofull{margin:12px 15px 0;border:1px dashed var(--line);background:none;color:var(--muted);font:inherit;font-size:12.5px;font-weight:700;padding:10px;border-radius:9px;cursor:pointer}
 .e-tofull:hover,.e-more:hover{color:var(--ai);border-color:var(--ai)}
 html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
+.mob-only{display:none !important}
 @media (max-width:820px){
-  html,body{height:auto}
-  .wrap{grid-template-columns:1fr;height:auto}
-  .stage{order:-1}
-  .canvasbox{height:64vh}
-  .view-bar{grid-template-columns:1fr}
-  html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
-  html.ui-easy .stage{position:sticky;top:0;z-index:40;background:var(--bg);padding-bottom:6px;box-shadow:0 6px 10px -8px rgba(0,0,0,.35)}
-  html.ui-easy .canvasbox{height:40vh}
-  html.ui-easy .stats{display:none}
-  html.ui-easy .view-bar .chip{padding:6px 4px;font-size:12px}
+  .desk-only{display:none !important}
+  .mob-only{display:inline-flex !important}
+  html,body{height:auto;overflow-x:hidden;-webkit-text-size-adjust:100%}
+  .wrap{grid-template-columns:1fr;height:auto;gap:10px;padding-block:6px;padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
+  .stage{order:-1;position:sticky;top:0;z-index:40;background:var(--bg);padding-top:2px;padding-bottom:6px;box-shadow:0 6px 12px -8px rgba(0,0,0,.4);gap:4px}
+  .stage.mob-unpinned{position:relative;top:auto;box-shadow:none}
+  .canvasbox{height:36vh;height:36dvh;padding:6px}
+  .stage.mob-sz-lg .canvasbox{height:58vh;height:58dvh}
+  .stage.mob-sz-sm .canvasbox{height:18vh;height:18dvh}
+  .view-bar,html.ui-easy .view-bar{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px 6px;margin-bottom:4px !important}
+  .view-bar .chip,html.ui-easy .view-bar .chip{padding:6px 3px;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #stageGarmentViewChips{padding:4px 6px !important;margin-bottom:2px !important;gap:4px !important}
+  #stageGarmentViewChips .mini-btn{padding:4px 6px !important;font-size:11px !important}
+  .stats,#stageHelpPill{display:none !important}
+  #stageDirectTextBar > div:first-child{display:none !important}
+  .float-zoom-hud{bottom:6px;right:6px;padding:3px 7px;gap:4px;font-size:11px}
+  .float-zoom-hud input[type=range]{display:none}
+  .float-zoom-hud button{padding:3px 7px;min-height:26px}
+  input[type=range]{min-height:28px}
+  .e-step,section{padding:10px 12px}
+  .e-pat{grid-template-columns:1fr 1fr;gap:6px}
+  .e-pat button{padding:6px 7px;font-size:12px;min-height:46px;gap:6px}
+  .e-pat i{width:32px;height:32px;font-size:17px}
+  .row{grid-template-columns:92px minmax(0,1fr) 54px;gap:5px}
+  .e-range{grid-template-columns:82px minmax(0,1fr) 46px;gap:6px}
+  .nav-cat-tabs{padding:5px 6px;gap:2px}
+  .nav-cat-tabs button{font-size:10.5px;padding:5px 1px}
+  #ftModal{padding:0 !important}
+  #ftModal > div{max-width:100vw !important;height:100vh !important;height:100dvh !important;border-radius:0 !important}
+  #koboModalOverlay{padding:0 !important}
+  #koboModalOverlay > div:first-child{border-radius:0 !important;padding:6px 10px !important}
+}
+@media (max-width:420px){
+  .e-pat{grid-template-columns:1fr}
+  .e-save{grid-template-columns:1fr}
 }
 </style>
 
@@ -460,16 +489,22 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <p class="e-note" id="eLogoNote">ロゴは手ぬぐいの上でもダボシャツの上でもドラッグして動かせます。</p>
       </div>
       <div class="e-step" id="eDaboFromLogoStep">
-        <div class="e-h"><b>6</b><span>👕 ダボシャツのロゴ位置から手ぬぐいを作る</span><button type="button" class="e-more" data-emore="step6">詳しく</button></div>
+        <div class="e-h"><b>6</b><span>👕👖 ダボシャツ・ダボパンツのロゴ位置から手ぬぐいを作る</span><button type="button" class="e-more" data-emore="step6">詳しく</button></div>
         <div class="e-subbox dabo-box">
-          <div class="e-sublbl"><span>① 札・ロゴのうしろ背景（今の札色を保ったまま切り替え）</span></div>
+          <div class="e-sublbl"><span>① 表示する衣装（上：ダボシャツ ／ 下：ダボパンツ）</span></div>
+          <div class="e-chips" id="eDaboGarmentViewBtns" style="grid-template-columns:repeat(3,1fr)">
+            <button type="button" data-egv="both" aria-pressed="true">👕👖 上下セット<small>シャツ＋ダボパンツ</small></button>
+            <button type="button" data-egv="top" aria-pressed="false">👕 上のみ<small>ダボシャツを大きく</small></button>
+            <button type="button" data-egv="pants" aria-pressed="false">👖 下のみ拡大<small>ダボパンツを大きく</small></button>
+          </div>
+          <div class="e-sublbl" style="margin-top:2px"><span>② 札・ロゴのうしろ背景（今の札色を保ったまま切り替え）</span></div>
           <div class="e-chips" id="eDaboQuickLogo">
             <button type="button" data-dql="cur_opaque">🛡️ うしろ透過なし<small>今の札色で枠をつける</small></button>
             <button type="button" data-dql="cur_trans">✨ 透過のまま<small>今の札色で柄を透かす</small></button>
             <button type="button" data-dql="white_opaque">🏷️ 白抜き札・透過なし<small>仲羽田と同色(#FFF)</small></button>
             <button type="button" data-dql="teal_opaque">🏷️ 浅葱札・透過なし<small>色つき(#00A3AF)</small></button>
           </div>
-          <div class="e-sublbl" style="margin-top:2px"><span>② ダボシャツのロゴ位置から手ぬぐいを逆算（全枚すべて同じ構図の手ぬぐいに反映）</span></div>
+          <div class="e-sublbl" style="margin-top:2px"><span>③ ダボ（上下）のロゴ位置から手ぬぐいを逆算（全枚すべて同じ構図の手ぬぐいに反映）</span></div>
           <div class="e-chips" id="eDaboSpotBtns">
             <button type="button" data-dspot="backAndPocket" style="grid-column:span 2;background:#fef3c7;border-color:#f59e0b;color:#78350f">⭐ 王道おすすめ：背紋＋胸位置（袖は下半分から裁断）<small>全枚すべて同じ構図の手ぬぐいで、背中・胸・ポケットにロゴを出し袖は下側から取る配置</small></button>
             <button type="button" data-dspot="backCrest">① 背中・首下の高さ<small>背紋位置（全枚共通）</small></button>
@@ -480,15 +515,18 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <button type="button" data-dspot="frontHem">⑥ 前後の裾まわり<small>腰元の高さ（全枚共通）</small></button>
             <button type="button" data-dspot="sleeves">⑦ 両袖の中央<small>肩〜二の腕（全枚共通）</small></button>
             <button type="button" data-dspot="allParts">⑧ 標準位置（上部）<small>全パーツ共通</small></button>
+            <button type="button" data-dspot="pantsThighL">👖 パンツ前太もも<small>ダボパンツ前脚中央</small></button>
+            <button type="button" data-dspot="pantsHipPocket">👖 パンツ右尻ポケット<small>ダボパンツ背面ポケット</small></button>
           </div>
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px">
             <button type="button" class="mini-btn" id="eDaboPinAddBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:6px 8px;font-size:11.5px">📌 今のロゴ位置を固定して、手ぬぐいの別の場所にもう1つ追加</button>
           </div>
           <div id="eDaboSlotsBar" style="display:flex;flex-wrap:wrap;gap:4px"></div>
           <div class="e-dabo-card" id="eDaboReverseCard">
-            <div id="eDaboReverseText">💡 上の<b>部位ボタン</b>を押すか、右の<b>ダボシャツの上で札ロゴを直接ドラッグ</b>すると、手ぬぐい上の位置が逆算され、<b>裁断図の全手ぬぐい（5〜8枚すべて同じ構図）とダボシャツ全体</b>に即座に反映されます！</div>
+            <div id="eDaboReverseText">💡 上の<b>部位ボタン</b>を押すか、右の<b>ダボシャツ・ダボパンツの上で札ロゴを直接ドラッグ</b>すると、手ぬぐい上の位置が逆算され、<b>裁断図の全手ぬぐい（5〜8枚すべて同じ構図）とダボ上下全体</b>に即座に反映されます！</div>
             <div class="e-dabo-switch">
-              <button type="button" id="eDaboShowShirtBtn" aria-pressed="false">👕 ダボシャツで位置を決める</button>
+              <button type="button" id="eDaboShowShirtBtn" aria-pressed="false">👕👖 ダボ上下＋裁断図を見る</button>
+              <button type="button" id="eDaboShowOnlyDaboBtn" aria-pressed="false">👕👖 完成図のみ大きく見る</button>
               <button type="button" id="eDaboShowTenuguiBtn" aria-pressed="true">📜 できた手ぬぐい(1枚)を見る</button>
             </div>
           </div>
@@ -501,7 +539,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div id="ePmList" class="pm-list"></div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>8</b><span>保存する（アプリ内保存・手ぬぐい・ダボ・イラレ）</span><button type="button" class="e-more" data-emore="step8">詳しく</button></div>
+        <div class="e-h"><b>8</b><span>保存する（アプリ内保存・手ぬぐい・ダボ完成図・イラレ）</span><button type="button" class="e-more" data-emore="step8">詳しく</button></div>
         <div class="e-subbox" style="background:#f0fdf4;border:1.5px solid #86efac">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
             <span style="font-size:12px;font-weight:800;color:#166534">💾 名前をつけてアプリ内に設定を保存・呼び出し <span class="badge" id="eStep8SavedCountBadge" style="background:#dcfce7;color:#166534">0件</span></span>
@@ -515,12 +553,15 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
         <div class="e-save" style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
           <button type="button" class="btn" id="eSavePng" style="grid-column:span 2">📜 手ぬぐい画像で保存（300dpi PNG）</button>
-          <button type="button" class="btn" id="eSaveDaboPng" style="background:#0284c7;border-color:#0369a1;color:#fff">👕 ダボ＆裁断図（PNG）</button>
+          <button type="button" class="btn" id="eSaveDaboOnlyPng" style="background:#0284c7;border-color:#0369a1;color:#fff" title="ダボシャツ（上）＋ダボパンツ（下）の完成図をPNG画像でダウンロードします">👕👖 完成図を保存（上下・PNG）</button>
+          <button type="button" class="btn" id="eSaveDaboPng" style="background:#0369a1;border-color:#075985;color:#fff" title="生地の取り方（裁断図）＋ダボ上下完成図をセットでPNG保存します">✂️👕 裁断図＋完成図（PNG）</button>
+          <button type="button" class="btn ghost" id="eSaveDaboPantsPng" style="border-color:#0284c7;color:#0369a1;font-weight:700">👖 ダボパンツ完成図（PNG）</button>
+          <button type="button" class="btn ghost" id="eSaveDaboSvg" style="border-color:#0284c7;color:#0369a1;font-weight:700">📐 完成図（イラレSVG）</button>
           <button type="button" class="btn" id="eSaveAi" style="background:#ea580c;border-color:#c2410c;color:#fff">✒️ Illustrator（.ai）</button>
-          <button type="button" class="btn ghost" id="eSaveSvg">📐 Illustrator（SVG）</button>
+          <button type="button" class="btn ghost" id="eSaveSvg">📐 手ぬぐい（SVG）</button>
           <button type="button" class="btn ghost" id="eCopySvg">📋 SVG をコピー</button>
           <button type="button" class="btn ghost" id="eSaveJson">📥 設定ファイル保存(.json)</button>
-          <button type="button" class="btn ghost" id="eLoadJson">📂 設定ファイル読込(.json)</button>
+          <button type="button" class="btn ghost" id="eLoadJson" style="grid-column:span 2">📂 設定ファイル読込(.json)</button>
         </div>
         <p class="e-msg" id="eMsg" role="status"></p>
       </div>
@@ -1571,13 +1612,18 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
 
     <!-- 5-D. できた生地でダボを作る（生地の取り方・裁断＆仕立てシミュレーション） -->
     <section id="sec-dabo" aria-labelledby="h-dabo" data-cat="dabo">
-      <h2 id="h-dabo"><span>👕 できた生地でダボを作る（生地取り＆仕立て）</span><button type="button" class="mini-btn" id="openDaboViewBtn" style="background:var(--ai);color:#fff;border-color:var(--ai);font-weight:700">ダボ画面を開く →</button></h2>
+      <h2 id="h-dabo"><span>👕👖 できた生地でダボを作る（上下・生地取り＆仕立て）</span><button type="button" class="mini-btn" id="openDaboViewBtn" style="background:var(--ai);color:#fff;border-color:var(--ai);font-weight:700">ダボ画面を開く →</button></h2>
       <div class="cgroup">
-        <span class="clabel" style="font-size:12px">① 仕立てる衣装の型（ダボシャツ・鯉口・上下）</span>
+        <span class="clabel" style="font-size:12px">① 表示する衣装（上：ダボシャツ・鯉口 ／ 下：ダボパンツ）</span>
+        <div class="mode-tabs" id="daboGarmentViewTabs" style="margin-bottom:4px">
+          <button type="button" class="chip" data-dgview="both" aria-pressed="true">👕👖 上下とも表示<br><span style="font-size:10px;opacity:.85">シャツ＋ダボパンツ</span></button>
+          <button type="button" class="chip" data-dgview="top" aria-pressed="false">👕 上のみ大きく<br><span style="font-size:10px;opacity:.85">シャツ前面・背面</span></button>
+          <button type="button" class="chip" data-dgview="pants" aria-pressed="false">👖 下のみ大きく<br><span style="font-size:10px;opacity:.85">ダボパンツ拡大</span></button>
+        </div>
         <div class="mode-tabs" id="daboStyleTabs">
           <button type="button" class="chip" data-dstyle="dabo" aria-pressed="true">ダボシャツ<br><span style="font-size:10px;opacity:.85">ゆったり広袖</span></button>
           <button type="button" class="chip" data-dstyle="koikuchi" aria-pressed="false">鯉口シャツ<br><span style="font-size:10px;opacity:.85">粋・細身七分袖</span></button>
-          <button type="button" class="chip" data-dstyle="setup" aria-pressed="false">ダボ上下セット<br><span style="font-size:10px;opacity:.85">シャツ＋ズボン</span></button>
+          <button type="button" class="chip" data-dstyle="setup" aria-pressed="false">ダボ上下セット<br><span style="font-size:10px;opacity:.85">上下用尺計算込</span></button>
         </div>
 
         <span class="clabel" style="font-size:12px;margin-top:4px">② ✂️ 手ぬぐいからの生地の取り方（裁断割付・枚数）</span>
@@ -1652,6 +1698,8 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <button type="button" class="mini-btn" data-spot="frontHem" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">⑥ 前後の裾(腰元)</button>
             <button type="button" class="mini-btn" data-spot="sleeves" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">⑦ 両袖の肩〜腕</button>
             <button type="button" class="mini-btn" data-spot="allParts" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">⑧ 標準位置(上部)</button>
+            <button type="button" class="mini-btn" data-spot="pantsThighL" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">👖 パンツ前太もも</button>
+            <button type="button" class="mini-btn" data-spot="pantsHipPocket" style="background:#fef3c7;border-color:#d97706;color:#78350f;font-weight:700">👖 パンツ右尻ポケット</button>
           </div>
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:6px">
             <button type="button" class="mini-btn" id="daboPinAddLogoBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:5px 8px">📌 今のロゴ位置を固定して、手ぬぐいの別の場所にもう1つ追加</button>
@@ -1727,8 +1775,10 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
 
         <div id="daboSpecSummary" class="dabo-spec-box"></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-          <button type="button" class="btn" id="saveDaboPngBtn" style="padding:7px 8px;font-size:12px">📸 ダボ図をPNG保存</button>
-          <button type="button" class="btn" id="saveDaboSvgBtn" style="padding:7px 8px;font-size:12px;background:#0284c7;border-color:#0369a1;color:#fff" title="ダボ仕上がり＆生地取りプレビュー図をIllustratorで開けるSVG形式で保存します">📐 ダボ図をイラレSVG保存</button>
+          <button type="button" class="btn" id="saveDaboOnlyPngBtn" style="padding:7px 8px;font-size:12px;background:#0284c7;border-color:#0369a1;color:#fff" title="ダボシャツ（上）＋ダボパンツ（下）の完成図をPNG保存します">👕👖 完成図をPNG保存</button>
+          <button type="button" class="btn" id="saveDaboPngBtn" style="padding:7px 8px;font-size:12px" title="生地の取り方（裁断図）＋ダボ上下完成図をPNG保存します">✂️👕 裁断図＋完成図PNG</button>
+          <button type="button" class="btn ghost" id="saveDaboPantsPngBtn" style="padding:7px 8px;font-size:11.5px;border-color:#0284c7;color:#0369a1;font-weight:700" title="下のダボパンツ（前面・背面）を大きく拡大した完成図をPNG保存します">👖 ダボパンツ完成図PNG</button>
+          <button type="button" class="btn ghost" id="saveDaboSvgBtn" style="padding:7px 8px;font-size:11.5px;border-color:#ea580c;color:#c2410c;font-weight:700" title="ダボ仕上がり＆生地取りプレビュー図をIllustratorで開けるSVG形式で保存します">📐 完成図をイラレSVG保存</button>
         </div>
       </div>
     </section>
@@ -1851,19 +1901,47 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <button class="btn" id="saveSvg">SVGで保存</button>
         <button class="btn" id="saveAi">.ai を保存</button>
         <button class="btn ghost" id="saveJsx">.jsx (AIスクリプト)</button>
-        <button class="btn ghost" id="savePng">300dpi PNG保存</button>
+        <button class="btn ghost" id="savePng">手ぬぐい 300dpi PNG保存</button>
+      </div>
+      <!-- 👕👖 完成図（ダボシャツ・ダボパンツ・裁断図）のダウンロード -->
+      <div class="cgroup" style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:1.5px solid #0284c7;border-radius:8px;padding:8px 9px;margin-top:6px;display:grid;gap:6px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+          <span class="clabel" style="font-size:12px;color:#0c4a6e;font-weight:800">👕👖 完成図（ダボシャツ＋ダボパンツ・裁断図）をダウンロード</span>
+          <span class="badge" style="background:#0284c7;color:#fff;font-size:10px">高画質出力</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <button type="button" class="btn" id="saveOutDaboOnlyPngBtn" style="background:#0284c7;border-color:#0369a1;color:#fff;padding:8px 8px;font-size:12px" title="ダボシャツ（上）とダボパンツ（下）の前面・背面完成図を高解像度PNGでダウンロードします">👕👖 完成図を保存（上下・PNG）</button>
+          <button type="button" class="btn" id="saveOutCutDaboPngBtn" style="background:#0369a1;border-color:#075985;color:#fff;padding:8px 8px;font-size:12px" title="手ぬぐいの生地の取り方（裁断割付図）＋ダボ上下完成図をセットで高解像度PNG保存します">✂️👕 裁断図＋完成図（PNG）</button>
+          <button type="button" class="btn ghost" id="saveOutDaboPantsPngBtn" style="background:#ffffff;border-color:#0284c7;color:#0369a1;font-weight:700;padding:7px 8px;font-size:11.5px" title="下のダボパンツ（前面・背面）を大きく拡大した完成図PNGをダウンロードします">👖 ダボパンツ完成図のみ（PNG）</button>
+          <button type="button" class="btn ghost" id="saveOutDaboTopPngBtn" style="background:#ffffff;border-color:#0284c7;color:#0369a1;font-weight:700;padding:7px 8px;font-size:11.5px" title="上のダボシャツ・鯉口シャツ（前面・背面）を大きく拡大した完成図PNGをダウンロードします">👕 ダボシャツ完成図のみ（PNG）</button>
+          <button type="button" class="btn ghost" id="saveOutDaboSvgBtn" style="grid-column:span 2;background:#fff7ed;border-color:#ea580c;color:#c2410c;font-weight:700;padding:7px 8px;font-size:11.5px" title="ダボ完成図と手ぬぐいベクターパスをセットにしたIllustrator用SVGファイルを保存します">📐 完成図＆裁断図をイラレSVGで保存（.svg）</button>
+        </div>
       </div>
       <p class="msg" id="msg" role="status"></p>
       <p class="note">✨ <b>プレビュー全要素のIllustrator完全ベクター出力に対応！</b><br>「.ai を保存」「SVGで保存」「SVGをコピー」「.jsx」すべてで、地色・仲羽田角字・大小あられ・丸紋に加え、<b>ダボや手ぬぐいに打った文字・札ロゴ・半纏ロゴもすべてアウトライン化済みベクターパス＆レイヤー分けされた状態</b>でIllustratorにて直接編集できます。</p>
     </section>
   </aside>
 
-  <main class="stage">
+  <main class="stage" id="mainStage">
     <div>
       <div class="view-bar" id="viewTabs" style="margin-bottom:6px">
-        <button type="button" class="chip" data-view="fabric" aria-pressed="true"><span class="full-only">📜 手ぬぐい生地（反物）</span><span class="easy-only">生地</span></button>
-        <button type="button" class="chip" data-view="cut_dabo" aria-pressed="false"><span class="full-only">✂️ 生地の取り方（裁断図）＋ 👕 ダボ完成図</span><span class="easy-only">裁断図・ダボ</span></button>
-        <button type="button" class="chip" data-view="dabo" aria-pressed="false"><span class="full-only">👕 ダボ完成プレビュー（前面・背面・上下）</span><span class="easy-only">ダボ完成</span></button>
+        <button type="button" class="chip" data-view="fabric" aria-pressed="true"><span class="full-only desk-only">📜 手ぬぐい生地（反物）</span><span class="easy-only desk-only">📜 生地</span><span class="mob-only">📜 生地</span></button>
+        <button type="button" class="chip" data-view="cut_dabo" aria-pressed="false"><span class="full-only desk-only">✂️ 生地の取り方（裁断図）＋ 👕👖 ダボ上下完成図</span><span class="easy-only desk-only">✂️👕👖 裁断図・ダボ上下</span><span class="mob-only">✂️👕 裁断・ダボ</span></button>
+        <button type="button" class="chip" data-view="dabo" aria-pressed="false"><span class="full-only desk-only">👕👖 ダボ完成プレビュー（シャツ＋ダボパンツ）</span><span class="easy-only desk-only">👕👖 ダボ完成図（上下）</span><span class="mob-only">👕👖 完成図</span></button>
+      </div>
+      <div id="stageGarmentViewChips" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:6px;background:var(--panel);padding:5px 10px;border-radius:8px;border:1px solid var(--line)">
+        <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+          <span class="desk-only" style="font-size:11.5px;font-weight:700;color:var(--fg)">👕👖 ダボ表示切替:</span>
+          <button type="button" class="mini-btn" data-sgv="both" aria-pressed="true" style="font-size:11.5px;padding:4px 9px;font-weight:700"><span class="desk-only">👕👖 上下とも見る（シャツ＋ダボパンツ）</span><span class="mob-only">👕👖 上下</span></button>
+          <button type="button" class="mini-btn" data-sgv="top" aria-pressed="false" style="font-size:11.5px;padding:4px 9px;font-weight:700"><span class="desk-only">👕 上（シャツ）のみ</span><span class="mob-only">👕 上のみ</span></button>
+          <button type="button" class="mini-btn" data-sgv="pants" aria-pressed="false" style="font-size:11.5px;padding:4px 9px;font-weight:700"><span class="desk-only">👖 下（ダボパンツ）のみ拡大</span><span class="mob-only">👖 下のみ</span></button>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+          <button type="button" class="mini-btn" id="stageQuickSaveDaboPngBtn" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700;padding:4px 9px;font-size:11.5px" title="現在の完成図を高解像度PNGで保存します"><span class="desk-only">📥 完成図をPNG保存</span><span class="mob-only">📥 完成図</span></button>
+          <button type="button" class="mini-btn" id="stageQuickSaveCutDaboPngBtn" style="background:#f0f9ff;color:#0369a1;border-color:#7dd3fc;font-weight:700;padding:4px 8px;font-size:11px" title="生地の取り方（裁断図）＋完成図をセットでPNG保存します"><span class="desk-only">📥 裁断図＋完成図PNG</span><span class="mob-only">📥 裁断+完成</span></button>
+          <button type="button" class="mini-btn mob-only" id="mobStageSizeBtn" style="background:#f8fafc;color:#0f172a;border-color:#94a3b8;font-weight:700" title="スマホのプレビュー画面の高さを切り替えます（標準 / 拡大 / 小）">🔍 拡大</button>
+          <button type="button" class="mini-btn mob-only" id="mobStagePinBtn" aria-pressed="true" style="font-weight:700" title="スクロール時にプレビューを上部に固定するかを切り替えます">📌 固定</button>
+        </div>
       </div>
       <div class="stats" aria-live="polite">
         <div class="stats-left">
@@ -2799,8 +2877,9 @@ const DEF={
   textSize:44, textSpacing:6, textOutlineW:5, textAngle:0, textX:50, textY:75,
   textRepeatMode:'none', textRepeatGapX:68, textRepeatGapY:68, textRepeatGridAngle:0, textRepeatAngleVar:0, textRepeatSizeVar:0,
   showBand:false, bandH:52,
-  // ダボ（ダボシャツ・鯉口・上下）＆生地の取り方パラメーター
+  // ダボ（ダボシャツ・鯉口・上下・ダボパンツ）＆生地の取り方パラメーター
   daboStyle:'dabo', // 'dabo' | 'koikuchi' | 'setup'
+  daboGarmentView:'both', // 'both' (上＋下 ダボパンツ) | 'top' (上・シャツのみ) | 'pants' (下・ダボパンツのみ拡大)
   daboCutMode:'adult7', // 'adult7' | 'adult8_crest' | '6piece' | 'backCenter' | '5piece'
   daboLogoTarget:'all', // 'all' | 'backOnly' | 'frontLOnly' | 'frontROnly' | 'pocketOnly' | 'frontOnly' | 'backPocket' | 'frontBack' | 'sleevesOnly'
   daboStripRot:'auto', // 'auto' | '0' | '-90' | '90' | '180'
@@ -6922,9 +7001,10 @@ function clientToDaboStageXY(clientX, clientY){
   const vH = STAGE_METRICS.vH || r.height || 1;
   const vx = (clientX - r.left) * (vW / Math.max(1, r.width));
   const vy = (clientY - r.top) * (vH / Math.max(1, r.height));
+  const denom = Math.max(0.01, (STAGE_METRICS.baseS || 1) * ZOOM);
   return {
-    stageX: (vx - STAGE_METRICS.stageLeft) / Math.max(0.01, ZOOM),
-    stageY: (vy - STAGE_METRICS.stageTop) / Math.max(0.01, ZOOM)
+    stageX: (vx - STAGE_METRICS.stageLeft) / denom,
+    stageY: (vy - STAGE_METRICS.stageTop) / denom
   };
 }
 
@@ -7612,10 +7692,11 @@ let CUT_PART_RECTS = [], CUT_RESET_RECT = null, CUT_REC = false, CUT_DRAG = null
 // 裁断図およびダボ完成プレビューを一括描画（CSS拡大を使わずCanvas 2Dベクター行列＆直接ベクターストリップ描画で12倍ズームでも文字が一切ぼやけない設計）
 function drawDaboAndCutScene(targetCv, viewMode, exportMode){
   const dpr = exportMode ? 2.5 : Math.max(2, window.devicePixelRatio || 1);
-  const vW = exportMode ? 1600 : Math.max(520, Math.floor((box.clientWidth || 720) - 16));
-  const vH = exportMode ? 1020 : Math.max(440, Math.floor((box.clientHeight || 680) - 16));
-  const cw = vW;
-  const ch = vH;
+  const vW = exportMode ? 1600 : Math.max(260, Math.floor((box.clientWidth || 720) - 12));
+  const vH = exportMode ? 1020 : Math.max(170, Math.floor((box.clientHeight || 680) - 12));
+  const cw = exportMode ? 1600 : Math.max(vW, (viewMode === 'cut_dabo') ? 760 : 540);
+  const ch = exportMode ? 1020 : Math.max(vH, (viewMode === 'cut_dabo') ? 520 : 480);
+  const baseS = exportMode ? 1 : Math.min(1, vW / cw, vH / ch);
 
   if(!exportMode){
     DABO_HIT_ZONES = [];
@@ -7646,10 +7727,10 @@ function drawDaboAndCutScene(targetCv, viewMode, exportMode){
 
   // ズーム＆パン変換をCanvas 2Dコンテキストに直接適用（ベクター＆フォントが現在の拡大倍率で直接ラスタライズされる）
   if(!exportMode){
-    const stageLeft = vW * 0.5 + PAN_X - (cw * ZOOM) * 0.5;
-    const stageTop  = vH * 0.5 + PAN_Y - (ch * ZOOM) * 0.5;
-    STAGE_METRICS = { mode: 'dabo', stageLeft, stageTop, baseS: 1, cw, ch, vW, vH };
-    const effScale = ZOOM * dpr;
+    const stageLeft = vW * 0.5 + PAN_X - (cw * baseS * ZOOM) * 0.5;
+    const stageTop  = vH * 0.5 + PAN_Y - (ch * baseS * ZOOM) * 0.5;
+    STAGE_METRICS = { mode: 'dabo', stageLeft, stageTop, baseS, cw, ch, vW, vH };
+    const effScale = baseS * ZOOM * dpr;
     x.setTransform(effScale, 0, 0, effScale, stageLeft * dpr, stageTop * dpr);
   }
 
@@ -7940,7 +8021,7 @@ function traceCutPartShape(x, rx, ry, rw, rh, shape){
   }
 }
 
-// 👕 できた生地で仕立てたダボ（前面・背面・上下セット）パネル描画
+// 👕👖 できた生地で仕立てたダボ（前面・背面・ダボパンツ上下セット）パネル描画
 function drawDaboGarmentsPanel(x, px, py, pw, ph, plan, partMap, bodyCfg, exportMode){
   x.save();
   x.fillStyle = 'rgba(255,255,255,0.04)';
@@ -7948,45 +8029,73 @@ function drawDaboGarmentsPanel(x, px, py, pw, ph, plan, partMap, bodyCfg, export
   x.lineWidth = 1;
   x.beginPath(); x.roundRect(px, py, pw, ph, 10); x.fill(); x.stroke();
 
-  const styleJp = S.daboStyle === 'koikuchi' ? '鯉口シャツ（七分袖）' : (S.daboStyle === 'setup' ? 'ダボ上下セット' : 'ダボシャツ（広袖）');
+  const gView = (S.daboStyle === 'pants') ? 'pants' : (S.daboGarmentView || 'both');
+  const isKoi = (S.daboStyle === 'koikuchi');
+  const topJp = isKoi ? '鯉口シャツ（七分袖）' : 'ダボシャツ（広袖）';
+  const styleJp = gView === 'pants'
+    ? '👖 ダボパンツ（股引・ダボズボン）拡大プレビュー'
+    : (gView === 'top' ? ('👕 ' + topJp + '（上のみ）') : ('👕👖 ' + topJp + ' ＋ ダボパンツ（上下セット）'));
   x.fillStyle = '#ffffff';
   x.font = '700 13px sans-serif';
-  x.fillText('👕 仕上がりプレビュー：' + styleJp + ' 【' + (S.daboSize||'L') + '】', px + 14, py + 21, pw - 28);
+  x.fillText('仕上がりプレビュー：' + styleJp + ' 【' + (S.daboSize||'L') + '】', px + 14, py + 21, pw - 28);
   x.fillStyle = S.daboInteractiveLogo ? '#fde047' : '#bae6fd';
   x.font = '10px sans-serif';
   x.fillText(
     S.daboInteractiveLogo
-      ? '✍️ 直接配置モードON：ダボシャツの好きな部位をクリック/ドラッグすると、その位置に文字・ロゴが配置され手ぬぐいへ自動反映されます！'
-      : '💡 ダボシャツ上をダブルクリック（または上部の「✍️ ダボに直接文字を打つ」）で、好きな位置に直接文字をデザイン＆手ぬぐいへ自動反映！',
+      ? '✍️ 直接配置モードON：ダボシャツ・ダボパンツの好きな部位をクリック/ドラッグすると、その位置に文字・ロゴが配置され手ぬぐいへ自動反映されます！'
+      : '💡 ダボシャツ・ダボパンツ上をダブルクリック（または上部の「✍️ ダボに直接文字を打つ」）で、好きな位置に直接デザイン＆手ぬぐいへ自動反映！',
     px + 14, py + 36, pw - 28
   );
 
-  const isSetup = (S.daboStyle === 'setup');
   const innerY = py + 46;
   const innerH = ph - 54;
 
-  // パネル幅と高さの比率に応じて「左右2列」か「上下2段」かを自動選択し、シャツが絶対に見切れないようにする
-  const stackShirtsVert = !isSetup && (pw < innerH * 1.18);
-
-  if(isSetup){
-    const shirtAreaH = innerH * 0.57;
-    const pantsAreaH = innerH * 0.43;
+  if(gView === 'pants'){
+    // 👖 下（ダボパンツ）のみを大きく表示
+    const stackVert = (pw < innerH * 0.95);
+    if(stackVert){
+      const rowH = innerH / 2;
+      drawSingleDaboPants(x, px + pw * 0.5, innerY + rowH * 0.52, pw * 0.92, rowH * 0.92, 'front', partMap, bodyCfg, null, exportMode);
+      drawSingleDaboPants(x, px + pw * 0.5, innerY + rowH * 1.52, pw * 0.92, rowH * 0.92, 'back', partMap, bodyCfg, null, exportMode);
+    }else{
+      const colW = pw / 2;
+      drawSingleDaboPants(x, px + colW * 0.5, innerY + innerH * 0.52, colW * 0.92, innerH * 0.92, 'front', partMap, bodyCfg, null, exportMode);
+      drawSingleDaboPants(x, px + colW * 1.5, innerY + innerH * 0.52, colW * 0.92, innerH * 0.92, 'back', partMap, bodyCfg, null, exportMode);
+    }
+  }else if(gView === 'top'){
+    // 👕 上（シャツ）のみを大きく表示
+    const stackShirtsVert = (pw < innerH * 1.18);
+    if(stackShirtsVert){
+      const rowH = innerH / 2;
+      drawSingleDaboShirt(x, px + pw * 0.5, innerY + rowH * 0.51, pw * 0.94, rowH * 0.94, 'front', partMap, bodyCfg, exportMode);
+      drawSingleDaboShirt(x, px + pw * 0.5, innerY + rowH * 1.51, pw * 0.94, rowH * 0.94, 'back', partMap, bodyCfg, exportMode);
+    }else{
+      const colW = pw / 2;
+      drawSingleDaboShirt(x, px + colW * 0.5, innerY + innerH * 0.52, colW * 0.95, innerH * 0.92, 'front', partMap, bodyCfg, exportMode);
+      drawSingleDaboShirt(x, px + colW * 1.5, innerY + innerH * 0.52, colW * 0.95, innerH * 0.92, 'back', partMap, bodyCfg, exportMode);
+    }
+  }else{
+    // 👕👖 上下とも表示（上段：シャツ前面・背面 ／ 下段：ダボパンツ前面・背面）
+    const shirtAreaH = innerH * 0.54;
+    const pantsAreaH = innerH * 0.46;
     const colW = pw / 2;
     const shirtSUnit = Math.min((colW * 0.95) / 350, (shirtAreaH * 0.94) / 265);
-    drawSingleDaboShirt(x, px + colW * 0.5, innerY + shirtAreaH * 0.52, colW * 0.95, shirtAreaH * 0.94, 'front', partMap, bodyCfg, exportMode);
-    drawSingleDaboShirt(x, px + colW * 1.5, innerY + shirtAreaH * 0.52, colW * 0.95, shirtAreaH * 0.94, 'back', partMap, bodyCfg, exportMode);
+    drawSingleDaboShirt(x, px + colW * 0.5, innerY + shirtAreaH * 0.51, colW * 0.95, shirtAreaH * 0.94, 'front', partMap, bodyCfg, exportMode);
+    drawSingleDaboShirt(x, px + colW * 1.5, innerY + shirtAreaH * 0.51, colW * 0.95, shirtAreaH * 0.94, 'back', partMap, bodyCfg, exportMode);
+
+    // 上下の区切りガイド線（さりげなく）
+    x.save();
+    x.strokeStyle = 'rgba(255,255,255,0.10)';
+    x.setLineDash([4, 4]);
+    x.beginPath();
+    x.moveTo(px + 18, innerY + shirtAreaH + 1);
+    x.lineTo(px + pw - 18, innerY + shirtAreaH + 1);
+    x.stroke();
+    x.restore();
 
     const pantsY = innerY + shirtAreaH + pantsAreaH * 0.52;
-    drawSingleDaboPants(x, px + colW * 0.5, pantsY, colW * 0.88, pantsAreaH * 0.92, 'front', partMap, bodyCfg, shirtSUnit);
-    drawSingleDaboPants(x, px + colW * 1.5, pantsY, colW * 0.88, pantsAreaH * 0.92, 'back', partMap, bodyCfg, shirtSUnit);
-  }else if(stackShirtsVert){
-    const rowH = innerH / 2;
-    drawSingleDaboShirt(x, px + pw * 0.5, innerY + rowH * 0.51, pw * 0.94, rowH * 0.94, 'front', partMap, bodyCfg, exportMode);
-    drawSingleDaboShirt(x, px + pw * 0.5, innerY + rowH * 1.51, pw * 0.94, rowH * 0.94, 'back', partMap, bodyCfg, exportMode);
-  }else{
-    const colW = pw / 2;
-    drawSingleDaboShirt(x, px + colW * 0.5, innerY + innerH * 0.52, colW * 0.95, innerH * 0.92, 'front', partMap, bodyCfg, exportMode);
-    drawSingleDaboShirt(x, px + colW * 1.5, innerY + innerH * 0.52, colW * 0.95, innerH * 0.92, 'back', partMap, bodyCfg, exportMode);
+    drawSingleDaboPants(x, px + colW * 0.5, pantsY, colW * 0.92, pantsAreaH * 0.94, 'front', partMap, bodyCfg, shirtSUnit, exportMode);
+    drawSingleDaboPants(x, px + colW * 1.5, pantsY, colW * 0.92, pantsAreaH * 0.94, 'back', partMap, bodyCfg, shirtSUnit, exportMode);
   }
   x.restore();
 }
@@ -8693,31 +8802,50 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
   x.restore();
 }
 
-// ダボズボン（上下セット時）の描画
-function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shirtSUnit){
-  const S_unit = Math.min(maxW / 180, maxH / 180);
+// 👖 ダボパンツ（ダボズボン・股引風ゆったり祭礼パンツ）の前面・背面をリアルに描画
+function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shirtSUnit, exportMode){
+  // バウンディングボックス: 横幅 230 (-115..+115), 縦幅 225 (-112..+113)
+  const S_unit = Math.min(maxW / 230, maxH / 225);
+  const centerStageY = cy + 4 * S_unit;
   x.save();
-  x.translate(cx, cy);
+  x.translate(cx, centerStageY);
   x.scale(S_unit, S_unit);
 
-  const topY = -78, botY = 78, crotchY = -18;
-  const waistW = 44, hipW = 54, ankleW = 34;
+  // ラベルバッジ（前面＝青、背面＝琥珀色でダボシャツと統一）
+  x.save();
+  x.fillStyle = side === 'front' ? '#0284c7' : '#d97706';
+  x.beginPath(); x.roundRect(-86, -108, 172, 19, 99); x.fill();
+  x.fillStyle = '#ffffff'; x.font = '700 10px sans-serif'; x.textAlign = 'center';
+  const badgeTitle = side === 'front'
+    ? '【前 面】ダボパンツ（腰紐・両脇ポケ）'
+    : '【背 面】ダボパンツ（右尻ポケット）';
+  x.fillText(badgeTitle, 0, -95);
+  x.restore();
 
+  const topY = -80, botY = 96, crotchY = -12;
+  const pantsH = botY - topY; // 176
+  const waistW = 48, hipW = 64, ankleOutX = 52, ankleInX = 11;
+
+  // 本物のダボパンツ（ワタリ広め・股マチ付き・裾にかけて緩やかにテーパード）のシルエット
   const tracePants = () => {
     x.beginPath();
     x.moveTo(-waistW, topY);
     x.lineTo(waistW, topY);
-    x.quadraticCurveTo(hipW, -40, hipW - 2, botY);
-    x.lineTo(hipW - ankleW, botY);
-    x.lineTo(0, crotchY);
-    x.lineTo(-(hipW - ankleW), botY);
-    x.lineTo(-(hipW - 2), botY);
-    x.quadraticCurveTo(-hipW, -40, -waistW, topY);
+    // 右脇（ウエスト -> ヒップ膨らみ -> 右足外裾）
+    x.quadraticCurveTo(hipW + 3, topY + 46, ankleOutX, botY);
+    // 右裾 -> 右内股 -> 股下マチ -> 左内股 -> 左裾
+    x.lineTo(ankleInX, botY);
+    x.quadraticCurveTo(8, crotchY + 28, 3, crotchY);
+    x.quadraticCurveTo(0, crotchY - 3, -3, crotchY);
+    x.quadraticCurveTo(-8, crotchY + 28, -ankleInX, botY);
+    x.lineTo(-ankleOutX, botY);
+    // 左脇（左足外裾 -> ヒップ膨らみ -> ウエスト）
+    x.quadraticCurveTo(-(hipW + 3), topY + 46, -waistW, topY);
     x.closePath();
   };
 
   x.save();
-  x.shadowColor = 'rgba(0,0,0,0.4)'; x.shadowBlur = 12; x.shadowOffsetY = 4;
+  x.shadowColor = 'rgba(0,0,0,0.45)'; x.shadowBlur = 14; x.shadowOffsetY = 5;
   tracePants();
   x.fillStyle = bodyCfg.bgColor || '#046e7e';
   x.fill();
@@ -8726,34 +8854,285 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
   x.save();
   tracePants();
   x.clip();
-  // ダボシャツと画面上の柄スケールが100%一致するようにズボン用の固定スケールを算出
-  const refEntry = partMap.frontR || partMap.backCenter;
+
+  // 手ぬぐいストリップの実寸スケールと統一して左右の脚にマッピング
+  const leftLegEntry = (side === 'front')
+    ? (partMap.frontR || partMap.backCenter)
+    : (partMap.backL || partMap.backCenter || partMap.frontL);
+  const rightLegEntry = (side === 'front')
+    ? (partMap.frontL || partMap.backCenter)
+    : (partMap.backR || partMap.backCenter || partMap.frontR);
+  const refEntry = leftLegEntry || rightLegEntry;
   const refCv = refEntry && refEntry.cv ? refEntry.cv : null;
   const longPx = refCv ? Math.max(1, Math.max(refCv.width, refCv.height)) : 1035;
-  const baseShirtScale = 206 / (0.86 * longPx);
-  const pantsFixedScale = shirtSUnit ? (baseShirtScale * (shirtSUnit / S_unit)) : baseShirtScale;
-  // 左右の脚に身頃ストリップをマッピング
-  drawCroppedPiece(x, partMap.frontR || partMap.backCenter, -hipW, topY, hipW, botY - topY, 0, undefined, pantsFixedScale);
-  drawCroppedPiece(x, partMap.frontL || partMap.backCenter, 0, topY, hipW, botY - topY, 0, undefined, pantsFixedScale);
+  // ズボン丈(176 units)が手ぬぐい1本の有効長(0.86 * longPx)に対応するスケール
+  const pantsFixedScale = pantsH / (0.86 * longPx);
 
-  // ウエストゴム帯＆陰影
-  x.fillStyle = 'rgba(0,0,0,0.22)';
-  x.fillRect(-waistW, topY, waistW*2, 12);
-  x.strokeStyle = 'rgba(0,0,0,0.4)'; x.lineWidth = 1.2;
-  x.beginPath(); x.moveTo(0, topY); x.lineTo(0, crotchY); x.stroke();
+  // 向かって左の脚 [-hipW .. 0]
+  x.save();
+  x.beginPath(); x.rect(-hipW - 4, topY - 4, hipW + 5, pantsH + 8); x.clip();
+  drawCroppedPiece(x, leftLegEntry, -hipW, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
   x.restore();
 
-  tracePants();
-  x.strokeStyle = 'rgba(0,0,0,0.5)'; x.lineWidth = 1.2; x.stroke();
+  // 向かって右の脚 [0 .. +hipW]
+  x.save();
+  x.beginPath(); x.rect(-1, topY - 4, hipW + 5, pantsH + 8); x.clip();
+  drawCroppedPiece(x, rightLegEntry, 0, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
+  x.restore();
 
-  // ウエスト紐（前面のみ）
-  if(side === 'front'){
-    x.strokeStyle = '#ffffff'; x.lineWidth = 1.8;
+  // 背面・右尻パッチポケット（向かって右のヒップ）
+  const pkX = 11, pkY = topY + 26, pkW = 36, pkH = 40;
+  if(side === 'back' && S.daboPocketMode !== 'none'){
+    const traceHipPocket = () => {
+      x.beginPath();
+      x.moveTo(pkX, pkY);
+      x.lineTo(pkX + pkW, pkY);
+      x.lineTo(pkX + pkW, pkY + pkH - 7);
+      x.lineTo(pkX + pkW * 0.5, pkY + pkH);
+      x.lineTo(pkX, pkY + pkH - 7);
+      x.closePath();
+    };
+    x.save();
+    x.shadowColor = 'rgba(0,0,0,0.35)'; x.shadowBlur = 4; x.shadowOffsetY = 1.5;
+    traceHipPocket();
+    x.fillStyle = bodyCfg.bgColor || '#046e7e';
+    x.fill();
+    x.restore();
+
+    x.save();
+    traceHipPocket();
+    x.clip();
+    const pkRot = (S.daboPocketMode === 'bias') ? 45 : 0;
+    const pkEntry = (S.daboLogoTarget === 'pocketOnly' || S.daboLogoTarget === 'backPocket')
+      ? (partMap.pocket || rightLegEntry)
+      : rightLegEntry;
+    if(pkRot === 0 && pkEntry === rightLegEntry){
+      drawCroppedPiece(x, rightLegEntry, 0, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
+    }else{
+      drawCroppedPiece(x, partMap.pocket || rightLegEntry, pkX, pkY, pkW, pkH, pkRot, undefined, pantsFixedScale);
+    }
+    // ポケット口折り返しステッチ
+    x.strokeStyle = 'rgba(255,255,255,0.45)';
+    x.lineWidth = 0.9;
+    x.setLineDash([2, 2]);
     x.beginPath();
-    x.moveTo(-4, topY + 6); x.quadraticCurveTo(-12, topY + 24, -8, topY + 34);
-    x.moveTo(4, topY + 6); x.quadraticCurveTo(12, topY + 24, 8, topY + 34);
+    x.moveTo(pkX + 2, pkY + 5); x.lineTo(pkX + pkW - 2, pkY + 5);
     x.stroke();
+    x.restore();
+
+    x.save();
+    traceHipPocket();
+    x.strokeStyle = 'rgba(0,0,0,0.58)';
+    x.lineWidth = 1.2;
+    x.stroke();
+    x.strokeStyle = 'rgba(255,255,255,0.38)';
+    x.lineWidth = 0.8;
+    x.setLineDash([2.2, 2.2]);
+    x.stroke();
+    x.restore();
   }
+
+  // 前面・両脇の斜めポケット口（スラッシュポケット）ステッチ
+  if(side === 'front'){
+    x.save();
+    x.strokeStyle = 'rgba(0,0,0,0.52)';
+    x.lineWidth = 1.3;
+    x.beginPath();
+    x.moveTo(-waistW + 5, topY + 15); x.lineTo(-hipW + 5, topY + 48);
+    x.moveTo(waistW - 5, topY + 15);  x.lineTo(hipW - 5, topY + 48);
+    x.stroke();
+    x.strokeStyle = 'rgba(255,255,255,0.42)';
+    x.lineWidth = 0.9;
+    x.setLineDash([2.2, 2.2]);
+    x.beginPath();
+    x.moveTo(-waistW + 7.5, topY + 15); x.lineTo(-hipW + 7.5, topY + 49);
+    x.moveTo(waistW - 7.5, topY + 15);  x.lineTo(hipW - 7.5, topY + 49);
+    x.stroke();
+    x.restore();
+  }
+
+  // 左右の脚の円筒立体ドレープ陰影
+  const legGradL = x.createLinearGradient(-hipW, 0, 0, 0);
+  legGradL.addColorStop(0, 'rgba(0,0,0,0.26)');
+  legGradL.addColorStop(0.25, 'rgba(0,0,0,0)');
+  legGradL.addColorStop(0.55, 'rgba(255,255,255,0.05)');
+  legGradL.addColorStop(1, 'rgba(0,0,0,0.22)');
+  x.fillStyle = legGradL;
+  x.fillRect(-hipW - 4, topY, hipW + 4, pantsH);
+
+  const legGradR = x.createLinearGradient(0, 0, hipW, 0);
+  legGradR.addColorStop(0, 'rgba(0,0,0,0.22)');
+  legGradR.addColorStop(0.45, 'rgba(255,255,255,0.05)');
+  legGradR.addColorStop(0.75, 'rgba(0,0,0,0)');
+  legGradR.addColorStop(1, 'rgba(0,0,0,0.26)');
+  x.fillStyle = legGradR;
+  x.fillRect(0, topY, hipW + 4, pantsH);
+
+  // ウエスト総ゴム・ギャザー帯（幅14px）
+  const wbH = 14;
+  x.fillStyle = 'rgba(0,0,0,0.26)';
+  x.fillRect(-waistW - 4, topY, (waistW + 4) * 2, wbH);
+  x.strokeStyle = 'rgba(0,0,0,0.48)';
+  x.lineWidth = 1.1;
+  x.beginPath();
+  x.moveTo(-waistW - 2, topY + wbH); x.lineTo(waistW + 2, topY + wbH);
+  // ゴムの縦ギャザーひだ
+  for(let gx = -waistW + 6; gx <= waistW - 6; gx += 6){
+    x.moveTo(gx, topY + 1.5); x.lineTo(gx, topY + wbH - 1.5);
+  }
+  x.stroke();
+  x.strokeStyle = 'rgba(255,255,255,0.28)';
+  x.lineWidth = 0.8;
+  x.setLineDash([2.5, 2.5]);
+  x.beginPath();
+  x.moveTo(-waistW, topY + wbH * 0.5); x.lineTo(waistW, topY + wbH * 0.5);
+  x.stroke();
+  x.setLineDash([]);
+
+  // 股上センター縫い目＆前立て／股マチステッチ
+  x.strokeStyle = 'rgba(0,0,0,0.48)';
+  x.lineWidth = 1.25;
+  x.beginPath();
+  x.moveTo(0, topY + wbH); x.lineTo(0, crotchY);
+  if(side === 'front'){
+    // 前立てJステッチ
+    x.moveTo(5.5, topY + wbH);
+    x.lineTo(5.5, crotchY - 14);
+    x.quadraticCurveTo(5.5, crotchY - 5, 0, crotchY - 4);
+  }else{
+    // 股マチ（ひし形ガゼット）ステッチ
+    x.moveTo(0, crotchY - 10);
+    x.lineTo(8, crotchY - 1);
+    x.lineTo(0, crotchY + 8);
+    x.lineTo(-8, crotchY - 1);
+    x.closePath();
+  }
+  x.stroke();
+
+  // 足首の裾ステッチ（二本針ステッチ）
+  x.strokeStyle = 'rgba(255,255,255,0.36)';
+  x.lineWidth = 0.9;
+  x.setLineDash([2.5, 2.5]);
+  x.beginPath();
+  x.moveTo(-ankleOutX + 2, botY - 4.5); x.lineTo(-ankleInX - 2, botY - 4.5);
+  x.moveTo(ankleInX + 2, botY - 4.5);   x.lineTo(ankleOutX - 2, botY - 4.5);
+  x.stroke();
+  x.setLineDash([]);
+  x.restore(); // pants clip end
+
+  // 外周アウトライン
+  tracePants();
+  x.strokeStyle = 'rgba(0,0,0,0.58)';
+  x.lineWidth = 1.35;
+  x.stroke();
+
+  // 前面のウエスト腰紐（生成り綿紐＋結び目＋ハトメ穴）
+  if(side === 'front'){
+    x.save();
+    // ハトメ2つ
+    x.fillStyle = '#0f172a';
+    x.strokeStyle = '#e2e8f0';
+    x.lineWidth = 1.1;
+    [-5.5, 5.5].forEach(ex => {
+      x.beginPath(); x.arc(ex, topY + 7, 2.1, 0, Math.PI * 2); x.fill(); x.stroke();
+    });
+    // 腰紐のループと垂れ紐
+    x.strokeStyle = 'rgba(0,0,0,0.45)';
+    x.lineWidth = 3.2;
+    x.lineCap = 'round';
+    x.lineJoin = 'round';
+    const drawCordPath = () => {
+      x.beginPath();
+      x.moveTo(-5.5, topY + 7);
+      x.quadraticCurveTo(0, topY + 9, 5.5, topY + 7);
+      // 左ループ・右ループ
+      x.moveTo(0, topY + 8);
+      x.bezierCurveTo(-16, topY + 2, -18, topY + 17, 0, topY + 10);
+      x.moveTo(0, topY + 8);
+      x.bezierCurveTo(16, topY + 2, 18, topY + 17, 0, topY + 10);
+      // 垂れ紐2本
+      x.moveTo(-1, topY + 9);
+      x.quadraticCurveTo(-13, topY + 25, -9, topY + 40);
+      x.moveTo(1, topY + 9);
+      x.quadraticCurveTo(13, topY + 25, 10, topY + 38);
+    };
+    drawCordPath();
+    x.stroke();
+    x.strokeStyle = '#f8fafc';
+    x.lineWidth = 2.0;
+    drawCordPath();
+    x.stroke();
+    x.restore();
+  }
+
+  // ★ ダボパンツ完成図からの逆算ロゴ配置用ヒット領域を登録（!exportMode 時）
+  if(!exportMode){
+    if(side === 'front'){
+      DABO_HIT_ZONES.push({
+        priority: 5, side: 'front_pants', partId: 'frontR', label: 'ダボパンツ前面・右脚（向かって左）',
+        entry: leftLegEntry,
+        cx, cy: centerStageY, S_unit,
+        dx: -hipW, dy: topY, dw: hipW, dh: pantsH,
+        fixedScale: pantsFixedScale,
+        suggestedTarget: 'all'
+      });
+      DABO_HIT_ZONES.push({
+        priority: 5, side: 'front_pants', partId: 'frontL', label: 'ダボパンツ前面・左脚（向かって右）',
+        entry: rightLegEntry,
+        cx, cy: centerStageY, S_unit,
+        dx: 0, dy: topY, dw: hipW, dh: pantsH,
+        fixedScale: pantsFixedScale,
+        suggestedTarget: 'all'
+      });
+    }else{
+      if(S.daboPocketMode !== 'none'){
+        DABO_HIT_ZONES.push({
+          priority: 7, side: 'back_pants', partId: 'pocket', label: 'ダボパンツ背面・右尻ポケット',
+          entry: partMap.pocket || rightLegEntry,
+          cx, cy: centerStageY, S_unit,
+          dx: pkX, dy: pkY, dw: pkW, dh: pkH,
+          fixedScale: pantsFixedScale,
+          suggestedTarget: 'all'
+        });
+      }
+      DABO_HIT_ZONES.push({
+        priority: 5, side: 'back_pants', partId: 'backL', label: 'ダボパンツ背面・左後脚（向かって左）',
+        entry: leftLegEntry,
+        cx, cy: centerStageY, S_unit,
+        dx: -hipW, dy: topY, dw: hipW, dh: pantsH,
+        fixedScale: pantsFixedScale,
+        suggestedTarget: 'all'
+      });
+      DABO_HIT_ZONES.push({
+        priority: 5, side: 'back_pants', partId: 'backR', label: 'ダボパンツ背面・右後脚（向かって右）',
+        entry: rightLegEntry,
+        cx, cy: centerStageY, S_unit,
+        dx: 0, dy: topY, dw: hipW, dh: pantsH,
+        fixedScale: pantsFixedScale,
+        suggestedTarget: 'all'
+      });
+    }
+
+    const directCardOpen = $('stageDirectTextCard') && !$('stageDirectTextCard').hidden;
+    const expectedSide = (side === 'front') ? 'front_pants' : 'back_pants';
+    if((S.daboInteractiveLogo || directCardOpen) && DABO_ACTIVE_REVERSE_HIT && DABO_ACTIVE_REVERSE_HIT.side === expectedSide && DABO_ACTIVE_REVERSE_HIT.localX !== undefined){
+      const tx = DABO_ACTIVE_REVERSE_HIT.localX, ty = DABO_ACTIVE_REVERSE_HIT.localY;
+      x.save();
+      x.strokeStyle = 'rgba(56, 189, 248, 0.95)';
+      x.lineWidth = 1.6;
+      x.setLineDash([3, 2]);
+      x.beginPath(); x.arc(tx, ty, 14, 0, Math.PI * 2); x.stroke();
+      x.setLineDash([]);
+      x.beginPath();
+      x.moveTo(tx - 19, ty); x.lineTo(tx - 9, ty);
+      x.moveTo(tx + 9, ty);  x.lineTo(tx + 19, ty);
+      x.moveTo(tx, ty - 19); x.lineTo(tx, ty - 9);
+      x.moveTo(tx, ty + 9);  x.lineTo(tx, ty + 19);
+      x.stroke();
+      x.restore();
+    }
+  }
+
   x.restore();
 }
 
@@ -8761,23 +9140,26 @@ function updateDaboSpecBox(plan){
   const boxEl = $('daboSpecSummary');
   if(!boxEl) return;
   const szMap = {
-    S:  { len: 70, wid: 52, yuki: 64, strips: plan.strips.length, tan: 4.8 },
-    M:  { len: 73, wid: 55, yuki: 66, strips: plan.strips.length, tan: 5.1 },
-    L:  { len: 76, wid: 59, yuki: 68, strips: plan.strips.length, tan: 5.4 },
-    LL: { len: 79, wid: 63, yuki: 71, strips: plan.strips.length, tan: 5.8 },
-    '3L': { len: 82, wid: 68, yuki: 74, strips: plan.strips.length, tan: 6.2 }
+    S:  { len: 70, wid: 52, yuki: 64, pLen: 92, pWaist: '68〜82', strips: plan.strips.length, tan: 4.8 },
+    M:  { len: 73, wid: 55, yuki: 66, pLen: 96, pWaist: '72〜88', strips: plan.strips.length, tan: 5.1 },
+    L:  { len: 76, wid: 59, yuki: 68, pLen: 100, pWaist: '76〜94', strips: plan.strips.length, tan: 5.4 },
+    LL: { len: 79, wid: 63, yuki: 71, pLen: 104, pWaist: '82〜102', strips: plan.strips.length, tan: 5.8 },
+    '3L': { len: 82, wid: 68, yuki: 74, pLen: 107, pWaist: '88〜110', strips: plan.strips.length, tan: 6.2 }
   };
   const sp = szMap[S.daboSize || 'L'] || szMap.L;
-  const isSetup = (S.daboStyle === 'setup');
-  const totalStrips = isSetup ? sp.strips + 5 : sp.strips;
-  const totalTan = isSetup ? (sp.tan + 4.4).toFixed(1) : sp.tan.toFixed(1);
+  const gView = (S.daboStyle === 'pants') ? 'pants' : (S.daboGarmentView || 'both');
+  const isSetup = (S.daboStyle === 'setup' || gView === 'both');
+  const pantsStrips = 5;
+  const totalStrips = (gView === 'pants') ? pantsStrips : (isSetup ? sp.strips + pantsStrips : sp.strips);
+  const totalTan = (gView === 'pants') ? '4.4' : (isSetup ? (sp.tan + 4.4).toFixed(1) : sp.tan.toFixed(1));
   const logoCount = plan.strips.filter(s => s.hasLogo).length;
-  const plainCount = totalStrips - logoCount;
+  const plainCount = Math.max(0, sp.strips - logoCount);
 
   boxEl.innerHTML =
-    `<b>📏 仕立て寸法 (${S.daboSize||'L'})</b>：着丈 ${sp.len}cm ／ 身幅 ${sp.wid}cm ／ 裄丈(七分) ${sp.yuki}cm<br>` +
-    `<b>🧣 必要手ぬぐい枚数</b>：<b>合計 ${totalStrips} 枚</b>` +
-    (plainCount > 0 ? `（うちロゴ・紋入り ${logoCount}枚 ＋ 総柄のみ ${plainCount}枚）` : `（すべて同じ手ぬぐい ${totalStrips}枚）`) +
+    `<b>📏 シャツ寸法 (${S.daboSize||'L'})</b>：着丈 ${sp.len}cm ／ 身幅 ${sp.wid}cm ／ 裄丈(七分) ${sp.yuki}cm<br>` +
+    `<b>👖 ダボパンツ寸法 (${S.daboSize||'L'})</b>：総丈 ${sp.pLen}cm ／ ウエスト(ゴム＋腰紐) ${sp.pWaist}cm（パンツ単体：手ぬぐい ${pantsStrips}枚）<br>` +
+    `<b>🧣 必要手ぬぐい枚数</b>：<b>${isSetup ? `上下合計 ${totalStrips} 枚（上 ${sp.strips}枚 ＋ 下 ${pantsStrips}枚）` : `合計 ${totalStrips} 枚`}</b>` +
+    (plainCount > 0 ? `（うちロゴ・紋入り ${logoCount}枚）` : '') +
     `<br><b>📜 反物で染める場合の用尺目安</b>：小幅反物（巾${S.W/10}cm） <b>約 ${totalTan} m</b>`;
 }
 
@@ -8841,7 +9223,7 @@ function applyReverseDaboPlacementAtStageXY(stageX, stageY, isInitialClick){
   // drawCroppedPiece の統一生地スケールマッピング (scale, srcCx, srcCy) を正確に逆算
   const cv = hit.entry.cv, p = hit.entry.part;
   const longPx = Math.max(1, Math.max(cv.width, cv.height));
-  const scale = 206 / (0.86 * longPx);
+  const scale = (hit.fixedScale && hit.fixedScale > 0) ? hit.fixedScale : (206 / (0.86 * longPx));
   const srcCx = (p.u + p.uw * 0.5) * cv.width;
   const srcCy = (p.v + p.vh * 0.5) * cv.height;
   const dstCx = (hit.midX !== undefined) ? hit.midX : (hit.dx + hit.dw * 0.5);
@@ -9019,6 +9401,21 @@ function applyDaboSpotPlacement(sp, preferText){
     recLogoSize = 78;
     spotLabel = '⑧ 全パーツ共通（1種類の手ぬぐいで全身仕立て）';
     stripDesc = '全8枚すべて同じ構図の手ぬぐいを使用（背中中央・両胸・袖・胸ポケ）';
+  }else if(sp === 'pantsThighL'){
+    if(S.daboGarmentView === 'top') S.daboGarmentView = 'both';
+    S.daboShiftX = 0; S.daboShiftY = 0;
+    targetU = 0.50; targetV = 0.52;
+    recLogoSize = 75;
+    spotLabel = '👖 ダボパンツ・前太もも中央（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（ダボパンツ前脚の中央＆前後身頃の中央に合わせて逆算）';
+  }else if(sp === 'pantsHipPocket'){
+    if(S.daboGarmentView === 'top') S.daboGarmentView = 'both';
+    if(S.daboCutMode !== 'adult7' && S.daboCutMode !== 'adult8_crest') S.daboCutMode = 'adult7';
+    S.daboShiftX = 0; S.daboShiftY = 0;
+    targetU = 0.49; targetV = 0.36;
+    recLogoSize = 58;
+    spotLabel = '👖 ダボパンツ・右尻ポケット（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（ダボパンツ背面右尻ポケット＆胸ポケットに合わせて逆算）';
   }
 
   const { px, py } = stripUVToTenuguiPct(targetU, targetV);
@@ -10113,10 +10510,17 @@ function saveCurrentFudaToLogoShelf(){
 }
 
 // ダボ仕立て＆生地取りプレビューをそのまま Illustrator 用 SVG として書き出し
-function saveDaboHighResSvg(){
+function saveDaboHighResSvg(forceViewMode, forceGarmentView){
   const off = document.createElement('canvas');
-  const vm = (S.viewMode === 'dabo') ? 'dabo' : 'cut_dabo';
-  drawDaboAndCutScene(off, vm, true);
+  const vm = forceViewMode || ((S.viewMode === 'dabo') ? 'dabo' : 'cut_dabo');
+  const prevGv = S.daboGarmentView || 'both';
+  const effGv = forceGarmentView || prevGv;
+  S.daboGarmentView = effGv;
+  try{
+    drawDaboAndCutScene(off, vm, true);
+  }finally{
+    S.daboGarmentView = prevGv;
+  }
   const dataUrl = off.toDataURL('image/png');
   const wMm = Math.round(off.width / 8);
   const hMm = Math.round(off.height / 8);
@@ -10124,14 +10528,17 @@ function saveDaboHighResSvg(){
   let s = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${wMm}mm" height="${hMm}mm" viewBox="0 0 ${wMm} ${hMm}">\n`;
   s += `<g id="Dabo_Preview_Render"><image x="0" y="0" width="${wMm}" height="${hMm}" href="${dataUrl}"/></g>\n`;
   if(ov.fudaFrameItems.length > 0 || ov.fudaTextItems.length > 0 || ov.logoVectorItems.length > 0){
-    s += `<g id="Tenugui_Source_Vectors" transform="translate(${f2(wMm*0.04)},${f2(hMm*0.12)}) scale(0.45)">\n`;
+    s += `<g id="Tenugui_Source_Vectors" transform="translate(${f2(wMm*0.04)},${f2(hMm*0.12)}) scale(${vm==='dabo'?'0.35':'0.45'})">\n`;
     s += renderVectorItemsToSvgPaths(ov.logoVectorItems);
     s += renderVectorItemsToSvgPaths(ov.fudaFrameItems);
     s += renderVectorItemsToSvgPaths(ov.fudaTextItems);
     s += `</g>\n`;
   }
   s += `</svg>\n`;
-  save(baseName()+'_ダボ仕立て_'+S.daboSize+'.svg', new Blob([s], {type:'image/svg+xml'}), baseName()+'_ダボ仕立て.svg');
+  const tag = (vm === 'dabo')
+    ? (effGv === 'pants' ? '_ダボパンツ完成図_' : (effGv === 'top' ? '_ダボシャツ完成図_' : '_ダボ上下完成図_'))
+    : '_ダボ裁断＋完成図_';
+  save(baseName()+tag+S.daboSize+'.svg', new Blob([s], {type:'image/svg+xml'}), baseName()+tag+S.daboSize+'.svg');
 }
 
 /* ---- 9. 書き出し: 300dpi 高解像度PNG ---- */
@@ -10208,12 +10615,22 @@ function saveHighResPng(){
   }, 'image/png');
 }
 
-function saveDaboHighResPng(){
+function saveDaboHighResPng(forceViewMode, forceGarmentView){
   const off = document.createElement('canvas');
-  const vm = (S.viewMode === 'dabo') ? 'dabo' : 'cut_dabo';
-  drawDaboAndCutScene(off, vm, true);
+  const vm = forceViewMode || ((S.viewMode === 'dabo') ? 'dabo' : 'cut_dabo');
+  const prevGv = S.daboGarmentView || 'both';
+  const effGv = forceGarmentView || prevGv;
+  S.daboGarmentView = effGv;
+  try{
+    drawDaboAndCutScene(off, vm, true);
+  }finally{
+    S.daboGarmentView = prevGv;
+  }
+  const tag = (vm === 'dabo')
+    ? (effGv === 'pants' ? '_ダボパンツ完成図_' : (effGv === 'top' ? '_ダボシャツ完成図_' : '_ダボ上下完成図_'))
+    : '_ダボ裁断＋完成図_';
   off.toBlob(blob=>{
-    if(blob) save(baseName()+'_ダボ仕立て_'+S.daboSize+'.png', blob, baseName()+'_ダボ仕立て.png');
+    if(blob) save(baseName()+tag+S.daboSize+'.png', blob, baseName()+tag+S.daboSize+'.png');
   }, 'image/png');
 }
 
@@ -10822,6 +11239,8 @@ function syncUI(){
   // ダボ・表示モードUI同期
   for(const b of document.querySelectorAll('#viewTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.view===(S.viewMode||'fabric'))+'');
   for(const b of document.querySelectorAll('#daboStyleTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.dstyle===(S.daboStyle||'dabo'))+'');
+  for(const b of document.querySelectorAll('#daboGarmentViewTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.dgview===(S.daboGarmentView||'both'))+'');
+  for(const b of document.querySelectorAll('#stageGarmentViewChips button[data-sgv]')) b.setAttribute('aria-pressed',(b.dataset.sgv===(S.daboGarmentView||'both'))+'');
   if($('daboCutMode')) $('daboCutMode').value=S.daboCutMode||'adult7';
   if($('daboLogoTarget')) $('daboLogoTarget').value=S.daboLogoTarget||'all';
   if($('daboStripRot')) $('daboStripRot').value=S.daboStripRot||'auto';
@@ -12054,6 +12473,16 @@ document.querySelectorAll('#daboStyleTabs .chip').forEach(b=>b.addEventListener(
   if(S.viewMode==='fabric') S.viewMode='cut_dabo';
   update(false);
 }));
+document.querySelectorAll('#daboGarmentViewTabs .chip').forEach(b=>b.addEventListener('click',()=>{
+  S.daboGarmentView = b.dataset.dgview || 'both';
+  if(S.viewMode==='fabric') S.viewMode='cut_dabo';
+  update(false);
+}));
+document.querySelectorAll('#stageGarmentViewChips button[data-sgv]').forEach(b=>b.addEventListener('click',()=>{
+  S.daboGarmentView = b.dataset.sgv || 'both';
+  if(S.viewMode==='fabric') S.viewMode='cut_dabo';
+  update(false);
+}));
 for(const selId of ['daboCutMode','daboLogoTarget','daboStripRot','daboSize','daboBodyPreset','daboSleevePreset','daboCollarMode','daboPocketMode','daboDragItemType']){
   if($(selId)) $(selId).addEventListener('change',e=>{
     S[selId]=e.target.value;
@@ -12067,8 +12496,17 @@ if($('daboInteractiveLogo')){
     update(false);
   });
 }
-$('saveDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng());
-if($('saveDaboSvgBtn')) $('saveDaboSvgBtn').addEventListener('click',()=>saveDaboHighResSvg());
+if($('saveDaboOnlyPngBtn')) $('saveDaboOnlyPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', S.daboGarmentView || 'both'));
+if($('saveDaboPngBtn')) $('saveDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng('cut_dabo', S.daboGarmentView || 'both'));
+if($('saveDaboPantsPngBtn')) $('saveDaboPantsPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', 'pants'));
+if($('saveDaboSvgBtn')) $('saveDaboSvgBtn').addEventListener('click',()=>saveDaboHighResSvg(S.viewMode === 'dabo' ? 'dabo' : 'cut_dabo', S.daboGarmentView || 'both'));
+if($('saveOutDaboOnlyPngBtn')) $('saveOutDaboOnlyPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', 'both'));
+if($('saveOutCutDaboPngBtn')) $('saveOutCutDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng('cut_dabo', 'both'));
+if($('saveOutDaboPantsPngBtn')) $('saveOutDaboPantsPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', 'pants'));
+if($('saveOutDaboTopPngBtn')) $('saveOutDaboTopPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', 'top'));
+if($('saveOutDaboSvgBtn')) $('saveOutDaboSvgBtn').addEventListener('click',()=>saveDaboHighResSvg('cut_dabo', 'both'));
+if($('stageQuickSaveDaboPngBtn')) $('stageQuickSaveDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', S.daboGarmentView || 'both'));
+if($('stageQuickSaveCutDaboPngBtn')) $('stageQuickSaveCutDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng('cut_dabo', S.daboGarmentView || 'both'));
 
 // キャンバス上での丸紋・ロゴ・名入れ文字の直接ドラッグ移動
 // ＆ ダボ完成図の上をドラッグして手ぬぐい側のロゴ位置を逆算配置
@@ -12123,37 +12561,47 @@ function cutDragEnd(){
   CUT_DRAG = null;
   update(false);
 }
-box.addEventListener('touchstart', e=>{
-  if(S.viewMode !== 'cut_dabo' || e.touches.length !== 1) return;
-  const t = e.touches[0];
-  const { stageX, stageY } = clientToDaboStageXY(t.clientX, t.clientY);
-  if(cutPanelPointerDown(stageX, stageY)) e.preventDefault();
-}, { passive: false });
-box.addEventListener('touchmove', e=>{
-  if(!CUT_DRAG || e.touches.length !== 1) return;
-  e.preventDefault();
-  const t = e.touches[0];
-  const { stageX, stageY } = clientToDaboStageXY(t.clientX, t.clientY);
-  cutDragMove(stageX, stageY);
-}, { passive: false });
-box.addEventListener('touchend', ()=>{ if(CUT_DRAG) cutDragEnd(); });
-box.addEventListener('touchcancel', ()=>{ if(CUT_DRAG) cutDragEnd(); });
 if($('resetCutOffsetBtn')) $('resetCutOffsetBtn').addEventListener('click', ()=>{ S.daboCutOffset = {}; update(false); say('✂️ 裁断図で動かした取り位置を元に戻しました。'); });
 
-box.addEventListener('mousedown', e=>{
-  // 右下のフローティングHUDや上部の直接文字入力バー操作時はパンしない
-  if(e.target && e.target.closest && (e.target.closest('.float-zoom-hud') || e.target.closest('.stage-direct-text-bar'))) return;
-  if(e.button !== 0) return;
+// スマホ用：プレビュー高さ切替（標準 / 拡大 / 小）＆上部固定ON/OFF
+if($('mobStageSizeBtn')){
+  let mobSzIdx = 0; // 0: 標準(36vh), 1: 拡大(58vh), 2: 小(18vh)
+  const mobSzModes = [
+    { cls: '', label: '🔍 拡大' },
+    { cls: 'mob-sz-lg', label: '🔽 小さく' },
+    { cls: 'mob-sz-sm', label: '📐 標準' }
+  ];
+  $('mobStageSizeBtn').addEventListener('click', ()=>{
+    const st = $('mainStage') || document.querySelector('main.stage');
+    if(!st) return;
+    mobSzIdx = (mobSzIdx + 1) % mobSzModes.length;
+    st.classList.remove('mob-sz-lg', 'mob-sz-sm');
+    if(mobSzModes[mobSzIdx].cls) st.classList.add(mobSzModes[mobSzIdx].cls);
+    $('mobStageSizeBtn').textContent = mobSzModes[mobSzIdx].label;
+    requestAnimationFrame(()=>draw());
+  });
+}
+if($('mobStagePinBtn')){
+  $('mobStagePinBtn').addEventListener('click', ()=>{
+    const st = $('mainStage') || document.querySelector('main.stage');
+    if(!st) return;
+    const unpinned = st.classList.toggle('mob-unpinned');
+    $('mobStagePinBtn').setAttribute('aria-pressed', String(!unpinned));
+    $('mobStagePinBtn').textContent = unpinned ? '📌 固定OFF' : '📌 固定';
+  });
+}
 
-  // 1. 手ぬぐい生地モードで、札の組紐・サイズ変更ギズモ または 丸紋・ロゴ・名入れ文字の上をクリックした場合は要素ドラッグを優先
-  if(S.viewMode === 'fabric' && !e.spaceKey && !e.shiftKey){
+function handleStagePointerDown(clientX, clientY, isTouch, shiftOrSpace){
+  // 1. 手ぬぐい生地モードで、札の組紐・サイズ変更ギズモ または 丸紋・ロゴ・名入れ文字の上をクリック/タッチした場合は要素ドラッグを優先
+  if(S.viewMode === 'fabric' && !shiftOrSpace){
     const r = cv.getBoundingClientRect();
     if(r.width > 0 && r.height > 0){
-      const { mx, my } = clientToFabricMm(e.clientX, e.clientY);
+      const { mx, my } = clientToFabricMm(clientX, clientY);
+      const touchScale = isTouch ? 1.55 : 1.0;
 
       // 1a. 札の組紐ハンドル（🪢上紐・🪢脇紐）やサイズ・幅・縦・回転ハンドルのヒット判定を最優先
       if(S.showText && FUDA_STAGE_GIZMOS.length > 0){
-        const hitRad = Math.max(4, (S.W * 0.028) / Math.max(1, Math.sqrt(ZOOM)));
+        const hitRad = Math.max(4, (S.W * 0.028) / Math.max(1, Math.sqrt(ZOOM))) * touchScale;
         for(const h of FUDA_STAGE_GIZMOS){
           if(Math.hypot(mx - h.pt[0], my - h.pt[1]) <= hitRad){
             dragTarget = {
@@ -12173,31 +12621,29 @@ box.addEventListener('mousedown', e=>{
               startTailY: S.fudaCordTailY || 0
             };
             box.classList.add('is-panning');
-            e.preventDefault();
-            return;
+            return true;
           }
         }
       }
 
       const candidates = [];
-      if(S.showText) candidates.push({ keyX:'textX', keyY:'textY', x:S.W*(S.textX/100), y:S.H*(S.textY/100), rad:Math.max(28, S.textSize*1.1) });
+      if(S.showText) candidates.push({ keyX:'textX', keyY:'textY', x:S.W*(S.textX/100), y:S.H*(S.textY/100), rad:Math.max(28, S.textSize*1.1)*touchScale });
       if(S.showLogo){
         syncActiveSlotFromS();
         if(Array.isArray(S.logoSlots) && S.logoSlots.length > 0){
-          // 後ろ（上に重なっている側）のスロットから優先してヒット判定
           for(let si = S.logoSlots.length - 1; si >= 0; si--){
             const sl = S.logoSlots[si];
             candidates.push({
               keyX:'logoX', keyY:'logoY', slotIdx: si,
               x:S.W*((sl.logoX ?? 50)/100), y:S.H*((sl.logoY ?? 28)/100),
-              rad:Math.max(28, (sl.logoSize || 85)*0.62)
+              rad:Math.max(28, (sl.logoSize || 85)*0.62)*touchScale
             });
           }
         }else{
-          candidates.push({ keyX:'logoX', keyY:'logoY', x:S.W*(S.logoX/100), y:S.H*(S.logoY/100), rad:Math.max(28, S.logoSize*0.62) });
+          candidates.push({ keyX:'logoX', keyY:'logoY', x:S.W*(S.logoX/100), y:S.H*(S.logoY/100), rad:Math.max(28, S.logoSize*0.62)*touchScale });
         }
       }
-      if(S.showCrest) candidates.push({ keyX:'crestX', keyY:'crestY', x:S.W*(S.crestX/100), y:S.H*(S.crestY/100), rad:Math.max(24, S.crestSize*0.58) });
+      if(S.showCrest) candidates.push({ keyX:'crestX', keyY:'crestY', x:S.W*(S.crestX/100), y:S.H*(S.crestY/100), rad:Math.max(24, S.crestSize*0.58)*touchScale });
       for(const c of candidates){
         if(Math.hypot(mx - c.x, my - c.y) <= c.rad){
           if(c.slotIdx !== undefined && c.slotIdx !== S.activeLogoSlot){
@@ -12205,12 +12651,10 @@ box.addEventListener('mousedown', e=>{
           }
           dragTarget = c;
           box.classList.add('is-panning');
-          e.preventDefault();
-          return;
+          return true;
         }
       }
 
-      // 上部の「✍️ 直接文字を打つ」パネルが開いている時は、手ぬぐい上の好きな場所をクリックして文字を移動可能
       const directCardOpen = $('stageDirectTextCard') && !$('stageDirectTextCard').hidden;
       if(directCardOpen && S.showText && mx >= 0 && mx <= S.W && my >= 0 && my <= S.H){
         S.textX = Math.max(2, Math.min(98, Math.round((mx / S.W) * 1000) / 10));
@@ -12218,66 +12662,59 @@ box.addEventListener('mousedown', e=>{
         dragTarget = { keyX:'textX', keyY:'textY' };
         box.classList.add('is-panning');
         update(false);
-        e.preventDefault();
-        return;
+        return true;
       }
     }
   }
 
   // 1-B. 裁断図のパーツをつかんだら、そのパーツの取り位置（手ぬぐいのどこから切り出すか）を動かす
-  if(S.viewMode === 'cut_dabo' && !e.shiftKey && !e.spaceKey){
-    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+  if(S.viewMode === 'cut_dabo' && !shiftOrSpace){
+    const { stageX, stageY } = clientToDaboStageXY(clientX, clientY);
     if(cutPanelPointerDown(stageX, stageY)){
       box.classList.add('is-panning');
-      e.preventDefault();
-      return;
+      return true;
     }
   }
 
-  // 2. ダボ完成図（cut_dabo / dabo モード）で「ダボ上で直接移動をONにする」またはロゴ表示中、または上部の「✍️ ダボに直接文字を打つ」パネルが開いているとき、クリックしたダボ部位に配置し手ぬぐい座標へ逆算反映する
+  // 2. ダボ完成図（cut_dabo / dabo モード）でダボシャツ・ダボパンツ部位をタップ/ドラッグしたとき手ぬぐい座標へ逆算反映する
   const directTextOpen = $('stageDirectTextCard') && !$('stageDirectTextCard').hidden;
-  if((S.viewMode === 'cut_dabo' || S.viewMode === 'dabo') && (S.daboInteractiveLogo === true || S.showLogo || directTextOpen) && !e.shiftKey && !e.spaceKey){
+  if((S.viewMode === 'cut_dabo' || S.viewMode === 'dabo') && (S.daboInteractiveLogo === true || S.showLogo || directTextOpen) && !shiftOrSpace){
     if(directTextOpen && !getActiveLogoTypeKey()){
       S.showText = true;
       S.daboDragItemType = 'text';
       S.daboInteractiveLogo = true;
     }
     if(getActiveLogoTypeKey()){
-      const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+      const { stageX, stageY } = clientToDaboStageXY(clientX, clientY);
       if(applyReverseDaboPlacementAtStageXY(stageX, stageY, true)){
         S.daboInteractiveLogo = true;
         isDraggingDaboReverse = true;
         box.classList.add('is-panning');
-        e.preventDefault();
-        return;
+        return true;
       }
     }
   }
 
   // 3. それ以外（余白または Shift+ドラッグ）はステージ全体をドラッグで自由移動（パン）
   isPanningStage = true;
-  panStartClientX = e.clientX;
-  panStartClientY = e.clientY;
+  panStartClientX = clientX;
+  panStartClientY = clientY;
   panOriginX = PAN_X;
   panOriginY = PAN_Y;
   box.classList.add('is-panning');
-  e.preventDefault();
-});
+  return true;
+}
 
-window.addEventListener('mousemove', e=>{
+function handleStagePointerMove(clientX, clientY){
   if(CUT_DRAG){
-    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+    const { stageX, stageY } = clientToDaboStageXY(clientX, clientY);
     cutDragMove(stageX, stageY);
-    return;
-  }
-  if(S.viewMode === 'cut_dabo' && !dragTarget && !isDraggingDaboReverse && !isPanningStage && e.target && box.contains(e.target)){
-    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
-    box.style.cursor = cutHitAt(stageX, stageY) ? 'move' : '';
+    return true;
   }
   if(dragTarget){
     const r = cv.getBoundingClientRect();
     if(r.width > 0 && r.height > 0){
-      const { mx, my, pctX, pctY } = clientToFabricMm(e.clientX, e.clientY);
+      const { mx, my, pctX, pctY } = clientToFabricMm(clientX, clientY);
       if(dragTarget.gizmoId){
         const dx = mx - dragTarget.startMx;
         const dy = my - dragTarget.startMy;
@@ -12327,7 +12764,7 @@ window.addEventListener('mousemove', e=>{
           S.textAngle = Math.max(-180, Math.min(180, nextDeg));
         }
         update(false);
-        return;
+        return true;
       }
       const px = Math.max(2, Math.min(98, Math.round(pctX * 10) / 10));
       const py = Math.max(2, Math.min(98, Math.round(pctY * 10) / 10));
@@ -12335,21 +12772,23 @@ window.addEventListener('mousemove', e=>{
       S[dragTarget.keyY] = py;
       update(false);
     }
-    return;
+    return true;
   }
   if(isDraggingDaboReverse){
-    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+    const { stageX, stageY } = clientToDaboStageXY(clientX, clientY);
     applyReverseDaboPlacementAtStageXY(stageX, stageY, false);
-    return;
+    return true;
   }
   if(isPanningStage){
-    PAN_X = panOriginX + (e.clientX - panStartClientX);
-    PAN_Y = panOriginY + (e.clientY - panStartClientY);
+    PAN_X = panOriginX + (clientX - panStartClientX);
+    PAN_Y = panOriginY + (clientY - panStartClientY);
     requestImmediateVectorDraw();
+    return true;
   }
-});
+  return false;
+}
 
-window.addEventListener('mouseup', ()=>{
+function handleStagePointerUp(){
   if(CUT_DRAG){ cutDragEnd(); box.classList.remove('is-panning'); }
   if(dragTarget || isDraggingDaboReverse || isPanningStage){
     dragTarget = null;
@@ -12357,6 +12796,103 @@ window.addEventListener('mouseup', ()=>{
     isPanningStage = false;
     box.classList.remove('is-panning');
   }
+}
+
+box.addEventListener('mousedown', e=>{
+  if(e.target && e.target.closest && (e.target.closest('.float-zoom-hud') || e.target.closest('.stage-direct-text-bar'))) return;
+  if(e.button !== 0) return;
+  if(handleStagePointerDown(e.clientX, e.clientY, false, !!(e.spaceKey || e.shiftKey))){
+    e.preventDefault();
+  }
+});
+
+window.addEventListener('mousemove', e=>{
+  if(handleStagePointerMove(e.clientX, e.clientY)) return;
+  if(S.viewMode === 'cut_dabo' && !dragTarget && !isDraggingDaboReverse && !isPanningStage && e.target && box.contains(e.target)){
+    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+    box.style.cursor = cutHitAt(stageX, stageY) ? 'move' : '';
+  }
+});
+
+window.addEventListener('mouseup', ()=>{
+  handleStagePointerUp();
+});
+
+// 📱 スマホ・タブレット対応：1本指ドラッグ（要素移動・ダボ直接配置・画面パン）＋ 2本指ピンチイン/アウト拡大縮小
+let isPinchingStage = false;
+let pinchStartDist = 0, pinchStartZoom = 1;
+let pinchStartMidX = 0, pinchStartMidY = 0;
+let pinchOriginPanX = 0, pinchOriginPanY = 0;
+let lastTapTime = 0, lastTapX = 0, lastTapY = 0;
+
+box.addEventListener('touchstart', e=>{
+  if(e.target && e.target.closest && (e.target.closest('.float-zoom-hud') || e.target.closest('.stage-direct-text-bar'))) return;
+  if(e.touches.length === 2){
+    handleStagePointerUp();
+    isPinchingStage = true;
+    const t0 = e.touches[0], t1 = e.touches[1];
+    pinchStartDist = Math.max(10, Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY));
+    pinchStartZoom = ZOOM;
+    pinchStartMidX = (t0.clientX + t1.clientX) * 0.5;
+    pinchStartMidY = (t0.clientY + t1.clientY) * 0.5;
+    pinchOriginPanX = PAN_X;
+    pinchOriginPanY = PAN_Y;
+    e.preventDefault();
+    return;
+  }
+  if(e.touches.length === 1){
+    isPinchingStage = false;
+    const t = e.touches[0];
+    const now = performance.now();
+    if(now - lastTapTime < 280 && Math.hypot(t.clientX - lastTapX, t.clientY - lastTapY) < 28){
+      lastTapTime = 0;
+      setStageZoom(1, true);
+      e.preventDefault();
+      return;
+    }
+    lastTapTime = now; lastTapX = t.clientX; lastTapY = t.clientY;
+    if(handleStagePointerDown(t.clientX, t.clientY, true, false)){
+      e.preventDefault();
+    }
+  }
+}, { passive: false });
+
+box.addEventListener('touchmove', e=>{
+  if(isPinchingStage && e.touches.length === 2){
+    e.preventDefault();
+    const t0 = e.touches[0], t1 = e.touches[1];
+    const dist = Math.max(10, Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY));
+    const midX = (t0.clientX + t1.clientX) * 0.5;
+    const midY = (t0.clientY + t1.clientY) * 0.5;
+    const nextZoom = Math.max(0.4, Math.min(12, Math.round(pinchStartZoom * (dist / pinchStartDist) * 100) / 100));
+    const br = box.getBoundingClientRect();
+    const cx = pinchStartMidX - (br.left + br.width * 0.5);
+    const cy = pinchStartMidY - (br.top + br.height * 0.5);
+    const ratio = nextZoom / pinchStartZoom;
+    ZOOM = nextZoom;
+    PAN_X = cx - (cx - pinchOriginPanX) * ratio + (midX - pinchStartMidX);
+    PAN_Y = cy - (cy - pinchOriginPanY) * ratio + (midY - pinchStartMidY);
+    syncZoomUI();
+    requestImmediateVectorDraw();
+    return;
+  }
+  if(e.touches.length === 1 && !isPinchingStage){
+    const t = e.touches[0];
+    if(handleStagePointerMove(t.clientX, t.clientY)){
+      e.preventDefault();
+    }
+  }
+}, { passive: false });
+
+box.addEventListener('touchend', e=>{
+  if(e.touches.length === 0){
+    isPinchingStage = false;
+    handleStagePointerUp();
+  }
+});
+box.addEventListener('touchcancel', ()=>{
+  isPinchingStage = false;
+  handleStagePointerUp();
 });
 
 // マウスホイールでのスムーズ拡大・縮小（カーソル位置を中心にズーム）
@@ -13530,7 +14066,14 @@ function easyRenderImpl(){
       b.setAttribute('aria-pressed', String(pressed));
     });
   }
-  if($('eDaboShowShirtBtn')) $('eDaboShowShirtBtn').setAttribute('aria-pressed', String(S.viewMode === 'cut_dabo' || S.viewMode === 'dabo'));
+  if($('eDaboGarmentViewBtns')){
+    var dgv = S.daboGarmentView || 'both';
+    $('eDaboGarmentViewBtns').querySelectorAll('button[data-egv]').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.egv === dgv));
+    });
+  }
+  if($('eDaboShowShirtBtn')) $('eDaboShowShirtBtn').setAttribute('aria-pressed', String(S.viewMode === 'cut_dabo'));
+  if($('eDaboShowOnlyDaboBtn')) $('eDaboShowOnlyDaboBtn').setAttribute('aria-pressed', String(S.viewMode === 'dabo'));
   if($('eDaboShowTenuguiBtn')) $('eDaboShowTenuguiBtn').setAttribute('aria-pressed', String(S.viewMode === 'fabric'));
   if($('eDaboReverseText')){
     var mmX = Math.round(((S.logoX || 50) / 100) * S.W);
@@ -13857,6 +14400,14 @@ function easyRenderImpl(){
       update(false);
     }); });
   }
+  if($('eDaboGarmentViewBtns')){
+    $('eDaboGarmentViewBtns').querySelectorAll('button[data-egv]').forEach(function(b){ b.addEventListener('click', function(){
+      S.daboGarmentView = b.dataset.egv || 'both';
+      if(S.viewMode === 'fabric') S.viewMode = 'cut_dabo';
+      if($('openDaboViewBtn')) $('openDaboViewBtn').textContent = '手ぬぐい画面へ戻る';
+      update(false);
+    }); });
+  }
   if($('eDaboSpotBtns')){
     $('eDaboSpotBtns').querySelectorAll('button[data-dspot]').forEach(function(b){ b.addEventListener('click', function(){
       applyDaboSpotPlacement(b.dataset.dspot, false);
@@ -13874,6 +14425,13 @@ function easyRenderImpl(){
       update(false);
     });
   }
+  if($('eDaboShowOnlyDaboBtn')){
+    $('eDaboShowOnlyDaboBtn').addEventListener('click', function(){
+      S.viewMode = 'dabo';
+      if($('openDaboViewBtn')) $('openDaboViewBtn').textContent = '手ぬぐい画面へ戻る';
+      update(false);
+    });
+  }
   if($('eDaboShowTenuguiBtn')){
     $('eDaboShowTenuguiBtn').addEventListener('click', function(){
       S.viewMode = 'fabric';
@@ -13885,7 +14443,10 @@ function easyRenderImpl(){
   Object.keys(PM_A).forEach(function(k){ var o = document.createElement('option'); o.value = k; o.textContent = PM_A[k].name; sel.appendChild(o); });
   sel.addEventListener('change', function(){ var real = $('pmMethodA'); if(!real) return; real.value = sel.value; real.dispatchEvent(new Event('change')); });
   $('eSavePng').addEventListener('click', function(){ $('savePng').click(); });
-  if($('eSaveDaboPng')) $('eSaveDaboPng').addEventListener('click', function(){ saveDaboHighResPng(); });
+  if($('eSaveDaboOnlyPng')) $('eSaveDaboOnlyPng').addEventListener('click', function(){ saveDaboHighResPng('dabo', 'both'); });
+  if($('eSaveDaboPng')) $('eSaveDaboPng').addEventListener('click', function(){ saveDaboHighResPng('cut_dabo', 'both'); });
+  if($('eSaveDaboPantsPng')) $('eSaveDaboPantsPng').addEventListener('click', function(){ saveDaboHighResPng('dabo', 'pants'); });
+  if($('eSaveDaboSvg')) $('eSaveDaboSvg').addEventListener('click', function(){ saveDaboHighResSvg('cut_dabo', 'both'); });
   if($('eSaveAi')) $('eSaveAi').addEventListener('click', function(){ $('saveAi').click(); });
   $('eSaveSvg').addEventListener('click', function(){ $('saveSvg').click(); });
   $('eCopySvg').addEventListener('click', function(){ $('copySvg').click(); });

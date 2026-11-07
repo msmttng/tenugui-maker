@@ -253,18 +253,33 @@ html.easy .e-top{margin-top:2px}
 .my-saved-acts{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
 .my-saved-acts .btn{font-size:11.5px;padding:3px 8px;min-height:28px}
 html.easy #ed .stage .bar{justify-content:flex-start}
+.mob-only{display:none !important}
+#cv svg{cursor:grab;user-select:none;-webkit-user-select:none}
+#cv.dragging-logo svg{cursor:grabbing}
 @media (max-width:900px){
+  .mob-only{display:inline-flex !important}
+  html,body{overflow-x:hidden}
   .uimode{order:-1;margin-left:auto}
-  html.easy #ed .stage{position:sticky;top:0;z-index:5;padding:8px}
-  html.easy #ed .canvas{min-height:0;padding:8px}
-  html.easy #ed .canvas svg{max-height:34vh;width:auto}
-  html.easy #ed .stage .bar{margin-top:6px;font-size:12px}
-  .pick{max-height:none}
-}
-@media (max-width:900px){
   .ed{grid-template-columns:1fr}
   .stage{position:relative;top:0}
-  .canvas.tall svg{max-height:60vh}
+  #ed .stage{position:sticky;top:0;z-index:15;padding:8px}
+  #ed .stage.mob-unpinned{position:relative;top:auto}
+  #ed .canvas{min-height:0;padding:8px;touch-action:pan-y}
+  #ed .canvas svg{max-height:32vh;max-height:32dvh;width:auto}
+  #ed .stage.mob-sz-lg .canvas svg{max-height:56vh;max-height:56dvh}
+  #ed .stage.mob-sz-sm .canvas svg{max-height:18vh;max-height:18dvh}
+  #ed .stage .bar{margin-top:6px;font-size:11.5px;gap:6px 10px}
+  .pick{max-height:none}
+  .row input[type=range]{min-height:28px}
+}
+@media (max-width:540px){
+  .wrap{padding:0 max(10px,env(safe-area-inset-right)) 48px max(10px,env(safe-area-inset-left))}
+  header.top{padding:14px 0 6px;gap:8px 12px}
+  .tabs button{padding:6px 12px;font-size:13.5px;min-height:36px}
+  .cols{grid-template-columns:1fr}
+  .row{grid-template-columns:76px minmax(0,1fr) 62px;gap:6px;font-size:12.5px}
+  .my-saved-item{grid-template-columns:52px minmax(0,1fr);gap:6px}
+  .my-saved-acts{grid-column:1 / -1;justify-content:flex-end}
 }
 </style>
 
@@ -306,9 +321,16 @@ html.easy #ed .stage .bar{justify-content:flex-start}
 
   <section id="ed" hidden>
     <div class="ed">
-      <div class="stage">
+      <div class="stage" id="edStage">
         <div class="canvas" id="cv"><span class="hl-badge" id="hlBadge"><i></i><span id="hlBadgeTxt"></span></span><span class="busy">作成中…</span></div>
-        <div class="bar"><span id="info"></span><label class="chk" style="margin:0"><input type="checkbox" id="guide" checked>端の無地の目安線（保存されません）</label></div>
+        <div class="bar">
+          <span id="info"></span>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <label class="chk" style="margin:0"><input type="checkbox" id="guide" checked>端の無地の目安線</label>
+            <button class="btn mob-only" id="mobTowelSizeBtn" type="button" style="font-size:11px;padding:3px 8px;min-height:26px">🔍 拡大</button>
+            <button class="btn pri mob-only" id="mobTowelPinBtn" type="button" style="font-size:11px;padding:3px 8px;min-height:26px">📌 固定</button>
+          </div>
+        </div>
         <div class="warn" id="warn" hidden></div>
         <button class="btn pri kobo-only easy-only e-kobo" id="toKobo2" type="button">📥 この図案を手ぬぐい工房の生地に入れる</button>
       </div>
@@ -1352,6 +1374,105 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   });
   $('#guide').addEventListener('change', function () { if (last) paint(last); });
   $('#reset').addEventListener('click', function () { if (curPreset) loadPreset(curPreset.id); say('元の案に戻しました。'); });
+
+  // 📱 スマホ用プレビュー高さ切替＆上部固定切替
+  if ($('#mobTowelSizeBtn') && $('#edStage')) {
+    var mobTowelSzIdx = 0;
+    var mobTowelModes = [
+      { cls: '', label: '🔍 拡大' },
+      { cls: 'mob-sz-lg', label: '🔽 小さく' },
+      { cls: 'mob-sz-sm', label: '📐 標準' }
+    ];
+    $('#mobTowelSizeBtn').addEventListener('click', function () {
+      var st = $('#edStage');
+      mobTowelSzIdx = (mobTowelSzIdx + 1) % mobTowelModes.length;
+      st.classList.remove('mob-sz-lg', 'mob-sz-sm');
+      if (mobTowelModes[mobTowelSzIdx].cls) st.classList.add(mobTowelModes[mobTowelSzIdx].cls);
+      $('#mobTowelSizeBtn').textContent = mobTowelModes[mobTowelSzIdx].label;
+    });
+  }
+  if ($('#mobTowelPinBtn') && $('#edStage')) {
+    $('#mobTowelPinBtn').addEventListener('click', function () {
+      var st = $('#edStage');
+      var unpinned = st.classList.toggle('mob-unpinned');
+      $('#mobTowelPinBtn').classList.toggle('pri', !unpinned);
+      $('#mobTowelPinBtn').textContent = unpinned ? '📌 固定OFF' : '📌 固定';
+    });
+  }
+
+  // 📱＆🖱️ プレビュー（#cv）上で札ロゴを直接ドラッグして位置（logoX / logoY）を動かせるようにする
+  (function () {
+    var cvEl = $('#cv');
+    if (!cvEl) return;
+    var draggingLogo = null;
+    function clientToTowelMm(clientX, clientY) {
+      var svgEl = $('svg', cvEl);
+      if (!svgEl || !cfg) return null;
+      var r = svgEl.getBoundingClientRect();
+      if (!r.width || !r.height) return null;
+      return {
+        x: ((clientX - r.left) / r.width) * cfg.W,
+        y: ((clientY - r.top) / r.height) * cfg.H
+      };
+    }
+    function startLogoDrag(clientX, clientY, isTouch) {
+      var pt = clientToTowelMm(clientX, clientY);
+      if (!pt || !cfg) return false;
+      var h = cfg.logoH || 150, w = h * LOGO_R;
+      var pad = isTouch ? Math.max(40, h * 0.45) : Math.max(24, h * 0.25);
+      var hit1 = Math.abs(pt.x - cfg.logoX) <= (w * 0.5 + pad) && Math.abs(pt.y - cfg.logoY) <= (h * 0.5 + pad);
+      var hit2 = cfg.twin && Math.abs(pt.x - (cfg.W - cfg.logoX)) <= (w * 0.5 + pad) && Math.abs(pt.y - cfg.logoY) <= (h * 0.5 + pad);
+      if (!hit1 && !hit2) return false;
+      draggingLogo = {
+        mirrorX: !hit1 && hit2,
+        startMmX: pt.x,
+        startMmY: pt.y,
+        origLogoX: cfg.logoX,
+        origLogoY: cfg.logoY
+      };
+      cvEl.classList.add('dragging-logo');
+      return true;
+    }
+    function moveLogoDrag(clientX, clientY) {
+      if (!draggingLogo || !cfg) return false;
+      var pt = clientToTowelMm(clientX, clientY);
+      if (!pt) return false;
+      var dx = pt.x - draggingLogo.startMmX;
+      var dy = pt.y - draggingLogo.startMmY;
+      cfg.logoX = +(draggingLogo.origLogoX + (draggingLogo.mirrorX ? -dx : dx)).toFixed(1);
+      cfg.logoY = +(draggingLogo.origLogoY + dy).toFixed(1);
+      clampLogo();
+      syncUI();
+      schedule();
+      return true;
+    }
+    function endLogoDrag() {
+      if (!draggingLogo) return;
+      draggingLogo = null;
+      cvEl.classList.remove('dragging-logo');
+    }
+    cvEl.addEventListener('mousedown', function (e) {
+      if (e.button !== 0) return;
+      if (startLogoDrag(e.clientX, e.clientY, false)) e.preventDefault();
+    });
+    window.addEventListener('mousemove', function (e) {
+      if (draggingLogo) moveLogoDrag(e.clientX, e.clientY);
+    });
+    window.addEventListener('mouseup', endLogoDrag);
+    cvEl.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      var t = e.touches[0];
+      if (startLogoDrag(t.clientX, t.clientY, true)) e.preventDefault();
+    }, { passive: false });
+    cvEl.addEventListener('touchmove', function (e) {
+      if (!draggingLogo || e.touches.length !== 1) return;
+      e.preventDefault();
+      var t = e.touches[0];
+      moveLogoDrag(t.clientX, t.clientY);
+    }, { passive: false });
+    cvEl.addEventListener('touchend', endLogoDrag);
+    cvEl.addEventListener('touchcancel', endLogoDrag);
+  })();
 
   var curHlKey = null, hlTimer = null;
   function renderHighlight() {

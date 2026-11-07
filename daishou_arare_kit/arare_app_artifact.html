@@ -32,7 +32,8 @@ header p{margin:3px 0 0;color:var(--muted);font-size:11.5px}
 .focused-detail-bar[hidden]{display:none !important}
 .focused-detail-title{font-size:12px;font-weight:800;color:#0c4a6e;display:flex;align-items:center;gap:5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .focused-detail-btns{display:flex;gap:5px;flex-shrink:0}
-section{padding:11px 15px;border-bottom:1px solid var(--line);display:grid;gap:8px}
+section{padding:11px 15px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0}
+section>*{min-width:0}
 h2{font-size:11.5px;letter-spacing:.08em;color:var(--muted);margin:0;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
 h2 .badge{font-size:10.5px;background:var(--ai-soft);color:var(--ai);padding:1px 7px;border-radius:99px;letter-spacing:0;white-space:nowrap}
 .row{display:grid;grid-template-columns:108px minmax(0,1fr) 62px;align-items:center;gap:7px}
@@ -59,10 +60,10 @@ input[type=color]{width:32px;height:26px;border:1px solid var(--line);border-rad
 .sw button[aria-pressed=true]{outline:2px solid var(--ai);outline-offset:2px}
 .crow2{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
 .chk{display:flex;gap:5px;align-items:center;font-size:12px;cursor:pointer}
-.btn{font:inherit;font-weight:600;border-radius:7px;padding:7px 10px;cursor:pointer;border:1px solid var(--ai);background:var(--ai);color:#ffffff;font-size:12px}
+.btn{font:inherit;font-weight:600;border-radius:7px;padding:7px 8px;cursor:pointer;border:1px solid var(--ai);background:var(--ai);color:#ffffff;font-size:11.5px;line-height:1.25;min-width:0}
 .btn.ghost{background:transparent;color:var(--ai)}
 .btn:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;min-width:0}
 .actions .wide{grid-column:1/-1}
 .note{font-size:11px;color:var(--muted);margin:0;line-height:1.4}
 .msg{font-size:12px;min-height:1.3em;margin:0;font-weight:500}
@@ -78,7 +79,7 @@ details.adv-details>.adv-body{display:grid;gap:6px;margin-top:7px;padding-top:7p
 .stats-left{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
 .stats-right{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
 .stats b{color:var(--fg);font-weight:700;font-variant-numeric:tabular-nums;font-size:13px}
-.canvasbox{position:relative;min-height:0;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:12px;background:rgba(0,0,0,.04);border-radius:10px;border:1px solid var(--line);user-select:none;cursor:grab}
+.canvasbox{position:relative;min-height:0;display:flex;justify-content:center;align-items:center;overflow:hidden;padding:12px;background:rgba(0,0,0,.04);border-radius:10px;border:1px solid var(--line);user-select:none;cursor:grab;touch-action:none}
 .canvasbox.dragging{cursor:grabbing}
 canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,40,.18);transform-origin:center center;will-change:transform}
 .float-zoom-hud{position:absolute;bottom:12px;right:12px;display:flex;align-items:center;gap:5px;background:rgba(15,23,42,.9);backdrop-filter:blur(6px);color:#fff;padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.18);box-shadow:0 4px 16px rgba(0,0,0,.35);z-index:20;font-size:11.5px}
@@ -89,17 +90,17 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 .stage-direct-text-bar{position:absolute;top:10px;left:10px;right:10px;z-index:25;display:flex;flex-direction:column;gap:6px;pointer-events:none}
 .stage-direct-text-bar>*{pointer-events:auto}
 .direct-text-card{background:rgba(15,23,42,.94);backdrop-filter:blur(8px);color:#f8fafc;border:1.5px solid #38bdf8;border-radius:10px;padding:8px 11px;box-shadow:0 8px 24px rgba(0,0,0,.45);display:grid;gap:6px;max-width:780px}
-.subbox{display:grid;gap:7px;padding:8px 10px;background:var(--bg);border-radius:8px;border:1px solid var(--line)}
+.subbox{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;padding:8px 10px;background:var(--bg);border-radius:8px;border:1px solid var(--line);min-width:0}
 .save-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
 .save-input{width:100%;box-sizing:border-box;padding:6px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-size:12.5px}
 .preset-list{display:grid;gap:6px;max-height:220px;overflow-y:auto;padding-right:2px}
-.preset-item{display:grid;grid-template-columns:38px minmax(0,1fr) auto;align-items:center;gap:8px;padding:6px 8px;background:var(--bg);border:1px solid var(--line);border-radius:7px;font-size:12px}
+.preset-item{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:center;gap:4px 8px;padding:7px 9px;background:var(--bg);border:1px solid var(--line);border-radius:7px;font-size:12px}
 .preset-item.active{border-color:var(--ai);background:var(--ai-soft)}
-.preset-swatch{width:36px;height:36px;border-radius:5px;border:1px solid rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;overflow:hidden;background-size:cover;background-position:center;flex-shrink:0}
-.preset-info{min-width:0;cursor:pointer}
-.preset-title{font-weight:700;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
-.preset-meta{font-size:10.5px;color:var(--muted);display:block}
-.preset-btns{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end}
+.preset-swatch{width:38px;height:38px;border-radius:5px;border:1px solid rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;overflow:hidden;background-size:cover;background-position:center;flex-shrink:0;grid-row:1 / span 2;cursor:pointer}
+.preset-info{min-width:0;cursor:pointer;display:flex;align-items:baseline;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.preset-title{font-weight:700;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;font-size:12.5px}
+.preset-meta{font-size:10.5px;color:var(--muted);display:inline-block;white-space:nowrap}
+.preset-btns{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-start;grid-column:2}
 .pm-list{display:grid;gap:5px}
 .pm-it{display:grid;grid-template-columns:20px minmax(0,1fr);gap:6px;align-items:start;font-size:11.5px;line-height:1.45;padding:6px 8px;border-radius:6px;background:#ffffff;border:1px solid #fde68a}
 .pm-it b{color:#0f172a}
@@ -116,6 +117,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 .ft-card .ft-chip.ok{border-color:#16a34a;color:#15803d}.ft-card .ft-chip.ng{border-color:#dc2626;color:#b91c1c}
 .mini-btn{border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:5px;padding:3px 6px;font:inherit;font-size:11px;cursor:pointer;white-space:nowrap}
 .mini-btn:hover{border-color:var(--ai);color:var(--ai)}
+.mini-btn[aria-pressed="true"]{background:var(--ai);color:#fff;border-color:var(--ai)}
 .mini-btn.del:hover{border-color:#dc2626;color:#dc2626}
 .view-bar{display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:6px;background:var(--panel);padding:7px 10px;border-radius:8px;border:1px solid var(--line)}
 .view-bar .chip{text-align:center;padding:7px 8px;border-radius:7px;font-weight:700;font-size:12.5px}
@@ -132,8 +134,9 @@ html.ui-easy .panel > :not(header):not(#easyPanel){display:none !important}
 html.ui-easy #stageDirectTextBar,html.ui-easy #stageDirectTextCard,html.ui-easy #stageHelpPill,html.ui-easy #zoomChips{display:none !important}
 html.ui-easy header{padding:11px 14px}
 html.ui-easy h1{font-size:19px}
-.easy-panel{display:grid;gap:0;padding:2px 0 14px}
-.e-step{padding:12px 15px 14px;border-bottom:1px solid var(--line);display:grid;gap:9px}
+.easy-panel{display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding:2px 0 14px;min-width:0}
+.e-step{padding:12px 15px 14px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr);gap:9px;min-width:0}
+.e-step>*{min-width:0}
 .e-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px}
 .e-h b{width:22px;height:22px;border-radius:50%;background:var(--ai);color:#fff;font-size:12px;display:inline-flex;align-items:center;justify-content:center;flex:none}
 .e-h span{flex:1}
@@ -169,8 +172,8 @@ html.ui-easy h1{font-size:19px}
 .e-save{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .e-save .btn{padding:9px 8px;font-size:12.5px}
 .e-save .btn:first-child{grid-column:1 / -1}
-.e-keep{display:flex;gap:6px}
-.e-keep input{flex:1;min-width:0;font:inherit;font-size:12.5px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg)}
+.e-keep{display:flex;gap:6px;flex-wrap:wrap}
+.e-keep input{flex:1 1 165px;min-width:0;font:inherit;font-size:12.5px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg)}
 .e-list{display:flex;flex-wrap:wrap;gap:6px}
 .e-list button{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--panel);color:var(--fg);border-radius:8px;padding:3px 8px 3px 3px;font:inherit;font-size:12px;cursor:pointer;max-width:100%}
 .e-list button i{width:26px;height:26px;border-radius:5px;background-size:cover;background-position:center;flex:none;background-color:var(--bg)}
@@ -181,23 +184,49 @@ html.ui-easy h1{font-size:19px}
 .e-subbox.dabo-box{background:#f0f9ff;border-color:#7dd3fc}
 .e-sublbl{font-size:11.5px;font-weight:700;color:#1e293b;display:flex;align-items:center;justify-content:space-between;gap:4px}
 .e-dabo-card{background:#ffffff;border:1.5px solid #38bdf8;border-radius:8px;padding:8px 10px;font-size:11.5px;line-height:1.5;color:#0f172a;display:flex;flex-direction:column;gap:6px}
-.e-dabo-switch{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.e-dabo-switch button{border:1.5px solid var(--ai);background:#ffffff;color:var(--ai);border-radius:8px;padding:7px 6px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;text-align:center}
+.e-dabo-switch{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.e-dabo-switch button{border:1.5px solid var(--ai);background:#ffffff;color:var(--ai);border-radius:8px;padding:6px 4px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;text-align:center}
 .e-dabo-switch button[aria-pressed="true"]{background:var(--ai);color:#ffffff;box-shadow:0 0 0 1px var(--ai)}
 .e-tofull{margin:12px 15px 0;border:1px dashed var(--line);background:none;color:var(--muted);font:inherit;font-size:12.5px;font-weight:700;padding:10px;border-radius:9px;cursor:pointer}
 .e-tofull:hover,.e-more:hover{color:var(--ai);border-color:var(--ai)}
 html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
+.mob-only{display:none !important}
 @media (max-width:820px){
-  html,body{height:auto}
-  .wrap{grid-template-columns:1fr;height:auto}
-  .stage{order:-1}
-  .canvasbox{height:64vh}
-  .view-bar{grid-template-columns:1fr}
-  html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
-  html.ui-easy .stage{position:sticky;top:0;z-index:40;background:var(--bg);padding-bottom:6px;box-shadow:0 6px 10px -8px rgba(0,0,0,.35)}
-  html.ui-easy .canvasbox{height:40vh}
-  html.ui-easy .stats{display:none}
-  html.ui-easy .view-bar .chip{padding:6px 4px;font-size:12px}
+  .desk-only{display:none !important}
+  .mob-only{display:inline-flex !important}
+  html,body{height:auto;overflow-x:hidden;-webkit-text-size-adjust:100%}
+  .wrap{grid-template-columns:1fr;height:auto;gap:10px;padding-block:6px;padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
+  .stage{order:-1;position:sticky;top:0;z-index:40;background:var(--bg);padding-top:2px;padding-bottom:6px;box-shadow:0 6px 12px -8px rgba(0,0,0,.4);gap:4px}
+  .stage.mob-unpinned{position:relative;top:auto;box-shadow:none}
+  .canvasbox{height:36vh;height:36dvh;padding:6px}
+  .stage.mob-sz-lg .canvasbox{height:58vh;height:58dvh}
+  .stage.mob-sz-sm .canvasbox{height:18vh;height:18dvh}
+  .view-bar,html.ui-easy .view-bar{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px 6px;margin-bottom:4px !important}
+  .view-bar .chip,html.ui-easy .view-bar .chip{padding:6px 3px;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #stageGarmentViewChips{padding:4px 6px !important;margin-bottom:2px !important;gap:4px !important}
+  #stageGarmentViewChips .mini-btn{padding:4px 6px !important;font-size:11px !important}
+  .stats,#stageHelpPill{display:none !important}
+  #stageDirectTextBar > div:first-child{display:none !important}
+  .float-zoom-hud{bottom:6px;right:6px;padding:3px 7px;gap:4px;font-size:11px}
+  .float-zoom-hud input[type=range]{display:none}
+  .float-zoom-hud button{padding:3px 7px;min-height:26px}
+  input[type=range]{min-height:28px}
+  .e-step,section{padding:10px 12px}
+  .e-pat{grid-template-columns:1fr 1fr;gap:6px}
+  .e-pat button{padding:6px 7px;font-size:12px;min-height:46px;gap:6px}
+  .e-pat i{width:32px;height:32px;font-size:17px}
+  .row{grid-template-columns:92px minmax(0,1fr) 54px;gap:5px}
+  .e-range{grid-template-columns:82px minmax(0,1fr) 46px;gap:6px}
+  .nav-cat-tabs{padding:5px 6px;gap:2px}
+  .nav-cat-tabs button{font-size:10.5px;padding:5px 1px}
+  #ftModal{padding:0 !important}
+  #ftModal > div{max-width:100vw !important;height:100vh !important;height:100dvh !important;border-radius:0 !important}
+  #koboModalOverlay{padding:0 !important}
+  #koboModalOverlay > div:first-child{border-radius:0 !important;padding:6px 10px !important}
+}
+@media (max-width:420px){
+  .e-pat{grid-template-columns:1fr}
+  .e-save{grid-template-columns:1fr}
 }
 </style>
 
@@ -220,6 +249,21 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
 
     <!-- ✨ かんたんモード：よく使う操作だけ。設定（S）は詳細モードと共通 -->
     <div id="easyPanel" class="easy-panel">
+      <div class="e-step" id="easyTopSaveBox" style="background:#f0fdf4;border-bottom:2px solid #86efac;padding:10px 15px 12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+          <span style="font-size:13px;font-weight:800;color:#166534">💾 名前をつけてアプリ内に設定を保存 <span class="badge" id="eTopSavedCountBadge" style="background:#dcfce7;color:#166534;margin-left:3px">0件</span></span>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">
+            <button type="button" class="mini-btn" id="eTopLoadJsonBtn" style="background:#ffffff;color:#166534;border-color:#86efac;font-weight:700" title="パソコン内の設定ファイル(.json)を読み込んでアプリ内にも名前付きで保存します">📂 設定ファイル(.json)取込</button>
+            <button type="button" class="mini-btn" id="eTopRestorePresetBtn" hidden style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700" title="直前に削除した保存設定を元に戻します">↩️ 消した設定を戻す</button>
+          </div>
+        </div>
+        <div class="e-keep">
+          <input type="text" id="eTopPresetName" placeholder="設定名を入力（例：仲羽田・白札ダボ案1）" maxlength="40" style="border-color:#86efac;background:#ffffff">
+          <button type="button" class="btn" id="eTopSavePresetBtn" style="background:#16a34a;border-color:#15803d;white-space:nowrap">＋ アプリ内に保存</button>
+        </div>
+        <div id="eTopPresetList" class="preset-list" style="max-height:165px"></div>
+        <p class="e-msg" id="eTopSaveMsg" role="status" style="min-height:0"></p>
+      </div>
       <div class="e-step">
         <div class="e-h"><b>1</b><span>手ぬぐいのベース柄を選ぶ</span><button type="button" class="e-more" data-emore="step1">詳しく</button></div>
         <div class="e-pat" id="ePat">
@@ -252,27 +296,49 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <label><input type="color" id="eDotCol">あられの色</label>
           <label><input type="color" id="eFudaCol">札本体の色</label>
         </div>
-        <div class="e-subbox" id="eArareColorBox">
-          <div class="e-sublbl"><span>🟢 あられの色（粒の色・うしろ抜き色・周り枠の色）</span></div>
-          <div class="e-chips small" id="eDotColChips">
-            <button type="button" data-edot="#ffffff">白</button>
-            <button type="button" data-edot="#f3ecd8">生成り</button>
-            <button type="button" data-edot="#877028">羽田金</button>
-            <button type="button" data-edot="#f8b500">山吹</button>
-            <button type="button" data-edot="#00a3af">浅葱</button>
-            <button type="button" data-edot="#b7282e">茜</button>
-            <button type="button" data-edot="same">仲羽田と同じ</button>
+        <div class="e-subbox" id="eArareColorBox" style="border:1.5px solid #86efac;background:#f0fdf4">
+          <div class="e-sublbl"><span style="color:#166534">🟢 あられの色（①粒の色・②うしろ抜き色・③周り枠の色）</span></div>
+          <!-- ① あられ粒の色 -->
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#166534">① あられ粒の色:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="eArareDotPicker" value="#ffffff" title="あられ粒の色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #86efac;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eDotColChips">
+              <button type="button" data-edot="same">仲羽田と同じ</button>
+              <button type="button" data-edot="#ffffff">白</button>
+              <button type="button" data-edot="#f3ecd8">生成り</button>
+              <button type="button" data-edot="#877028">羽田金</button>
+              <button type="button" data-edot="#f8b500">山吹</button>
+              <button type="button" data-edot="#00a3af">浅葱</button>
+              <button type="button" data-edot="#b7282e">茜</button>
+            </div>
           </div>
-          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:3px;border-top:1px dashed #cbd5e1">
-            <span style="font-size:11px;color:var(--muted)">うしろ色:</span>
-            <div class="e-chips small" id="eArarePadColBtns" style="flex:1;grid-template-columns:repeat(3,1fr)">
+          <!-- ② あられうしろ抜き色 -->
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #86efac">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#166534">② うしろ抜き色（粒の周り余白）:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="eArarePadCustomCol" value="#046e7e" title="あられうしろ抜き色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #86efac;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eArarePadColBtns" style="grid-template-columns:repeat(4,1fr)">
+              <button type="button" data-eapc="none">抜きなし</button>
               <button type="button" data-eapc="bg">地の色</button>
               <button type="button" data-eapc="white">白</button>
               <button type="button" data-eapc="black">黒</button>
             </div>
-            <input type="color" id="eArarePadCustomCol" value="#046e7e" title="あられうしろ抜き色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
-            <span style="font-size:11px;color:var(--muted)">周り枠線色:</span>
-            <input type="color" id="eArarePadStrokeCol" value="#877028" title="あられ周り枠線・外周枠の色" style="width:26px;height:24px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer">
+          </div>
+          <!-- ③ あられ周り枠線の色（1粒枠・外周枠） -->
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #86efac">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#166534">③ 周り枠の色（粒フチ・外周枠）:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="eArarePadStrokeCol" value="#877028" title="あられ周り枠線・外周枠の色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #86efac;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eArarePadStrokeBtns" style="grid-template-columns:repeat(4,1fr)">
+              <button type="button" data-eapsc="none">枠線なし</button>
+              <button type="button" data-eapsc="#877028">羽田金</button>
+              <button type="button" data-eapsc="#ffffff">白</button>
+              <button type="button" data-eapsc="#111827">黒</button>
+            </div>
           </div>
         </div>
         <div class="e-subbox" id="eFudaColorBox" style="border:1.5px solid #7dd3fc;background:#f0f9ff">
@@ -314,26 +380,30 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             </div>
           </div>
           <!-- ③ 札のうしろ背景色（周り枠の中） -->
-          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:5px;border-top:1px dashed #bae6fd">
-            <span style="font-size:11px;font-weight:700;color:#0c4a6e">③ うしろ背景:</span>
-            <div class="e-chips small" id="eLogoPadColBtns" style="flex:1;grid-template-columns:repeat(4,1fr)">
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #bae6fd">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#0c4a6e">③ うしろ背景色（枠の中）:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#0369a1;cursor:pointer">自由色 <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="札のうしろ背景色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #7dd3fc;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eLogoPadColBtns" style="grid-template-columns:repeat(4,1fr)">
               <button type="button" data-epc="bg">地の色</button>
               <button type="button" data-epc="white">白</button>
               <button type="button" data-epc="black">黒</button>
               <button type="button" data-epc="none">透過</button>
             </div>
-            <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="札のうしろ背景色を自由に選ぶ" style="width:28px;height:24px;border:1px solid #7dd3fc;border-radius:5px;padding:0;background:none;cursor:pointer">
           </div>
           <!-- ④ 札の周り枠線の色 -->
-          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:5px;border-top:1px dashed #bae6fd">
-            <span style="font-size:11px;font-weight:700;color:#0c4a6e">④ 周り枠線色:</span>
-            <div class="e-chips small" id="eLogoPadStrokeBtns" style="flex:1;grid-template-columns:repeat(4,1fr)">
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #bae6fd">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#0c4a6e">④ 周り枠線の色:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#0369a1;cursor:pointer">自由色 <input type="color" id="eLogoPadStrokeCol" value="#ffffff" title="札の周り枠線の色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #7dd3fc;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eLogoPadStrokeBtns" style="grid-template-columns:repeat(4,1fr)">
               <button type="button" data-epsc="none">枠線なし</button>
               <button type="button" data-epsc="#ffffff">白</button>
               <button type="button" data-epsc="#877028">羽田金</button>
               <button type="button" data-epsc="#111827">黒</button>
             </div>
-            <input type="color" id="eLogoPadStrokeCol" value="#ffffff" title="札の周り枠線の色" style="width:28px;height:24px;border:1px solid #7dd3fc;border-radius:5px;padding:0;background:none;cursor:pointer">
           </div>
         </div>
         <p class="e-note" id="eColorNote" hidden>札入りタオル図案を入れているときは、図案の色は「札入りタオル図案から選ぶ」を開いて変えます。</p>
@@ -392,12 +462,13 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div class="e-subbox" id="eLogoShelfBox" style="background:#eff6ff;border:1px solid #93c5fd">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
             <span style="font-size:11.5px;font-weight:800;color:#1e40af">📚 マイ・ロゴ保管棚（クリックで配置）</span>
-            <div style="display:flex;gap:4px">
+            <div style="display:flex;gap:4px;flex-wrap:wrap">
+              <a href="golden_logos.html" target="_blank" class="mini-btn" style="background:linear-gradient(135deg,#e11d48,#0284c7,#b45309);color:#fff;border-color:#fda4af;font-weight:700;font-size:10.5px;padding:2px 6px;text-decoration:none" title="札と同じ漫画チックな立体斜線ハッチング揺れロゴ6選・波揺れ6選・黄金比6選（計18選）の一覧ページを開きます">💥🌊📐 漫画揺れ・波・黄金律18選 ↗</a>
               <button type="button" class="mini-btn" id="eSaveCurrentToShelfBtn" style="background:#2563eb;color:#fff;border-color:#1d4ed8;font-weight:700;font-size:10.5px;padding:2px 6px">📌 今のロゴを登録</button>
               <button type="button" class="mini-btn" id="eRestoreLogoShelfBtn" style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;font-size:10.5px;padding:2px 6px" title="誤って消したマイロゴや初期ロゴを元に戻します">↩️ 消したマイロゴを戻す</button>
             </div>
           </div>
-          <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:4px;max-height:112px;overflow-y:auto"></div>
+          <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:4px;max-height:138px;overflow-y:auto"></div>
         </div>
         <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
         <div class="e-subbox" id="eLogoPadBox" hidden>
@@ -418,16 +489,22 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <p class="e-note" id="eLogoNote">ロゴは手ぬぐいの上でもダボシャツの上でもドラッグして動かせます。</p>
       </div>
       <div class="e-step" id="eDaboFromLogoStep">
-        <div class="e-h"><b>6</b><span>👕 ダボシャツのロゴ位置から手ぬぐいを作る</span><button type="button" class="e-more" data-emore="step6">詳しく</button></div>
+        <div class="e-h"><b>6</b><span>👕👖 ダボシャツ・ダボパンツのロゴ位置から手ぬぐいを作る</span><button type="button" class="e-more" data-emore="step6">詳しく</button></div>
         <div class="e-subbox dabo-box">
-          <div class="e-sublbl"><span>① 札・ロゴのうしろ背景（今の札色を保ったまま切り替え）</span></div>
+          <div class="e-sublbl"><span>① 表示する衣装（上：ダボシャツ ／ 下：ダボパンツ）</span></div>
+          <div class="e-chips" id="eDaboGarmentViewBtns" style="grid-template-columns:repeat(3,1fr)">
+            <button type="button" data-egv="both" aria-pressed="true">👕👖 上下セット<small>シャツ＋ダボパンツ</small></button>
+            <button type="button" data-egv="top" aria-pressed="false">👕 上のみ<small>ダボシャツを大きく</small></button>
+            <button type="button" data-egv="pants" aria-pressed="false">👖 下のみ拡大<small>ダボパンツを大きく</small></button>
+          </div>
+          <div class="e-sublbl" style="margin-top:2px"><span>② 札・ロゴのうしろ背景（今の札色を保ったまま切り替え）</span></div>
           <div class="e-chips" id="eDaboQuickLogo">
             <button type="button" data-dql="cur_opaque">🛡️ うしろ透過なし<small>今の札色で枠をつける</small></button>
             <button type="button" data-dql="cur_trans">✨ 透過のまま<small>今の札色で柄を透かす</small></button>
             <button type="button" data-dql="white_opaque">🏷️ 白抜き札・透過なし<small>仲羽田と同色(#FFF)</small></button>
             <button type="button" data-dql="teal_opaque">🏷️ 浅葱札・透過なし<small>色つき(#00A3AF)</small></button>
           </div>
-          <div class="e-sublbl" style="margin-top:2px"><span>② ダボシャツのロゴ位置から手ぬぐいを逆算（全枚すべて同じ構図の手ぬぐいに反映）</span></div>
+          <div class="e-sublbl" style="margin-top:2px"><span>③ ダボ（上下）のロゴ位置から手ぬぐいを逆算（全枚すべて同じ構図の手ぬぐいに反映）</span></div>
           <div class="e-chips" id="eDaboSpotBtns">
             <button type="button" data-dspot="backAndPocket" style="grid-column:span 2;background:#fef3c7;border-color:#f59e0b;color:#78350f">⭐ 王道おすすめ：背紋＋胸位置（袖は下半分から裁断）<small>全枚すべて同じ構図の手ぬぐいで、背中・胸・ポケットにロゴを出し袖は下側から取る配置</small></button>
             <button type="button" data-dspot="backCrest">① 背中・首下の高さ<small>背紋位置（全枚共通）</small></button>
@@ -438,15 +515,18 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <button type="button" data-dspot="frontHem">⑥ 前後の裾まわり<small>腰元の高さ（全枚共通）</small></button>
             <button type="button" data-dspot="sleeves">⑦ 両袖の中央<small>肩〜二の腕（全枚共通）</small></button>
             <button type="button" data-dspot="allParts">⑧ 標準位置（上部）<small>全パーツ共通</small></button>
+            <button type="button" data-dspot="pantsThighL">👖 パンツ前太もも<small>ダボパンツ前脚中央</small></button>
+            <button type="button" data-dspot="pantsHipPocket">👖 パンツ右尻ポケット<small>ダボパンツ背面ポケット</small></button>
           </div>
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px">
             <button type="button" class="mini-btn" id="eDaboPinAddBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:6px 8px;font-size:11.5px">📌 今のロゴ位置を固定して、手ぬぐいの別の場所にもう1つ追加</button>
           </div>
           <div id="eDaboSlotsBar" style="display:flex;flex-wrap:wrap;gap:4px"></div>
           <div class="e-dabo-card" id="eDaboReverseCard">
-            <div id="eDaboReverseText">💡 上の<b>部位ボタン</b>を押すか、右の<b>ダボシャツの上で札ロゴを直接ドラッグ</b>すると、手ぬぐい上の位置が逆算され、<b>裁断図の全手ぬぐい（5〜8枚すべて同じ構図）とダボシャツ全体</b>に即座に反映されます！</div>
+            <div id="eDaboReverseText">💡 上の<b>部位ボタン</b>を押すか、右の<b>ダボシャツ・ダボパンツの上で札ロゴを直接ドラッグ</b>すると、手ぬぐい上の位置が逆算され、<b>裁断図の全手ぬぐい（5〜8枚すべて同じ構図）とダボ上下全体</b>に即座に反映されます！</div>
             <div class="e-dabo-switch">
-              <button type="button" id="eDaboShowShirtBtn" aria-pressed="false">👕 ダボシャツで位置を決める</button>
+              <button type="button" id="eDaboShowShirtBtn" aria-pressed="false">👕👖 ダボ上下＋裁断図を見る</button>
+              <button type="button" id="eDaboShowOnlyDaboBtn" aria-pressed="false">👕👖 完成図のみ大きく見る</button>
               <button type="button" id="eDaboShowTenuguiBtn" aria-pressed="true">📜 できた手ぬぐい(1枚)を見る</button>
             </div>
           </div>
@@ -459,21 +539,30 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div id="ePmList" class="pm-list"></div>
       </div>
       <div class="e-step">
-        <div class="e-h"><b>8</b><span>保存する（手ぬぐい・ダボ・イラレ・設定）</span><button type="button" class="e-more" data-emore="step8">詳しく</button></div>
+        <div class="e-h"><b>8</b><span>保存する（アプリ内保存・手ぬぐい・ダボ完成図・イラレ）</span><button type="button" class="e-more" data-emore="step8">詳しく</button></div>
+        <div class="e-subbox" style="background:#f0fdf4;border:1.5px solid #86efac">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+            <span style="font-size:12px;font-weight:800;color:#166534">💾 名前をつけてアプリ内に設定を保存・呼び出し <span class="badge" id="eStep8SavedCountBadge" style="background:#dcfce7;color:#166534">0件</span></span>
+            <button type="button" class="mini-btn" id="eRestorePresetBtn" hidden style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700">↩️ 消した設定を戻す</button>
+          </div>
+          <div class="e-keep">
+            <input type="text" id="eName" placeholder="設定名を入力（例：紺・細め案1）" maxlength="40" style="border-color:#86efac;background:#ffffff">
+            <button type="button" class="btn" id="eKeep" style="background:#16a34a;border-color:#15803d;white-space:nowrap">＋ アプリ内に保存</button>
+          </div>
+          <div class="preset-list" id="eList" style="max-height:185px"></div>
+        </div>
         <div class="e-save" style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
           <button type="button" class="btn" id="eSavePng" style="grid-column:span 2">📜 手ぬぐい画像で保存（300dpi PNG）</button>
-          <button type="button" class="btn" id="eSaveDaboPng" style="background:#0284c7;border-color:#0369a1;color:#fff">👕 ダボ＆裁断図（PNG）</button>
+          <button type="button" class="btn" id="eSaveDaboOnlyPng" style="background:#0284c7;border-color:#0369a1;color:#fff" title="ダボシャツ（上）＋ダボパンツ（下）の完成図をPNG画像でダウンロードします">👕👖 完成図を保存（上下・PNG）</button>
+          <button type="button" class="btn" id="eSaveDaboPng" style="background:#0369a1;border-color:#075985;color:#fff" title="生地の取り方（裁断図）＋ダボ上下完成図をセットでPNG保存します">✂️👕 裁断図＋完成図（PNG）</button>
+          <button type="button" class="btn ghost" id="eSaveDaboPantsPng" style="border-color:#0284c7;color:#0369a1;font-weight:700">👖 ダボパンツ完成図（PNG）</button>
+          <button type="button" class="btn ghost" id="eSaveDaboSvg" style="border-color:#0284c7;color:#0369a1;font-weight:700">📐 完成図（イラレSVG）</button>
           <button type="button" class="btn" id="eSaveAi" style="background:#ea580c;border-color:#c2410c;color:#fff">✒️ Illustrator（.ai）</button>
-          <button type="button" class="btn ghost" id="eSaveSvg">📐 Illustrator（SVG）</button>
+          <button type="button" class="btn ghost" id="eSaveSvg">📐 手ぬぐい（SVG）</button>
           <button type="button" class="btn ghost" id="eCopySvg">📋 SVG をコピー</button>
           <button type="button" class="btn ghost" id="eSaveJson">📥 設定ファイル保存(.json)</button>
-          <button type="button" class="btn ghost" id="eLoadJson">📂 設定ファイル読込</button>
+          <button type="button" class="btn ghost" id="eLoadJson" style="grid-column:span 2">📂 設定ファイル読込(.json)</button>
         </div>
-        <div class="e-keep">
-          <input type="text" id="eName" placeholder="名前をつけてアプリ内に残す（例：紺・細め案）" maxlength="40">
-          <button type="button" class="btn" id="eKeep">残す</button>
-        </div>
-        <div class="e-list" id="eList"></div>
         <p class="e-msg" id="eMsg" role="status"></p>
       </div>
       <button type="button" class="e-tofull" data-emore="all">すべての機能を使う（詳細モードへ）</button>
@@ -600,15 +689,15 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
 
     <!-- 1-B. 名前を付けて保存・マイデザイン一覧 -->
     <section id="sec-save" aria-labelledby="h-save" data-cat="export">
-      <h2 id="h-save"><span>💾 名前を付けて保存・呼び出し</span><span class="badge" id="savedCountBadge">0件</span></h2>
+      <h2 id="h-save"><span>💾 名前を付けてアプリ内に保存・呼び出し</span><div style="display:flex;gap:5px;align-items:center"><button type="button" class="mini-btn" id="restorePresetTrashBtn" hidden style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;padding:2px 6px">↩️ 消した設定を戻す</button><span class="badge" id="savedCountBadge">0件</span></div></h2>
       <div class="save-bar">
         <input type="text" id="presetName" class="save-input" placeholder="保存名（例：羽田納戸・細線案1）" maxlength="40">
-        <button type="button" class="btn" id="savePresetBtn" style="padding:6px 11px;white-space:nowrap">＋ 保存</button>
+        <button type="button" class="btn" id="savePresetBtn" style="padding:6px 11px;white-space:nowrap">＋ アプリ内に保存</button>
       </div>
       <div id="savedList" class="preset-list"></div>
       <div class="crow2" style="justify-content:space-between;padding-top:2px">
         <button type="button" class="chip" id="exportJsonBtn" title="現在の設定値と保存リストをファイル(.json)としてパソコンに保存">📥 設定をファイル保存(.json)</button>
-        <button type="button" class="chip" id="importJsonBtn" title="保存した設定ファイル(.json)を読み込む">📂 設定ファイル読込</button>
+        <button type="button" class="chip" id="importJsonBtn" title="パソコン内の設定ファイル(.json)を読み込んでアプリ内にも登録します">📂 設定ファイル(.json)読込＆登録</button>
         <button type="button" class="chip" id="copyUrlBtn" title="現在の設定値を埋め込んだ共有URLをコピー">🔗 設定URLコピー</button>
         <input type="file" id="importJsonInput" accept=".json,application/json" hidden>
       </div>
@@ -827,9 +916,9 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div class="sw" id="kakuSw"></div>
       </div>
       <div class="cgroup" id="dotColorGroup" style="border:1.5px solid #86efac;background:#f0fdf4">
-        <div class="chead"><span class="clabel" style="color:#166534;font-weight:800">🟢 あられの色（粒・うしろ・周り枠）</span>
+        <div class="chead"><span class="clabel" style="color:#166534;font-weight:800">🟢 ① あられ粒の色（うしろ・周り枠）</span>
           <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="dotColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
-          <input type="color" id="dotColor" value="#ffffff" aria-label="粒の色を選ぶ">
+          <label style="display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="dotColor" value="#ffffff" aria-label="粒の色を選ぶ"></label>
           <input type="text" id="dotHex" class="hex" maxlength="7" spellcheck="false" aria-label="粒のカラーコード"></div>
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
           <div class="sw" id="dotSw" style="flex:1"></div>
@@ -837,21 +926,23 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
         <div style="display:grid;gap:5px;margin-top:4px;padding-top:6px;border-top:1px dashed #86efac;font-size:11.5px">
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-            <span style="font-weight:700;color:#166534">あられうしろ抜き色:</span>
-            <input type="color" id="sec3ArarePadColor" value="#046e7e" aria-label="あられうしろ抜き色">
+            <span style="font-weight:700;color:#166534">② あられうしろ抜き色:</span>
+            <label style="display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="sec3ArarePadColor" value="#046e7e" aria-label="あられうしろ抜き色"></label>
+            <button type="button" class="mini-btn" id="sec3ArarePadNoneBtn">抜きなし</button>
             <button type="button" class="mini-btn" id="sec3ArarePadBgBtn">地の色と同色</button>
             <button type="button" class="mini-btn" id="sec3ArarePadWhiteBtn">白</button>
             <button type="button" class="mini-btn" id="sec3ArarePadBlackBtn">黒</button>
             <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="ararePadColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           </div>
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-            <span style="font-weight:700;color:#166534">1粒周り枠線の色:</span>
-            <input type="color" id="sec3ArarePadStrokeColor" value="#877028" aria-label="あられ1粒周り枠線の色">
+            <span style="font-weight:700;color:#166534">③ 周り枠線の色:</span>
+            <label style="display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="sec3ArarePadStrokeColor" value="#877028" aria-label="あられ1粒周り枠線の色"></label>
+            <button type="button" class="mini-btn" id="sec3ArareStrokeNoneBtn">枠線なし</button>
             <button type="button" class="mini-btn" id="sec3ArareStrokeGoldBtn">羽田金</button>
             <button type="button" class="mini-btn" id="sec3ArareStrokeWhiteBtn">白</button>
             <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="ararePadStrokeColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
-            <span style="font-weight:700;color:#166534;margin-left:4px">外周枠の色:</span>
-            <input type="color" id="sec3ArareOuterColor" value="#ffffff" aria-label="あられ外周枠の色">
+            <span style="font-weight:700;color:#166534;margin-left:4px">外周枠:</span>
+            <label style="display:inline-flex;align-items:center;gap:3px;font-size:11px;font-weight:700;color:#15803d;cursor:pointer">自由色 <input type="color" id="sec3ArareOuterColor" value="#ffffff" aria-label="あられ外周枠の色"></label>
             <button type="button" class="mini-btn" id="sec3ArareOuterDotBtn">粒と同色</button>
             <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="arareOuterColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           </div>
@@ -958,6 +1049,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <button type="button" class="btn" id="quickUploadLogoTopBtn" style="padding:5px 10px;font-size:11.5px;background:#2563eb;border-color:#1d4ed8;color:#fff;font-weight:700" title="パソコン内のロゴ画像（.ai / PDF / PNG / JPG / SVG）を読み込んで手ぬぐい・ダボに配置し、マイ・ロゴ保管棚へ自動登録します">📁 ロゴ画像を登録・読込 (.ai/PDF/PNG/JPG/SVG)</button>
         <button type="button" class="mini-btn" id="quickUseFudaTealTopBtn" style="background:#00a3af;border-color:#00808a;color:#fff;font-weight:700;padding:5px 8px" title="仲羽田青年会 札ロゴ (fuda_logo_teal.svg / #00A3AF) をワンクリックで配置します">🏷️ 札ロゴ(ティール)</button>
         <button type="button" class="mini-btn" id="quickUseFudaWhiteTopBtn" style="background:#0f172a;border-color:#334155;color:#fff;font-weight:700;padding:5px 8px" title="仲羽田青年会 札ロゴ (fuda_logo_white.svg / #FFFFFF 白抜き) をワンクリックで配置します">🏷️ 札ロゴ(白抜き)</button>
+        <a href="golden_logos.html" target="_blank" class="mini-btn" style="background:linear-gradient(135deg,#d97706,#92400e);border-color:#f59e0b;color:#fff;font-weight:700;padding:5px 8px;text-decoration:none" title="黄金比（φ = 1 : 1.618）で設計した近代・仲羽田ロゴ6選の一覧ページを開きます">📐 黄金律ロゴ6選 ↗</a>
         <button type="button" class="mini-btn" id="quickOpenLogoShelfBtn" style="background:#fff;border-color:#3b82f6;color:#1d4ed8;font-weight:700;padding:5px 8px" title="登録済みのロゴ保管棚とロゴ設定パネルを開きます">📚 登録ロゴ保管棚・設定を開く</button>
         <button type="button" class="mini-btn" id="openDirectDaboTextFromPanelBtn" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700;padding:5px 8px;margin-left:auto">✍️ ダボに直接文字を打つ →</button>
       </div>
@@ -1024,7 +1116,8 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div style="background:#eff6ff;border:1.5px solid #93c5fd;border-radius:6px;padding:6px 8px;display:flex;flex-direction:column;gap:5px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
             <span style="font-size:11px;font-weight:700;color:#1e40af">📚 マイ・ロゴ保管棚（登録済みロゴ一覧）</span>
-            <div style="display:flex;gap:4px;align-items:center">
+            <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
+              <a href="golden_logos.html" target="_blank" class="mini-btn" style="background:linear-gradient(135deg,#e11d48,#0284c7,#b45309);color:#fff;border-color:#fda4af;font-weight:700;padding:2px 6px;text-decoration:none" title="札と同じ漫画チックな立体斜線ハッチング揺れロゴ6選・波揺れ6選・黄金比6選（計18選）の一覧ページを開きます">💥🌊📐 漫画揺れ・波・黄金律18選 ↗</a>
               <button type="button" class="mini-btn" id="restoreLogoShelfBtn" style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;padding:2px 6px" title="誤って消したマイロゴや初期ロゴをすべて元に戻します">↩️ 消したマイロゴを戻す</button>
               <span id="logoShelfCountBadge" class="badge" style="background:#dbeafe;color:#1e40af">0個</span>
             </div>
@@ -1519,13 +1612,18 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
 
     <!-- 5-D. できた生地でダボを作る（生地の取り方・裁断＆仕立てシミュレーション） -->
     <section id="sec-dabo" aria-labelledby="h-dabo" data-cat="dabo">
-      <h2 id="h-dabo"><span>👕 できた生地でダボを作る（生地取り＆仕立て）</span><button type="button" class="mini-btn" id="openDaboViewBtn" style="background:var(--ai);color:#fff;border-color:var(--ai);font-weight:700">ダボ画面を開く →</button></h2>
+      <h2 id="h-dabo"><span>👕👖 できた生地でダボを作る（上下・生地取り＆仕立て）</span><button type="button" class="mini-btn" id="openDaboViewBtn" style="background:var(--ai);color:#fff;border-color:var(--ai);font-weight:700">ダボ画面を開く →</button></h2>
       <div class="cgroup">
-        <span class="clabel" style="font-size:12px">① 仕立てる衣装の型（ダボシャツ・鯉口・上下）</span>
+        <span class="clabel" style="font-size:12px">① 表示する衣装（上：ダボシャツ・鯉口 ／ 下：ダボパンツ）</span>
+        <div class="mode-tabs" id="daboGarmentViewTabs" style="margin-bottom:4px">
+          <button type="button" class="chip" data-dgview="both" aria-pressed="true">👕👖 上下とも表示<br><span style="font-size:10px;opacity:.85">シャツ＋ダボパンツ</span></button>
+          <button type="button" class="chip" data-dgview="top" aria-pressed="false">👕 上のみ大きく<br><span style="font-size:10px;opacity:.85">シャツ前面・背面</span></button>
+          <button type="button" class="chip" data-dgview="pants" aria-pressed="false">👖 下のみ大きく<br><span style="font-size:10px;opacity:.85">ダボパンツ拡大</span></button>
+        </div>
         <div class="mode-tabs" id="daboStyleTabs">
           <button type="button" class="chip" data-dstyle="dabo" aria-pressed="true">ダボシャツ<br><span style="font-size:10px;opacity:.85">ゆったり広袖</span></button>
           <button type="button" class="chip" data-dstyle="koikuchi" aria-pressed="false">鯉口シャツ<br><span style="font-size:10px;opacity:.85">粋・細身七分袖</span></button>
-          <button type="button" class="chip" data-dstyle="setup" aria-pressed="false">ダボ上下セット<br><span style="font-size:10px;opacity:.85">シャツ＋ズボン</span></button>
+          <button type="button" class="chip" data-dstyle="setup" aria-pressed="false">ダボ上下セット<br><span style="font-size:10px;opacity:.85">上下用尺計算込</span></button>
         </div>
 
         <span class="clabel" style="font-size:12px;margin-top:4px">② ✂️ 手ぬぐいからの生地の取り方（裁断割付・枚数）</span>
@@ -1600,6 +1698,8 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <button type="button" class="mini-btn" data-spot="frontHem" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">⑥ 前後の裾(腰元)</button>
             <button type="button" class="mini-btn" data-spot="sleeves" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">⑦ 両袖の肩〜腕</button>
             <button type="button" class="mini-btn" data-spot="allParts" style="background:#f3e8ff;border-color:#a855f7;color:#6b21a8;font-weight:700">⑧ 標準位置(上部)</button>
+            <button type="button" class="mini-btn" data-spot="pantsThighL" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">👖 パンツ前太もも</button>
+            <button type="button" class="mini-btn" data-spot="pantsHipPocket" style="background:#fef3c7;border-color:#d97706;color:#78350f;font-weight:700">👖 パンツ右尻ポケット</button>
           </div>
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:6px">
             <button type="button" class="mini-btn" id="daboPinAddLogoBtn" style="flex:1;background:#166534;color:#fff;border-color:#14532d;font-weight:700;padding:5px 8px">📌 今のロゴ位置を固定して、手ぬぐいの別の場所にもう1つ追加</button>
@@ -1675,8 +1775,10 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
 
         <div id="daboSpecSummary" class="dabo-spec-box"></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-          <button type="button" class="btn" id="saveDaboPngBtn" style="padding:7px 8px;font-size:12px">📸 ダボ図をPNG保存</button>
-          <button type="button" class="btn" id="saveDaboSvgBtn" style="padding:7px 8px;font-size:12px;background:#0284c7;border-color:#0369a1;color:#fff" title="ダボ仕上がり＆生地取りプレビュー図をIllustratorで開けるSVG形式で保存します">📐 ダボ図をイラレSVG保存</button>
+          <button type="button" class="btn" id="saveDaboOnlyPngBtn" style="padding:7px 8px;font-size:12px;background:#0284c7;border-color:#0369a1;color:#fff" title="ダボシャツ（上）＋ダボパンツ（下）の完成図をPNG保存します">👕👖 完成図をPNG保存</button>
+          <button type="button" class="btn" id="saveDaboPngBtn" style="padding:7px 8px;font-size:12px" title="生地の取り方（裁断図）＋ダボ上下完成図をPNG保存します">✂️👕 裁断図＋完成図PNG</button>
+          <button type="button" class="btn ghost" id="saveDaboPantsPngBtn" style="padding:7px 8px;font-size:11.5px;border-color:#0284c7;color:#0369a1;font-weight:700" title="下のダボパンツ（前面・背面）を大きく拡大した完成図をPNG保存します">👖 ダボパンツ完成図PNG</button>
+          <button type="button" class="btn ghost" id="saveDaboSvgBtn" style="padding:7px 8px;font-size:11.5px;border-color:#ea580c;color:#c2410c;font-weight:700" title="ダボ仕上がり＆生地取りプレビュー図をIllustratorで開けるSVG形式で保存します">📐 完成図をイラレSVG保存</button>
         </div>
       </div>
     </section>
@@ -1799,19 +1901,47 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <button class="btn" id="saveSvg">SVGで保存</button>
         <button class="btn" id="saveAi">.ai を保存</button>
         <button class="btn ghost" id="saveJsx">.jsx (AIスクリプト)</button>
-        <button class="btn ghost" id="savePng">300dpi PNG保存</button>
+        <button class="btn ghost" id="savePng">手ぬぐい 300dpi PNG保存</button>
+      </div>
+      <!-- 👕👖 完成図（ダボシャツ・ダボパンツ・裁断図）のダウンロード -->
+      <div class="cgroup" style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);border:1.5px solid #0284c7;border-radius:8px;padding:8px 9px;margin-top:6px;display:grid;gap:6px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+          <span class="clabel" style="font-size:12px;color:#0c4a6e;font-weight:800">👕👖 完成図（ダボシャツ＋ダボパンツ・裁断図）をダウンロード</span>
+          <span class="badge" style="background:#0284c7;color:#fff;font-size:10px">高画質出力</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <button type="button" class="btn" id="saveOutDaboOnlyPngBtn" style="background:#0284c7;border-color:#0369a1;color:#fff;padding:8px 8px;font-size:12px" title="ダボシャツ（上）とダボパンツ（下）の前面・背面完成図を高解像度PNGでダウンロードします">👕👖 完成図を保存（上下・PNG）</button>
+          <button type="button" class="btn" id="saveOutCutDaboPngBtn" style="background:#0369a1;border-color:#075985;color:#fff;padding:8px 8px;font-size:12px" title="手ぬぐいの生地の取り方（裁断割付図）＋ダボ上下完成図をセットで高解像度PNG保存します">✂️👕 裁断図＋完成図（PNG）</button>
+          <button type="button" class="btn ghost" id="saveOutDaboPantsPngBtn" style="background:#ffffff;border-color:#0284c7;color:#0369a1;font-weight:700;padding:7px 8px;font-size:11.5px" title="下のダボパンツ（前面・背面）を大きく拡大した完成図PNGをダウンロードします">👖 ダボパンツ完成図のみ（PNG）</button>
+          <button type="button" class="btn ghost" id="saveOutDaboTopPngBtn" style="background:#ffffff;border-color:#0284c7;color:#0369a1;font-weight:700;padding:7px 8px;font-size:11.5px" title="上のダボシャツ・鯉口シャツ（前面・背面）を大きく拡大した完成図PNGをダウンロードします">👕 ダボシャツ完成図のみ（PNG）</button>
+          <button type="button" class="btn ghost" id="saveOutDaboSvgBtn" style="grid-column:span 2;background:#fff7ed;border-color:#ea580c;color:#c2410c;font-weight:700;padding:7px 8px;font-size:11.5px" title="ダボ完成図と手ぬぐいベクターパスをセットにしたIllustrator用SVGファイルを保存します">📐 完成図＆裁断図をイラレSVGで保存（.svg）</button>
+        </div>
       </div>
       <p class="msg" id="msg" role="status"></p>
       <p class="note">✨ <b>プレビュー全要素のIllustrator完全ベクター出力に対応！</b><br>「.ai を保存」「SVGで保存」「SVGをコピー」「.jsx」すべてで、地色・仲羽田角字・大小あられ・丸紋に加え、<b>ダボや手ぬぐいに打った文字・札ロゴ・半纏ロゴもすべてアウトライン化済みベクターパス＆レイヤー分けされた状態</b>でIllustratorにて直接編集できます。</p>
     </section>
   </aside>
 
-  <main class="stage">
+  <main class="stage" id="mainStage">
     <div>
       <div class="view-bar" id="viewTabs" style="margin-bottom:6px">
-        <button type="button" class="chip" data-view="fabric" aria-pressed="true"><span class="full-only">📜 手ぬぐい生地（反物）</span><span class="easy-only">生地</span></button>
-        <button type="button" class="chip" data-view="cut_dabo" aria-pressed="false"><span class="full-only">✂️ 生地の取り方（裁断図）＋ 👕 ダボ完成図</span><span class="easy-only">裁断図・ダボ</span></button>
-        <button type="button" class="chip" data-view="dabo" aria-pressed="false"><span class="full-only">👕 ダボ完成プレビュー（前面・背面・上下）</span><span class="easy-only">ダボ完成</span></button>
+        <button type="button" class="chip" data-view="fabric" aria-pressed="true"><span class="full-only desk-only">📜 手ぬぐい生地（反物）</span><span class="easy-only desk-only">📜 生地</span><span class="mob-only">📜 生地</span></button>
+        <button type="button" class="chip" data-view="cut_dabo" aria-pressed="false"><span class="full-only desk-only">✂️ 生地の取り方（裁断図）＋ 👕👖 ダボ上下完成図</span><span class="easy-only desk-only">✂️👕👖 裁断図・ダボ上下</span><span class="mob-only">✂️👕 裁断・ダボ</span></button>
+        <button type="button" class="chip" data-view="dabo" aria-pressed="false"><span class="full-only desk-only">👕👖 ダボ完成プレビュー（シャツ＋ダボパンツ）</span><span class="easy-only desk-only">👕👖 ダボ完成図（上下）</span><span class="mob-only">👕👖 完成図</span></button>
+      </div>
+      <div id="stageGarmentViewChips" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:6px;background:var(--panel);padding:5px 10px;border-radius:8px;border:1px solid var(--line)">
+        <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+          <span class="desk-only" style="font-size:11.5px;font-weight:700;color:var(--fg)">👕👖 ダボ表示切替:</span>
+          <button type="button" class="mini-btn" data-sgv="both" aria-pressed="true" style="font-size:11.5px;padding:4px 9px;font-weight:700"><span class="desk-only">👕👖 上下とも見る（シャツ＋ダボパンツ）</span><span class="mob-only">👕👖 上下</span></button>
+          <button type="button" class="mini-btn" data-sgv="top" aria-pressed="false" style="font-size:11.5px;padding:4px 9px;font-weight:700"><span class="desk-only">👕 上（シャツ）のみ</span><span class="mob-only">👕 上のみ</span></button>
+          <button type="button" class="mini-btn" data-sgv="pants" aria-pressed="false" style="font-size:11.5px;padding:4px 9px;font-weight:700"><span class="desk-only">👖 下（ダボパンツ）のみ拡大</span><span class="mob-only">👖 下のみ</span></button>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+          <button type="button" class="mini-btn" id="stageQuickSaveDaboPngBtn" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700;padding:4px 9px;font-size:11.5px" title="現在の完成図を高解像度PNGで保存します"><span class="desk-only">📥 完成図をPNG保存</span><span class="mob-only">📥 完成図</span></button>
+          <button type="button" class="mini-btn" id="stageQuickSaveCutDaboPngBtn" style="background:#f0f9ff;color:#0369a1;border-color:#7dd3fc;font-weight:700;padding:4px 8px;font-size:11px" title="生地の取り方（裁断図）＋完成図をセットでPNG保存します"><span class="desk-only">📥 裁断図＋完成図PNG</span><span class="mob-only">📥 裁断+完成</span></button>
+          <button type="button" class="mini-btn mob-only" id="mobStageSizeBtn" style="background:#f8fafc;color:#0f172a;border-color:#94a3b8;font-weight:700" title="スマホのプレビュー画面の高さを切り替えます（標準 / 拡大 / 小）">🔍 拡大</button>
+          <button type="button" class="mini-btn mob-only" id="mobStagePinBtn" aria-pressed="true" style="font-weight:700" title="スクロール時にプレビューを上部に固定するかを切り替えます">📌 固定</button>
+        </div>
       </div>
       <div class="stats" aria-live="polite">
         <div class="stats-left">
@@ -2007,9 +2137,455 @@ function buildFudaLogoSvgDataUrl(fillHex){
 }
 let FUDA_LOGO_TEAL_URL = buildFudaLogoSvgDataUrl('#00A3AF');
 let FUDA_LOGO_WHITE_URL = buildFudaLogoSvgDataUrl('#FFFFFF');
+
+// ★ 仲羽田 近代・黄金比ロゴ 6選 ＆ 🌊 波・揺れ×黄金律ロゴ 6選（計12選）内蔵ベクターSVG生成
+const GOLDEN_LOGO_BUILDERS = (function(){
+  const makeWarped = (x0, y0, w, h, warpFn) => {
+    const mapPt = (u, v) => {
+      const px = x0 + u * w, py = y0 + v * h;
+      return warpFn ? warpFn(px, py, u, v) : [px, py];
+    };
+    const poly = (ptsUV, segs = 8) => {
+      const out = [];
+      for(let i = 0; i < ptsUV.length; i++){
+        const a = ptsUV[i], b = ptsUV[(i + 1) % ptsUV.length];
+        for(let s = 0; s < segs; s++){
+          const t = s / segs;
+          out.push(mapPt(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t));
+        }
+      }
+      return 'M' + out.map(p => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join('L') + 'Z';
+    };
+    const rc = (u0, v0, uw, vh, segs = 8) => poly([[u0, v0], [u0 + uw, v0], [u0 + uw, v0 + vh], [u0, v0 + vh]], segs);
+    return { poly, rc };
+  };
+  const gNaka = (x0, y0, w, h, warpFn) => {
+    const { poly, rc } = makeWarped(x0, y0, w, h, warpFn);
+    const sg = warpFn ? 8 : 1;
+    const s = 0.162, cx0 = 0.34, cx1 = 1.00, cy0 = 0.18, cy1 = 0.76, cs = 0.145, midX = (cx0 + cx1) * 0.5 - s * 0.5;
+    return poly([[0.08,0.0],[0.26,0.0],[0.26,0.28],[0.23,0.32],[0.23,1.0],[0.07,1.0],[0.07,0.36],[0.0,0.36],[0.0,0.20],[0.08,0.12]], sg)
+      + rc(cx0, cy0, cx1 - cx0, cs, sg) + rc(cx0, cy1 - cs, cx1 - cx0, cs, sg)
+      + rc(cx0, cy0, cs, cy1 - cy0, sg) + rc(cx1 - cs, cy0, cs, cy1 - cy0, sg)
+      + rc(midX, 0.0, s, 1.0, sg);
+  };
+  const gHane = (x0, y0, w, h, warpFn) => {
+    const { poly, rc } = makeWarped(x0, y0, w, h, warpFn);
+    const sg = warpFn ? 7 : 1;
+    const s = 0.158, wW = 0.462;
+    let d = '';
+    for(const off of [0.0, 0.538]){
+      d += poly([[off + 0.06, 0.0], [off + wW, 0.0], [off + wW, s], [off, s], [off, 0.06]], sg)
+        + poly([[off + wW - s, 0.0], [off + wW, 0.0], [off + wW, 1.0], [off + 0.12, 1.0], [off + 0.06, 1.0 - s], [off + wW - s, 1.0 - s]], sg)
+        + rc(off + 0.02, 0.34, wW - s - 0.06, s * 0.85, sg)
+        + rc(off + 0.02, 0.60, wW - s - 0.06, s * 0.85, sg);
+    }
+    return d;
+  };
+  const gTa = (x0, y0, w, h, warpFn) => {
+    const { rc } = makeWarped(x0, y0, w, h, warpFn);
+    const sg = warpFn ? 8 : 1;
+    const s = 0.184, m = 0.5 - s * 0.5;
+    return rc(0, 0, 1, s, sg) + rc(0, 1 - s, 1, s, sg) + rc(0, 0, s, 1, sg) + rc(1 - s, 0, s, 1, sg) + rc(m, 0, s, 1, sg) + rc(0, m, 1, s, sg);
+  };
+  const waveRibbonH = (x0, x1, yMid, amp, cycles, phaseRad, thStart, thMid, thEnd, steps = 44) => {
+    const topPts = [], botPts = [];
+    for(let i = 0; i <= steps; i++){
+      const t = i / steps;
+      const x = x0 + (x1 - x0) * t;
+      const y = yMid + amp * Math.sin(t * cycles * Math.PI * 2 + phaseRad);
+      const th = (t < 0.5) ? (thStart + (thMid - thStart) * (t * 2)) : (thMid + (thEnd - thMid) * ((t - 0.5) * 2));
+      const half = Math.max(1.2, th * 0.5);
+      topPts.push(`${x.toFixed(1)},${(y - half).toFixed(1)}`);
+      botPts.push(`${x.toFixed(1)},${(y + half).toFixed(1)}`);
+    }
+    botPts.reverse();
+    return `M${topPts.join('L')}L${botPts.join('L')}Z`;
+  };
+  const waveRibbonV = (y0, y1, xMid, amp, cycles, phaseRad, thStart, thMid, thEnd, steps = 44) => {
+    const leftPts = [], rightPts = [];
+    for(let i = 0; i <= steps; i++){
+      const t = i / steps;
+      const y = y0 + (y1 - y0) * t;
+      const x = xMid + amp * Math.sin(t * cycles * Math.PI * 2 + phaseRad);
+      const th = (t < 0.5) ? (thStart + (thMid - thStart) * (t * 2)) : (thMid + (thEnd - thMid) * ((t - 0.5) * 2));
+      const half = Math.max(1.2, th * 0.5);
+      leftPts.push(`${(x - half).toFixed(1)},${y.toFixed(1)}`);
+      rightPts.push(`${(x + half).toFixed(1)},${y.toFixed(1)}`);
+    }
+    rightPts.reverse();
+    return `M${leftPts.join('L')}L${rightPts.join('L')}Z`;
+  };
+  const waveArcBand = (cx, cy, rOuter, rInner, deg0, deg1, waveAmp, waveCycles, phaseRad = 0, steps = 60) => {
+    const outPts = [], inPts = [];
+    for(let i = 0; i <= steps; i++){
+      const t = i / steps;
+      const rad = ((deg0 + (deg1 - deg0) * t) * Math.PI) / 180;
+      const wOff = waveAmp * Math.sin(t * Math.PI) * Math.sin(t * waveCycles * Math.PI * 2 + phaseRad);
+      const ro = rOuter + wOff, ri = rInner + wOff * 0.65;
+      outPts.push(`${(cx + Math.cos(rad) * ro).toFixed(1)},${(cy + Math.sin(rad) * ro).toFixed(1)}`);
+      inPts.push(`${(cx + Math.cos(rad) * ri).toFixed(1)},${(cy + Math.sin(rad) * ri).toFixed(1)}`);
+    }
+    inPts.reverse();
+    return `M${outPts.join('L')}L${inPts.join('L')}Z`;
+  };
+  const wrapSvg = body => 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000"><g fill="#FFFFFF">${body}</g></svg>`);
+  const oct = (x, y, w, h, c) => `M${x+c},${y}H${x+w-c}L${x+w},${y+c}V${y+h-c}L${x+w-c},${y+h}H${x+c}L${x},${y+h-c}V${y+c}Z`;
+  const wBlade = pts => 'M' + pts.map(p => `${p[0]},${p[1]}`).join('L') + 'Z M' + pts.map(p => `${1000-p[0]},${p[1]}`).join('L') + 'Z';
+  const swellFn = (px, py) => [px, py + 9 * Math.sin(((px - 500) / 480) * Math.PI * 2)];
+  const swayFn = (px, py) => [px + 13 * Math.sin(((py - 100) / 380) * Math.PI * 2), py];
+  const swayCoreFn = (px, py) => [px + 6 * Math.sin(((py - 200) / 300) * Math.PI * 2), py];
+  const vortexFn = (px, py) => [px + 8 * Math.sin(((py - 500) / 420) * Math.PI * 2), py + 8 * Math.cos(((px - 500) / 420) * Math.PI * 2)];
+  const fullWaveFn = (px, py) => [px + 22 * Math.sin(((py - 80) / 440) * Math.PI * 2), py + 9 * Math.sin(((px - 220) / 360) * Math.PI * 2)];
+  const waveTypeFn = (px, py) => [px + 6 * Math.sin(((py - 380) / 180) * Math.PI * 2), py + 12 * Math.sin(((px - 400) / 520) * Math.PI * 2)];
+
+  // 💥 札と同じタッチの「3D斜線ハッチング立体影＋漫画スイング揺れ線」生成ヘルパー
+  const fudaSubs = (typeof FUDA_LOGO_PATH_D !== 'undefined' && FUDA_LOGO_PATH_D)
+    ? FUDA_LOGO_PATH_D.split(/(?=M)/).map(s => s.trim()).filter(Boolean)
+    : [];
+  const xfSubpath = (sp, ox, oy, tx, ty, scx, scy, deg) => {
+    if(!sp) return '';
+    const rad = (deg * Math.PI) / 180;
+    const c = Math.cos(rad), s = Math.sin(rad);
+    const tokens = sp.match(/[MLCZmlcz]|[-+]?\d*\.?\d+/g) || [];
+    const out = [];
+    let i = 0;
+    while(i < tokens.length){
+      const t = tokens[i];
+      if(/^[MLCZmlcz]$/.test(t)){ out.push(t); i++; }
+      else {
+        const x = (parseFloat(tokens[i]) - ox) * scx;
+        const y = (parseFloat(tokens[i + 1]) - oy) * scy;
+        out.push(`${(x * c - y * s + tx).toFixed(1)},${(x * s + y * c + ty).toFixed(1)}`);
+        i += 2;
+      }
+    }
+    return out.join(' ');
+  };
+  const xfGroup = (idxs, ox, oy, tx, ty, scx, scy, deg) => idxs.map(idx => xfSubpath(fudaSubs[idx] || '', ox, oy, tx, ty, scx, scy, deg)).join(' ');
+  const sampleSub = (sp, step = 2.0) => {
+    const tokens = (sp || '').match(/[MLCZmlcz]|[-+]?\d*\.?\d+/g) || [];
+    const pts = [];
+    let idx = 0, cx = 0, cy = 0, cmd = 'M';
+    while(idx < tokens.length){
+      const t = tokens[idx];
+      if(/^[MLCZmlcz]$/.test(t)){ cmd = t; idx++; continue; }
+      if(cmd === 'M'){ cx = parseFloat(tokens[idx]); cy = parseFloat(tokens[idx+1]); pts.push([cx, cy]); idx += 2; cmd = 'L'; }
+      else if(cmd === 'L'){ cx = parseFloat(tokens[idx]); cy = parseFloat(tokens[idx+1]); pts.push([cx, cy]); idx += 2; }
+      else if(cmd === 'C'){
+        const x1 = parseFloat(tokens[idx]), y1 = parseFloat(tokens[idx+1]);
+        const x2 = parseFloat(tokens[idx+2]), y2 = parseFloat(tokens[idx+3]);
+        const x3 = parseFloat(tokens[idx+4]), y3 = parseFloat(tokens[idx+5]);
+        const n = Math.max(1, Math.min(8, Math.ceil(Math.hypot(x3 - cx, y3 - cy) / step)));
+        for(let k = 1; k <= n; k++){
+          const u = k / n, mu = 1 - u;
+          pts.push([mu*mu*mu*cx + 3*mu*mu*u*x1 + 3*mu*u*u*x2 + u*u*u*x3, mu*mu*mu*cy + 3*mu*mu*u*y1 + 3*mu*u*u*y2 + u*u*u*y3]);
+        }
+        cx = x3; cy = y3; idx += 6;
+      } else { idx++; }
+    }
+    if(pts.length > 2 && Math.hypot(pts[pts.length-1][0] - pts[0][0], pts[pts.length-1][1] - pts[0][1]) < 0.2) pts.pop();
+    return pts;
+  };
+  const polyDCw = pts => {
+    let a = 0;
+    for(let i = 0, n = pts.length; i < n; i++){
+      const p1 = pts[i], p2 = pts[(i + 1) % n];
+      a += p1[0] * p2[1] - p2[0] * p1[1];
+    }
+    const cw = a > 0 ? pts : pts.slice().reverse();
+    return 'M' + cw.map(p => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join('L') + 'Z';
+  };
+  const ptInPoly = (x, y, pts) => {
+    let inside = false;
+    for(let i = 0, n = pts.length, j = n - 1; i < n; j = i++){
+      const xi = pts[i][0], yi = pts[i][1], xj = pts[j][0], yj = pts[j][1];
+      if(((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi + 1e-12) + xi)) inside = !inside;
+    }
+    return inside;
+  };
+  const ptInLoopsEO = (x, y, loops) => {
+    let c = false;
+    for(const lp of loops){ if(ptInPoly(x, y, lp)) c = !c; }
+    return c;
+  };
+  const isClearOfFront = (x, y, loops, minDist) => {
+    if(ptInLoopsEO(x, y, loops)) return false;
+    const md2 = minDist * minDist;
+    for(const lp of loops){
+      for(let i = 0, n = lp.length; i < n; i++){
+        const ax = lp[i][0], ay = lp[i][1], bx = lp[(i+1)%n][0], by = lp[(i+1)%n][1];
+        const vx = bx - ax, vy = by - ay, wx = x - ax, wy = y - ay;
+        const l2 = vx*vx + vy*vy;
+        const t = l2 <= 1e-9 ? 0 : Math.max(0, Math.min(1, (wx*vx + wy*vy) / l2));
+        const dx = x - (ax + t*vx), dy = y - (ay + t*vy);
+        if(dx*dx + dy*dy < md2) return false;
+      }
+    }
+    return true;
+  };
+  const build3dHatchedSvg = (loops, ex, ey, gap = 5.5, rimFrac = 0.75, plaqueOnly = false) => {
+    if(!loops || !loops.length) return '';
+    const elen = Math.hypot(ex, ey) || 1, eux = ex / elen, euy = ey / elen;
+    const frontD = loops.map(lp => 'M' + lp.map(p => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join('L') + 'Z').join(' ');
+    const extrudePolys = [];
+    const targetLoops = loops.filter((lp, idx) => {
+      if(plaqueOnly) return idx === 0;
+      let a = 0;
+      for(let i = 0, n = lp.length; i < n; i++) a += lp[i][0]*lp[(i+1)%n][1] - lp[(i+1)%n][0]*lp[i][1];
+      return Math.abs(a * 0.5) > 3500;
+    });
+    for(const lp of targetLoops){
+      const dense = [];
+      for(let i = 0, n = lp.length; i < n; i++){
+        const ax = lp[i][0], ay = lp[i][1], bx = lp[(i+1)%n][0], by = lp[(i+1)%n][1];
+        const steps = Math.max(1, Math.ceil(Math.hypot(bx - ax, by - ay) / 2.2));
+        for(let k = 0; k < steps; k++){
+          const t = k / steps;
+          dense.push([ax + (bx - ax)*t, ay + (by - ay)*t]);
+        }
+      }
+      const m = dense.length;
+      if(m < 6) continue;
+      const active = new Array(m).fill(false);
+      for(let i = 0; i < m; i++){
+        const pPrev = dense[(i - 1 + m) % m], pNext = dense[(i + 1) % m];
+        let tx = pNext[0] - pPrev[0], ty = pNext[1] - pPrev[1];
+        const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
+        let nx = -ty, ny = tx;
+        const mx = dense[i][0], my = dense[i][1];
+        if(ptInLoopsEO(mx + nx * 2.5, my + ny * 2.5, loops)){ nx = -nx; ny = -ny; }
+        if(nx * eux + ny * euy > 0.16 && isClearOfFront(mx + ex * 0.88, my + ey * 0.88, loops, gap)) active[i] = true;
+      }
+      const chains = [];
+      if(active.every(Boolean)){ chains.push(dense); }
+      else {
+        let start = 0; while(start < m && active[start]) start++;
+        let cur = [];
+        for(let k = 0; k < m; k++){
+          const idx = (start + k) % m;
+          if(active[idx]) cur.push(dense[idx]);
+          else { if(cur.length >= 4) chains.push(cur); cur = []; }
+        }
+        if(cur.length >= 4) chains.push(cur);
+      }
+      const fracIn = gap / elen;
+      for(const ch of chains){
+        for(let k = 0; k < ch.length - 1; k++){
+          const p0 = ch[k], p1 = ch[k+1];
+          extrudePolys.push(polyDCw([
+            [p0[0] + ex*rimFrac, p0[1] + ey*rimFrac], [p1[0] + ex*rimFrac, p1[1] + ey*rimFrac],
+            [p1[0] + ex*1.02, p1[1] + ey*1.02], [p0[0] + ex*1.02, p0[1] + ey*1.02]
+          ]));
+        }
+        for(const endIdx of [0, ch.length - 2]){
+          const p0 = ch[endIdx], p1 = ch[endIdx + 1];
+          extrudePolys.push(polyDCw([
+            [p0[0] + ex*fracIn, p0[1] + ey*fracIn], [p1[0] + ex*fracIn, p1[1] + ey*fracIn],
+            [p1[0] + ex, p1[1] + ey], [p0[0] + ex, p0[1] + ey]
+          ]));
+        }
+        const stepI = 7, wI = 3, slantI = 3;
+        for(let k = 2; k < ch.length - wI - slantI - 1; k += stepI){
+          const a0 = ch[k], a1 = ch[k + wI], b0 = ch[k + slantI], b1 = ch[k + slantI + wI];
+          if(isClearOfFront((a0[0] + b1[0])*0.5 + ex*0.5, (a0[1] + b1[1])*0.5 + ey*0.5, loops, gap * 0.85)){
+            extrudePolys.push(polyDCw([
+              [a0[0] + ex*fracIn, a0[1] + ey*fracIn], [a1[0] + ex*fracIn, a1[1] + ey*fracIn],
+              [b1[0] + ex*(rimFrac + 0.08), b1[1] + ey*(rimFrac + 0.08)], [b0[0] + ex*(rimFrac + 0.08), b0[1] + ey*(rimFrac + 0.08)]
+            ]));
+          }
+        }
+      }
+    }
+    return `<path fill-rule="evenodd" d="${frontD}"/><path fill-rule="nonzero" d="${extrudePolys.join(' ')}"/>`;
+  };
+  const getKakujiLoops = (ch, tx, ty, w, h, deg) => {
+    const x0 = -w * 0.5, y0 = -h * 0.5, rad = (deg * Math.PI) / 180, c = Math.cos(rad), s = Math.sin(rad);
+    const makeLp = uvs => uvs.map(([u, v]) => {
+      const lx = x0 + u * w, ly = y0 + v * h;
+      return [lx * c - ly * s + tx, lx * s + ly * c + ty];
+    });
+    const rcLp = (u0, v0, uw, vh) => makeLp([[u0, v0], [u0+uw, v0], [u0+uw, v0+vh], [u0, v0+vh]]);
+    if(ch === '仲'){
+      return [
+        makeLp([[0.08,0.0],[0.26,0.0],[0.26,0.28],[0.23,0.32],[0.23,1.0],[0.07,1.0],[0.07,0.36],[0.0,0.36],[0.0,0.20],[0.08,0.12]]),
+        makeLp([[0.59,0.0],[0.75,0.0],[0.75,0.18],[1.00,0.18],[1.00,0.76],[0.75,0.76],[0.75,1.00],[0.59,1.00],[0.59,0.76],[0.34,0.76],[0.34,0.18],[0.59,0.18]]),
+        rcLp(0.48, 0.32, 0.11, 0.30), rcLp(0.75, 0.32, 0.11, 0.30)
+      ];
+    }
+    if(ch === '羽'){
+      const st = 0.165, wW = 0.455;
+      return [0.0, 0.545].map(off => makeLp([
+        [off+0.06, 0.0], [off+wW, 0.0], [off+wW, 1.0], [off+0.10, 1.0], [off+0.04, 1.0-st], [off+wW-st, 1.0-st],
+        [off+wW-st, 0.72], [off+0.04, 0.72], [off+0.04, 0.58], [off+wW-st, 0.58],
+        [off+wW-st, 0.44], [off+0.04, 0.44], [off+0.04, 0.30], [off+wW-st, 0.30], [off+wW-st, st], [off, st], [off, 0.06]
+      ]));
+    }
+    const st = 0.185, hW = (1.0 - 3 * st) * 0.5;
+    return [rcLp(0, 0, 1, 1), rcLp(st, st, hW, hW), rcLp(2*st+hW, st, hW, hW), rcLp(st, 2*st+hW, hW, hW), rcLp(2*st+hW, 2*st+hW, hW, hW)];
+  };
+  const getCharLoops = (idxs, ox, oy, tx, ty, sc, deg) => {
+    const rad = (deg * Math.PI) / 180, c = Math.cos(rad), s = Math.sin(rad);
+    return idxs.map(i => sampleSub(fudaSubs[i] || '', 2.0).map(([x, y]) => {
+      const lx = (x - ox) * sc, ly = (y - oy) * sc;
+      return [lx * c - ly * s + tx, lx * s + ly * c + ty];
+    })).filter(lp => lp.length >= 3);
+  };
+  const roundedPlaqueLoops = (tx, ty, w, h, r, deg, charLoopsFn, holeR = 14) => {
+    const rad = (deg * Math.PI) / 180, c = Math.cos(rad), s = Math.sin(rad), hw = w * 0.5, hh = h * 0.5;
+    const pts = [];
+    const corners = [[hw-r, -hh+r, -Math.PI/2, 0], [hw-r, hh-r, 0, Math.PI/2], [-hw+r, hh-r, Math.PI/2, Math.PI], [-hw+r, -hh+r, Math.PI, 1.5*Math.PI]];
+    for(const [ccx, ccy, a0, a1] of corners){
+      for(let k = 0; k <= 8; k++){
+        const a = a0 + (a1 - a0) * (k / 8), lx = ccx + Math.cos(a) * r, ly = ccy + Math.sin(a) * r;
+        pts.push([lx * c - ly * s + tx, lx * s + ly * c + ty]);
+      }
+    }
+    const loops = [pts];
+    if(holeR > 0){
+      const hpts = [], hy = -hh + holeR + 18;
+      for(let k = 0; k < 16; k++){
+        const a = (2 * Math.PI * k) / 16, lx = Math.cos(a) * holeR, ly = hy + Math.sin(a) * holeR;
+        hpts.push([lx * c - ly * s + tx, lx * s + ly * c + ty]);
+      }
+      loops.push(hpts);
+    }
+    const cyOff = holeR > 0 ? 16 : 0;
+    return loops.concat(charLoopsFn(-cyOff * s + tx, cyOff * c + ty, deg));
+  };
+  const braidedRopeD = (x0, y0, x1, y1, r = 11) => {
+    const dx = x1 - x0, dy = y1 - y0, dist = Math.hypot(dx, dy) || 1;
+    const ux = dx / dist, uy = dy / dist, nx = -uy, ny = ux;
+    const steps = Math.max(3, Math.floor(dist / 22));
+    const polys = [];
+    for(let k = 0; k < steps; k++){
+      const t0 = (k + 0.08) / steps, t1 = (k + 0.86) / steps;
+      const ax = x0 + dx * t0, ay = y0 + dy * t0, bx = x0 + dx * t1, by = y0 + dy * t1;
+      const sw = r * (k % 2 === 0 ? 1 : -1) * 0.22;
+      polys.push(polyDCw([[ax + nx*(r+sw), ay + ny*(r+sw)], [bx + nx*(r-sw), by + ny*(r-sw)], [bx - nx*(r+sw), by - ny*(r+sw)], [ax - nx*(r-sw), ay - ny*(r-sw)]]));
+    }
+    return polys.join(' ');
+  };
+  const NAKA_IDXS = [50, 44, 45], HANE_IDXS = [72, 62, 65, 68], TA_IDXS = [100, 81, 84, 92, 94];
+  const SHAKE_L = [115, 116, 117], SHAKE_R = [118, 119, 120];
+  const KNOT_IDXS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19, 21, 22, 23, 29];
+  const LEFT_PLQ = [103, 114, 0, 32, 34, 36, 49, 52, 56, 58, 61, 64, 67, 71, 75, 78, 82, 86, 89, 95, 98, 101, 102, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113];
+  const RIGHT_PLQ = [91, 99, 25, 26, 27, 30, 15, 20, 24, 28, 31, 33, 35, 37, 38, 40, 42, 43, 47, 48, 51, 53, 55, 57, 60, 63, 66, 70, 73, 76, 77, 80, 85, 87, 88, 90, 93, 96, 97];
+  const UP_KNOT = KNOT_IDXS.map(i => xfSubpath(fudaSubs[i] || '', 228.4, 110.3, 0, 0, 1, 1, 0));
+  const UP_SHKL = SHAKE_L.map(i => xfSubpath(fudaSubs[i] || '', 16.0, 504.2, 0, 0, 1, 1, 0));
+  const UP_SHKR = SHAKE_R.map(i => xfSubpath(fudaSubs[i] || '', 541.4, 427.4, 0, 0, 1, 1, 0));
+  const placeSpList = (spList, tx, ty, scx, scy, deg) => spList.map(sp => xfSubpath(sp, 0, 0, tx, ty, scx, scy, deg)).join(' ');
+  const sc15 = 1.56, ox15 = 268.0, oy15 = 300.0, tx15 = 500.0, ty15 = 510.0;
+
+  return {
+    '__BUILTIN_MANGA_1__': wrapSvg(
+      build3dHatchedSvg(getCharLoops(NAKA_IDXS, 187.1, 275.7, 465, 205, 2.38, -13.1 - 14), 26, 20, 6.0) +
+      build3dHatchedSvg(getCharLoops(HANE_IDXS, 162.8, 376.4, 525, 495, 2.32, -13.1 + 15), 26, 20, 6.0) +
+      build3dHatchedSvg(getCharLoops(TA_IDXS, 143.8, 464.3, 465, 785, 2.38, -13.1 - 12), 26, 20, 6.0) +
+      `<path fill-rule="evenodd" d="${placeSpList(UP_SHKL,195,225,1.55,1.55,20)} ${placeSpList(UP_SHKR,755,165,1.55,1.55,-18)} ${placeSpList(UP_SHKL,235,465,1.55,1.55,35)} ${placeSpList(UP_SHKR,815,525,1.55,1.55,12)} ${placeSpList(UP_SHKL,190,805,1.55,1.55,10)} ${placeSpList(UP_SHKR,755,765,1.55,1.55,-15)}"/>`
+    ),
+    '__BUILTIN_MANGA_2__': wrapSvg(
+      build3dHatchedSvg(getKakujiLoops('仲', 465, 205, 225, 210, -13), 26, 20, 6.0) +
+      build3dHatchedSvg(getKakujiLoops('羽', 525, 495, 225, 210, 14), 26, 20, 6.0) +
+      build3dHatchedSvg(getKakujiLoops('田', 465, 785, 225, 210, -11), 26, 20, 6.0) +
+      `<path fill-rule="evenodd" d="${placeSpList(UP_SHKL,185,225,1.55,1.55,20)} ${placeSpList(UP_SHKR,760,165,1.55,1.55,-18)} ${placeSpList(UP_SHKL,235,465,1.55,1.55,35)} ${placeSpList(UP_SHKR,820,525,1.55,1.55,12)} ${placeSpList(UP_SHKL,185,805,1.55,1.55,10)} ${placeSpList(UP_SHKR,760,765,1.55,1.55,-15)}"/>`
+    ),
+    '__BUILTIN_MANGA_3__': wrapSvg(
+      `<path fill-rule="evenodd" d="${xfGroup(KNOT_IDXS.concat(LEFT_PLQ,NAKA_IDXS,HANE_IDXS,TA_IDXS,RIGHT_PLQ,SHAKE_L,SHAKE_R),ox15,oy15,tx15,ty15,sc15,sc15,0)} ${xfGroup(NAKA_IDXS,187.1,275.7,tx15+(302-ox15)*sc15,ty15+(222-oy15)*sc15,sc15*0.96,sc15*0.96,-13.1-21.2)} ${xfGroup(HANE_IDXS,162.8,376.4,tx15+(338-ox15)*sc15,ty15+(315-oy15)*sc15,sc15*0.96,sc15*0.96,-13.1-21.2)} ${xfGroup(TA_IDXS,143.8,464.3,tx15+(374-ox15)*sc15,ty15+(408-oy15)*sc15,sc15*0.96,sc15*0.96,-13.1-21.2)} ${placeSpList(UP_SHKL,115,290,1.35,1.35,38)} ${placeSpList(UP_SHKR,875,225,1.35,1.35,-35)}"/>`
+    ),
+    '__BUILTIN_MANGA_4__': wrapSvg(
+      `<path fill-rule="evenodd" d="${placeSpList(UP_KNOT,500,135,1.55,1.55,0)}"/><path fill-rule="nonzero" d="${braidedRopeD(460,215,275,345,11)} ${braidedRopeD(500,235,492,405,11)} ${braidedRopeD(540,215,725,330,11)}"/>` +
+      build3dHatchedSvg(roundedPlaqueLoops(215, 520, 215, 340, 36, 18, (cx, cy, dg) => getCharLoops(NAKA_IDXS, 187.1, 275.7, cx, cy, 1.85, -13.1 + dg)), 24, 18, 5.5, 0.75, true) +
+      build3dHatchedSvg(roundedPlaqueLoops(500, 595, 215, 340, 36, -6, (cx, cy, dg) => getCharLoops(HANE_IDXS, 162.8, 376.4, cx, cy, 1.82, -13.1 + dg)), 24, 18, 5.5, 0.75, true) +
+      build3dHatchedSvg(roundedPlaqueLoops(785, 505, 215, 340, 36, -20, (cx, cy, dg) => getCharLoops(TA_IDXS, 143.8, 464.3, cx, cy, 1.85, -13.1 + dg)), 24, 18, 5.5, 0.75, true) +
+      `<path fill-rule="evenodd" d="${placeSpList(UP_SHKL,62,680,1.35,1.35,8)} ${placeSpList(UP_SHKL,82,330,1.25,1.25,42)} ${placeSpList(UP_SHKR,938,645,1.35,1.35,-6)} ${placeSpList(UP_SHKR,918,310,1.25,1.25,-42)} ${placeSpList(UP_SHKL,365,845,1.25,1.25,-30)} ${placeSpList(UP_SHKR,645,835,1.25,1.25,28)}"/>`
+    ),
+    '__BUILTIN_MANGA_5__': wrapSvg(
+      build3dHatchedSvg(getCharLoops(NAKA_IDXS, 187.1, 275.7, 490, 255, 2.75, -13.1 - 11), 28, 22, 6.5) +
+      build3dHatchedSvg(getCharLoops(HANE_IDXS, 162.8, 376.4, 270, 665, 2.65, -13.1 - 16), 28, 22, 6.5) +
+      build3dHatchedSvg(getCharLoops(TA_IDXS, 143.8, 464.3, 715, 665, 2.75, -13.1 + 16), 28, 22, 6.5) +
+      `<path fill-rule="evenodd" d="${placeSpList(UP_SHKL,195,235,1.55,1.55,28)} ${placeSpList(UP_SHKR,785,195,1.55,1.55,-24)} ${placeSpList(UP_SHKL,68,825,1.55,1.55,-5)} ${placeSpList(UP_SHKL,75,485,1.35,1.35,42)} ${placeSpList(UP_SHKR,928,815,1.55,1.55,8)} ${placeSpList(UP_SHKR,918,475,1.35,1.35,-38)}"/>`
+    ),
+    '__BUILTIN_MANGA_6__': wrapSvg(
+      build3dHatchedSvg(getCharLoops(NAKA_IDXS, 187.1, 275.7, 200, 540, 2.35, -13.1 - 16), 25, 20, 6.0) +
+      build3dHatchedSvg(getCharLoops(HANE_IDXS, 162.8, 376.4, 495, 435, 2.35, -13.1 + 14), 25, 20, 6.0) +
+      build3dHatchedSvg(getCharLoops(TA_IDXS, 143.8, 464.3, 790, 545, 2.35, -13.1 - 13), 25, 20, 6.0) +
+      `<path fill-rule="evenodd" d="${placeSpList(UP_SHKL,58,355,1.45,1.45,42)} ${placeSpList(UP_SHKL,68,745,1.45,1.45,-12)} ${placeSpList(UP_SHKR,485,195,1.4,1.4,-55)} ${placeSpList(UP_SHKL,485,695,1.35,1.35,-35)} ${placeSpList(UP_SHKR,938,355,1.45,1.45,-35)} ${placeSpList(UP_SHKR,928,745,1.45,1.45,14)}"/>`
+    ),
+    '__BUILTIN_GOLD_1__': wrapSvg(
+      `<path fill-rule="evenodd" d="M500,40 A460,460 0 1,1 499.9,40 Z M500,88 A412,412 0 1,0 500.1,88 Z"/>` +
+      `<path fill-rule="evenodd" d="M500,108 A392,392 0 1,1 499.9,108 Z M500,120 A380,380 0 1,0 500.1,120 Z"/>` +
+      `<rect x="215" y="466" width="570" height="12"/><rect x="494" y="472" width="12" height="295"/>` +
+      `<path d="${gNaka(365,195,270,255)} ${gHane(215,495,255,255)} ${gTa(530,495,255,255)}"/>`
+    ),
+    '__BUILTIN_GOLD_2__': wrapSvg(
+      `<path fill-rule="evenodd" d="${oct(220,47,560,906,55)} ${oct(254,81,492,838,42)}"/>` +
+      `<path fill-rule="evenodd" d="${oct(270,97,460,806,34)} ${oct(280,107,440,786,30)}"/>` +
+      `<rect x="330" y="361" width="340" height="10"/><rect x="330" y="627" width="340" height="10"/>` +
+      `<rect x="330" y="128" width="14" height="744"/><rect x="656" y="128" width="14" height="744"/>` +
+      `<path d="${gNaka(390,128,220,212)} ${gHane(390,394,220,212)} ${gTa(390,660,220,212)}"/>`
+    ),
+    '__BUILTIN_GOLD_3__': wrapSvg(
+      `<path d="${[wBlade([[330,310],[45,195],[75,275],[330,378]]),wBlade([[330,412],[95,325],[125,398],[330,476]]),wBlade([[330,510],[155,448],[182,514],[330,570]]),wBlade([[345,604],[225,562],[248,618],[360,658]])].join(' ')}"/>` +
+      `<path fill-rule="evenodd" d="M500,135 L655,210 L655,775 L500,865 L345,775 L345,210 Z M500,165 L629,228 L629,757 L500,833 L371,757 L371,228 Z"/>` +
+      `<path d="${gNaka(412,230,176,165)} ${gHane(412,420,176,165)} ${gTa(412,610,176,165)}"/>`
+    ),
+    '__BUILTIN_GOLD_4__': wrapSvg(
+      `<path fill-rule="evenodd" d="M500,50 L720,165 L720,930 L280,930 L280,165 Z M500,82 L692,182 L692,902 L308,902 L308,182 Z"/>` +
+      `<path fill-rule="evenodd" d="M500,104 L672,194 L672,882 L328,882 L328,194 Z M500,116 L660,200 L660,870 L340,870 L340,200 Z"/>` +
+      `<path fill-rule="evenodd" d="M500,141 A34,34 0 1,1 499.9,141 Z M500,157 A18,18 0 1,0 500.1,157 Z"/>` +
+      `<rect x="491" y="30" width="18" height="115" rx="4"/><rect x="340" y="218" width="320" height="12"/>` +
+      `<path d="${gNaka(395,255,210,185)} ${gHane(395,465,210,185)} ${gTa(395,675,210,185)}"/>`
+    ),
+    '__BUILTIN_GOLD_5__': wrapSvg(
+      `<path fill-rule="evenodd" d="M500,40 L960,500 L500,960 L40,500 Z M500,92 L908,500 L500,908 L92,500 Z"/>` +
+      `<path fill-rule="evenodd" d="M500,118 L882,500 L500,882 L118,500 Z M500,134 L866,500 L500,866 L134,500 Z"/>` +
+      `<rect x="255" y="413" width="490" height="10"/><rect x="495" y="413" width="10" height="230"/>` +
+      `<path d="${gNaka(405,225,190,180)} ${gHane(255,435,215,200)} ${gTa(530,435,215,200)} M360,675 L500,815 L640,675 L640,715 L500,855 L360,715 Z M415,675 L500,760 L585,675 L585,705 L500,790 L415,705 Z"/>`
+    ),
+    '__BUILTIN_GOLD_6__': wrapSvg(
+      `<path fill-rule="evenodd" d="M200,348 A152,152 0 1,1 199.9,348 Z M200,372 A128,128 0 1,0 200.1,372 Z"/>` +
+      `<path fill-rule="evenodd" d="M200,384 A116,116 0 1,1 199.9,384 Z M200,394 A106,106 0 1,0 200.1,394 Z"/>` +
+      `<rect x="372" y="348" width="10" height="304"/>` +
+      `<rect x="400" y="348" width="534" height="16"/><rect x="400" y="572" width="534" height="10"/><rect x="400" y="636" width="534" height="16"/>` +
+      `<rect x="400" y="596" width="204" height="24"/><rect x="618" y="596" width="126" height="24"/><rect x="758" y="596" width="78" height="24"/><rect x="850" y="596" width="48" height="24"/><rect x="910" y="596" width="24" height="24"/>` +
+      `<path d="${gNaka(136,436,128,128)} ${gNaka(400,385,162,162)} ${gHane(586,385,162,162)} ${gTa(772,385,162,162)}"/>`
+    ),
+    '__BUILTIN_WAVE_1__': wrapSvg(
+      `<path d="${waveArcBand(500,500,462,416,152,388,8,5,0,64)} ${waveArcBand(500,500,396,382,158,382,5,5,Math.PI,56)}"/>` +
+      `<path d="${gNaka(370,155,260,235,swellFn)} ${gHane(205,420,260,230,swellFn)} ${gTa(535,420,260,230,swellFn)}"/>` +
+      `<path d="${waveRibbonH(95,905,700,28,2.5,0.0,8,30,8,48)} ${waveRibbonH(125,875,756,24,2.5,0.85,6,26,6,48)} ${waveRibbonH(168,832,810,20,2.5,1.70,5,22,5,44)} ${waveRibbonH(228,772,860,16,2.0,2.55,4,18,4,40)} ${waveRibbonH(310,690,906,12,1.5,3.40,3,14,3,36)}"/>`
+    ),
+    '__BUILTIN_WAVE_2__': wrapSvg(
+      `<path d="M500,52 L720,168 L700,192 L500,86 L300,192 L280,168 Z ${waveRibbonV(165,920,292,13,2.0,0,22,24,22,40)} ${waveRibbonV(165,920,708,13,2.0,0,22,24,22,40)} ${waveRibbonV(185,900,326,13,2.0,0,10,11,10,40)} ${waveRibbonV(185,900,674,13,2.0,0,10,11,10,40)} ${waveRibbonH(280,720,916,6,1.5,0,22,24,22,28)} ${waveRibbonH(335,665,426,7,1.5,0.5,10,12,10,24)} ${waveRibbonH(335,665,656,7,1.5,1.5,10,12,10,24)}"/>` +
+      `<path fill-rule="evenodd" d="M500,126 A30,30 0 1,1 499.9,126 Z M500,140 A16,16 0 1,0 500.1,140 Z"/>` +
+      `<path d="${[waveRibbonH(65,295,265,14,1.5,0.0,4,18,20,28),waveRibbonH(95,298,365,13,1.5,0.9,4,17,19,28),waveRibbonH(48,292,465,16,1.8,1.8,4,19,21,28),waveRibbonH(85,296,565,14,1.5,2.7,4,17,19,28),waveRibbonH(55,292,665,15,1.7,3.6,4,18,20,28),waveRibbonH(115,298,765,12,1.4,4.5,4,16,18,28),waveRibbonH(702,935,265,14,1.5,0.5,20,18,4,28),waveRibbonH(705,905,365,13,1.5,1.4,19,17,4,28),waveRibbonH(700,952,465,16,1.8,2.3,21,19,4,28),waveRibbonH(704,915,565,14,1.5,3.2,19,17,4,28),waveRibbonH(700,945,665,15,1.7,4.1,20,18,4,28),waveRibbonH(706,885,765,12,1.4,5.0,18,16,4,28)].join(' ')}"/>` +
+      `<path d="${gNaka(395,215,210,195,swayFn)} ${gHane(395,445,210,195,swayFn)} ${gTa(395,675,210,195,swayFn)}"/>`
+    ),
+    '__BUILTIN_WAVE_3__': wrapSvg(
+      `<path d="${[waveRibbonH(42,352,290,28,1.25,0.2,4,34,24,40),waveRibbonH(78,352,415,24,1.25,1.1,4,30,22,40),waveRibbonH(118,352,540,20,1.25,2.0,4,26,20,40),waveRibbonH(175,352,660,16,1.15,2.9,4,22,18,36),waveRibbonH(648,958,290,28,1.25,2.9,24,34,4,40),waveRibbonH(648,922,415,24,1.25,2.0,22,30,4,40),waveRibbonH(648,882,540,20,1.25,1.1,20,26,4,40),waveRibbonH(648,825,660,16,1.15,0.2,18,22,4,36)].join(' ')}"/>` +
+      `<path d="${waveRibbonV(195,795,355,8,1.5,0,18,22,18,36)} ${waveRibbonV(195,795,645,8,1.5,Math.PI,18,22,18,36)} M500,125 L662,202 L648,224 L500,152 L352,224 L338,202 Z M500,875 L662,792 L648,770 L500,848 L352,770 L338,792 Z"/>` +
+      `<path d="${gNaka(412,220,176,168,swayCoreFn)} ${gHane(412,416,176,168,swayCoreFn)} ${gTa(412,612,176,168,swayCoreFn)}"/>`
+    ),
+    '__BUILTIN_WAVE_4__': wrapSvg(
+      `<path d="${waveArcBand(500,500,464,404,115,395,16,4,0.4,72)} ${waveArcBand(500,500,386,356,135,370,12,4,1.6,64)} ${waveArcBand(500,500,458,422,-10,125,14,3,0.8,44)} ${waveRibbonH(145,855,768,26,2.0,0.3,6,30,8,44)} ${waveRibbonH(205,795,832,22,2.0,1.2,6,25,6,40)} ${waveRibbonH(285,715,892,16,1.5,2.1,4,18,4,36)}"/>` +
+      `<path d="${gNaka(375,225,250,225,vortexFn)} ${gHane(225,480,240,220,vortexFn)} ${gTa(535,480,240,220,vortexFn)}"/>`
+    ),
+    '__BUILTIN_WAVE_5__': wrapSvg(
+      `<path d="${waveRibbonV(70,930,235,22,2.0,0.0,10,26,10,48)} ${waveRibbonV(95,905,285,22,2.0,0.0,8,16,8,48)} ${waveRibbonV(120,880,325,22,2.0,0.0,6,12,6,48)} ${waveRibbonV(70,930,765,22,2.0,0.0,10,26,10,48)} ${waveRibbonV(95,905,715,22,2.0,0.0,8,16,8,48)} ${waveRibbonV(120,880,675,22,2.0,0.0,6,12,6,48)} ${waveRibbonH(225,775,82,12,1.5,0.2,14,22,14,36)} ${waveRibbonH(320,680,366,10,1.5,1.2,8,14,8,32)} ${waveRibbonH(320,680,630,10,1.5,2.4,8,14,8,32)} ${waveRibbonH(225,775,918,12,1.5,3.4,14,22,14,36)}"/>` +
+      `<path d="${gNaka(385,130,230,212,fullWaveFn)} ${gHane(385,394,230,212,fullWaveFn)} ${gTa(385,658,230,212,fullWaveFn)}"/>`
+    ),
+    '__BUILTIN_WAVE_6__': wrapSvg(
+      `<path d="${waveArcBand(200,500,156,130,140,400,5,4,0,48)} ${waveRibbonH(72,328,576,12,2.0,0.0,4,16,4,32)} ${waveRibbonH(98,302,612,10,2.0,1.2,4,13,4,28)} ${gNaka(136,412,128,128,(px,py)=>[px+5*Math.sin((py-412)/60),py])}"/>` +
+      `<path d="${waveRibbonV(336,658,372,8,1.5,0,6,12,6,28)} ${waveRibbonH(392,948,342,14,2.0,0.0,6,20,6,44)} ${waveRibbonH(405,935,376,10,2.0,0.8,4,12,4,44)} ${waveRibbonH(392,948,612,14,2.0,1.5,6,20,6,44)} ${waveRibbonH(405,935,646,10,2.0,2.3,4,12,4,44)}"/>` +
+      `<path d="${gNaka(400,410,160,160,waveTypeFn)} ${gHane(586,410,160,160,waveTypeFn)} ${gTa(772,410,160,160,waveTypeFn)}"/>`
+    )
+  };
+})();
+
 function resolveLogoDataUrl(url){
   if(url === '__BUILTIN_FUDA_TEAL__') return FUDA_LOGO_TEAL_URL;
   if(url === '__BUILTIN_FUDA_WHITE__') return FUDA_LOGO_WHITE_URL;
+  if(url && GOLDEN_LOGO_BUILDERS[url]) return GOLDEN_LOGO_BUILDERS[url];
   return url || '';
 }
 
@@ -2301,8 +2877,9 @@ const DEF={
   textSize:44, textSpacing:6, textOutlineW:5, textAngle:0, textX:50, textY:75,
   textRepeatMode:'none', textRepeatGapX:68, textRepeatGapY:68, textRepeatGridAngle:0, textRepeatAngleVar:0, textRepeatSizeVar:0,
   showBand:false, bandH:52,
-  // ダボ（ダボシャツ・鯉口・上下）＆生地の取り方パラメーター
+  // ダボ（ダボシャツ・鯉口・上下・ダボパンツ）＆生地の取り方パラメーター
   daboStyle:'dabo', // 'dabo' | 'koikuchi' | 'setup'
+  daboGarmentView:'both', // 'both' (上＋下 ダボパンツ) | 'top' (上・シャツのみ) | 'pants' (下・ダボパンツのみ拡大)
   daboCutMode:'adult7', // 'adult7' | 'adult8_crest' | '6piece' | 'backCenter' | '5piece'
   daboLogoTarget:'all', // 'all' | 'backOnly' | 'frontLOnly' | 'frontROnly' | 'pocketOnly' | 'frontOnly' | 'backPocket' | 'frontBack' | 'sleevesOnly'
   daboStripRot:'auto', // 'auto' | '0' | '-90' | '90' | '180'
@@ -2806,6 +3383,222 @@ function getDefaultLogoShelfItems(){
         logoRemoveBg: true, logoBgMode: 'white', logoThreshold: 225, logoSoftness: 18,
         logoMono: true, logoColor: '#877028', logoOutlineMm: 2.5, logoOutlineColor: '#ffffff'
       })
+    },
+    {
+      id: 'shelf_manga_1_brush3d',
+      name: '💥 ⑬札タッチ・筆文字3D激揺れ',
+      savedAt: Date.now() - 2100,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '札タッチ・筆文字3D激揺れ仲羽田',
+        logoDataUrl: '__BUILTIN_MANGA_1__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 5
+      })
+    },
+    {
+      id: 'shelf_manga_2_kaku3d',
+      name: '💥 ⑭札タッチ・立体角字ブルブル',
+      savedAt: Date.now() - 2200,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '札タッチ・立体角字3Dブルブル仲羽田',
+        logoDataUrl: '__BUILTIN_MANGA_2__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 5
+      })
+    },
+    {
+      id: 'shelf_manga_3_twinfuda',
+      name: '💥 ⑮夫婦揺れ木札(仲羽田×仲羽田)',
+      savedAt: Date.now() - 2300,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '夫婦揺れ木札・双璧仲羽田',
+        logoDataUrl: '__BUILTIN_MANGA_3__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 5
+      })
+    },
+    {
+      id: 'shelf_manga_4_triplefuda',
+      name: '💥 ⑯三連カチャカチャ揺れ木札',
+      savedAt: Date.now() - 2400,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '三連カチャカチャ揺れ木札・仲羽田',
+        logoDataUrl: '__BUILTIN_MANGA_4__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 5
+      })
+    },
+    {
+      id: 'shelf_manga_5_hinji3d',
+      name: '💥 ⑰漫画ドン！品字ジャンピング',
+      savedAt: Date.now() - 2500,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '漫画ドン！品字ジャンピング3D仲羽田',
+        logoDataUrl: '__BUILTIN_MANGA_5__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 5
+      })
+    },
+    {
+      id: 'shelf_manga_6_horiz3d',
+      name: '💥 ⑱横並びガタガタ・バウンド',
+      savedAt: Date.now() - 2600,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '横並びガタガタ・バウンド3D仲羽田',
+        logoDataUrl: '__BUILTIN_MANGA_6__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'roundRect', logoPadColorMode: 'bg', logoPadMarginMm: 5, logoPadCornerMm: 5
+      })
+    },
+    {
+      id: 'shelf_gold_1_circle',
+      name: '📐 ①黄金円・モダン丸紋',
+      savedAt: Date.now() - 3000,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金円・仲羽田丸紋',
+        logoDataUrl: '__BUILTIN_GOLD_1__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'circle', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
+      id: 'shelf_gold_2_monolith',
+      name: '📐 ②黄金長方形・角字モノリス',
+      savedAt: Date.now() - 3100,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金長方形・仲羽田モノリス',
+        logoDataUrl: '__BUILTIN_GOLD_2__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'roundRect', logoPadColorMode: 'bg', logoPadMarginMm: 6, logoPadCornerMm: 6
+      })
+    },
+    {
+      id: 'shelf_gold_3_wings',
+      name: '📐 ③黄金螺旋・飛翔ウイング紋',
+      savedAt: Date.now() - 3200,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金螺旋・仲羽田ウイング紋',
+        logoDataUrl: '__BUILTIN_GOLD_3__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#d4af37', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 5
+      })
+    },
+    {
+      id: 'shelf_gold_4_fuda',
+      name: '📐 ④黄金六角・モダン千社札',
+      savedAt: Date.now() - 3300,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金六角・モダン千社札',
+        logoDataUrl: '__BUILTIN_GOLD_4__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
+      id: 'shelf_gold_5_diamond',
+      name: '📐 ⑤黄金菱・ダイヤモンド紋',
+      savedAt: Date.now() - 3400,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金菱・仲羽田ダイヤモンド紋',
+        logoDataUrl: '__BUILTIN_GOLD_5__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
+      id: 'shelf_gold_6_lockup',
+      name: '📐 ⑥黄金分割・横組みロックアップ',
+      savedAt: Date.now() - 3500,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金分割・仲羽田ロックアップ',
+        logoDataUrl: '__BUILTIN_GOLD_6__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'roundRect', logoPadColorMode: 'bg', logoPadMarginMm: 5, logoPadCornerMm: 4
+      })
+    },
+    {
+      id: 'shelf_wave_1_seigaiha',
+      name: '🌊 ⑦黄金青海波・波頭丸紋',
+      savedAt: Date.now() - 3600,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金青海波・仲羽田波丸紋',
+        logoDataUrl: '__BUILTIN_WAVE_1__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'circle', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
+      id: 'shelf_wave_2_ripple_fuda',
+      name: '🌊 ⑧黄金揺らぎ・横揺れ波千社札',
+      savedAt: Date.now() - 3700,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金揺らぎ・横揺れ波千社札',
+        logoDataUrl: '__BUILTIN_WAVE_2__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 5
+      })
+    },
+    {
+      id: 'shelf_wave_3_kanzemizu',
+      name: '🌊 ⑨黄金観世水・流線うねり紋',
+      savedAt: Date.now() - 3800,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金観世水・流線うねり紋',
+        logoDataUrl: '__BUILTIN_WAVE_3__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'silhouette', logoPadColorMode: 'bg', logoPadMarginMm: 5
+      })
+    },
+    {
+      id: 'shelf_wave_4_vortex',
+      name: '🌊 ⑩黄金怒涛・大波うねり丸紋',
+      savedAt: Date.now() - 3900,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金怒涛・大波うねり丸紋',
+        logoDataUrl: '__BUILTIN_WAVE_4__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'circle', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
+      id: 'shelf_wave_5_undulating',
+      name: '🌊 ⑪黄金揺れ文字・波紋モノリス',
+      savedAt: Date.now() - 4000,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金揺れ文字・波紋三連モノリス',
+        logoDataUrl: '__BUILTIN_WAVE_5__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'roundRect', logoPadColorMode: 'bg', logoPadMarginMm: 6, logoPadCornerMm: 6
+      })
+    },
+    {
+      id: 'shelf_wave_6_lockup',
+      name: '🌊 ⑫黄金潮波・横組みウェーブ紋',
+      savedAt: Date.now() - 4100,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '黄金潮波・横組みウェーブ紋',
+        logoDataUrl: '__BUILTIN_WAVE_6__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'roundRect', logoPadColorMode: 'bg', logoPadMarginMm: 5, logoPadCornerMm: 4
+      })
     }
   ];
 }
@@ -2981,7 +3774,7 @@ async function addOrSaveLogoToShelf(customName, slotSource){
     slot: srcSlot
   };
   LOGO_SHELF.unshift(newItem);
-  if(LOGO_SHELF.length > 16) LOGO_SHELF = LOGO_SHELF.slice(0, 16);
+  if(LOGO_SHELF.length > 36) LOGO_SHELF = LOGO_SHELF.slice(0, 36);
   saveLogoShelfToStorage();
   renderLogoShelf();
 }
@@ -6208,9 +7001,10 @@ function clientToDaboStageXY(clientX, clientY){
   const vH = STAGE_METRICS.vH || r.height || 1;
   const vx = (clientX - r.left) * (vW / Math.max(1, r.width));
   const vy = (clientY - r.top) * (vH / Math.max(1, r.height));
+  const denom = Math.max(0.01, (STAGE_METRICS.baseS || 1) * ZOOM);
   return {
-    stageX: (vx - STAGE_METRICS.stageLeft) / Math.max(0.01, ZOOM),
-    stageY: (vy - STAGE_METRICS.stageTop) / Math.max(0.01, ZOOM)
+    stageX: (vx - STAGE_METRICS.stageLeft) / denom,
+    stageY: (vy - STAGE_METRICS.stageTop) / denom
   };
 }
 
@@ -6898,10 +7692,11 @@ let CUT_PART_RECTS = [], CUT_RESET_RECT = null, CUT_REC = false, CUT_DRAG = null
 // 裁断図およびダボ完成プレビューを一括描画（CSS拡大を使わずCanvas 2Dベクター行列＆直接ベクターストリップ描画で12倍ズームでも文字が一切ぼやけない設計）
 function drawDaboAndCutScene(targetCv, viewMode, exportMode){
   const dpr = exportMode ? 2.5 : Math.max(2, window.devicePixelRatio || 1);
-  const vW = exportMode ? 1600 : Math.max(520, Math.floor((box.clientWidth || 720) - 16));
-  const vH = exportMode ? 1020 : Math.max(440, Math.floor((box.clientHeight || 680) - 16));
-  const cw = vW;
-  const ch = vH;
+  const vW = exportMode ? 1600 : Math.max(260, Math.floor((box.clientWidth || 720) - 12));
+  const vH = exportMode ? 1020 : Math.max(170, Math.floor((box.clientHeight || 680) - 12));
+  const cw = exportMode ? 1600 : Math.max(vW, (viewMode === 'cut_dabo') ? 760 : 540);
+  const ch = exportMode ? 1020 : Math.max(vH, (viewMode === 'cut_dabo') ? 520 : 480);
+  const baseS = exportMode ? 1 : Math.min(1, vW / cw, vH / ch);
 
   if(!exportMode){
     DABO_HIT_ZONES = [];
@@ -6932,10 +7727,10 @@ function drawDaboAndCutScene(targetCv, viewMode, exportMode){
 
   // ズーム＆パン変換をCanvas 2Dコンテキストに直接適用（ベクター＆フォントが現在の拡大倍率で直接ラスタライズされる）
   if(!exportMode){
-    const stageLeft = vW * 0.5 + PAN_X - (cw * ZOOM) * 0.5;
-    const stageTop  = vH * 0.5 + PAN_Y - (ch * ZOOM) * 0.5;
-    STAGE_METRICS = { mode: 'dabo', stageLeft, stageTop, baseS: 1, cw, ch, vW, vH };
-    const effScale = ZOOM * dpr;
+    const stageLeft = vW * 0.5 + PAN_X - (cw * baseS * ZOOM) * 0.5;
+    const stageTop  = vH * 0.5 + PAN_Y - (ch * baseS * ZOOM) * 0.5;
+    STAGE_METRICS = { mode: 'dabo', stageLeft, stageTop, baseS, cw, ch, vW, vH };
+    const effScale = baseS * ZOOM * dpr;
     x.setTransform(effScale, 0, 0, effScale, stageLeft * dpr, stageTop * dpr);
   }
 
@@ -7226,7 +8021,7 @@ function traceCutPartShape(x, rx, ry, rw, rh, shape){
   }
 }
 
-// 👕 できた生地で仕立てたダボ（前面・背面・上下セット）パネル描画
+// 👕👖 できた生地で仕立てたダボ（前面・背面・ダボパンツ上下セット）パネル描画
 function drawDaboGarmentsPanel(x, px, py, pw, ph, plan, partMap, bodyCfg, exportMode){
   x.save();
   x.fillStyle = 'rgba(255,255,255,0.04)';
@@ -7234,45 +8029,73 @@ function drawDaboGarmentsPanel(x, px, py, pw, ph, plan, partMap, bodyCfg, export
   x.lineWidth = 1;
   x.beginPath(); x.roundRect(px, py, pw, ph, 10); x.fill(); x.stroke();
 
-  const styleJp = S.daboStyle === 'koikuchi' ? '鯉口シャツ（七分袖）' : (S.daboStyle === 'setup' ? 'ダボ上下セット' : 'ダボシャツ（広袖）');
+  const gView = (S.daboStyle === 'pants') ? 'pants' : (S.daboGarmentView || 'both');
+  const isKoi = (S.daboStyle === 'koikuchi');
+  const topJp = isKoi ? '鯉口シャツ（七分袖）' : 'ダボシャツ（広袖）';
+  const styleJp = gView === 'pants'
+    ? '👖 ダボパンツ（股引・ダボズボン）拡大プレビュー'
+    : (gView === 'top' ? ('👕 ' + topJp + '（上のみ）') : ('👕👖 ' + topJp + ' ＋ ダボパンツ（上下セット）'));
   x.fillStyle = '#ffffff';
   x.font = '700 13px sans-serif';
-  x.fillText('👕 仕上がりプレビュー：' + styleJp + ' 【' + (S.daboSize||'L') + '】', px + 14, py + 21, pw - 28);
+  x.fillText('仕上がりプレビュー：' + styleJp + ' 【' + (S.daboSize||'L') + '】', px + 14, py + 21, pw - 28);
   x.fillStyle = S.daboInteractiveLogo ? '#fde047' : '#bae6fd';
   x.font = '10px sans-serif';
   x.fillText(
     S.daboInteractiveLogo
-      ? '✍️ 直接配置モードON：ダボシャツの好きな部位をクリック/ドラッグすると、その位置に文字・ロゴが配置され手ぬぐいへ自動反映されます！'
-      : '💡 ダボシャツ上をダブルクリック（または上部の「✍️ ダボに直接文字を打つ」）で、好きな位置に直接文字をデザイン＆手ぬぐいへ自動反映！',
+      ? '✍️ 直接配置モードON：ダボシャツ・ダボパンツの好きな部位をクリック/ドラッグすると、その位置に文字・ロゴが配置され手ぬぐいへ自動反映されます！'
+      : '💡 ダボシャツ・ダボパンツ上をダブルクリック（または上部の「✍️ ダボに直接文字を打つ」）で、好きな位置に直接デザイン＆手ぬぐいへ自動反映！',
     px + 14, py + 36, pw - 28
   );
 
-  const isSetup = (S.daboStyle === 'setup');
   const innerY = py + 46;
   const innerH = ph - 54;
 
-  // パネル幅と高さの比率に応じて「左右2列」か「上下2段」かを自動選択し、シャツが絶対に見切れないようにする
-  const stackShirtsVert = !isSetup && (pw < innerH * 1.18);
-
-  if(isSetup){
-    const shirtAreaH = innerH * 0.57;
-    const pantsAreaH = innerH * 0.43;
+  if(gView === 'pants'){
+    // 👖 下（ダボパンツ）のみを大きく表示
+    const stackVert = (pw < innerH * 0.95);
+    if(stackVert){
+      const rowH = innerH / 2;
+      drawSingleDaboPants(x, px + pw * 0.5, innerY + rowH * 0.52, pw * 0.92, rowH * 0.92, 'front', partMap, bodyCfg, null, exportMode);
+      drawSingleDaboPants(x, px + pw * 0.5, innerY + rowH * 1.52, pw * 0.92, rowH * 0.92, 'back', partMap, bodyCfg, null, exportMode);
+    }else{
+      const colW = pw / 2;
+      drawSingleDaboPants(x, px + colW * 0.5, innerY + innerH * 0.52, colW * 0.92, innerH * 0.92, 'front', partMap, bodyCfg, null, exportMode);
+      drawSingleDaboPants(x, px + colW * 1.5, innerY + innerH * 0.52, colW * 0.92, innerH * 0.92, 'back', partMap, bodyCfg, null, exportMode);
+    }
+  }else if(gView === 'top'){
+    // 👕 上（シャツ）のみを大きく表示
+    const stackShirtsVert = (pw < innerH * 1.18);
+    if(stackShirtsVert){
+      const rowH = innerH / 2;
+      drawSingleDaboShirt(x, px + pw * 0.5, innerY + rowH * 0.51, pw * 0.94, rowH * 0.94, 'front', partMap, bodyCfg, exportMode);
+      drawSingleDaboShirt(x, px + pw * 0.5, innerY + rowH * 1.51, pw * 0.94, rowH * 0.94, 'back', partMap, bodyCfg, exportMode);
+    }else{
+      const colW = pw / 2;
+      drawSingleDaboShirt(x, px + colW * 0.5, innerY + innerH * 0.52, colW * 0.95, innerH * 0.92, 'front', partMap, bodyCfg, exportMode);
+      drawSingleDaboShirt(x, px + colW * 1.5, innerY + innerH * 0.52, colW * 0.95, innerH * 0.92, 'back', partMap, bodyCfg, exportMode);
+    }
+  }else{
+    // 👕👖 上下とも表示（上段：シャツ前面・背面 ／ 下段：ダボパンツ前面・背面）
+    const shirtAreaH = innerH * 0.54;
+    const pantsAreaH = innerH * 0.46;
     const colW = pw / 2;
     const shirtSUnit = Math.min((colW * 0.95) / 350, (shirtAreaH * 0.94) / 265);
-    drawSingleDaboShirt(x, px + colW * 0.5, innerY + shirtAreaH * 0.52, colW * 0.95, shirtAreaH * 0.94, 'front', partMap, bodyCfg, exportMode);
-    drawSingleDaboShirt(x, px + colW * 1.5, innerY + shirtAreaH * 0.52, colW * 0.95, shirtAreaH * 0.94, 'back', partMap, bodyCfg, exportMode);
+    drawSingleDaboShirt(x, px + colW * 0.5, innerY + shirtAreaH * 0.51, colW * 0.95, shirtAreaH * 0.94, 'front', partMap, bodyCfg, exportMode);
+    drawSingleDaboShirt(x, px + colW * 1.5, innerY + shirtAreaH * 0.51, colW * 0.95, shirtAreaH * 0.94, 'back', partMap, bodyCfg, exportMode);
+
+    // 上下の区切りガイド線（さりげなく）
+    x.save();
+    x.strokeStyle = 'rgba(255,255,255,0.10)';
+    x.setLineDash([4, 4]);
+    x.beginPath();
+    x.moveTo(px + 18, innerY + shirtAreaH + 1);
+    x.lineTo(px + pw - 18, innerY + shirtAreaH + 1);
+    x.stroke();
+    x.restore();
 
     const pantsY = innerY + shirtAreaH + pantsAreaH * 0.52;
-    drawSingleDaboPants(x, px + colW * 0.5, pantsY, colW * 0.88, pantsAreaH * 0.92, 'front', partMap, bodyCfg, shirtSUnit);
-    drawSingleDaboPants(x, px + colW * 1.5, pantsY, colW * 0.88, pantsAreaH * 0.92, 'back', partMap, bodyCfg, shirtSUnit);
-  }else if(stackShirtsVert){
-    const rowH = innerH / 2;
-    drawSingleDaboShirt(x, px + pw * 0.5, innerY + rowH * 0.51, pw * 0.94, rowH * 0.94, 'front', partMap, bodyCfg, exportMode);
-    drawSingleDaboShirt(x, px + pw * 0.5, innerY + rowH * 1.51, pw * 0.94, rowH * 0.94, 'back', partMap, bodyCfg, exportMode);
-  }else{
-    const colW = pw / 2;
-    drawSingleDaboShirt(x, px + colW * 0.5, innerY + innerH * 0.52, colW * 0.95, innerH * 0.92, 'front', partMap, bodyCfg, exportMode);
-    drawSingleDaboShirt(x, px + colW * 1.5, innerY + innerH * 0.52, colW * 0.95, innerH * 0.92, 'back', partMap, bodyCfg, exportMode);
+    drawSingleDaboPants(x, px + colW * 0.5, pantsY, colW * 0.92, pantsAreaH * 0.94, 'front', partMap, bodyCfg, shirtSUnit, exportMode);
+    drawSingleDaboPants(x, px + colW * 1.5, pantsY, colW * 0.92, pantsAreaH * 0.94, 'back', partMap, bodyCfg, shirtSUnit, exportMode);
   }
   x.restore();
 }
@@ -7979,31 +8802,50 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
   x.restore();
 }
 
-// ダボズボン（上下セット時）の描画
-function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shirtSUnit){
-  const S_unit = Math.min(maxW / 180, maxH / 180);
+// 👖 ダボパンツ（ダボズボン・股引風ゆったり祭礼パンツ）の前面・背面をリアルに描画
+function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shirtSUnit, exportMode){
+  // バウンディングボックス: 横幅 230 (-115..+115), 縦幅 225 (-112..+113)
+  const S_unit = Math.min(maxW / 230, maxH / 225);
+  const centerStageY = cy + 4 * S_unit;
   x.save();
-  x.translate(cx, cy);
+  x.translate(cx, centerStageY);
   x.scale(S_unit, S_unit);
 
-  const topY = -78, botY = 78, crotchY = -18;
-  const waistW = 44, hipW = 54, ankleW = 34;
+  // ラベルバッジ（前面＝青、背面＝琥珀色でダボシャツと統一）
+  x.save();
+  x.fillStyle = side === 'front' ? '#0284c7' : '#d97706';
+  x.beginPath(); x.roundRect(-86, -108, 172, 19, 99); x.fill();
+  x.fillStyle = '#ffffff'; x.font = '700 10px sans-serif'; x.textAlign = 'center';
+  const badgeTitle = side === 'front'
+    ? '【前 面】ダボパンツ（腰紐・両脇ポケ）'
+    : '【背 面】ダボパンツ（右尻ポケット）';
+  x.fillText(badgeTitle, 0, -95);
+  x.restore();
 
+  const topY = -80, botY = 96, crotchY = -12;
+  const pantsH = botY - topY; // 176
+  const waistW = 48, hipW = 64, ankleOutX = 52, ankleInX = 11;
+
+  // 本物のダボパンツ（ワタリ広め・股マチ付き・裾にかけて緩やかにテーパード）のシルエット
   const tracePants = () => {
     x.beginPath();
     x.moveTo(-waistW, topY);
     x.lineTo(waistW, topY);
-    x.quadraticCurveTo(hipW, -40, hipW - 2, botY);
-    x.lineTo(hipW - ankleW, botY);
-    x.lineTo(0, crotchY);
-    x.lineTo(-(hipW - ankleW), botY);
-    x.lineTo(-(hipW - 2), botY);
-    x.quadraticCurveTo(-hipW, -40, -waistW, topY);
+    // 右脇（ウエスト -> ヒップ膨らみ -> 右足外裾）
+    x.quadraticCurveTo(hipW + 3, topY + 46, ankleOutX, botY);
+    // 右裾 -> 右内股 -> 股下マチ -> 左内股 -> 左裾
+    x.lineTo(ankleInX, botY);
+    x.quadraticCurveTo(8, crotchY + 28, 3, crotchY);
+    x.quadraticCurveTo(0, crotchY - 3, -3, crotchY);
+    x.quadraticCurveTo(-8, crotchY + 28, -ankleInX, botY);
+    x.lineTo(-ankleOutX, botY);
+    // 左脇（左足外裾 -> ヒップ膨らみ -> ウエスト）
+    x.quadraticCurveTo(-(hipW + 3), topY + 46, -waistW, topY);
     x.closePath();
   };
 
   x.save();
-  x.shadowColor = 'rgba(0,0,0,0.4)'; x.shadowBlur = 12; x.shadowOffsetY = 4;
+  x.shadowColor = 'rgba(0,0,0,0.45)'; x.shadowBlur = 14; x.shadowOffsetY = 5;
   tracePants();
   x.fillStyle = bodyCfg.bgColor || '#046e7e';
   x.fill();
@@ -8012,34 +8854,285 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
   x.save();
   tracePants();
   x.clip();
-  // ダボシャツと画面上の柄スケールが100%一致するようにズボン用の固定スケールを算出
-  const refEntry = partMap.frontR || partMap.backCenter;
+
+  // 手ぬぐいストリップの実寸スケールと統一して左右の脚にマッピング
+  const leftLegEntry = (side === 'front')
+    ? (partMap.frontR || partMap.backCenter)
+    : (partMap.backL || partMap.backCenter || partMap.frontL);
+  const rightLegEntry = (side === 'front')
+    ? (partMap.frontL || partMap.backCenter)
+    : (partMap.backR || partMap.backCenter || partMap.frontR);
+  const refEntry = leftLegEntry || rightLegEntry;
   const refCv = refEntry && refEntry.cv ? refEntry.cv : null;
   const longPx = refCv ? Math.max(1, Math.max(refCv.width, refCv.height)) : 1035;
-  const baseShirtScale = 206 / (0.86 * longPx);
-  const pantsFixedScale = shirtSUnit ? (baseShirtScale * (shirtSUnit / S_unit)) : baseShirtScale;
-  // 左右の脚に身頃ストリップをマッピング
-  drawCroppedPiece(x, partMap.frontR || partMap.backCenter, -hipW, topY, hipW, botY - topY, 0, undefined, pantsFixedScale);
-  drawCroppedPiece(x, partMap.frontL || partMap.backCenter, 0, topY, hipW, botY - topY, 0, undefined, pantsFixedScale);
+  // ズボン丈(176 units)が手ぬぐい1本の有効長(0.86 * longPx)に対応するスケール
+  const pantsFixedScale = pantsH / (0.86 * longPx);
 
-  // ウエストゴム帯＆陰影
-  x.fillStyle = 'rgba(0,0,0,0.22)';
-  x.fillRect(-waistW, topY, waistW*2, 12);
-  x.strokeStyle = 'rgba(0,0,0,0.4)'; x.lineWidth = 1.2;
-  x.beginPath(); x.moveTo(0, topY); x.lineTo(0, crotchY); x.stroke();
+  // 向かって左の脚 [-hipW .. 0]
+  x.save();
+  x.beginPath(); x.rect(-hipW - 4, topY - 4, hipW + 5, pantsH + 8); x.clip();
+  drawCroppedPiece(x, leftLegEntry, -hipW, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
   x.restore();
 
-  tracePants();
-  x.strokeStyle = 'rgba(0,0,0,0.5)'; x.lineWidth = 1.2; x.stroke();
+  // 向かって右の脚 [0 .. +hipW]
+  x.save();
+  x.beginPath(); x.rect(-1, topY - 4, hipW + 5, pantsH + 8); x.clip();
+  drawCroppedPiece(x, rightLegEntry, 0, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
+  x.restore();
 
-  // ウエスト紐（前面のみ）
-  if(side === 'front'){
-    x.strokeStyle = '#ffffff'; x.lineWidth = 1.8;
+  // 背面・右尻パッチポケット（向かって右のヒップ）
+  const pkX = 11, pkY = topY + 26, pkW = 36, pkH = 40;
+  if(side === 'back' && S.daboPocketMode !== 'none'){
+    const traceHipPocket = () => {
+      x.beginPath();
+      x.moveTo(pkX, pkY);
+      x.lineTo(pkX + pkW, pkY);
+      x.lineTo(pkX + pkW, pkY + pkH - 7);
+      x.lineTo(pkX + pkW * 0.5, pkY + pkH);
+      x.lineTo(pkX, pkY + pkH - 7);
+      x.closePath();
+    };
+    x.save();
+    x.shadowColor = 'rgba(0,0,0,0.35)'; x.shadowBlur = 4; x.shadowOffsetY = 1.5;
+    traceHipPocket();
+    x.fillStyle = bodyCfg.bgColor || '#046e7e';
+    x.fill();
+    x.restore();
+
+    x.save();
+    traceHipPocket();
+    x.clip();
+    const pkRot = (S.daboPocketMode === 'bias') ? 45 : 0;
+    const pkEntry = (S.daboLogoTarget === 'pocketOnly' || S.daboLogoTarget === 'backPocket')
+      ? (partMap.pocket || rightLegEntry)
+      : rightLegEntry;
+    if(pkRot === 0 && pkEntry === rightLegEntry){
+      drawCroppedPiece(x, rightLegEntry, 0, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
+    }else{
+      drawCroppedPiece(x, partMap.pocket || rightLegEntry, pkX, pkY, pkW, pkH, pkRot, undefined, pantsFixedScale);
+    }
+    // ポケット口折り返しステッチ
+    x.strokeStyle = 'rgba(255,255,255,0.45)';
+    x.lineWidth = 0.9;
+    x.setLineDash([2, 2]);
     x.beginPath();
-    x.moveTo(-4, topY + 6); x.quadraticCurveTo(-12, topY + 24, -8, topY + 34);
-    x.moveTo(4, topY + 6); x.quadraticCurveTo(12, topY + 24, 8, topY + 34);
+    x.moveTo(pkX + 2, pkY + 5); x.lineTo(pkX + pkW - 2, pkY + 5);
     x.stroke();
+    x.restore();
+
+    x.save();
+    traceHipPocket();
+    x.strokeStyle = 'rgba(0,0,0,0.58)';
+    x.lineWidth = 1.2;
+    x.stroke();
+    x.strokeStyle = 'rgba(255,255,255,0.38)';
+    x.lineWidth = 0.8;
+    x.setLineDash([2.2, 2.2]);
+    x.stroke();
+    x.restore();
   }
+
+  // 前面・両脇の斜めポケット口（スラッシュポケット）ステッチ
+  if(side === 'front'){
+    x.save();
+    x.strokeStyle = 'rgba(0,0,0,0.52)';
+    x.lineWidth = 1.3;
+    x.beginPath();
+    x.moveTo(-waistW + 5, topY + 15); x.lineTo(-hipW + 5, topY + 48);
+    x.moveTo(waistW - 5, topY + 15);  x.lineTo(hipW - 5, topY + 48);
+    x.stroke();
+    x.strokeStyle = 'rgba(255,255,255,0.42)';
+    x.lineWidth = 0.9;
+    x.setLineDash([2.2, 2.2]);
+    x.beginPath();
+    x.moveTo(-waistW + 7.5, topY + 15); x.lineTo(-hipW + 7.5, topY + 49);
+    x.moveTo(waistW - 7.5, topY + 15);  x.lineTo(hipW - 7.5, topY + 49);
+    x.stroke();
+    x.restore();
+  }
+
+  // 左右の脚の円筒立体ドレープ陰影
+  const legGradL = x.createLinearGradient(-hipW, 0, 0, 0);
+  legGradL.addColorStop(0, 'rgba(0,0,0,0.26)');
+  legGradL.addColorStop(0.25, 'rgba(0,0,0,0)');
+  legGradL.addColorStop(0.55, 'rgba(255,255,255,0.05)');
+  legGradL.addColorStop(1, 'rgba(0,0,0,0.22)');
+  x.fillStyle = legGradL;
+  x.fillRect(-hipW - 4, topY, hipW + 4, pantsH);
+
+  const legGradR = x.createLinearGradient(0, 0, hipW, 0);
+  legGradR.addColorStop(0, 'rgba(0,0,0,0.22)');
+  legGradR.addColorStop(0.45, 'rgba(255,255,255,0.05)');
+  legGradR.addColorStop(0.75, 'rgba(0,0,0,0)');
+  legGradR.addColorStop(1, 'rgba(0,0,0,0.26)');
+  x.fillStyle = legGradR;
+  x.fillRect(0, topY, hipW + 4, pantsH);
+
+  // ウエスト総ゴム・ギャザー帯（幅14px）
+  const wbH = 14;
+  x.fillStyle = 'rgba(0,0,0,0.26)';
+  x.fillRect(-waistW - 4, topY, (waistW + 4) * 2, wbH);
+  x.strokeStyle = 'rgba(0,0,0,0.48)';
+  x.lineWidth = 1.1;
+  x.beginPath();
+  x.moveTo(-waistW - 2, topY + wbH); x.lineTo(waistW + 2, topY + wbH);
+  // ゴムの縦ギャザーひだ
+  for(let gx = -waistW + 6; gx <= waistW - 6; gx += 6){
+    x.moveTo(gx, topY + 1.5); x.lineTo(gx, topY + wbH - 1.5);
+  }
+  x.stroke();
+  x.strokeStyle = 'rgba(255,255,255,0.28)';
+  x.lineWidth = 0.8;
+  x.setLineDash([2.5, 2.5]);
+  x.beginPath();
+  x.moveTo(-waistW, topY + wbH * 0.5); x.lineTo(waistW, topY + wbH * 0.5);
+  x.stroke();
+  x.setLineDash([]);
+
+  // 股上センター縫い目＆前立て／股マチステッチ
+  x.strokeStyle = 'rgba(0,0,0,0.48)';
+  x.lineWidth = 1.25;
+  x.beginPath();
+  x.moveTo(0, topY + wbH); x.lineTo(0, crotchY);
+  if(side === 'front'){
+    // 前立てJステッチ
+    x.moveTo(5.5, topY + wbH);
+    x.lineTo(5.5, crotchY - 14);
+    x.quadraticCurveTo(5.5, crotchY - 5, 0, crotchY - 4);
+  }else{
+    // 股マチ（ひし形ガゼット）ステッチ
+    x.moveTo(0, crotchY - 10);
+    x.lineTo(8, crotchY - 1);
+    x.lineTo(0, crotchY + 8);
+    x.lineTo(-8, crotchY - 1);
+    x.closePath();
+  }
+  x.stroke();
+
+  // 足首の裾ステッチ（二本針ステッチ）
+  x.strokeStyle = 'rgba(255,255,255,0.36)';
+  x.lineWidth = 0.9;
+  x.setLineDash([2.5, 2.5]);
+  x.beginPath();
+  x.moveTo(-ankleOutX + 2, botY - 4.5); x.lineTo(-ankleInX - 2, botY - 4.5);
+  x.moveTo(ankleInX + 2, botY - 4.5);   x.lineTo(ankleOutX - 2, botY - 4.5);
+  x.stroke();
+  x.setLineDash([]);
+  x.restore(); // pants clip end
+
+  // 外周アウトライン
+  tracePants();
+  x.strokeStyle = 'rgba(0,0,0,0.58)';
+  x.lineWidth = 1.35;
+  x.stroke();
+
+  // 前面のウエスト腰紐（生成り綿紐＋結び目＋ハトメ穴）
+  if(side === 'front'){
+    x.save();
+    // ハトメ2つ
+    x.fillStyle = '#0f172a';
+    x.strokeStyle = '#e2e8f0';
+    x.lineWidth = 1.1;
+    [-5.5, 5.5].forEach(ex => {
+      x.beginPath(); x.arc(ex, topY + 7, 2.1, 0, Math.PI * 2); x.fill(); x.stroke();
+    });
+    // 腰紐のループと垂れ紐
+    x.strokeStyle = 'rgba(0,0,0,0.45)';
+    x.lineWidth = 3.2;
+    x.lineCap = 'round';
+    x.lineJoin = 'round';
+    const drawCordPath = () => {
+      x.beginPath();
+      x.moveTo(-5.5, topY + 7);
+      x.quadraticCurveTo(0, topY + 9, 5.5, topY + 7);
+      // 左ループ・右ループ
+      x.moveTo(0, topY + 8);
+      x.bezierCurveTo(-16, topY + 2, -18, topY + 17, 0, topY + 10);
+      x.moveTo(0, topY + 8);
+      x.bezierCurveTo(16, topY + 2, 18, topY + 17, 0, topY + 10);
+      // 垂れ紐2本
+      x.moveTo(-1, topY + 9);
+      x.quadraticCurveTo(-13, topY + 25, -9, topY + 40);
+      x.moveTo(1, topY + 9);
+      x.quadraticCurveTo(13, topY + 25, 10, topY + 38);
+    };
+    drawCordPath();
+    x.stroke();
+    x.strokeStyle = '#f8fafc';
+    x.lineWidth = 2.0;
+    drawCordPath();
+    x.stroke();
+    x.restore();
+  }
+
+  // ★ ダボパンツ完成図からの逆算ロゴ配置用ヒット領域を登録（!exportMode 時）
+  if(!exportMode){
+    if(side === 'front'){
+      DABO_HIT_ZONES.push({
+        priority: 5, side: 'front_pants', partId: 'frontR', label: 'ダボパンツ前面・右脚（向かって左）',
+        entry: leftLegEntry,
+        cx, cy: centerStageY, S_unit,
+        dx: -hipW, dy: topY, dw: hipW, dh: pantsH,
+        fixedScale: pantsFixedScale,
+        suggestedTarget: 'all'
+      });
+      DABO_HIT_ZONES.push({
+        priority: 5, side: 'front_pants', partId: 'frontL', label: 'ダボパンツ前面・左脚（向かって右）',
+        entry: rightLegEntry,
+        cx, cy: centerStageY, S_unit,
+        dx: 0, dy: topY, dw: hipW, dh: pantsH,
+        fixedScale: pantsFixedScale,
+        suggestedTarget: 'all'
+      });
+    }else{
+      if(S.daboPocketMode !== 'none'){
+        DABO_HIT_ZONES.push({
+          priority: 7, side: 'back_pants', partId: 'pocket', label: 'ダボパンツ背面・右尻ポケット',
+          entry: partMap.pocket || rightLegEntry,
+          cx, cy: centerStageY, S_unit,
+          dx: pkX, dy: pkY, dw: pkW, dh: pkH,
+          fixedScale: pantsFixedScale,
+          suggestedTarget: 'all'
+        });
+      }
+      DABO_HIT_ZONES.push({
+        priority: 5, side: 'back_pants', partId: 'backL', label: 'ダボパンツ背面・左後脚（向かって左）',
+        entry: leftLegEntry,
+        cx, cy: centerStageY, S_unit,
+        dx: -hipW, dy: topY, dw: hipW, dh: pantsH,
+        fixedScale: pantsFixedScale,
+        suggestedTarget: 'all'
+      });
+      DABO_HIT_ZONES.push({
+        priority: 5, side: 'back_pants', partId: 'backR', label: 'ダボパンツ背面・右後脚（向かって右）',
+        entry: rightLegEntry,
+        cx, cy: centerStageY, S_unit,
+        dx: 0, dy: topY, dw: hipW, dh: pantsH,
+        fixedScale: pantsFixedScale,
+        suggestedTarget: 'all'
+      });
+    }
+
+    const directCardOpen = $('stageDirectTextCard') && !$('stageDirectTextCard').hidden;
+    const expectedSide = (side === 'front') ? 'front_pants' : 'back_pants';
+    if((S.daboInteractiveLogo || directCardOpen) && DABO_ACTIVE_REVERSE_HIT && DABO_ACTIVE_REVERSE_HIT.side === expectedSide && DABO_ACTIVE_REVERSE_HIT.localX !== undefined){
+      const tx = DABO_ACTIVE_REVERSE_HIT.localX, ty = DABO_ACTIVE_REVERSE_HIT.localY;
+      x.save();
+      x.strokeStyle = 'rgba(56, 189, 248, 0.95)';
+      x.lineWidth = 1.6;
+      x.setLineDash([3, 2]);
+      x.beginPath(); x.arc(tx, ty, 14, 0, Math.PI * 2); x.stroke();
+      x.setLineDash([]);
+      x.beginPath();
+      x.moveTo(tx - 19, ty); x.lineTo(tx - 9, ty);
+      x.moveTo(tx + 9, ty);  x.lineTo(tx + 19, ty);
+      x.moveTo(tx, ty - 19); x.lineTo(tx, ty - 9);
+      x.moveTo(tx, ty + 9);  x.lineTo(tx, ty + 19);
+      x.stroke();
+      x.restore();
+    }
+  }
+
   x.restore();
 }
 
@@ -8047,23 +9140,26 @@ function updateDaboSpecBox(plan){
   const boxEl = $('daboSpecSummary');
   if(!boxEl) return;
   const szMap = {
-    S:  { len: 70, wid: 52, yuki: 64, strips: plan.strips.length, tan: 4.8 },
-    M:  { len: 73, wid: 55, yuki: 66, strips: plan.strips.length, tan: 5.1 },
-    L:  { len: 76, wid: 59, yuki: 68, strips: plan.strips.length, tan: 5.4 },
-    LL: { len: 79, wid: 63, yuki: 71, strips: plan.strips.length, tan: 5.8 },
-    '3L': { len: 82, wid: 68, yuki: 74, strips: plan.strips.length, tan: 6.2 }
+    S:  { len: 70, wid: 52, yuki: 64, pLen: 92, pWaist: '68〜82', strips: plan.strips.length, tan: 4.8 },
+    M:  { len: 73, wid: 55, yuki: 66, pLen: 96, pWaist: '72〜88', strips: plan.strips.length, tan: 5.1 },
+    L:  { len: 76, wid: 59, yuki: 68, pLen: 100, pWaist: '76〜94', strips: plan.strips.length, tan: 5.4 },
+    LL: { len: 79, wid: 63, yuki: 71, pLen: 104, pWaist: '82〜102', strips: plan.strips.length, tan: 5.8 },
+    '3L': { len: 82, wid: 68, yuki: 74, pLen: 107, pWaist: '88〜110', strips: plan.strips.length, tan: 6.2 }
   };
   const sp = szMap[S.daboSize || 'L'] || szMap.L;
-  const isSetup = (S.daboStyle === 'setup');
-  const totalStrips = isSetup ? sp.strips + 5 : sp.strips;
-  const totalTan = isSetup ? (sp.tan + 4.4).toFixed(1) : sp.tan.toFixed(1);
+  const gView = (S.daboStyle === 'pants') ? 'pants' : (S.daboGarmentView || 'both');
+  const isSetup = (S.daboStyle === 'setup' || gView === 'both');
+  const pantsStrips = 5;
+  const totalStrips = (gView === 'pants') ? pantsStrips : (isSetup ? sp.strips + pantsStrips : sp.strips);
+  const totalTan = (gView === 'pants') ? '4.4' : (isSetup ? (sp.tan + 4.4).toFixed(1) : sp.tan.toFixed(1));
   const logoCount = plan.strips.filter(s => s.hasLogo).length;
-  const plainCount = totalStrips - logoCount;
+  const plainCount = Math.max(0, sp.strips - logoCount);
 
   boxEl.innerHTML =
-    `<b>📏 仕立て寸法 (${S.daboSize||'L'})</b>：着丈 ${sp.len}cm ／ 身幅 ${sp.wid}cm ／ 裄丈(七分) ${sp.yuki}cm<br>` +
-    `<b>🧣 必要手ぬぐい枚数</b>：<b>合計 ${totalStrips} 枚</b>` +
-    (plainCount > 0 ? `（うちロゴ・紋入り ${logoCount}枚 ＋ 総柄のみ ${plainCount}枚）` : `（すべて同じ手ぬぐい ${totalStrips}枚）`) +
+    `<b>📏 シャツ寸法 (${S.daboSize||'L'})</b>：着丈 ${sp.len}cm ／ 身幅 ${sp.wid}cm ／ 裄丈(七分) ${sp.yuki}cm<br>` +
+    `<b>👖 ダボパンツ寸法 (${S.daboSize||'L'})</b>：総丈 ${sp.pLen}cm ／ ウエスト(ゴム＋腰紐) ${sp.pWaist}cm（パンツ単体：手ぬぐい ${pantsStrips}枚）<br>` +
+    `<b>🧣 必要手ぬぐい枚数</b>：<b>${isSetup ? `上下合計 ${totalStrips} 枚（上 ${sp.strips}枚 ＋ 下 ${pantsStrips}枚）` : `合計 ${totalStrips} 枚`}</b>` +
+    (plainCount > 0 ? `（うちロゴ・紋入り ${logoCount}枚）` : '') +
     `<br><b>📜 反物で染める場合の用尺目安</b>：小幅反物（巾${S.W/10}cm） <b>約 ${totalTan} m</b>`;
 }
 
@@ -8127,7 +9223,7 @@ function applyReverseDaboPlacementAtStageXY(stageX, stageY, isInitialClick){
   // drawCroppedPiece の統一生地スケールマッピング (scale, srcCx, srcCy) を正確に逆算
   const cv = hit.entry.cv, p = hit.entry.part;
   const longPx = Math.max(1, Math.max(cv.width, cv.height));
-  const scale = 206 / (0.86 * longPx);
+  const scale = (hit.fixedScale && hit.fixedScale > 0) ? hit.fixedScale : (206 / (0.86 * longPx));
   const srcCx = (p.u + p.uw * 0.5) * cv.width;
   const srcCy = (p.v + p.vh * 0.5) * cv.height;
   const dstCx = (hit.midX !== undefined) ? hit.midX : (hit.dx + hit.dw * 0.5);
@@ -8305,6 +9401,21 @@ function applyDaboSpotPlacement(sp, preferText){
     recLogoSize = 78;
     spotLabel = '⑧ 全パーツ共通（1種類の手ぬぐいで全身仕立て）';
     stripDesc = '全8枚すべて同じ構図の手ぬぐいを使用（背中中央・両胸・袖・胸ポケ）';
+  }else if(sp === 'pantsThighL'){
+    if(S.daboGarmentView === 'top') S.daboGarmentView = 'both';
+    S.daboShiftX = 0; S.daboShiftY = 0;
+    targetU = 0.50; targetV = 0.52;
+    recLogoSize = 75;
+    spotLabel = '👖 ダボパンツ・前太もも中央（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（ダボパンツ前脚の中央＆前後身頃の中央に合わせて逆算）';
+  }else if(sp === 'pantsHipPocket'){
+    if(S.daboGarmentView === 'top') S.daboGarmentView = 'both';
+    if(S.daboCutMode !== 'adult7' && S.daboCutMode !== 'adult8_crest') S.daboCutMode = 'adult7';
+    S.daboShiftX = 0; S.daboShiftY = 0;
+    targetU = 0.49; targetV = 0.36;
+    recLogoSize = 58;
+    spotLabel = '👖 ダボパンツ・右尻ポケット（全枚数すべて同じ構図の手ぬぐい）';
+    stripDesc = '全枚数共通の手ぬぐい（ダボパンツ背面右尻ポケット＆胸ポケットに合わせて逆算）';
   }
 
   const { px, py } = stripUVToTenuguiPct(targetU, targetV);
@@ -9399,10 +10510,17 @@ function saveCurrentFudaToLogoShelf(){
 }
 
 // ダボ仕立て＆生地取りプレビューをそのまま Illustrator 用 SVG として書き出し
-function saveDaboHighResSvg(){
+function saveDaboHighResSvg(forceViewMode, forceGarmentView){
   const off = document.createElement('canvas');
-  const vm = (S.viewMode === 'dabo') ? 'dabo' : 'cut_dabo';
-  drawDaboAndCutScene(off, vm, true);
+  const vm = forceViewMode || ((S.viewMode === 'dabo') ? 'dabo' : 'cut_dabo');
+  const prevGv = S.daboGarmentView || 'both';
+  const effGv = forceGarmentView || prevGv;
+  S.daboGarmentView = effGv;
+  try{
+    drawDaboAndCutScene(off, vm, true);
+  }finally{
+    S.daboGarmentView = prevGv;
+  }
   const dataUrl = off.toDataURL('image/png');
   const wMm = Math.round(off.width / 8);
   const hMm = Math.round(off.height / 8);
@@ -9410,14 +10528,17 @@ function saveDaboHighResSvg(){
   let s = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${wMm}mm" height="${hMm}mm" viewBox="0 0 ${wMm} ${hMm}">\n`;
   s += `<g id="Dabo_Preview_Render"><image x="0" y="0" width="${wMm}" height="${hMm}" href="${dataUrl}"/></g>\n`;
   if(ov.fudaFrameItems.length > 0 || ov.fudaTextItems.length > 0 || ov.logoVectorItems.length > 0){
-    s += `<g id="Tenugui_Source_Vectors" transform="translate(${f2(wMm*0.04)},${f2(hMm*0.12)}) scale(0.45)">\n`;
+    s += `<g id="Tenugui_Source_Vectors" transform="translate(${f2(wMm*0.04)},${f2(hMm*0.12)}) scale(${vm==='dabo'?'0.35':'0.45'})">\n`;
     s += renderVectorItemsToSvgPaths(ov.logoVectorItems);
     s += renderVectorItemsToSvgPaths(ov.fudaFrameItems);
     s += renderVectorItemsToSvgPaths(ov.fudaTextItems);
     s += `</g>\n`;
   }
   s += `</svg>\n`;
-  save(baseName()+'_ダボ仕立て_'+S.daboSize+'.svg', new Blob([s], {type:'image/svg+xml'}), baseName()+'_ダボ仕立て.svg');
+  const tag = (vm === 'dabo')
+    ? (effGv === 'pants' ? '_ダボパンツ完成図_' : (effGv === 'top' ? '_ダボシャツ完成図_' : '_ダボ上下完成図_'))
+    : '_ダボ裁断＋完成図_';
+  save(baseName()+tag+S.daboSize+'.svg', new Blob([s], {type:'image/svg+xml'}), baseName()+tag+S.daboSize+'.svg');
 }
 
 /* ---- 9. 書き出し: 300dpi 高解像度PNG ---- */
@@ -9494,12 +10615,22 @@ function saveHighResPng(){
   }, 'image/png');
 }
 
-function saveDaboHighResPng(){
+function saveDaboHighResPng(forceViewMode, forceGarmentView){
   const off = document.createElement('canvas');
-  const vm = (S.viewMode === 'dabo') ? 'dabo' : 'cut_dabo';
-  drawDaboAndCutScene(off, vm, true);
+  const vm = forceViewMode || ((S.viewMode === 'dabo') ? 'dabo' : 'cut_dabo');
+  const prevGv = S.daboGarmentView || 'both';
+  const effGv = forceGarmentView || prevGv;
+  S.daboGarmentView = effGv;
+  try{
+    drawDaboAndCutScene(off, vm, true);
+  }finally{
+    S.daboGarmentView = prevGv;
+  }
+  const tag = (vm === 'dabo')
+    ? (effGv === 'pants' ? '_ダボパンツ完成図_' : (effGv === 'top' ? '_ダボシャツ完成図_' : '_ダボ上下完成図_'))
+    : '_ダボ裁断＋完成図_';
   off.toBlob(blob=>{
-    if(blob) save(baseName()+'_ダボ仕立て_'+S.daboSize+'.png', blob, baseName()+'_ダボ仕立て.png');
+    if(blob) save(baseName()+tag+S.daboSize+'.png', blob, baseName()+tag+S.daboSize+'.png');
   }, 'image/png');
 }
 
@@ -9522,8 +10653,10 @@ const baseName=()=>{
 
 /* ---- 名前を付けて保存（マイデザイン管理 ＆ JSON入出力 ＆ URL共有） ---- */
 const PRESET_KEY='haneda-arare-presets-v1';
+const PRESET_TRASH_STORAGE='haneda-arare-presets-trash-v1';
 let PRESETS=[];
 let activePresetId=null;
+let editingPresetNameId=null;
 try{
   const raw=JSON.parse(localStorage.getItem(PRESET_KEY)||'null');
   if(Array.isArray(raw)) PRESETS=raw;
@@ -9540,10 +10673,62 @@ function savePresetsToStorage(){
   }
 }
 
+function getPresetTrashList(){
+  try{
+    const arr = JSON.parse(localStorage.getItem(PRESET_TRASH_STORAGE)||'[]');
+    return Array.isArray(arr) ? arr : [];
+  }catch(e){ return []; }
+}
+
+function pushPresetToTrash(item){
+  if(!item) return;
+  try{
+    const arr = getPresetTrashList().filter(x => x && x.id !== item.id);
+    arr.unshift(item);
+    if(arr.length > 15) arr.length = 15;
+    localStorage.setItem(PRESET_TRASH_STORAGE, JSON.stringify(arr));
+  }catch(e){}
+}
+
+function restoreDeletedPresetFromTrash(){
+  const arr = getPresetTrashList();
+  if(arr.length === 0){
+    saySave('復元できる削除済み設定はありません。');
+    return;
+  }
+  const item = arr.shift();
+  try{ localStorage.setItem(PRESET_TRASH_STORAGE, JSON.stringify(arr)); }catch(e){}
+  if(item && !PRESETS.some(p => p && p.id === item.id)){
+    PRESETS.unshift(item);
+    activePresetId = item.id;
+    savePresetsToStorage();
+  }
+  renderPresetList();
+  saySave(`↩️ 削除した設定「${item ? item.name : ''}」をアプリ内に復元しました！`);
+}
+
+function syncAllPresetNameInputs(val){
+  ['presetName','eTopPresetName','eName'].forEach(id=>{
+    const el = $(id);
+    if(el && document.activeElement !== el) el.value = val || '';
+  });
+}
+
+function getTypedPresetName(){
+  for(const id of ['eTopPresetName','eName','presetName']){
+    const el = $(id);
+    if(el && el.value && el.value.trim()) return el.value.trim();
+  }
+  return '';
+}
+
 function saySave(t,warn){
-  const m=$('saveMsg'); if(!m) return;
-  m.textContent=t; m.className='msg'+(warn?' warn':'');
-  setTimeout(()=>{if(m.textContent===t) m.textContent='';}, 4000);
+  ['saveMsg','eTopSaveMsg','eMsg'].forEach(id=>{
+    const m=$(id); if(!m) return;
+    m.textContent=t;
+    m.className=(id==='saveMsg'?'msg':'e-msg')+(warn?' warn':'');
+    setTimeout(()=>{if(m.textContent===t) m.textContent='';}, 4500);
+  });
 }
 
 function formatShortDate(ts){
@@ -9560,6 +10745,22 @@ function makePresetThumbDataUrl(){
     const tcv = renderArbitraryTenuguiCanvas(S, true, 0.22, 1);
     return tcv.toDataURL('image/jpeg', 0.82);
   }catch(e){ return ''; }
+}
+
+function exportSinglePresetToJsonFile(item){
+  if(!item) return;
+  const name = item.name || '手ぬぐい設定';
+  const payload = {
+    app: 'haneda-arare-studio',
+    version: 1,
+    name,
+    savedAt: new Date(item.savedAt || Date.now()).toISOString(),
+    currentSettings: item.settings || S
+  };
+  const safe = name.replace(/[\\/:*?"<>|\s]+/g, '_');
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8' });
+  save(safe + '.json', blob, safe + '.json');
+  saySave(`📥 設定「${name}」をファイル（${safe}.json）として保存しました。`);
 }
 
 function refreshDaboPresetDropdowns(){
@@ -9584,123 +10785,194 @@ function refreshDaboPresetDropdowns(){
   sSel.value = Array.from(sSel.options).some(o=>o.value===curS) ? curS : 'same';
 }
 
-function renderPresetList(){
-  const list=$('savedList'), badge=$('savedCountBadge');
-  if(!list) return;
-  badge.textContent=PRESETS.length+'件';
-  list.innerHTML='';
-  refreshDaboPresetDropdowns();
-  if(PRESETS.length===0){
-    const empty=document.createElement('div');
-    empty.className='note';
-    empty.textContent='まだ保存されたデザインはありません。上の欄に名前を入れて「＋ 保存」を押すとサムネイル付きでアプリ内に一覧保存されます。';
-    list.appendChild(empty);
-    return;
+function buildPresetItemRowElement(item){
+  const row=document.createElement('div');
+  row.className='preset-item'+(item.id===activePresetId?' active':'');
+  const st=item.settings||DEF;
+  const fg=st.mode==='arare'?st.dotColor:st.kakuColor;
+  const modeLabel=st.mode==='arare'?'あられ':(st.mode==='both'?'角字+あられ':'仲羽田');
+  const sw=document.createElement('div');
+  sw.className='preset-swatch';
+  if(item.thumb){
+    sw.style.backgroundImage=`url(${item.thumb})`;
+  }else{
+    sw.style.background=st.bgColor||'#046e7e';
+    sw.style.color=fg||'#ffffff';
+    sw.textContent=st.mode==='arare'?'霰':'仲';
   }
-  PRESETS.forEach(item=>{
-    const row=document.createElement('div');
-    row.className='preset-item'+(item.id===activePresetId?' active':'');
-    const st=item.settings||DEF;
-    const fg=st.mode==='arare'?st.dotColor:st.kakuColor;
-    const modeLabel=st.mode==='arare'?'あられ':(st.mode==='both'?'角字+あられ':'仲羽田');
-    const sw=document.createElement('div');
-    sw.className='preset-swatch';
-    if(item.thumb){
-      sw.style.backgroundImage=`url(${item.thumb})`;
-    }else{
-      sw.style.background=st.bgColor||'#046e7e';
-      sw.style.color=fg||'#ffffff';
-      sw.textContent=st.mode==='arare'?'霰':'仲';
-    }
 
-    const info=document.createElement('div');
-    info.className='preset-info';
-    info.title='クリックでこのデザインを読み込みます';
+  const loadFn=()=>{
+    activePresetId=item.id;
+    syncAllPresetNameInputs(item.name);
+    S=Object.assign({},DEF,JSON.parse(JSON.stringify(item.settings)));
+    if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
+    update(true);
+    renderPresetList();
+    saySave(`📂 アプリ内保存「${item.name}」を読み込みました！`);
+  };
+  sw.addEventListener('click',loadFn);
+
+  const info=document.createElement('div');
+  info.className='preset-info';
+  if(editingPresetNameId === item.id){
+    const editWrap = document.createElement('div');
+    editWrap.style.cssText = 'display:flex;gap:4px;align-items:center';
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.value = item.name || '';
+    inp.maxLength = 40;
+    inp.className = 'save-input preset-rename-input';
+    inp.style.cssText = 'padding:3px 6px;font-size:12px;border-color:#0284c7;background:#fff';
+    const okBtn = document.createElement('button');
+    okBtn.type = 'button';
+    okBtn.className = 'mini-btn';
+    okBtn.style.cssText = 'background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700';
+    okBtn.textContent = '決定';
+    const commitRename = () => {
+      const nextNm = inp.value.trim();
+      if(nextNm){
+        item.name = nextNm;
+        syncAllPresetNameInputs(nextNm);
+        savePresetsToStorage();
+        saySave(`✏️ 設定名を「${nextNm}」に変更しました。`);
+      }
+      editingPresetNameId = null;
+      renderPresetList();
+    };
+    okBtn.addEventListener('click', ev => { ev.stopPropagation(); commitRename(); });
+    inp.addEventListener('keydown', ev => {
+      if(ev.key === 'Enter'){ ev.preventDefault(); ev.stopPropagation(); commitRename(); }
+      else if(ev.key === 'Escape'){ ev.preventDefault(); ev.stopPropagation(); editingPresetNameId = null; renderPresetList(); }
+    });
+    inp.addEventListener('click', ev => ev.stopPropagation());
+    editWrap.appendChild(inp);
+    editWrap.appendChild(okBtn);
+    info.appendChild(editWrap);
+    setTimeout(() => { try{ inp.focus(); inp.select(); }catch(e){} }, 20);
+  }else{
+    info.title='クリックでこの設定を読み込みます';
     const title=document.createElement('span');
     title.className='preset-title';
     title.textContent=item.name;
     const meta=document.createElement('span');
     meta.className='preset-meta';
-    meta.textContent=`${modeLabel} ${(st.W||350)/10}×${(st.H||900)/10}cm | 角度${st.kakuAngle??-30.15}° 太さ${st.kakuWeight||100}% (${formatShortDate(item.savedAt)})`;
+    meta.textContent=`${modeLabel} ${(st.W||350)/10}×${(st.H||900)/10}cm (${formatShortDate(item.savedAt)})`;
     info.appendChild(title);
     info.appendChild(meta);
-
-    const loadFn=()=>{
-      activePresetId=item.id;
-      $('presetName').value=item.name;
-      S=Object.assign({},DEF,JSON.parse(JSON.stringify(item.settings)));
-      if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
-      update(true);
-      renderPresetList();
-      saySave(`「${item.name}」を読み込みました。`);
-    };
     info.addEventListener('click',loadFn);
-    sw.addEventListener('click',loadFn);
+  }
 
-    const btns=document.createElement('div');
-    btns.className='preset-btns';
+  const btns=document.createElement('div');
+  btns.className='preset-btns';
 
-    const daboBtn=document.createElement('button');
-    daboBtn.type='button'; daboBtn.className='mini-btn'; daboBtn.textContent='👕ダボ';
-    daboBtn.title='この保存デザインでダボ仕立て＆生地の取り方を確認します';
-    daboBtn.addEventListener('click',()=>{
-      activePresetId=item.id;
-      $('presetName').value=item.name;
-      S=Object.assign({},DEF,JSON.parse(JSON.stringify(item.settings)),{viewMode:'cut_dabo',daboBodyPreset:'current'});
-      if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
-      update(true);
-      renderPresetList();
-      saySave(`「${item.name}」でダボ仕立て＆生地取り図を開きました！`);
+  const loadBtn=document.createElement('button');
+  loadBtn.type='button'; loadBtn.className='mini-btn'; loadBtn.textContent='読込';
+  loadBtn.title='この保存設定を呼び出します';
+  loadBtn.addEventListener('click',loadFn);
+
+  const daboBtn=document.createElement('button');
+  daboBtn.type='button'; daboBtn.className='mini-btn'; daboBtn.textContent='👕ダボ';
+  daboBtn.title='この保存設定でダボ仕立て＆生地の取り方を確認します';
+  daboBtn.addEventListener('click',()=>{
+    activePresetId=item.id;
+    syncAllPresetNameInputs(item.name);
+    S=Object.assign({},DEF,JSON.parse(JSON.stringify(item.settings)),{viewMode:'cut_dabo',daboBodyPreset:'current'});
+    if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
+    update(true);
+    renderPresetList();
+    saySave(`👕 「${item.name}」でダボ仕立て＆生地取り図を開きました！`);
+  });
+
+  const upBtn=document.createElement('button');
+  upBtn.type='button'; upBtn.className='mini-btn'; upBtn.textContent='上書';
+  upBtn.title='現在の設定値でこの保存データを上書き更新します';
+  upBtn.addEventListener('click',()=>{
+    item.settings=JSON.parse(JSON.stringify(S));
+    item.thumb=makePresetThumbDataUrl();
+    item.savedAt=Date.now();
+    const typed = getTypedPresetName();
+    if(typed) item.name = typed;
+    activePresetId=item.id;
+    savePresetsToStorage();
+    renderPresetList();
+    saySave(`💾 「${item.name}」を現在の設定で上書き保存しました！`);
+  });
+
+  const renBtn=document.createElement('button');
+  renBtn.type='button'; renBtn.className='mini-btn'; renBtn.textContent='✏️名変';
+  renBtn.title='この保存設定の名前を変更します';
+  renBtn.addEventListener('click',()=>{
+    editingPresetNameId = (editingPresetNameId === item.id) ? null : item.id;
+    renderPresetList();
+  });
+
+  const dlBtn=document.createElement('button');
+  dlBtn.type='button'; dlBtn.className='mini-btn'; dlBtn.textContent='📥.json';
+  dlBtn.title='この保存設定を個別の設定ファイル(.json)として書き出します';
+  dlBtn.addEventListener('click',()=>{
+    exportSinglePresetToJsonFile(item);
+  });
+
+  const delBtn=document.createElement('button');
+  delBtn.type='button'; delBtn.className='mini-btn del'; delBtn.textContent='×';
+  delBtn.title='この保存データを削除（誤って消しても「↩️ 消した設定を戻す」で復元できます）';
+  delBtn.addEventListener('click',()=>{
+    pushPresetToTrash(item);
+    PRESETS=PRESETS.filter(p=>p.id!==item.id);
+    if(activePresetId===item.id) activePresetId=null;
+    savePresetsToStorage();
+    renderPresetList();
+    saySave(`🗑️ 「${item.name}」を削除しました（「↩️ 消した設定を戻す」で復元可能）。`);
+  });
+
+  btns.appendChild(loadBtn);
+  btns.appendChild(daboBtn);
+  btns.appendChild(upBtn);
+  btns.appendChild(renBtn);
+  btns.appendChild(dlBtn);
+  btns.appendChild(delBtn);
+
+  row.appendChild(sw);
+  row.appendChild(info);
+  row.appendChild(btns);
+  return row;
+}
+
+function renderPresetList(){
+  const countStr = PRESETS.length + '件';
+  ['savedCountBadge','eTopSavedCountBadge','eStep8SavedCountBadge'].forEach(id=>{
+    if($(id)) $(id).textContent = countStr;
+  });
+  const hasTrash = getPresetTrashList().length > 0;
+  ['restorePresetTrashBtn','eTopRestorePresetBtn','eRestorePresetBtn'].forEach(id=>{
+    if($(id)) $(id).hidden = !hasTrash;
+  });
+  refreshDaboPresetDropdowns();
+  ['savedList','eTopPresetList','eList'].forEach(listId=>{
+    const container = $(listId);
+    if(!container) return;
+    container.innerHTML = '';
+    if(PRESETS.length === 0){
+      const empty = document.createElement('div');
+      empty.className = 'note';
+      empty.textContent = 'まだアプリ内に保存された設定はありません。上の欄に名前を入れて「＋ アプリ内に保存」を押すと、サムネイル付きでいつでも呼び出せます。';
+      container.appendChild(empty);
+      return;
+    }
+    PRESETS.forEach(item => {
+      container.appendChild(buildPresetItemRowElement(item));
     });
-
-    const loadBtn=document.createElement('button');
-    loadBtn.type='button'; loadBtn.className='mini-btn'; loadBtn.textContent='読込';
-    loadBtn.addEventListener('click',loadFn);
-
-    const upBtn=document.createElement('button');
-    upBtn.type='button'; upBtn.className='mini-btn'; upBtn.textContent='上書';
-    upBtn.title='現在の設定値でこの保存データを上書き更新します';
-    upBtn.addEventListener('click',()=>{
-      item.settings=JSON.parse(JSON.stringify(S));
-      item.thumb=makePresetThumbDataUrl();
-      item.savedAt=Date.now();
-      if($('presetName').value.trim()) item.name=$('presetName').value.trim();
-      activePresetId=item.id;
-      savePresetsToStorage();
-      renderPresetList();
-      saySave(`「${item.name}」を上書き保存しました。`);
-    });
-
-    const delBtn=document.createElement('button');
-    delBtn.type='button'; delBtn.className='mini-btn del'; delBtn.textContent='×';
-    delBtn.title='この保存データを削除';
-    delBtn.addEventListener('click',()=>{
-      PRESETS=PRESETS.filter(p=>p.id!==item.id);
-      if(activePresetId===item.id) activePresetId=null;
-      savePresetsToStorage();
-      renderPresetList();
-      saySave(`「${item.name}」を削除しました。`);
-    });
-
-    btns.appendChild(daboBtn);
-    btns.appendChild(loadBtn);
-    btns.appendChild(upBtn);
-    btns.appendChild(delBtn);
-
-    row.appendChild(sw);
-    row.appendChild(info);
-    row.appendChild(btns);
-    list.appendChild(row);
   });
 }
 
-$('savePresetBtn').addEventListener('click',()=>{
-  let name=$('presetName').value.trim();
+function saveCurrentSettingsToAppWithName(customNameInput){
+  let name = (customNameInput !== undefined ? String(customNameInput).trim() : '') || getTypedPresetName();
   if(!name){
-    const modeJp=S.mode==='arare'?'大小あられ':(S.mode==='both'?'仲羽田とあられ':'仲羽田');
-    name=`${modeJp}_${S.W/10}x${S.H/10}cm_角${S.kakuAngle}度`;
-    $('presetName').value=name;
+    const modeJp=S.mode==='arare'?'大小あられ':(S.mode==='both'?'仲羽田とあられ':(S.kakuMotif==='seinenkai'?'仲羽田青年会':'仲羽田'));
+    const logoJp=S.showLogo ? '_ロゴ入' : '';
+    name=`${modeJp}${logoJp}_${S.W/10}x${S.H/10}cm`;
   }
+  syncAllPresetNameInputs(name);
   const newItem={
     id:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),
     name,
@@ -9712,16 +10984,24 @@ $('savePresetBtn').addEventListener('click',()=>{
   activePresetId=newItem.id;
   savePresetsToStorage();
   renderPresetList();
-  saySave(`「${name}」をアプリ内に保存しました！`);
+  saySave(`💾 設定「${name}」をアプリ内に名前をつけて保存しました！`);
+}
+
+$('savePresetBtn').addEventListener('click',()=>{
+  saveCurrentSettingsToAppWithName($('presetName') ? $('presetName').value : '');
 });
 
 $('presetName').addEventListener('keydown',e=>{
-  if(e.key==='Enter'){ e.preventDefault(); $('savePresetBtn').click(); }
+  if(e.key==='Enter'){ e.preventDefault(); saveCurrentSettingsToAppWithName($('presetName').value); }
+});
+['restorePresetTrashBtn','eTopRestorePresetBtn','eRestorePresetBtn'].forEach(id=>{
+  if($(id)) $(id).addEventListener('click',()=>restoreDeletedPresetFromTrash());
 });
 
-// JSON設定ファイルとして名前を付けて保存
+// JSON設定ファイルとして名前を付けて保存（アプリ内にも同時保存）
 $('exportJsonBtn').addEventListener('click',()=>{
-  const name=$('presetName').value.trim()||`手ぬぐい設定_${S.mode}_${S.W}x${S.H}`;
+  const name=getTypedPresetName()||`手ぬぐい設定_${S.mode}_${S.W}x${S.H}`;
+  syncAllPresetNameInputs(name);
   const payload={
     app:'haneda-arare-studio',
     version:1,
@@ -9733,11 +11013,12 @@ $('exportJsonBtn').addEventListener('click',()=>{
   const safe=name.replace(/[\\/:*?"<>|\s]+/g,'_');
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'});
   save(safe+'.json',blob,safe+'.json');
-  saySave(`「${safe}.json」をダウンロード保存しました。`);
+  saySave(`📥 設定ファイル「${safe}.json」をダウンロード保存しました。`);
 });
 
-// JSON設定ファイル読み込み
+// JSON設定ファイル読み込み（読み込んだ設定ファイルを名前付きでアプリ内の保存一覧にも自動登録）
 $('importJsonBtn').addEventListener('click',()=>$('importJsonInput').click());
+if($('eTopLoadJsonBtn')) $('eTopLoadJsonBtn').addEventListener('click',()=>$('importJsonInput').click());
 $('importJsonInput').addEventListener('change',e=>{
   const f=e.target.files&&e.target.files[0];
   if(!f) return;
@@ -9750,16 +11031,28 @@ $('importJsonInput').addEventListener('change',e=>{
       }else if(data.W && data.H){
         S=Object.assign({},DEF,data);
       }
-      if(data.name) $('presetName').value=data.name;
-      else $('presetName').value=f.name.replace(/\.json$/i,'');
+      const typedNm = getTypedPresetName();
+      const loadedName = typedNm || (data.name && String(data.name).trim()) || f.name.replace(/\.json$/i,'') || '読込設定';
+      syncAllPresetNameInputs(loadedName);
       if(Array.isArray(data.savedPresets)){
         const existingIds=new Set(PRESETS.map(p=>p.id));
         data.savedPresets.forEach(p=>{if(p&&p.id&&!existingIds.has(p.id)) PRESETS.push(p);});
-        savePresetsToStorage();
       }
+      if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
       update(true);
+      // 読み込んだ設定ファイルをアプリ内 PRESETS にも名前付きで登録
+      const importedItem = {
+        id: 'p_imp_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+        name: loadedName,
+        savedAt: Date.now(),
+        thumb: makePresetThumbDataUrl(),
+        settings: JSON.parse(JSON.stringify(S))
+      };
+      PRESETS.unshift(importedItem);
+      activePresetId = importedItem.id;
+      savePresetsToStorage();
       renderPresetList();
-      saySave(`設定ファイル「${f.name}」を読み込みました！`);
+      saySave(`📂 設定ファイル「${loadedName}」を読み込み、アプリ内に名前をつけて保存しました！`);
     }catch(err){
       saySave('設定ファイルの形式が正しくありません。',true);
     }
@@ -9946,6 +11239,8 @@ function syncUI(){
   // ダボ・表示モードUI同期
   for(const b of document.querySelectorAll('#viewTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.view===(S.viewMode||'fabric'))+'');
   for(const b of document.querySelectorAll('#daboStyleTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.dstyle===(S.daboStyle||'dabo'))+'');
+  for(const b of document.querySelectorAll('#daboGarmentViewTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.dgview===(S.daboGarmentView||'both'))+'');
+  for(const b of document.querySelectorAll('#stageGarmentViewChips button[data-sgv]')) b.setAttribute('aria-pressed',(b.dataset.sgv===(S.daboGarmentView||'both'))+'');
   if($('daboCutMode')) $('daboCutMode').value=S.daboCutMode||'adult7';
   if($('daboLogoTarget')) $('daboLogoTarget').value=S.daboLogoTarget||'all';
   if($('daboStripRot')) $('daboStripRot').value=S.daboStripRot||'auto';
@@ -11178,6 +12473,16 @@ document.querySelectorAll('#daboStyleTabs .chip').forEach(b=>b.addEventListener(
   if(S.viewMode==='fabric') S.viewMode='cut_dabo';
   update(false);
 }));
+document.querySelectorAll('#daboGarmentViewTabs .chip').forEach(b=>b.addEventListener('click',()=>{
+  S.daboGarmentView = b.dataset.dgview || 'both';
+  if(S.viewMode==='fabric') S.viewMode='cut_dabo';
+  update(false);
+}));
+document.querySelectorAll('#stageGarmentViewChips button[data-sgv]').forEach(b=>b.addEventListener('click',()=>{
+  S.daboGarmentView = b.dataset.sgv || 'both';
+  if(S.viewMode==='fabric') S.viewMode='cut_dabo';
+  update(false);
+}));
 for(const selId of ['daboCutMode','daboLogoTarget','daboStripRot','daboSize','daboBodyPreset','daboSleevePreset','daboCollarMode','daboPocketMode','daboDragItemType']){
   if($(selId)) $(selId).addEventListener('change',e=>{
     S[selId]=e.target.value;
@@ -11191,8 +12496,17 @@ if($('daboInteractiveLogo')){
     update(false);
   });
 }
-$('saveDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng());
-if($('saveDaboSvgBtn')) $('saveDaboSvgBtn').addEventListener('click',()=>saveDaboHighResSvg());
+if($('saveDaboOnlyPngBtn')) $('saveDaboOnlyPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', S.daboGarmentView || 'both'));
+if($('saveDaboPngBtn')) $('saveDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng('cut_dabo', S.daboGarmentView || 'both'));
+if($('saveDaboPantsPngBtn')) $('saveDaboPantsPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', 'pants'));
+if($('saveDaboSvgBtn')) $('saveDaboSvgBtn').addEventListener('click',()=>saveDaboHighResSvg(S.viewMode === 'dabo' ? 'dabo' : 'cut_dabo', S.daboGarmentView || 'both'));
+if($('saveOutDaboOnlyPngBtn')) $('saveOutDaboOnlyPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', 'both'));
+if($('saveOutCutDaboPngBtn')) $('saveOutCutDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng('cut_dabo', 'both'));
+if($('saveOutDaboPantsPngBtn')) $('saveOutDaboPantsPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', 'pants'));
+if($('saveOutDaboTopPngBtn')) $('saveOutDaboTopPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', 'top'));
+if($('saveOutDaboSvgBtn')) $('saveOutDaboSvgBtn').addEventListener('click',()=>saveDaboHighResSvg('cut_dabo', 'both'));
+if($('stageQuickSaveDaboPngBtn')) $('stageQuickSaveDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', S.daboGarmentView || 'both'));
+if($('stageQuickSaveCutDaboPngBtn')) $('stageQuickSaveCutDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng('cut_dabo', S.daboGarmentView || 'both'));
 
 // キャンバス上での丸紋・ロゴ・名入れ文字の直接ドラッグ移動
 // ＆ ダボ完成図の上をドラッグして手ぬぐい側のロゴ位置を逆算配置
@@ -11247,37 +12561,47 @@ function cutDragEnd(){
   CUT_DRAG = null;
   update(false);
 }
-box.addEventListener('touchstart', e=>{
-  if(S.viewMode !== 'cut_dabo' || e.touches.length !== 1) return;
-  const t = e.touches[0];
-  const { stageX, stageY } = clientToDaboStageXY(t.clientX, t.clientY);
-  if(cutPanelPointerDown(stageX, stageY)) e.preventDefault();
-}, { passive: false });
-box.addEventListener('touchmove', e=>{
-  if(!CUT_DRAG || e.touches.length !== 1) return;
-  e.preventDefault();
-  const t = e.touches[0];
-  const { stageX, stageY } = clientToDaboStageXY(t.clientX, t.clientY);
-  cutDragMove(stageX, stageY);
-}, { passive: false });
-box.addEventListener('touchend', ()=>{ if(CUT_DRAG) cutDragEnd(); });
-box.addEventListener('touchcancel', ()=>{ if(CUT_DRAG) cutDragEnd(); });
 if($('resetCutOffsetBtn')) $('resetCutOffsetBtn').addEventListener('click', ()=>{ S.daboCutOffset = {}; update(false); say('✂️ 裁断図で動かした取り位置を元に戻しました。'); });
 
-box.addEventListener('mousedown', e=>{
-  // 右下のフローティングHUDや上部の直接文字入力バー操作時はパンしない
-  if(e.target && e.target.closest && (e.target.closest('.float-zoom-hud') || e.target.closest('.stage-direct-text-bar'))) return;
-  if(e.button !== 0) return;
+// スマホ用：プレビュー高さ切替（標準 / 拡大 / 小）＆上部固定ON/OFF
+if($('mobStageSizeBtn')){
+  let mobSzIdx = 0; // 0: 標準(36vh), 1: 拡大(58vh), 2: 小(18vh)
+  const mobSzModes = [
+    { cls: '', label: '🔍 拡大' },
+    { cls: 'mob-sz-lg', label: '🔽 小さく' },
+    { cls: 'mob-sz-sm', label: '📐 標準' }
+  ];
+  $('mobStageSizeBtn').addEventListener('click', ()=>{
+    const st = $('mainStage') || document.querySelector('main.stage');
+    if(!st) return;
+    mobSzIdx = (mobSzIdx + 1) % mobSzModes.length;
+    st.classList.remove('mob-sz-lg', 'mob-sz-sm');
+    if(mobSzModes[mobSzIdx].cls) st.classList.add(mobSzModes[mobSzIdx].cls);
+    $('mobStageSizeBtn').textContent = mobSzModes[mobSzIdx].label;
+    requestAnimationFrame(()=>draw());
+  });
+}
+if($('mobStagePinBtn')){
+  $('mobStagePinBtn').addEventListener('click', ()=>{
+    const st = $('mainStage') || document.querySelector('main.stage');
+    if(!st) return;
+    const unpinned = st.classList.toggle('mob-unpinned');
+    $('mobStagePinBtn').setAttribute('aria-pressed', String(!unpinned));
+    $('mobStagePinBtn').textContent = unpinned ? '📌 固定OFF' : '📌 固定';
+  });
+}
 
-  // 1. 手ぬぐい生地モードで、札の組紐・サイズ変更ギズモ または 丸紋・ロゴ・名入れ文字の上をクリックした場合は要素ドラッグを優先
-  if(S.viewMode === 'fabric' && !e.spaceKey && !e.shiftKey){
+function handleStagePointerDown(clientX, clientY, isTouch, shiftOrSpace){
+  // 1. 手ぬぐい生地モードで、札の組紐・サイズ変更ギズモ または 丸紋・ロゴ・名入れ文字の上をクリック/タッチした場合は要素ドラッグを優先
+  if(S.viewMode === 'fabric' && !shiftOrSpace){
     const r = cv.getBoundingClientRect();
     if(r.width > 0 && r.height > 0){
-      const { mx, my } = clientToFabricMm(e.clientX, e.clientY);
+      const { mx, my } = clientToFabricMm(clientX, clientY);
+      const touchScale = isTouch ? 1.55 : 1.0;
 
       // 1a. 札の組紐ハンドル（🪢上紐・🪢脇紐）やサイズ・幅・縦・回転ハンドルのヒット判定を最優先
       if(S.showText && FUDA_STAGE_GIZMOS.length > 0){
-        const hitRad = Math.max(4, (S.W * 0.028) / Math.max(1, Math.sqrt(ZOOM)));
+        const hitRad = Math.max(4, (S.W * 0.028) / Math.max(1, Math.sqrt(ZOOM))) * touchScale;
         for(const h of FUDA_STAGE_GIZMOS){
           if(Math.hypot(mx - h.pt[0], my - h.pt[1]) <= hitRad){
             dragTarget = {
@@ -11297,31 +12621,29 @@ box.addEventListener('mousedown', e=>{
               startTailY: S.fudaCordTailY || 0
             };
             box.classList.add('is-panning');
-            e.preventDefault();
-            return;
+            return true;
           }
         }
       }
 
       const candidates = [];
-      if(S.showText) candidates.push({ keyX:'textX', keyY:'textY', x:S.W*(S.textX/100), y:S.H*(S.textY/100), rad:Math.max(28, S.textSize*1.1) });
+      if(S.showText) candidates.push({ keyX:'textX', keyY:'textY', x:S.W*(S.textX/100), y:S.H*(S.textY/100), rad:Math.max(28, S.textSize*1.1)*touchScale });
       if(S.showLogo){
         syncActiveSlotFromS();
         if(Array.isArray(S.logoSlots) && S.logoSlots.length > 0){
-          // 後ろ（上に重なっている側）のスロットから優先してヒット判定
           for(let si = S.logoSlots.length - 1; si >= 0; si--){
             const sl = S.logoSlots[si];
             candidates.push({
               keyX:'logoX', keyY:'logoY', slotIdx: si,
               x:S.W*((sl.logoX ?? 50)/100), y:S.H*((sl.logoY ?? 28)/100),
-              rad:Math.max(28, (sl.logoSize || 85)*0.62)
+              rad:Math.max(28, (sl.logoSize || 85)*0.62)*touchScale
             });
           }
         }else{
-          candidates.push({ keyX:'logoX', keyY:'logoY', x:S.W*(S.logoX/100), y:S.H*(S.logoY/100), rad:Math.max(28, S.logoSize*0.62) });
+          candidates.push({ keyX:'logoX', keyY:'logoY', x:S.W*(S.logoX/100), y:S.H*(S.logoY/100), rad:Math.max(28, S.logoSize*0.62)*touchScale });
         }
       }
-      if(S.showCrest) candidates.push({ keyX:'crestX', keyY:'crestY', x:S.W*(S.crestX/100), y:S.H*(S.crestY/100), rad:Math.max(24, S.crestSize*0.58) });
+      if(S.showCrest) candidates.push({ keyX:'crestX', keyY:'crestY', x:S.W*(S.crestX/100), y:S.H*(S.crestY/100), rad:Math.max(24, S.crestSize*0.58)*touchScale });
       for(const c of candidates){
         if(Math.hypot(mx - c.x, my - c.y) <= c.rad){
           if(c.slotIdx !== undefined && c.slotIdx !== S.activeLogoSlot){
@@ -11329,12 +12651,10 @@ box.addEventListener('mousedown', e=>{
           }
           dragTarget = c;
           box.classList.add('is-panning');
-          e.preventDefault();
-          return;
+          return true;
         }
       }
 
-      // 上部の「✍️ 直接文字を打つ」パネルが開いている時は、手ぬぐい上の好きな場所をクリックして文字を移動可能
       const directCardOpen = $('stageDirectTextCard') && !$('stageDirectTextCard').hidden;
       if(directCardOpen && S.showText && mx >= 0 && mx <= S.W && my >= 0 && my <= S.H){
         S.textX = Math.max(2, Math.min(98, Math.round((mx / S.W) * 1000) / 10));
@@ -11342,66 +12662,59 @@ box.addEventListener('mousedown', e=>{
         dragTarget = { keyX:'textX', keyY:'textY' };
         box.classList.add('is-panning');
         update(false);
-        e.preventDefault();
-        return;
+        return true;
       }
     }
   }
 
   // 1-B. 裁断図のパーツをつかんだら、そのパーツの取り位置（手ぬぐいのどこから切り出すか）を動かす
-  if(S.viewMode === 'cut_dabo' && !e.shiftKey && !e.spaceKey){
-    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+  if(S.viewMode === 'cut_dabo' && !shiftOrSpace){
+    const { stageX, stageY } = clientToDaboStageXY(clientX, clientY);
     if(cutPanelPointerDown(stageX, stageY)){
       box.classList.add('is-panning');
-      e.preventDefault();
-      return;
+      return true;
     }
   }
 
-  // 2. ダボ完成図（cut_dabo / dabo モード）で「ダボ上で直接移動をONにする」またはロゴ表示中、または上部の「✍️ ダボに直接文字を打つ」パネルが開いているとき、クリックしたダボ部位に配置し手ぬぐい座標へ逆算反映する
+  // 2. ダボ完成図（cut_dabo / dabo モード）でダボシャツ・ダボパンツ部位をタップ/ドラッグしたとき手ぬぐい座標へ逆算反映する
   const directTextOpen = $('stageDirectTextCard') && !$('stageDirectTextCard').hidden;
-  if((S.viewMode === 'cut_dabo' || S.viewMode === 'dabo') && (S.daboInteractiveLogo === true || S.showLogo || directTextOpen) && !e.shiftKey && !e.spaceKey){
+  if((S.viewMode === 'cut_dabo' || S.viewMode === 'dabo') && (S.daboInteractiveLogo === true || S.showLogo || directTextOpen) && !shiftOrSpace){
     if(directTextOpen && !getActiveLogoTypeKey()){
       S.showText = true;
       S.daboDragItemType = 'text';
       S.daboInteractiveLogo = true;
     }
     if(getActiveLogoTypeKey()){
-      const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+      const { stageX, stageY } = clientToDaboStageXY(clientX, clientY);
       if(applyReverseDaboPlacementAtStageXY(stageX, stageY, true)){
         S.daboInteractiveLogo = true;
         isDraggingDaboReverse = true;
         box.classList.add('is-panning');
-        e.preventDefault();
-        return;
+        return true;
       }
     }
   }
 
   // 3. それ以外（余白または Shift+ドラッグ）はステージ全体をドラッグで自由移動（パン）
   isPanningStage = true;
-  panStartClientX = e.clientX;
-  panStartClientY = e.clientY;
+  panStartClientX = clientX;
+  panStartClientY = clientY;
   panOriginX = PAN_X;
   panOriginY = PAN_Y;
   box.classList.add('is-panning');
-  e.preventDefault();
-});
+  return true;
+}
 
-window.addEventListener('mousemove', e=>{
+function handleStagePointerMove(clientX, clientY){
   if(CUT_DRAG){
-    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+    const { stageX, stageY } = clientToDaboStageXY(clientX, clientY);
     cutDragMove(stageX, stageY);
-    return;
-  }
-  if(S.viewMode === 'cut_dabo' && !dragTarget && !isDraggingDaboReverse && !isPanningStage && e.target && box.contains(e.target)){
-    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
-    box.style.cursor = cutHitAt(stageX, stageY) ? 'move' : '';
+    return true;
   }
   if(dragTarget){
     const r = cv.getBoundingClientRect();
     if(r.width > 0 && r.height > 0){
-      const { mx, my, pctX, pctY } = clientToFabricMm(e.clientX, e.clientY);
+      const { mx, my, pctX, pctY } = clientToFabricMm(clientX, clientY);
       if(dragTarget.gizmoId){
         const dx = mx - dragTarget.startMx;
         const dy = my - dragTarget.startMy;
@@ -11451,7 +12764,7 @@ window.addEventListener('mousemove', e=>{
           S.textAngle = Math.max(-180, Math.min(180, nextDeg));
         }
         update(false);
-        return;
+        return true;
       }
       const px = Math.max(2, Math.min(98, Math.round(pctX * 10) / 10));
       const py = Math.max(2, Math.min(98, Math.round(pctY * 10) / 10));
@@ -11459,21 +12772,23 @@ window.addEventListener('mousemove', e=>{
       S[dragTarget.keyY] = py;
       update(false);
     }
-    return;
+    return true;
   }
   if(isDraggingDaboReverse){
-    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+    const { stageX, stageY } = clientToDaboStageXY(clientX, clientY);
     applyReverseDaboPlacementAtStageXY(stageX, stageY, false);
-    return;
+    return true;
   }
   if(isPanningStage){
-    PAN_X = panOriginX + (e.clientX - panStartClientX);
-    PAN_Y = panOriginY + (e.clientY - panStartClientY);
+    PAN_X = panOriginX + (clientX - panStartClientX);
+    PAN_Y = panOriginY + (clientY - panStartClientY);
     requestImmediateVectorDraw();
+    return true;
   }
-});
+  return false;
+}
 
-window.addEventListener('mouseup', ()=>{
+function handleStagePointerUp(){
   if(CUT_DRAG){ cutDragEnd(); box.classList.remove('is-panning'); }
   if(dragTarget || isDraggingDaboReverse || isPanningStage){
     dragTarget = null;
@@ -11481,6 +12796,103 @@ window.addEventListener('mouseup', ()=>{
     isPanningStage = false;
     box.classList.remove('is-panning');
   }
+}
+
+box.addEventListener('mousedown', e=>{
+  if(e.target && e.target.closest && (e.target.closest('.float-zoom-hud') || e.target.closest('.stage-direct-text-bar'))) return;
+  if(e.button !== 0) return;
+  if(handleStagePointerDown(e.clientX, e.clientY, false, !!(e.spaceKey || e.shiftKey))){
+    e.preventDefault();
+  }
+});
+
+window.addEventListener('mousemove', e=>{
+  if(handleStagePointerMove(e.clientX, e.clientY)) return;
+  if(S.viewMode === 'cut_dabo' && !dragTarget && !isDraggingDaboReverse && !isPanningStage && e.target && box.contains(e.target)){
+    const { stageX, stageY } = clientToDaboStageXY(e.clientX, e.clientY);
+    box.style.cursor = cutHitAt(stageX, stageY) ? 'move' : '';
+  }
+});
+
+window.addEventListener('mouseup', ()=>{
+  handleStagePointerUp();
+});
+
+// 📱 スマホ・タブレット対応：1本指ドラッグ（要素移動・ダボ直接配置・画面パン）＋ 2本指ピンチイン/アウト拡大縮小
+let isPinchingStage = false;
+let pinchStartDist = 0, pinchStartZoom = 1;
+let pinchStartMidX = 0, pinchStartMidY = 0;
+let pinchOriginPanX = 0, pinchOriginPanY = 0;
+let lastTapTime = 0, lastTapX = 0, lastTapY = 0;
+
+box.addEventListener('touchstart', e=>{
+  if(e.target && e.target.closest && (e.target.closest('.float-zoom-hud') || e.target.closest('.stage-direct-text-bar'))) return;
+  if(e.touches.length === 2){
+    handleStagePointerUp();
+    isPinchingStage = true;
+    const t0 = e.touches[0], t1 = e.touches[1];
+    pinchStartDist = Math.max(10, Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY));
+    pinchStartZoom = ZOOM;
+    pinchStartMidX = (t0.clientX + t1.clientX) * 0.5;
+    pinchStartMidY = (t0.clientY + t1.clientY) * 0.5;
+    pinchOriginPanX = PAN_X;
+    pinchOriginPanY = PAN_Y;
+    e.preventDefault();
+    return;
+  }
+  if(e.touches.length === 1){
+    isPinchingStage = false;
+    const t = e.touches[0];
+    const now = performance.now();
+    if(now - lastTapTime < 280 && Math.hypot(t.clientX - lastTapX, t.clientY - lastTapY) < 28){
+      lastTapTime = 0;
+      setStageZoom(1, true);
+      e.preventDefault();
+      return;
+    }
+    lastTapTime = now; lastTapX = t.clientX; lastTapY = t.clientY;
+    if(handleStagePointerDown(t.clientX, t.clientY, true, false)){
+      e.preventDefault();
+    }
+  }
+}, { passive: false });
+
+box.addEventListener('touchmove', e=>{
+  if(isPinchingStage && e.touches.length === 2){
+    e.preventDefault();
+    const t0 = e.touches[0], t1 = e.touches[1];
+    const dist = Math.max(10, Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY));
+    const midX = (t0.clientX + t1.clientX) * 0.5;
+    const midY = (t0.clientY + t1.clientY) * 0.5;
+    const nextZoom = Math.max(0.4, Math.min(12, Math.round(pinchStartZoom * (dist / pinchStartDist) * 100) / 100));
+    const br = box.getBoundingClientRect();
+    const cx = pinchStartMidX - (br.left + br.width * 0.5);
+    const cy = pinchStartMidY - (br.top + br.height * 0.5);
+    const ratio = nextZoom / pinchStartZoom;
+    ZOOM = nextZoom;
+    PAN_X = cx - (cx - pinchOriginPanX) * ratio + (midX - pinchStartMidX);
+    PAN_Y = cy - (cy - pinchOriginPanY) * ratio + (midY - pinchStartMidY);
+    syncZoomUI();
+    requestImmediateVectorDraw();
+    return;
+  }
+  if(e.touches.length === 1 && !isPinchingStage){
+    const t = e.touches[0];
+    if(handleStagePointerMove(t.clientX, t.clientY)){
+      e.preventDefault();
+    }
+  }
+}, { passive: false });
+
+box.addEventListener('touchend', e=>{
+  if(e.touches.length === 0){
+    isPinchingStage = false;
+    handleStagePointerUp();
+  }
+});
+box.addEventListener('touchcancel', ()=>{
+  isPinchingStage = false;
+  handleStagePointerUp();
 });
 
 // マウスホイールでのスムーズ拡大・縮小（カーソル位置を中心にズーム）
@@ -11690,13 +13102,15 @@ for(const [pick,hex,key] of [['bgColor','bgHex','bgColor'],['kakuColor','kakuHex
 }
 // Section 3 (🎨 色) 統合コントロール配線（あられ色・札の4パート色）
 if($('dotSyncKakuBtn')) $('dotSyncKakuBtn').addEventListener('click',()=>{ S.dotColor = S.kakuColor || '#ffffff'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
-if($('sec3ArarePadColor')) $('sec3ArarePadColor').addEventListener('input',e=>{ S.ararePadColor = e.target.value; S.ararePadColorMode = 'custom'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
-if($('sec3ArarePadBgBtn')) $('sec3ArarePadBgBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'bg'; S.ararePadColor = S.bgColor; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
-if($('sec3ArarePadWhiteBtn')) $('sec3ArarePadWhiteBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'white'; S.ararePadColor = '#ffffff'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
-if($('sec3ArarePadBlackBtn')) $('sec3ArarePadBlackBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'black'; S.ararePadColor = '#111827'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; update(false); });
-if($('sec3ArarePadStrokeColor')) $('sec3ArarePadStrokeColor').addEventListener('input',e=>{ S.ararePadStrokeColor = e.target.value; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
-if($('sec3ArareStrokeGoldBtn')) $('sec3ArareStrokeGoldBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#877028'; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; update(false); });
-if($('sec3ArareStrokeWhiteBtn')) $('sec3ArareStrokeWhiteBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#ffffff'; if(S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; update(false); });
+if($('sec3ArarePadColor')) $('sec3ArarePadColor').addEventListener('input',e=>{ S.ararePadColor = e.target.value; S.ararePadColorMode = 'custom'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; else if(S.ararePadMode==='frame') S.ararePadMode='padFrame'; if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
+if($('sec3ArarePadNoneBtn')) $('sec3ArarePadNoneBtn').addEventListener('click',()=>{ if(S.ararePadMode==='pad') S.ararePadMode='none'; else if(S.ararePadMode==='padFrame') S.ararePadMode='frame'; update(false); });
+if($('sec3ArarePadBgBtn')) $('sec3ArarePadBgBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'bg'; S.ararePadColor = S.bgColor; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; else if(S.ararePadMode==='frame') S.ararePadMode='padFrame'; if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0; update(false); });
+if($('sec3ArarePadWhiteBtn')) $('sec3ArarePadWhiteBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'white'; S.ararePadColor = '#ffffff'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; else if(S.ararePadMode==='frame') S.ararePadMode='padFrame'; if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0; update(false); });
+if($('sec3ArarePadBlackBtn')) $('sec3ArarePadBlackBtn').addEventListener('click',()=>{ S.ararePadColorMode = 'black'; S.ararePadColor = '#111827'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='pad'; else if(S.ararePadMode==='frame') S.ararePadMode='padFrame'; if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0; update(false); });
+if($('sec3ArarePadStrokeColor')) $('sec3ArarePadStrokeColor').addEventListener('input',e=>{ S.ararePadStrokeColor = e.target.value; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; if(!(S.ararePadStrokeMm > 0)) S.ararePadStrokeMm = 1.0; if(S.mode==='haneda'){ S.mode='both'; update(true); return; } update(false); });
+if($('sec3ArareStrokeNoneBtn')) $('sec3ArareStrokeNoneBtn').addEventListener('click',()=>{ if(S.ararePadMode==='frame') S.ararePadMode='none'; else if(S.ararePadMode==='padFrame') S.ararePadMode='pad'; update(false); });
+if($('sec3ArareStrokeGoldBtn')) $('sec3ArareStrokeGoldBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#877028'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; if(!(S.ararePadStrokeMm > 0)) S.ararePadStrokeMm = 1.0; update(false); });
+if($('sec3ArareStrokeWhiteBtn')) $('sec3ArareStrokeWhiteBtn').addEventListener('click',()=>{ S.ararePadStrokeColor = '#ffffff'; if(!S.ararePadMode || S.ararePadMode==='none') S.ararePadMode='frame'; else if(S.ararePadMode==='pad') S.ararePadMode='padFrame'; if(!(S.ararePadStrokeMm > 0)) S.ararePadStrokeMm = 1.0; update(false); });
 if($('sec3ArareOuterColor')) $('sec3ArareOuterColor').addEventListener('input',e=>{ S.arareOuterColor = e.target.value; if(!S.arareOuterMode || S.arareOuterMode==='none') S.arareOuterMode='single'; update(false); });
 if($('sec3ArareOuterDotBtn')) $('sec3ArareOuterDotBtn').addEventListener('click',()=>{ S.arareOuterColor = S.dotColor || '#ffffff'; if(!S.arareOuterMode || S.arareOuterMode==='none') S.arareOuterMode='single'; update(false); });
 if($('sec3FudaSameKakuBtn')) $('sec3FudaSameKakuBtn').addEventListener('click',()=>applyFudaMainColor('same'));
@@ -12482,6 +13896,7 @@ function easyRenderImpl(){
   if(document.activeElement !== $('eBg')) $('eBg').value = eLow(bg);
   if(document.activeElement !== $('eFg')) $('eFg').value = eLow(S.kakuColor || '#ffffff');
   if($('eDotCol') && document.activeElement !== $('eDotCol')) $('eDotCol').value = eLow(S.dotColor || '#ffffff');
+  if($('eArareDotPicker') && document.activeElement !== $('eArareDotPicker')) $('eArareDotPicker').value = eLow(S.dotColor || '#ffffff');
   var fudaHex = getCurrentFudaMainColor();
   var fudaTxtHex = getCurrentFudaTextColor();
   if($('eFudaCol') && document.activeElement !== $('eFudaCol')) $('eFudaCol').value = eLow(fudaHex);
@@ -12551,7 +13966,9 @@ function easyRenderImpl(){
     });
   }
   if($('eArarePadColBtns')){
-    var apcm = S.ararePadColorMode || 'bg';
+    var apModeCur = S.ararePadMode || 'none';
+    var hasApPad = (apModeCur === 'pad' || apModeCur === 'padFrame');
+    var apcm = hasApPad ? (S.ararePadColorMode || 'bg') : 'none';
     $('eArarePadColBtns').querySelectorAll('button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.dataset.eapc === apcm));
     });
@@ -12561,6 +13978,16 @@ function easyRenderImpl(){
   }
   if($('eArarePadStrokeCol') && document.activeElement !== $('eArarePadStrokeCol')){
     $('eArarePadStrokeCol').value = S.ararePadStrokeColor || '#877028';
+  }
+  if($('eArarePadStrokeBtns')){
+    var apModeStrk = S.ararePadMode || 'none';
+    var hasApStrk = (apModeStrk === 'frame' || apModeStrk === 'padFrame') && (S.ararePadStrokeMm > 0);
+    var apStrkHex = eLow(S.ararePadStrokeColor || '#877028');
+    $('eArarePadStrokeBtns').querySelectorAll('button').forEach(function(b){
+      var v = eLow(b.dataset.eapsc);
+      var isPressed = (v === 'none') ? !hasApStrk : (hasApStrk && v === apStrkHex);
+      b.setAttribute('aria-pressed', String(isPressed));
+    });
   }
   if($('eArareOuterMode')){
     var aom = S.arareOuterMode || 'none';
@@ -12639,7 +14066,14 @@ function easyRenderImpl(){
       b.setAttribute('aria-pressed', String(pressed));
     });
   }
-  if($('eDaboShowShirtBtn')) $('eDaboShowShirtBtn').setAttribute('aria-pressed', String(S.viewMode === 'cut_dabo' || S.viewMode === 'dabo'));
+  if($('eDaboGarmentViewBtns')){
+    var dgv = S.daboGarmentView || 'both';
+    $('eDaboGarmentViewBtns').querySelectorAll('button[data-egv]').forEach(function(b){
+      b.setAttribute('aria-pressed', String(b.dataset.egv === dgv));
+    });
+  }
+  if($('eDaboShowShirtBtn')) $('eDaboShowShirtBtn').setAttribute('aria-pressed', String(S.viewMode === 'cut_dabo'));
+  if($('eDaboShowOnlyDaboBtn')) $('eDaboShowOnlyDaboBtn').setAttribute('aria-pressed', String(S.viewMode === 'dabo'));
   if($('eDaboShowTenuguiBtn')) $('eDaboShowTenuguiBtn').setAttribute('aria-pressed', String(S.viewMode === 'fabric'));
   if($('eDaboReverseText')){
     var mmX = Math.round(((S.logoX || 50) / 100) * S.W);
@@ -12664,16 +14098,7 @@ function easyRenderImpl(){
   else { sum.className = 'e-pmsum ok'; sum.textContent = '✓ この太さなら ' + p.short + ' で印刷できます'; }
   // 保存
   $('eSaveSvg').hidden = $('saveSvg').hidden;
-  var el = $('eList'); el.textContent = '';
-  (PRESETS || []).slice(0, 8).forEach(function(item, i){
-    var b = document.createElement('button'); b.type = 'button'; b.title = item.name + ' を読み込む';
-    var t = document.createElement('i'); if(item.thumb) t.style.backgroundImage = 'url(' + item.thumb + ')'; else t.style.background = (item.settings && item.settings.bgColor) || '#046e7e';
-    var n = document.createElement('span'); n.textContent = item.name;
-    b.appendChild(t); b.appendChild(n);
-    if(item.id === activePresetId) b.setAttribute('aria-pressed', 'true');
-    b.addEventListener('click', function(){ var row = document.querySelectorAll('#savedList .preset-item')[i]; var info = row && row.querySelector('.preset-info'); if(info) info.click(); });
-    el.appendChild(b);
-  });
+  renderPresetList();
 }
 (function(){
   if(!$('easyPanel')) return;
@@ -12724,6 +14149,13 @@ function easyRenderImpl(){
   });
   if($('eDotCol')){
     $('eDotCol').addEventListener('input', function(e){
+      S.dotColor = e.target.value;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
+      update(false);
+    });
+  }
+  if($('eArareDotPicker')){
+    $('eArareDotPicker').addEventListener('input', function(e){
       S.dotColor = e.target.value;
       if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
       update(false);
@@ -12802,11 +14234,20 @@ function easyRenderImpl(){
   if($('eArarePadColBtns')){
     $('eArarePadColBtns').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       var c = b.dataset.eapc || 'bg';
+      if(c === 'none'){
+        if(S.ararePadMode === 'pad') S.ararePadMode = 'none';
+        else if(S.ararePadMode === 'padFrame') S.ararePadMode = 'frame';
+        update(false);
+        return;
+      }
       S.ararePadColorMode = c;
       if(c === 'bg') S.ararePadColor = S.bgColor;
       else if(c === 'white') S.ararePadColor = '#ffffff';
       else if(c === 'black') S.ararePadColor = '#111827';
       if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+      else if(S.ararePadMode === 'frame') S.ararePadMode = 'padFrame';
+      if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
       update(false);
     }); });
   }
@@ -12815,14 +14256,38 @@ function easyRenderImpl(){
       S.ararePadColor = e.target.value;
       S.ararePadColorMode = 'custom';
       if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'pad';
+      else if(S.ararePadMode === 'frame') S.ararePadMode = 'padFrame';
+      if(!(S.ararePadMarginMm > 0)) S.ararePadMarginMm = 2.0;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
       update(false);
     });
+  }
+  if($('eArarePadStrokeBtns')){
+    $('eArarePadStrokeBtns').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      var v = b.dataset.eapsc || 'none';
+      if(v === 'none'){
+        if(S.ararePadMode === 'frame') S.ararePadMode = 'none';
+        else if(S.ararePadMode === 'padFrame') S.ararePadMode = 'pad';
+        update(false);
+        return;
+      }
+      S.ararePadStrokeColor = v;
+      S.arareOuterColor = v;
+      if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'frame';
+      else if(S.ararePadMode === 'pad') S.ararePadMode = 'padFrame';
+      if(!(S.ararePadStrokeMm > 0)) S.ararePadStrokeMm = 1.0;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
+      update(false);
+    }); });
   }
   if($('eArarePadStrokeCol')){
     $('eArarePadStrokeCol').addEventListener('input', function(e){
       S.ararePadStrokeColor = e.target.value;
-      if(S.ararePadMode === 'none') S.ararePadMode = 'frame';
+      S.arareOuterColor = e.target.value;
+      if(!S.ararePadMode || S.ararePadMode === 'none') S.ararePadMode = 'frame';
       else if(S.ararePadMode === 'pad') S.ararePadMode = 'padFrame';
+      if(!(S.ararePadStrokeMm > 0)) S.ararePadStrokeMm = 1.0;
+      if(S.mode === 'haneda'){ S.mode = 'both'; update(true); return; }
       update(false);
     });
   }
@@ -12935,6 +14400,14 @@ function easyRenderImpl(){
       update(false);
     }); });
   }
+  if($('eDaboGarmentViewBtns')){
+    $('eDaboGarmentViewBtns').querySelectorAll('button[data-egv]').forEach(function(b){ b.addEventListener('click', function(){
+      S.daboGarmentView = b.dataset.egv || 'both';
+      if(S.viewMode === 'fabric') S.viewMode = 'cut_dabo';
+      if($('openDaboViewBtn')) $('openDaboViewBtn').textContent = '手ぬぐい画面へ戻る';
+      update(false);
+    }); });
+  }
   if($('eDaboSpotBtns')){
     $('eDaboSpotBtns').querySelectorAll('button[data-dspot]').forEach(function(b){ b.addEventListener('click', function(){
       applyDaboSpotPlacement(b.dataset.dspot, false);
@@ -12952,6 +14425,13 @@ function easyRenderImpl(){
       update(false);
     });
   }
+  if($('eDaboShowOnlyDaboBtn')){
+    $('eDaboShowOnlyDaboBtn').addEventListener('click', function(){
+      S.viewMode = 'dabo';
+      if($('openDaboViewBtn')) $('openDaboViewBtn').textContent = '手ぬぐい画面へ戻る';
+      update(false);
+    });
+  }
   if($('eDaboShowTenuguiBtn')){
     $('eDaboShowTenuguiBtn').addEventListener('click', function(){
       S.viewMode = 'fabric';
@@ -12963,15 +14443,25 @@ function easyRenderImpl(){
   Object.keys(PM_A).forEach(function(k){ var o = document.createElement('option'); o.value = k; o.textContent = PM_A[k].name; sel.appendChild(o); });
   sel.addEventListener('change', function(){ var real = $('pmMethodA'); if(!real) return; real.value = sel.value; real.dispatchEvent(new Event('change')); });
   $('eSavePng').addEventListener('click', function(){ $('savePng').click(); });
-  if($('eSaveDaboPng')) $('eSaveDaboPng').addEventListener('click', function(){ saveDaboHighResPng(); });
+  if($('eSaveDaboOnlyPng')) $('eSaveDaboOnlyPng').addEventListener('click', function(){ saveDaboHighResPng('dabo', 'both'); });
+  if($('eSaveDaboPng')) $('eSaveDaboPng').addEventListener('click', function(){ saveDaboHighResPng('cut_dabo', 'both'); });
+  if($('eSaveDaboPantsPng')) $('eSaveDaboPantsPng').addEventListener('click', function(){ saveDaboHighResPng('dabo', 'pants'); });
+  if($('eSaveDaboSvg')) $('eSaveDaboSvg').addEventListener('click', function(){ saveDaboHighResSvg('cut_dabo', 'both'); });
   if($('eSaveAi')) $('eSaveAi').addEventListener('click', function(){ $('saveAi').click(); });
   $('eSaveSvg').addEventListener('click', function(){ $('saveSvg').click(); });
   $('eCopySvg').addEventListener('click', function(){ $('copySvg').click(); });
   if($('eSaveJson')) $('eSaveJson').addEventListener('click', function(){ $('exportJsonBtn').click(); });
   if($('eLoadJson')) $('eLoadJson').addEventListener('click', function(){ $('importJsonBtn').click(); });
-  function keep(){ $('presetName').value = $('eName').value.trim(); $('savePresetBtn').click(); $('eName').value = ''; easyRender(); }
-  $('eKeep').addEventListener('click', keep);
-  $('eName').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); keep(); } });
+  function keepFromStep8(){
+    saveCurrentSettingsToAppWithName($('eName') ? $('eName').value : '');
+  }
+  function keepFromTop(){
+    saveCurrentSettingsToAppWithName($('eTopPresetName') ? $('eTopPresetName').value : '');
+  }
+  if($('eKeep')) $('eKeep').addEventListener('click', keepFromStep8);
+  if($('eName')) $('eName').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); keepFromStep8(); } });
+  if($('eTopSavePresetBtn')) $('eTopSavePresetBtn').addEventListener('click', keepFromTop);
+  if($('eTopPresetName')) $('eTopPresetName').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); keepFromTop(); } });
   // 詳細モード側のお知らせ（保存しました 等）をかんたん側にも出す
   var em = $('eMsg');
   ['msg', 'saveMsg', 'pmMsgA'].forEach(function(id){
