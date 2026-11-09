@@ -276,16 +276,18 @@ body.hide-guides .guide-layer{
 <header>
   <div class="title-wrap">
     <h1>
-      <span>💥🌊📐 仲羽田 漫画チック揺れ・波揺れ・黄金比ロゴ 18選</span>
+      <span>🎌💥🌊📐 仲羽田 大漁旗（横向き）・漫画チック揺れ・波揺れ・黄金比ロゴ 21選</span>
+      <span class="phi-badge" style="background:linear-gradient(135deg,#dc2626,#d97706)">🎌 黄金大漁旗（横向き） 3選</span>
       <span class="manga-badge">💥 札タッチ・漫画チック揺れ 6選</span>
       <span class="wave-badge">🌊 波・揺らぎ × 黄金比 6選</span>
       <span class="phi-badge">📐 幾何学 × 黄金比 6選</span>
     </h1>
-    <p>札ロゴと同じ「3D斜線ハッチング立体影＋3本スイング揺れ線」で仲羽田が漫画チックに揺れる6選、波・揺れ6選、幾何学黄金比6選（計18選）</p>
+    <p>横向き黄金長方形(φ:1)の「大漁旗（旭日・荒波・仲羽田）」3選、札と同じ3D斜線ハッチング揺れ6選、波・揺れ6選（⑫は仲羽田のみ）、幾何学黄金比6選（計21選・すべて透過背景）</p>
   </div>
   <div class="controls">
     <div class="ctrl-group" id="catFilterBar">
-      <button type="button" class="cat-btn active" data-cat="all">すべて (18)</button>
+      <button type="button" class="cat-btn active" data-cat="all">すべて (21)</button>
+      <button type="button" class="cat-btn" data-cat="tairyo">🎌 大漁旗・横 (3)</button>
       <button type="button" class="cat-btn" data-cat="manga">💥 漫画チック揺れ (6)</button>
       <button type="button" class="cat-btn" data-cat="wave">🌊 波・揺れ (6)</button>
       <button type="button" class="cat-btn" data-cat="geo">📐 幾何学 (6)</button>
@@ -313,6 +315,13 @@ body.hide-guides .guide-layer{
     <a href="arare_app.html" class="btn ghost">← 手ぬぐい・ダボ工房へ戻る</a>
   </div>
 </header>
+
+<div id="tairyoSectionWrap">
+  <div class="sec-banner">
+    <h2 style="color:#fbbf24">🎌 黄金比・大漁旗シリーズ（横向き φ : 1 ── 旭日・荒波・横書き「仲羽田」 3選）</h2>
+  </div>
+  <div class="grid" id="tairyoLogoGrid"></div>
+</div>
 
 <div id="mangaSectionWrap">
   <div class="sec-banner">
@@ -1046,38 +1055,29 @@ const WAVE_LOGOS = [
     id: 'wave_6_lockup',
     token: '__BUILTIN_WAVE_6__',
     cat: 'wave',
-    title: '⑫ 黄金潮波・横組みウェーブ紋（Golden Wave Horizontal Lockup）',
-    ratioLabel: 'Wave Seal 1/φ² (38.2%) : Wave Type 1/φ (61.8%)',
-    desc: '黄金分割（左38.2% : 右61.8%）の横組みロックアップを波・揺れ仕様に進化。左に波丸紋の「仲」落款、右には上下の二重サイン波リボンに挟まれて波に乗る横組み「仲 羽 田」を配しています。',
-    math: '左落款 38.2% : 右波タイポ 61.8% ／ 上下4本の黄金サイン波ストリーム',
+    title: '⑫ 黄金潮波・横組みウェーブ紋（仲羽田のみ）',
+    ratioLabel: 'W : H = φ : 1 (900 × 556 Golden Wave Lockup)',
+    desc: '横向き黄金長方形（900×556, φ:1）の中に、上下の二重サイン波リボンと波に乗る横組み「仲 羽 田」のみを堂々と配置したウェーブ紋。',
+    math: '外寸 900 × 556 (φ : 1) ／ 上下4本の黄金サイン波ストリーム ＋ 横組み「仲 羽 田」',
     buildSvg(fg, showGuide){
-      const waveType = (px, py) => [
-        px + 6 * Math.sin(((py - 380) / 180) * Math.PI * 2),
-        py + 12 * Math.sin(((px - 400) / 520) * Math.PI * 2)
+      const waveTypeFull = (px, py) => [
+        px + 8 * Math.sin(((py - 368) / 248) * Math.PI * 2),
+        py + 16 * Math.sin(((px - 66) / 868) * Math.PI * 2)
       ];
-      const pSealNaka = glyphNakaPath(136, 412, 128, 128, (px, py) => [px + 5 * Math.sin((py - 412)/60), py]);
-      const pNaka = glyphNakaPath(400, 410, 160, 160, waveType);
-      const pHane = glyphHanePath(586, 410, 160, 160, waveType);
-      const pTa   = glyphTaPath(772, 410, 160, 160, waveType);
-      const sealArc = waveArcBand(200, 500, 156, 130, 140, 400, 5, 4, 0, 56);
-      const sealW1  = waveRibbonH(72, 328, 576, 12, 2.0, 0.0, 4, 16, 4, 36);
-      const sealW2  = waveRibbonH(98, 302, 612, 10, 2.0, 1.2, 4, 13, 4, 32);
-      // 右側の上下を流れる黄金サイン波リボン
-      const topW1 = waveRibbonH(392, 948, 342, 14, 2.0, 0.0, 6, 20, 6, 48);
-      const topW2 = waveRibbonH(405, 935, 376, 10, 2.0, 0.8, 4, 12, 4, 48);
-      const botW1 = waveRibbonH(392, 948, 612, 14, 2.0, 1.5, 6, 20, 6, 48);
-      const botW2 = waveRibbonH(405, 935, 646, 10, 2.0, 2.3, 4, 12, 4, 48);
-      const divWave = waveRibbonV(336, 658, 372, 8, 1.5, 0, 6, 12, 6, 32);
+      const pNaka = glyphNakaPath(66, 368, 248, 248, waveTypeFull);
+      const pHane = glyphHanePath(376, 368, 248, 248, waveTypeFull);
+      const pTa   = glyphTaPath(686, 368, 248, 248, waveTypeFull);
+      const topW1 = waveRibbonH(50, 950, 252, 22, 2.0, 0.0, 10, 30, 10, 56);
+      const topW2 = waveRibbonH(72, 928, 304, 16, 2.0, 0.8, 7, 19, 7, 52);
+      const botW1 = waveRibbonH(50, 950, 680, 22, 2.0, 1.5, 10, 30, 10, 56);
+      const botW2 = waveRibbonH(72, 928, 732, 16, 2.0, 2.3, 7, 19, 7, 52);
       const guide = `<g class="guide-layer" fill="none" stroke="#38bdf8" stroke-width="2" stroke-dasharray="7 5" opacity="0.82">
-        <rect x="40" y="324" width="920" height="352"/>
-        <line x1="372" y1="300" x2="372" y2="700"/>
-        <text x="45" y="310" fill="#38bdf8" font-size="21" font-family="monospace" stroke="none">Wave Seal 1/φ²</text>
-        <text x="400" y="310" fill="#38bdf8" font-size="21" font-family="monospace" stroke="none">Undulating Lockup 1/φ</text>
+        <rect x="50" y="222" width="900" height="556"/>
+        <text x="60" y="208" fill="#38bdf8" font-size="21" font-family="monospace" stroke="none">W : H = φ : 1 (900 × 556) — 仲羽田 Horizontal Wave</text>
       </g>`;
       return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
         <g fill="${fg}">
-          <path d="${sealArc} ${sealW1} ${sealW2} ${pSealNaka}"/>
-          <path d="${divWave} ${topW1} ${topW2} ${botW1} ${botW2}"/>
+          <path d="${topW1} ${topW2} ${botW1} ${botW2}"/>
           <path d="${pNaka} ${pHane} ${pTa}"/>
         </g>
         ${showGuide ? guide : ''}
@@ -1326,7 +1326,139 @@ const GEO_LOGOS = [
   }
 ];
 
-const ALL_LOGOS = MANGA_LOGOS.concat(WAVE_LOGOS, GEO_LOGOS);
+const tairyoSunburst = (cx, cy, rSun, rRayIn, rRayOut, numRays, degStart, degEnd, duty = 0.46, clipBox = null) => {
+  const polys = [];
+  const sunPts = [];
+  for(let i = 0; i <= 36; i++){
+    const a = Math.PI + (Math.PI * i) / 36;
+    sunPts.push(`${(cx + Math.cos(a) * rSun).toFixed(1)},${(cy + Math.sin(a) * rSun).toFixed(1)}`);
+  }
+  polys.push(`M${sunPts.join('L')}Z`);
+  polys.push(waveArcBand(cx, cy, rSun + 18, rSun + 8, 182, 358, 0, 1, 0, 36));
+  const span = degEnd - degStart, step = span / numRays;
+  for(let i = 0; i < numRays; i++){
+    const a0 = ((degStart + (i + 0.5 - duty * 0.5) * step) * Math.PI) / 180;
+    const a1 = ((degStart + (i + 0.5 + duty * 0.5) * step) * Math.PI) / 180;
+    const reachRay = ang => {
+      let rMax = rRayOut;
+      if(clipBox){
+        const ca = Math.cos(ang), sa = Math.sin(ang);
+        if(ca < -1e-4) rMax = Math.min(rMax, (clipBox.x0 - cx) / ca);
+        if(ca > 1e-4)  rMax = Math.min(rMax, (clipBox.x1 - cx) / ca);
+        if(sa < -1e-4) rMax = Math.min(rMax, (clipBox.y0 - cy) / sa);
+        if(sa > 1e-4)  rMax = Math.min(rMax, (clipBox.y1 - cy) / sa);
+      }
+      return Math.max(rRayIn + 18, rMax);
+    };
+    const ro0 = reachRay(a0), ro1 = reachRay(a1);
+    const x0 = cx + Math.cos(a0) * rRayIn, y0 = cy + Math.sin(a0) * rRayIn;
+    const x1 = cx + Math.cos(a0) * ro0,    y1 = cy + Math.sin(a0) * ro0;
+    const x2 = cx + Math.cos(a1) * ro1,    y2 = cy + Math.sin(a1) * ro1;
+    const x3 = cx + Math.cos(a1) * rRayIn, y3 = cy + Math.sin(a1) * rRayIn;
+    polys.push(`M${x0.toFixed(1)},${y0.toFixed(1)}L${x1.toFixed(1)},${y1.toFixed(1)}L${x2.toFixed(1)},${y2.toFixed(1)}L${x3.toFixed(1)},${y3.toFixed(1)}Z`);
+  }
+  return polys.join(' ');
+};
+
+const tairyoFlagFrame = () => {
+  const x0 = 56, y0 = 222, w = 900, h = 556, x1 = x0 + w, y1 = y0 + h, c = 58;
+  const outer = `M${x0},${y0}H${x1}V${y1}H${x0}Z M${x0+18},${y0+18}V${y1-18}H${x1-18}V${y0+18}Z`;
+  const inner = `M${x0+28},${y0+28}H${x1-28}V${y1-28}H${x0+28}Z M${x0+36},${y0+36}V${y1-36}H${x1-36}V${y0+36}Z`;
+  const corners = [
+    `M${x0+42},${y0+42}L${x0+42+c},${y0+42}L${x0+42},${y0+42+c}Z`,
+    `M${x1-42},${y0+42}L${x1-42-c},${y0+42}L${x1-42},${y0+42+c}Z`,
+    `M${x0+42},${y1-42}L${x0+42+c},${y1-42}L${x0+42},${y1-42-c}Z`,
+    `M${x1-42},${y1-42}L${x1-42-c},${y1-42}L${x1-42},${y1-42-c}Z`
+  ].join(' ');
+  const chichi = [265, 395, 555, 685].map(cy => `M22,${cy-16}H${x0}V${cy-6}H32V${cy+6}H${x0}V${cy+16}H22Z`).join(' ');
+  return `<path fill-rule="evenodd" d="${outer} ${inner}"/><path d="${corners} ${chichi}"/>`;
+};
+
+const TAIRYO_LOGOS = [
+  {
+    id: 'tairyo_1_flag',
+    token: '__BUILTIN_TAIRYO_1__',
+    cat: 'tairyo',
+    title: '⑲ 黄金大漁旗・旭日荒波（横向きフラッグ）',
+    ratioLabel: 'W : H = φ : 1 (900 × 556 Golden Tairyō Flag)',
+    desc: '厳密な横向き黄金長方形（900×556, φ:1）の二重旗枠に、四隅の伝統隅切り三角飾り・左端のチチ紐（旗紐）を備え、上部には日輪と13本の旭光放射線、中央には力強くアーチを描く「仲 羽 田」、下部には3層の荒波を配した正統派・黄金大漁旗ロゴ。',
+    math: '旗外寸 900 × 556 (φ : 1) ／ 旭日13光線 ＋ 横組み「仲 羽 田」 ＋ 3層荒波',
+    buildSvg(fg, showGuide){
+      const tairyoArchFn = (px, py) => [px + 5 * Math.sin(((py - 410) / 210) * Math.PI * 2), py - 18 * Math.sin(((px - 90) / 820) * Math.PI)];
+      const pNaka = glyphNakaPath(102, 418, 236, 198, tairyoArchFn);
+      const pHane = glyphHanePath(388, 418, 236, 198, tairyoArchFn);
+      const pTa   = glyphTaPath(674, 418, 236, 198, tairyoArchFn);
+      const guide = `<g class="guide-layer" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="7 5" opacity="0.82">
+        <rect x="56" y="222" width="900" height="556"/>
+        <text x="64" y="208" fill="#fbbf24" font-size="21" font-family="monospace" stroke="none">Golden Tairyō-bata W : H = φ : 1 (900 × 556)</text>
+      </g>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+        <g fill="${fg}">
+          ${tairyoFlagFrame()}
+          <path d="${tairyoSunburst(506, 392, 68, 96, 420, 13, 192, 348, 0.45, {x0:104, x1:908, y0:268, y1:392})}"/>
+          <path d="${pNaka} ${pHane} ${pTa}"/>
+          <path d="${waveRibbonH(96,916,658,18,2.5,0.0,10,28,10,56)} ${waveRibbonH(108,904,698,15,2.5,0.9,8,22,8,52)} ${waveRibbonH(126,886,732,11,2.0,1.8,6,16,6,48)}"/>
+        </g>
+        ${showGuide ? guide : ''}
+      </svg>`;
+    }
+  },
+  {
+    id: 'tairyo_2_wind',
+    token: '__BUILTIN_TAIRYO_2__',
+    cat: 'tairyo',
+    title: '⑳ 黄金大漁旗・風なびき潮波（横・3D筆文字）',
+    ratioLabel: 'Billowing Flag φ : 1 + 3D Hatched Brush',
+    desc: '潮風を受けて大きくうねる横向き黄金比の大漁旗シルエットの中に、昇る旭日15光線と、札ロゴと同じ3D斜線ハッチング立体影つきの横書き「仲 羽 田」＆荒波しぶきを融合させた躍動感あふれる大漁旗ロゴ。',
+    math: '風なびき黄金長方形 (φ : 1) ／ 3D斜線ハッチング立体文字 ＋ 旭日15光線 ＋ 潮波',
+    buildSvg(fg, showGuide){
+      const guide = `<g class="guide-layer" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="7 5" opacity="0.82">
+        <rect x="48" y="222" width="904" height="556"/>
+        <text x="58" y="208" fill="#fbbf24" font-size="21" font-family="monospace" stroke="none">Billowing Golden Tairyō-bata φ : 1 + 3D Hatched</text>
+      </g>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+        <g fill="${fg}">
+          <path d="${waveRibbonH(48,952,226,18,1.5,0.2,14,28,14,56)} ${waveRibbonH(64,936,262,14,1.5,0.2,6,13,6,52)} ${waveRibbonH(64,936,738,14,1.5,1.6,6,13,6,52)} ${waveRibbonH(48,952,774,18,1.5,1.6,14,28,14,56)} ${waveRibbonV(222,778,56,12,1.5,0.0,12,22,12,44)} ${waveRibbonV(222,778,944,12,1.5,1.2,12,22,12,44)}"/>
+          <path d="${tairyoSunburst(500, 386, 60, 84, 385, 15, 195, 345, 0.44, {x0:96, x1:904, y0:280, y1:386})}"/>
+          ${build3dHatchedSvg(getCharLoops(NAKA_IDXS, 187.1, 275.7, 232, 512, 2.22, -13.1 - 10), 22, 16, 5.2)}
+          ${build3dHatchedSvg(getCharLoops(HANE_IDXS, 162.8, 376.4, 500, 495, 2.22, -13.1 + 10), 22, 16, 5.2)}
+          ${build3dHatchedSvg(getCharLoops(TA_IDXS, 143.8, 464.3, 768, 512, 2.22, -13.1 - 8), 22, 16, 5.2)}
+          <path fill-rule="evenodd" d="${waveRibbonH(86,914,668,18,2.5,0.4,8,24,8,52)} ${waveRibbonH(106,894,704,14,2.5,1.3,6,18,6,48)} ${placeSpList(UP_SHKL,98,430,1.15,1.15,32)} ${placeSpList(UP_SHKR,902,425,1.15,1.15,-30)}"/>
+        </g>
+        ${showGuide ? guide : ''}
+      </svg>`;
+    }
+  },
+  {
+    id: 'tairyo_3_emblem',
+    token: '__BUILTIN_TAIRYO_3__',
+    cat: 'tairyo',
+    title: '㉑ 黄金大漁旗・日輪大波エンブレム（横・枠なし透過）',
+    ratioLabel: 'Frameless Tairyō Emblem φ : 1',
+    desc: '外枠を持たない完全透過シルエットの横向き大漁旗エンブレム。背紋や手ぬぐい中央にそのまま載せても生地柄と美しく調和する、大日輪15光線＋うねる大文字「仲 羽 田」＋4層大波の黄金比クレスト。',
+    math: '全体 900 × 556 (φ : 1) ／ 枠なし透過エンブレム ／ 旭日15光線 ＋ 4層荒波',
+    buildSvg(fg, showGuide){
+      const tairyoSwellFn = (px, py) => [px + 6 * Math.sin(((py - 390) / 230) * Math.PI * 2), py + 14 * Math.sin(((px - 70) / 860) * Math.PI * 2)];
+      const pNaka = glyphNakaPath(68, 402, 252, 216, tairyoSwellFn);
+      const pHane = glyphHanePath(374, 402, 252, 216, tairyoSwellFn);
+      const pTa   = glyphTaPath(680, 402, 252, 216, tairyoSwellFn);
+      const guide = `<g class="guide-layer" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="7 5" opacity="0.82">
+        <rect x="52" y="218" width="896" height="564"/>
+        <text x="62" y="206" fill="#fbbf24" font-size="21" font-family="monospace" stroke="none">Frameless Golden Tairyō Crest (φ : 1)</text>
+      </g>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+        <g fill="${fg}">
+          <path d="${tairyoSunburst(500, 378, 76, 106, 440, 15, 188, 352, 0.46, {x0:64, x1:936, y0:218, y1:378})}"/>
+          <path d="${pNaka} ${pHane} ${pTa}"/>
+          <path d="${waveRibbonH(52,948,664,22,2.5,0.0,10,32,10,56)} ${waveRibbonH(76,924,712,18,2.5,0.85,8,25,8,52)} ${waveRibbonH(112,888,754,14,2.5,1.7,6,19,6,48)} ${waveRibbonH(168,832,790,10,2.0,2.55,4,14,4,44)}"/>
+        </g>
+        ${showGuide ? guide : ''}
+      </svg>`;
+    }
+  }
+];
+
+const ALL_LOGOS = TAIRYO_LOGOS.concat(MANGA_LOGOS, WAVE_LOGOS, GEO_LOGOS);
 
 let curFg = '#ffffff';
 let curBg = '#046e7e';
@@ -1367,16 +1499,22 @@ function buildCardElement(item){
 }
 
 function renderAllCards(){
+  const tairyoGrid = document.getElementById('tairyoLogoGrid');
   const mangaGrid = document.getElementById('mangaLogoGrid');
   const waveGrid = document.getElementById('waveLogoGrid');
   const geoGrid = document.getElementById('geoLogoGrid');
+  if(tairyoGrid) tairyoGrid.innerHTML = '';
   mangaGrid.innerHTML = '';
   waveGrid.innerHTML = '';
   geoGrid.innerHTML = '';
+  if(tairyoGrid) TAIRYO_LOGOS.forEach(item => tairyoGrid.appendChild(buildCardElement(item)));
   MANGA_LOGOS.forEach(item => mangaGrid.appendChild(buildCardElement(item)));
   WAVE_LOGOS.forEach(item => waveGrid.appendChild(buildCardElement(item)));
   GEO_LOGOS.forEach(item => geoGrid.appendChild(buildCardElement(item)));
 
+  if(document.getElementById('tairyoSectionWrap')){
+    document.getElementById('tairyoSectionWrap').style.display = (curCat === 'all' || curCat === 'tairyo') ? 'block' : 'none';
+  }
   document.getElementById('mangaSectionWrap').style.display = (curCat === 'all' || curCat === 'manga') ? 'block' : 'none';
   document.getElementById('waveSectionWrap').style.display = (curCat === 'all' || curCat === 'wave') ? 'block' : 'none';
   document.getElementById('geoSectionWrap').style.display = (curCat === 'all' || curCat === 'geo') ? 'block' : 'none';
@@ -1428,8 +1566,8 @@ function sendLogoToMainApp(item){
   try{
     const shelfStorageId = 'haneda-logo-shelf-v1';
     const shelf = JSON.parse(localStorage.getItem(shelfStorageId) || '[]');
-    const cleanTitle = item.title.replace(/^[①-⑳]\s*/, '');
-    const prefix = item.cat === 'manga' ? '💥 ' : (item.cat === 'wave' ? '🌊 ' : '📐 ');
+    const cleanTitle = item.title.replace(/^[①-㉕]\s*/, '');
+    const prefix = item.cat === 'tairyo' ? '🎌 ' : (item.cat === 'manga' ? '💥 ' : (item.cat === 'wave' ? '🌊 ' : '📐 '));
     const slotObj = {
       logoName: cleanTitle,
       logoDataUrl: item.token || dataUrl,
@@ -1439,7 +1577,7 @@ function sendLogoToMainApp(item){
       logoMono: true,
       logoColor: curFg,
       logoOutlineMm: 0,
-      logoPadMode: 'silhouette',
+      logoPadMode: 'none',
       logoPadColorMode: 'bg',
       logoPadColor: '#046e7e',
       logoPadMarginMm: 6,
