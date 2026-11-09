@@ -163,9 +163,10 @@ html.ui-easy h1{font-size:19px}
 .e-chips button{border:1.5px solid var(--line);background:var(--panel);color:var(--fg);border-radius:9px;padding:6px 10px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;line-height:1.3;min-height:40px;text-align:center}
 .e-chips button small{display:block;font-weight:400;font-size:10.5px;color:var(--muted)}
 .e-chips.small button{min-height:34px;padding:5px 10px}
-.e-colors{display:flex;flex-wrap:wrap;gap:7px}
-.e-colors button{width:40px;height:40px;border-radius:9px;border:1.5px solid var(--line);cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-disp);font-size:18px;font-weight:800}
-.e-colors button[aria-pressed=true]{outline:2.5px solid var(--ai);outline-offset:2px}
+.e-colors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.e-colors button{min-height:42px;border-radius:8px;border:1.5px solid var(--line);cursor:pointer;padding:2px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-disp);font-size:15px;font-weight:800;line-height:1.05;gap:1px;overflow:hidden}
+.e-colors button small{font-family:var(--f-ui);font-size:8.5px;font-weight:700;line-height:1.05;opacity:.95;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.e-colors button[aria-pressed=true]{outline:2.5px solid var(--ai);outline-offset:1.5px;box-shadow:0 2px 6px rgba(0,0,0,.22)}
 .e-pick{display:flex;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
 .e-pick label{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
 .e-pick input[type=color]{width:34px;height:26px;border:1px solid var(--line);border-radius:6px;padding:0;background:none;cursor:pointer}
@@ -297,7 +298,11 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
       </div>
       <div class="e-step">
         <div class="e-h"><b>3</b><span>色（地の色・仲羽田・あられ・札の色）</span><button type="button" class="e-more" data-emore="step3">詳しく</button></div>
-        <div class="e-colors" id="eColors"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+          <span style="font-size:11.5px;font-weight:700;color:#334155">🎨 2色カラーパターン（全30種・札の色も一括同期）</span>
+          <span id="eActiveComboBadge" class="badge" style="background:#e0f2fe;color:#0369a1;font-size:10.5px">羽田納戸×白</span>
+        </div>
+        <div class="e-colors" id="eColors" role="group" aria-label="2色カラーパターン（全30種）"></div>
         <div class="e-pick">
           <label><input type="color" id="eBg">地の色</label>
           <label><input type="color" id="eFg">仲羽田の色</label>
@@ -907,6 +912,13 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           </div>
           <canvas id="aiColorMapCanvas" width="340" height="84" style="width:100%;height:84px;border-radius:5px;border:1px solid #475569;cursor:pointer;display:block"></canvas>
         </div>
+      </div>
+
+      <div class="cgroup" style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;padding:7px 8px">
+        <div class="chead" style="margin-bottom:4px">
+          <span class="clabel" style="font-weight:800;color:#0f172a">🎨 相性のいい2色カラーパターン（全30種・地の色＋仲羽田＋あられ＋札を一括同期）</span>
+        </div>
+        <div class="e-colors" id="sec3TwoColorCombos" role="group" aria-label="2色カラーパターン（全30種）"></div>
       </div>
 
       <div class="cgroup">
@@ -13866,13 +13878,124 @@ ftRenderTpl();
 /* ==== ✨ かんたんモード（よく使う操作だけ。設定 S は詳細モードと共通） ==== */
 var EASY_READY = false, EASY_KEY = 'tenugui-ui-mode';
 var E_COLORS = [
-  ['#046e7e','#ffffff','羽田納戸×白'],['#183574','#ffffff','藍×白'],['#223a70','#ffffff','紺×白'],
-  ['#00a3af','#ffffff','浅葱×白'],['#262626','#ffffff','墨×白'],['#b7282e','#ffffff','茜×白'],
-  ['#046e7e','#f8b500','羽田納戸×山吹'],['#f3ecd8','#046e7e','生成り×羽田納戸'],
-  ['#ffffff','#183574','白×藍'],['#ffffff','#b7282e','白×茜']
+  // ① 既存定番10種
+  ['#046e7e','#ffffff','羽田納戸×白','納戸×白'],
+  ['#183574','#ffffff','藍×白','藍×白'],
+  ['#223a70','#ffffff','紺×白','紺×白'],
+  ['#00a3af','#ffffff','浅葱×白','浅葱×白'],
+  ['#262626','#ffffff','墨×白','墨×白'],
+  ['#b7282e','#ffffff','茜×白','茜×白'],
+  ['#046e7e','#f8b500','羽田納戸×山吹','納戸×山吹'],
+  ['#f3ecd8','#046e7e','生成り×羽田納戸','生成×納戸'],
+  ['#ffffff','#183574','白×藍','白×藍'],
+  ['#ffffff','#b7282e','白×茜','白×茜'],
+  // ② 追加20種（相性の良い伝統色・祭礼2色コンビネーション）
+  ['#0f2350','#ffffff','濃藍×白','濃藍×白'],
+  ['#17184b','#ffffff','鉄紺×白','鉄紺×白'],
+  ['#2a83a2','#ffffff','縹（はなだ）×白','縹×白'],
+  ['#9e3d3f','#ffffff','臙脂（えんじ）×白','臙脂×白'],
+  ['#3b1e54','#ffffff','江戸紫×白','江戸紫×白'],
+  ['#1f4e3d','#ffffff','千歳緑×白','千歳緑×白'],
+  ['#6c6a2d','#ffffff','鶯（うぐいす）×白','鶯×白'],
+  ['#9f563a','#ffffff','柿渋×白','柿渋×白'],
+  ['#4a2e1b','#ffffff','焦茶×白','焦茶×白'],
+  ['#046e7e','#f3ecd8','羽田納戸×生成り','納戸×生成'],
+  ['#183574','#f3ecd8','藍×生成り','藍×生成'],
+  ['#262626','#f3ecd8','墨×生成り','墨×生成'],
+  ['#046e7e','#c89932','羽田納戸×金茶','納戸×金茶'],
+  ['#183574','#f8b500','藍×山吹','藍×山吹'],
+  ['#0f2350','#c89932','濃藍×金茶','濃藍×金茶'],
+  ['#262626','#f8b500','墨×山吹','墨×山吹'],
+  ['#262626','#d9383a','墨×緋赤','墨×緋赤'],
+  ['#9e3d3f','#f8b500','臙脂×山吹','臙脂×山吹'],
+  ['#ffffff','#046e7e','白×羽田納戸','白×納戸'],
+  ['#f3ecd8','#183574','生成り×藍','生成×藍']
 ];
 function eFg(){ return (S.mode === 'arare' ? S.dotColor : S.kakuColor) || '#ffffff'; }
 function eLow(v){ return String(v || '').toLowerCase(); }
+function applyTwoColorCombo(bgHex, fgHex){
+  var bg = eLow(normHex(bgHex) || '#046e7e');
+  var fg = eLow(normHex(fgHex) || '#ffffff');
+  // 1. 地の色・仲羽田・あられの色をすべて選択した2色に統一
+  S.bgColor = bg;
+  S.kakuColor = fg;
+  S.dotColor = fg;
+  if(S.seinenSpotMode === 'same') S.seinenSpotColor = fg;
+  // 2. あられのうしろ抜き・周り枠・外周枠も2色に合わせる
+  if(S.ararePadColorMode !== 'none'){
+    S.ararePadColorMode = 'bg';
+  }
+  S.ararePadColor = bg;
+  S.ararePadStrokeColor = fg;
+  S.arareOuterColor = fg;
+  // 3. 札（内蔵札ロゴ・配置済み全スロット）も必ず同じ2色（札本体＝fg、札文字＝透かし/bg、うしろ背景＝bg、枠線＝fg）に合わせる
+  function syncSlotToTwoColors(sl){
+    if(!sl) return;
+    var isBuiltin = !sl.logoDataUrl || isBuiltinFudaSlot(sl);
+    if(fg === '#ffffff'){
+      if(isBuiltin){
+        sl.logoName = 'fuda_logo_white';
+        sl.logoDataUrl = '__BUILTIN_FUDA_WHITE__';
+        sl.logoRemoveBg = false;
+        sl.logoBgMode = 'none';
+        sl.logoInvert = false;
+        sl.logoMono = false;
+      }else{
+        sl.logoMono = true;
+      }
+      sl.logoColor = '#ffffff';
+    }else if(fg === '#00a3af'){
+      if(isBuiltin){
+        sl.logoName = 'fuda_logo_teal';
+        sl.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+        sl.logoRemoveBg = false;
+        sl.logoBgMode = 'none';
+        sl.logoInvert = false;
+        sl.logoMono = false;
+      }else{
+        sl.logoMono = true;
+      }
+      sl.logoColor = '#00a3af';
+    }else{
+      if(isBuiltin){
+        sl.logoName = 'fuda_logo_teal';
+        sl.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
+        sl.logoRemoveBg = false;
+        sl.logoBgMode = 'none';
+        sl.logoInvert = false;
+      }
+      sl.logoMono = true;
+      sl.logoColor = fg;
+    }
+    sl.logoTextColor = bg;
+    sl.logoTextColorMode = 'transparent';
+    sl.logoPadColorMode = 'bg';
+    sl.logoPadColor = bg;
+    sl.logoPadStrokeColor = fg;
+    sl.logoOutlineColor = bg;
+  }
+  syncSlotToTwoColors(S);
+  if(Array.isArray(S.logoSlots) && S.logoSlots.length > 0){
+    S.logoSlots.forEach(function(sl){ syncSlotToTwoColors(sl); });
+  }
+  if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
+  PROC_LOGO_KEY = '';
+  PROC_LOGO_MAP.clear();
+  // 4. 名入れ木札・丸紋・タオル枠も2色に統一
+  S.customTextColor = fg;
+  S.fudaFrameColor = fg;
+  S.customTextBg = bg;
+  S.customTextOutlineColor = bg;
+  S.fudaCordColor = bg;
+  S.fudaCordStroke = fg;
+  S.crestFg = fg;
+  S.crestBg = bg;
+  S.towelHemColor = fg;
+  S.towelCenterBoxBg = bg;
+  S.towelCenterBoxStroke = fg;
+  if(S.showLogo) syncActiveSlotFromS();
+  update(false);
+}
 function easyIsOn(){ return document.documentElement.classList.contains('ui-easy'); }
 function easySetMode(m, store){
   var easy = m !== 'full';
@@ -13900,13 +14023,25 @@ function easyRenderImpl(){
     $('eDaboBasePat').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String((b.dataset.dbp || b.dataset.ep) === cur)); });
   }
   $('eSize').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(+b.dataset.w === S.W && +b.dataset.h === S.H)); });
-  $('eColors').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(eLow(b.dataset.bg) === eLow(bg) && eLow(b.dataset.fg) === eLow(fg))); });
+  var fudaHex = getCurrentFudaMainColor();
+  var fudaTxtHex = getCurrentFudaTextColor();
+  var dotHexCur = eLow(S.dotColor || '#ffffff');
+  var activeComboTitle = '';
+  [$('eColors'), $('sec3TwoColorCombos')].forEach(function(grp){
+    if(!grp) return;
+    grp.querySelectorAll('button').forEach(function(b){
+      var match = (eLow(b.dataset.bg) === eLow(bg) && eLow(b.dataset.fg) === eLow(fg) && eLow(fudaHex) === eLow(fg) && dotHexCur === eLow(fg));
+      b.setAttribute('aria-pressed', String(match));
+      if(match && !activeComboTitle) activeComboTitle = b.dataset.comboName || b.title || '';
+    });
+  });
+  if($('eActiveComboBadge')){
+    $('eActiveComboBadge').textContent = activeComboTitle || 'カスタム配色';
+  }
   if(document.activeElement !== $('eBg')) $('eBg').value = eLow(bg);
   if(document.activeElement !== $('eFg')) $('eFg').value = eLow(S.kakuColor || '#ffffff');
   if($('eDotCol') && document.activeElement !== $('eDotCol')) $('eDotCol').value = eLow(S.dotColor || '#ffffff');
   if($('eArareDotPicker') && document.activeElement !== $('eArareDotPicker')) $('eArareDotPicker').value = eLow(S.dotColor || '#ffffff');
-  var fudaHex = getCurrentFudaMainColor();
-  var fudaTxtHex = getCurrentFudaTextColor();
   if($('eFudaCol') && document.activeElement !== $('eFudaCol')) $('eFudaCol').value = eLow(fudaHex);
   if($('eFudaBodyPicker') && document.activeElement !== $('eFudaBodyPicker')) $('eFudaBodyPicker').value = eLow(fudaHex);
   if($('eStep5FudaBodyCol') && document.activeElement !== $('eStep5FudaBodyCol')) $('eStep5FudaBodyCol').value = eLow(fudaHex);
@@ -14132,20 +14267,29 @@ function easyRenderImpl(){
     var c = document.querySelector('#presets .chip[data-w="' + b.dataset.w + '"][data-h="' + b.dataset.h + '"]');
     if(c) c.click(); else { S.W = +b.dataset.w; S.H = +b.dataset.h; update(true); }
   }); });
-  var box = $('eColors');
-  E_COLORS.forEach(function(c){
-    var b = document.createElement('button'); b.type = 'button'; b.dataset.bg = c[0]; b.dataset.fg = c[1];
-    b.style.background = c[0]; b.style.color = c[1]; b.textContent = '仲'; b.title = c[2]; b.setAttribute('aria-label', c[2]);
-    b.addEventListener('click', function(){
-      var prevKaku = eLow(S.kakuColor || '#ffffff');
-      S.bgColor = c[0]; S.kakuColor = c[1]; S.dotColor = c[1];
-      if(!S.showLogo || getCurrentFudaMainColor() === prevKaku){
-        S.logoColor = c[1];
-        if(S.showLogo && isBuiltinFudaSlot(S)){ applyFudaMainColor(c[1]); return; }
-      }
-      update(false);
+  [$('eColors'), $('sec3TwoColorCombos')].forEach(function(box){
+    if(!box) return;
+    E_COLORS.forEach(function(c){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.dataset.bg = c[0];
+      b.dataset.fg = c[1];
+      b.dataset.comboName = c[2];
+      b.style.background = c[0];
+      b.style.color = c[1];
+      var topSpan = document.createElement('span');
+      topSpan.textContent = '仲';
+      var subSm = document.createElement('small');
+      subSm.textContent = c[3] || c[2];
+      b.appendChild(topSpan);
+      b.appendChild(subSm);
+      b.title = c[2] + '（地の色・仲羽田・あられ・札の色を一括変更）';
+      b.setAttribute('aria-label', c[2]);
+      b.addEventListener('click', function(){
+        applyTwoColorCombo(c[0], c[1]);
+      });
+      box.appendChild(b);
     });
-    box.appendChild(b);
   });
   $('eBg').addEventListener('input', function(e){ S.bgColor = e.target.value; update(false); });
   $('eFg').addEventListener('input', function(e){
