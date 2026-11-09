@@ -988,14 +988,40 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   }
   var CANVAS = { tate: { W: 340, H: 850, patRot: 0, patDY: 0 }, yoko: { W: 850, H: 340, patRot: 90, patDY: 0 }, tnv: { W: 350, H: 900, patRot: 0, patDY: 0 }, tnh: { W: 900, H: 350, patRot: 90, patDY: 0 }, tenugui: { W: 340, H: 840, patRot: 0, patDY: 5 } };
   var SW = [
-    ['ティール×白', { bg: '#00A3AF', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
-    ['紺×白', { bg: '#0032AD', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
-    ['藍×白', { bg: '#1E3550', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
-    ['朱×白', { bg: '#D9442B', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
-    ['墨×白', { bg: '#222222', pat: '#FFFFFF', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
-    ['白×ティール', { bg: '#FFFFFF', pat: '#00A3AF', logo: '#00A3AF', win: '#00A3AF' }, 0],
-    ['白×紺', { bg: '#FFFFFF', pat: '#0032AD', logo: '#0032AD', win: '#0032AD' }, 0],
-    ['ティール×柄薄め', { bg: '#00A3AF', pat: '#7FD1D7', logo: '#FFFFFF', win: '#FFFFFF' }, 0],
+    ['ティール×白', { bg: '#00A3AF', pat: '#FFFFFF', logo: '#FFFFFF', win: '#00A3AF' }, 0],
+    ['羽田納戸×白', { bg: '#046E7E', pat: '#FFFFFF', logo: '#FFFFFF', win: '#046E7E' }, 0],
+    ['紺×白', { bg: '#0032AD', pat: '#FFFFFF', logo: '#FFFFFF', win: '#0032AD' }, 0],
+    ['藍×白', { bg: '#1E3550', pat: '#FFFFFF', logo: '#FFFFFF', win: '#1E3550' }, 0],
+    ['濃藍×白', { bg: '#0F2350', pat: '#FFFFFF', logo: '#FFFFFF', win: '#0F2350' }, 0],
+    ['鉄紺×白', { bg: '#17184B', pat: '#FFFFFF', logo: '#FFFFFF', win: '#17184B' }, 0],
+    ['縹×白', { bg: '#2A83A2', pat: '#FFFFFF', logo: '#FFFFFF', win: '#2A83A2' }, 0],
+    ['朱×白', { bg: '#D9442B', pat: '#FFFFFF', logo: '#FFFFFF', win: '#D9442B' }, 0],
+    ['茜×白', { bg: '#B7282E', pat: '#FFFFFF', logo: '#FFFFFF', win: '#B7282E' }, 0],
+    ['臙脂×白', { bg: '#9E3D3F', pat: '#FFFFFF', logo: '#FFFFFF', win: '#9E3D3F' }, 0],
+    ['江戸紫×白', { bg: '#3B1E54', pat: '#FFFFFF', logo: '#FFFFFF', win: '#3B1E54' }, 0],
+    ['千歳緑×白', { bg: '#1F4E3D', pat: '#FFFFFF', logo: '#FFFFFF', win: '#1F4E3D' }, 0],
+    ['鶯×白', { bg: '#6C6A2D', pat: '#FFFFFF', logo: '#FFFFFF', win: '#6C6A2D' }, 0],
+    ['柿渋×白', { bg: '#9F563A', pat: '#FFFFFF', logo: '#FFFFFF', win: '#9F563A' }, 0],
+    ['焦茶×白', { bg: '#4A2E1B', pat: '#FFFFFF', logo: '#FFFFFF', win: '#4A2E1B' }, 0],
+    ['墨×白', { bg: '#222222', pat: '#FFFFFF', logo: '#FFFFFF', win: '#222222' }, 0],
+    ['羽田納戸×生成り', { bg: '#046E7E', pat: '#F3ECD8', logo: '#F3ECD8', win: '#046E7E' }, 0],
+    ['藍×生成り', { bg: '#1E3550', pat: '#F3ECD8', logo: '#F3ECD8', win: '#1E3550' }, 0],
+    ['墨×生成り', { bg: '#222222', pat: '#F3ECD8', logo: '#F3ECD8', win: '#222222' }, 0],
+    ['羽田納戸×山吹', { bg: '#046E7E', pat: '#F8B500', logo: '#F8B500', win: '#046E7E' }, 0],
+    ['羽田納戸×金茶', { bg: '#046E7E', pat: '#C89932', logo: '#C89932', win: '#046E7E' }, 0],
+    ['藍×山吹', { bg: '#1E3550', pat: '#F8B500', logo: '#F8B500', win: '#1E3550' }, 0],
+    ['濃藍×金茶', { bg: '#0F2350', pat: '#C89932', logo: '#C89932', win: '#0F2350' }, 0],
+    ['墨×山吹', { bg: '#222222', pat: '#F8B500', logo: '#F8B500', win: '#222222' }, 0],
+    ['墨×緋赤', { bg: '#222222', pat: '#D9383A', logo: '#D9383A', win: '#222222' }, 0],
+    ['臙脂×山吹', { bg: '#9E3D3F', pat: '#F8B500', logo: '#F8B500', win: '#9E3D3F' }, 0],
+    ['白×ティール', { bg: '#FFFFFF', pat: '#00A3AF', logo: '#00A3AF', win: '#FFFFFF' }, 0],
+    ['白×羽田納戸', { bg: '#FFFFFF', pat: '#046E7E', logo: '#046E7E', win: '#FFFFFF' }, 0],
+    ['白×紺', { bg: '#FFFFFF', pat: '#0032AD', logo: '#0032AD', win: '#FFFFFF' }, 0],
+    ['白×藍', { bg: '#FFFFFF', pat: '#1E3550', logo: '#1E3550', win: '#FFFFFF' }, 0],
+    ['白×茜', { bg: '#FFFFFF', pat: '#B7282E', logo: '#B7282E', win: '#FFFFFF' }, 0],
+    ['生成り×羽田納戸', { bg: '#F3ECD8', pat: '#046E7E', logo: '#046E7E', win: '#F3ECD8' }, 0],
+    ['生成り×藍', { bg: '#F3ECD8', pat: '#1E3550', logo: '#1E3550', win: '#F3ECD8' }, 0],
+    ['ティール×柄薄め', { bg: '#00A3AF', pat: '#7FD1D7', logo: '#FFFFFF', win: '#00A3AF' }, 0],
     ['ティール×紺札（白縁）', { bg: '#00A3AF', pat: '#FFFFFF', logo: '#0032AD', logoBg: '#FFFFFF', win: '#FFFFFF' }, 5],
     ['ティール×白札（紺縁）', { bg: '#00A3AF', pat: '#FFFFFF', logo: '#FFFFFF', logoBg: '#0032AD', win: '#0032AD' }, 5],
     ['藍×白札（朱縁）', { bg: '#1E3550', pat: '#FFFFFF', logo: '#FFFFFF', logoBg: '#D9442B', win: '#D9442B' }, 5],
@@ -1066,7 +1092,12 @@ html.easy #ed .stage .bar{justify-content:flex-start}
       b.appendChild(i); b.appendChild(document.createTextNode(s[0]));
       b.addEventListener('click', function () {
         var c = Object.assign({}, s[1]);
-        if (isWin(cfg.style) && !s[1].logoBg) { c.win = s[1].pat; c.logo = s[1].bg; }
+        if (!s[1].logoBg) {
+          c.logo = s[1].pat;
+          c.win = s[1].bg;
+          delete c.logoBg;
+          delete c.frame;
+        }
         cfg.colors = c;
         if (s[2] !== undefined) cfg.bgRim = s[2];
         syncUI(); schedule();
