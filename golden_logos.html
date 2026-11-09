@@ -285,7 +285,7 @@ body.hide-guides .guide-layer{
       <span class="wave-badge">🌊 波・揺らぎ × 黄金比 6選</span>
       <span class="phi-badge">📐 幾何学 × 黄金比 6選</span>
     </h1>
-    <p>横向き黄金長方形(φ:1)の「大漁旗（旭日・荒波・仲羽田）」3選、札と同じ3D斜線ハッチング揺れ6選、波・揺れ6選（⑫は仲羽田のみ）、幾何学黄金比6選（計21選・すべて透過背景）</p>
+    <p>横向き黄金長方形(φ:1)の「大漁旗（荒波・飛沫・祝い綱・仲羽田）」3選、札と同じ3D斜線ハッチング揺れ6選、波・揺れ6選（⑫は仲羽田のみ）、幾何学黄金比6選（計21選・すべて透過背景）</p>
   </div>
   <div class="controls">
     <div class="ctrl-group" id="catFilterBar">
@@ -322,7 +322,7 @@ body.hide-guides .guide-layer{
 
 <div id="tairyoSectionWrap">
   <div class="sec-banner">
-    <h2 style="color:#fbbf24">🎌 黄金比・大漁旗シリーズ（横向き φ : 1 ── 旭日・荒波・横書き「仲羽田」 3選）</h2>
+    <h2 style="color:#fbbf24">🎌 黄金比・大漁旗シリーズ（横向き φ : 1 ── 荒波・飛沫・祝い綱・横書き「仲羽田」 3選）</h2>
   </div>
   <div class="grid" id="tairyoLogoGrid"></div>
 </div>
@@ -1330,40 +1330,6 @@ const GEO_LOGOS = [
   }
 ];
 
-const tairyoSunburst = (cx, cy, rSun, rRayIn, rRayOut, numRays, degStart, degEnd, duty = 0.46, clipBox = null) => {
-  const polys = [];
-  const sunPts = [];
-  for(let i = 0; i <= 36; i++){
-    const a = Math.PI + (Math.PI * i) / 36;
-    sunPts.push(`${(cx + Math.cos(a) * rSun).toFixed(1)},${(cy + Math.sin(a) * rSun).toFixed(1)}`);
-  }
-  polys.push(`M${sunPts.join('L')}Z`);
-  polys.push(waveArcBand(cx, cy, rSun + 18, rSun + 8, 182, 358, 0, 1, 0, 36));
-  const span = degEnd - degStart, step = span / numRays;
-  for(let i = 0; i < numRays; i++){
-    const a0 = ((degStart + (i + 0.5 - duty * 0.5) * step) * Math.PI) / 180;
-    const a1 = ((degStart + (i + 0.5 + duty * 0.5) * step) * Math.PI) / 180;
-    const reachRay = ang => {
-      let rMax = rRayOut;
-      if(clipBox){
-        const ca = Math.cos(ang), sa = Math.sin(ang);
-        if(ca < -1e-4) rMax = Math.min(rMax, (clipBox.x0 - cx) / ca);
-        if(ca > 1e-4)  rMax = Math.min(rMax, (clipBox.x1 - cx) / ca);
-        if(sa < -1e-4) rMax = Math.min(rMax, (clipBox.y0 - cy) / sa);
-        if(sa > 1e-4)  rMax = Math.min(rMax, (clipBox.y1 - cy) / sa);
-      }
-      return Math.max(rRayIn + 18, rMax);
-    };
-    const ro0 = reachRay(a0), ro1 = reachRay(a1);
-    const x0 = cx + Math.cos(a0) * rRayIn, y0 = cy + Math.sin(a0) * rRayIn;
-    const x1 = cx + Math.cos(a0) * ro0,    y1 = cy + Math.sin(a0) * ro0;
-    const x2 = cx + Math.cos(a1) * ro1,    y2 = cy + Math.sin(a1) * ro1;
-    const x3 = cx + Math.cos(a1) * rRayIn, y3 = cy + Math.sin(a1) * rRayIn;
-    polys.push(`M${x0.toFixed(1)},${y0.toFixed(1)}L${x1.toFixed(1)},${y1.toFixed(1)}L${x2.toFixed(1)},${y2.toFixed(1)}L${x3.toFixed(1)},${y3.toFixed(1)}Z`);
-  }
-  return polys.join(' ');
-};
-
 const tairyoFlagFrame = () => {
   const x0 = 56, y0 = 222, w = 900, h = 556, x1 = x0 + w, y1 = y0 + h, c = 58;
   const outer = `M${x0},${y0}H${x1}V${y1}H${x0}Z M${x0+18},${y0+18}V${y1-18}H${x1-18}V${y0+18}Z`;
@@ -1383,15 +1349,16 @@ const TAIRYO_LOGOS = [
     id: 'tairyo_1_flag',
     token: '__BUILTIN_TAIRYO_1__',
     cat: 'tairyo',
-    title: '⑲ 黄金大漁旗・旭日荒波（横向きフラッグ）',
+    title: '⑲ 黄金大漁旗・荒波飛沫（横向きフラッグ）',
     ratioLabel: 'W : H = φ : 1 (900 × 556 Golden Tairyō Flag)',
-    desc: '厳密な横向き黄金長方形（900×556, φ:1）の二重旗枠に、四隅の伝統隅切り三角飾り・左端のチチ紐（旗紐）を備え、上部には日輪と13本の旭光放射線、中央には力強くアーチを描く「仲 羽 田」、下部には3層の荒波を配した正統派・黄金大漁旗ロゴ。',
-    math: '旗外寸 900 × 556 (φ : 1) ／ 旭日13光線 ＋ 横組み「仲 羽 田」 ＋ 3層荒波',
+    desc: '厳密な横向き黄金長方形（900×556, φ:1）の二重旗枠に、四隅の伝統隅切り三角飾り・左端のチチ紐（旗紐）を備え、上部には祝い綱と荒波うねり冠、中央には力強くアーチを描く「仲 羽 田」、下部には3層の荒波を配した正統派・黄金大漁旗ロゴ。',
+    math: '旗外寸 900 × 556 (φ : 1) ／ 祝い綱・上波冠 ＋ 横組み「仲 羽 田」 ＋ 3層荒波',
     buildSvg(fg, showGuide){
       const tairyoArchFn = (px, py) => [px + 5 * Math.sin(((py - 410) / 210) * Math.PI * 2), py - 18 * Math.sin(((px - 90) / 820) * Math.PI)];
-      const pNaka = glyphNakaPath(102, 418, 236, 198, tairyoArchFn);
-      const pHane = glyphHanePath(388, 418, 236, 198, tairyoArchFn);
-      const pTa   = glyphTaPath(674, 418, 236, 198, tairyoArchFn);
+      const pNaka = glyphNakaPath(102, 404, 236, 206, tairyoArchFn);
+      const pHane = glyphHanePath(388, 404, 236, 206, tairyoArchFn);
+      const pTa   = glyphTaPath(674, 404, 236, 206, tairyoArchFn);
+      const topCrest = `<path fill-rule="evenodd" d="${placeSpList(UP_KNOT,506,294,1.18,1.18,0)} ${placeSpList(UP_SHKL,148,318,1.05,1.05,28)} ${placeSpList(UP_SHKR,864,318,1.05,1.05,-28)}"/><path fill-rule="nonzero" d="${braidedRopeD(156,298,448,282,9)} ${braidedRopeD(564,282,856,298,9)} ${waveRibbonH(126,886,342,14,2.5,0.0,6,20,6,52)}"/>`;
       const guide = `<g class="guide-layer" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="7 5" opacity="0.82">
         <rect x="56" y="222" width="900" height="556"/>
         <text x="64" y="208" fill="#fbbf24" font-size="21" font-family="monospace" stroke="none">Golden Tairyō-bata W : H = φ : 1 (900 × 556)</text>
@@ -1399,7 +1366,7 @@ const TAIRYO_LOGOS = [
       return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
         <g fill="${fg}">
           ${tairyoFlagFrame()}
-          <path d="${tairyoSunburst(506, 392, 68, 96, 420, 13, 192, 348, 0.45, {x0:104, x1:908, y0:268, y1:392})}"/>
+          ${topCrest}
           <path d="${pNaka} ${pHane} ${pTa}"/>
           <path d="${waveRibbonH(96,916,658,18,2.5,0.0,10,28,10,56)} ${waveRibbonH(108,904,698,15,2.5,0.9,8,22,8,52)} ${waveRibbonH(126,886,732,11,2.0,1.8,6,16,6,48)}"/>
         </g>
@@ -1411,10 +1378,10 @@ const TAIRYO_LOGOS = [
     id: 'tairyo_2_wind',
     token: '__BUILTIN_TAIRYO_2__',
     cat: 'tairyo',
-    title: '⑳ 黄金大漁旗・風なびき潮波（横・3D筆文字）',
+    title: '⑳ 黄金大漁旗・潮風なびき大波（横・3D筆文字）',
     ratioLabel: 'Billowing Flag φ : 1 + 3D Hatched Brush',
-    desc: '潮風を受けて大きくうねる横向き黄金比の大漁旗シルエットの中に、昇る旭日15光線と、札ロゴと同じ3D斜線ハッチング立体影つきの横書き「仲 羽 田」＆荒波しぶきを融合させた躍動感あふれる大漁旗ロゴ。',
-    math: '風なびき黄金長方形 (φ : 1) ／ 3D斜線ハッチング立体文字 ＋ 旭日15光線 ＋ 潮波',
+    desc: '潮風を受けて大きくうねる横向き黄金比の大漁旗シルエットの中に、躍動する上段の潮風うねり波と、札ロゴと同じ3D斜線ハッチング立体影つきの横書き「仲 羽 田」＆荒波しぶきを融合させた躍動感あふれる大漁旗ロゴ。',
+    math: '風なびき黄金長方形 (φ : 1) ／ 3D斜線ハッチング立体文字 ＋ 潮風二重波冠 ＋ 荒波',
     buildSvg(fg, showGuide){
       const guide = `<g class="guide-layer" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="7 5" opacity="0.82">
         <rect x="48" y="222" width="904" height="556"/>
@@ -1422,11 +1389,10 @@ const TAIRYO_LOGOS = [
       </g>`;
       return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
         <g fill="${fg}">
-          <path d="${waveRibbonH(48,952,226,18,1.5,0.2,14,28,14,56)} ${waveRibbonH(64,936,262,14,1.5,0.2,6,13,6,52)} ${waveRibbonH(64,936,738,14,1.5,1.6,6,13,6,52)} ${waveRibbonH(48,952,774,18,1.5,1.6,14,28,14,56)} ${waveRibbonV(222,778,56,12,1.5,0.0,12,22,12,44)} ${waveRibbonV(222,778,944,12,1.5,1.2,12,22,12,44)}"/>
-          <path d="${tairyoSunburst(500, 386, 60, 84, 385, 15, 195, 345, 0.44, {x0:96, x1:904, y0:280, y1:386})}"/>
-          ${build3dHatchedSvg(getCharLoops(NAKA_IDXS, 187.1, 275.7, 232, 512, 2.22, -13.1 - 10), 22, 16, 5.2)}
-          ${build3dHatchedSvg(getCharLoops(HANE_IDXS, 162.8, 376.4, 500, 495, 2.22, -13.1 + 10), 22, 16, 5.2)}
-          ${build3dHatchedSvg(getCharLoops(TA_IDXS, 143.8, 464.3, 768, 512, 2.22, -13.1 - 8), 22, 16, 5.2)}
+          <path d="${waveRibbonH(48,952,226,18,1.5,0.2,14,28,14,56)} ${waveRibbonH(64,936,262,14,1.5,0.2,6,13,6,52)} ${waveRibbonH(92,908,312,16,2.5,0.0,8,22,8,52)} ${waveRibbonH(128,872,350,12,2.5,1.1,6,16,6,48)} ${waveRibbonH(64,936,738,14,1.5,1.6,6,13,6,52)} ${waveRibbonH(48,952,774,18,1.5,1.6,14,28,14,56)} ${waveRibbonV(222,778,56,12,1.5,0.0,12,22,12,44)} ${waveRibbonV(222,778,944,12,1.5,1.2,12,22,12,44)}"/>
+          ${build3dHatchedSvg(getCharLoops(NAKA_IDXS, 187.1, 275.7, 232, 504, 2.22, -13.1 - 10), 22, 16, 5.2)}
+          ${build3dHatchedSvg(getCharLoops(HANE_IDXS, 162.8, 376.4, 500, 488, 2.22, -13.1 + 10), 22, 16, 5.2)}
+          ${build3dHatchedSvg(getCharLoops(TA_IDXS, 143.8, 464.3, 768, 504, 2.22, -13.1 - 8), 22, 16, 5.2)}
           <path fill-rule="evenodd" d="${waveRibbonH(86,914,668,18,2.5,0.4,8,24,8,52)} ${waveRibbonH(106,894,704,14,2.5,1.3,6,18,6,48)} ${placeSpList(UP_SHKL,98,430,1.15,1.15,32)} ${placeSpList(UP_SHKR,902,425,1.15,1.15,-30)}"/>
         </g>
         ${showGuide ? guide : ''}
@@ -1437,22 +1403,22 @@ const TAIRYO_LOGOS = [
     id: 'tairyo_3_emblem',
     token: '__BUILTIN_TAIRYO_3__',
     cat: 'tairyo',
-    title: '㉑ 黄金大漁旗・日輪大波エンブレム（横・枠なし透過）',
+    title: '㉑ 黄金大漁旗・双波エンブレム（横・枠なし透過）',
     ratioLabel: 'Frameless Tairyō Emblem φ : 1',
-    desc: '外枠を持たない完全透過シルエットの横向き大漁旗エンブレム。背紋や手ぬぐい中央にそのまま載せても生地柄と美しく調和する、大日輪15光線＋うねる大文字「仲 羽 田」＋4層大波の黄金比クレスト。',
-    math: '全体 900 × 556 (φ : 1) ／ 枠なし透過エンブレム ／ 旭日15光線 ＋ 4層荒波',
+    desc: '外枠を持たない完全透過シルエットの横向き大漁旗エンブレム。背紋や手ぬぐい中央にそのまま載せても生地柄と美しく調和する、上段の2層うねり波冠＋力強くうねる大文字「仲 羽 田」＋下段4層大波の黄金比クレスト。',
+    math: '全体 900 × 556 (φ : 1) ／ 枠なし透過エンブレム ／ 上下双波うねり ＋ 横書き「仲 羽 田」',
     buildSvg(fg, showGuide){
       const tairyoSwellFn = (px, py) => [px + 6 * Math.sin(((py - 390) / 230) * Math.PI * 2), py + 14 * Math.sin(((px - 70) / 860) * Math.PI * 2)];
-      const pNaka = glyphNakaPath(68, 402, 252, 216, tairyoSwellFn);
-      const pHane = glyphHanePath(374, 402, 252, 216, tairyoSwellFn);
-      const pTa   = glyphTaPath(680, 402, 252, 216, tairyoSwellFn);
+      const pNaka = glyphNakaPath(68, 392, 252, 222, tairyoSwellFn);
+      const pHane = glyphHanePath(374, 392, 252, 222, tairyoSwellFn);
+      const pTa   = glyphTaPath(680, 392, 252, 222, tairyoSwellFn);
       const guide = `<g class="guide-layer" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="7 5" opacity="0.82">
         <rect x="52" y="218" width="896" height="564"/>
         <text x="62" y="206" fill="#fbbf24" font-size="21" font-family="monospace" stroke="none">Frameless Golden Tairyō Crest (φ : 1)</text>
       </g>`;
       return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
         <g fill="${fg}">
-          <path d="${tairyoSunburst(500, 378, 76, 106, 440, 15, 188, 352, 0.46, {x0:64, x1:936, y0:218, y1:378})}"/>
+          <path d="${waveRibbonH(64,936,274,20,2.5,0.3,8,28,8,56)} ${waveRibbonH(104,896,322,16,2.5,1.2,6,22,6,52)} ${waveRibbonH(156,844,362,11,2.0,2.1,5,15,5,48)}"/>
           <path d="${pNaka} ${pHane} ${pTa}"/>
           <path d="${waveRibbonH(52,948,664,22,2.5,0.0,10,32,10,56)} ${waveRibbonH(76,924,712,18,2.5,0.85,8,25,8,52)} ${waveRibbonH(112,888,754,14,2.5,1.7,6,19,6,48)} ${waveRibbonH(168,832,790,10,2.0,2.55,4,14,4,44)}"/>
         </g>

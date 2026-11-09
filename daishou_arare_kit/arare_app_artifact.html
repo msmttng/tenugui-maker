@@ -384,17 +384,18 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
               <button type="button" data-eftxt="transparent">透かし</button>
             </div>
           </div>
-          <!-- ③ 札のうしろ背景色（周り枠の中） -->
+          <!-- ③ 札・ロゴのうしろ背景色（透過する／透過しない・背景色） -->
           <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #bae6fd">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-              <span style="font-size:11px;font-weight:700;color:#0c4a6e">③ うしろ背景色（枠の中）:</span>
-              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#0369a1;cursor:pointer">自由色 <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="札のうしろ背景色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #7dd3fc;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+              <span style="font-size:11px;font-weight:700;color:#0c4a6e">③ ロゴの透過／透過しない・うしろ背景色:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#0369a1;cursor:pointer">自由色 <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="ロゴのうしろ背景色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #7dd3fc;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
-            <div class="e-chips small" id="eLogoPadColBtns" style="grid-template-columns:repeat(4,1fr)">
-              <button type="button" data-epc="bg">地の色</button>
-              <button type="button" data-epc="white">白</button>
-              <button type="button" data-epc="black">黒</button>
-              <button type="button" data-epc="none">透過</button>
+            <div class="e-chips small" id="eLogoPadColBtns" style="grid-template-columns:repeat(5,1fr)">
+              <button type="button" data-epc="none">✨ 透過する</button>
+              <button type="button" data-epc="bg">🛡️ 透過しない(地色)</button>
+              <button type="button" data-epc="white">🛡️ 透過しない(白)</button>
+              <button type="button" data-epc="black">🛡️ 透過しない(黒)</button>
+              <button type="button" data-epc="roundRect">🔲 四角背景</button>
             </div>
           </div>
           <!-- ④ 札の周り枠線の色 -->
@@ -488,20 +489,64 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             </div>
           </div>
           <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:4px;max-height:210px;overflow-y:auto"></div>
+          <!-- 🎨 仲羽田トレース・マイロゴ・札ロゴのワンタッチ色変更バー -->
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:6px;margin-top:4px;border-top:1px dashed #93c5fd">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+              <span style="font-size:11px;font-weight:800;color:#1e3a8a">🎨 ロゴの色を変える（仲羽田トレース・札・マイロゴ共通）:</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#1e40af;cursor:pointer">自由色 <input type="color" id="eStep5FudaBodyCol" value="#ffffff" style="width:26px;height:20px;border:1px solid #60a5fa;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eStep5LogoColChips" style="grid-template-columns:repeat(5,1fr)">
+              <button type="button" data-efcol="same">仲羽田と同じ</button>
+              <button type="button" data-efcol="white">白</button>
+              <button type="button" data-efcol="teal" style="color:#007b86">浅葱</button>
+              <button type="button" data-efcol="#046e7e">羽田納戸</button>
+              <button type="button" data-efcol="#877028">羽田金</button>
+              <button type="button" data-efcol="#f8b500">山吹</button>
+              <button type="button" data-efcol="#b7282e">茜</button>
+              <button type="button" data-efcol="#183574">藍</button>
+              <button type="button" data-efcol="#111827">黒</button>
+              <button type="button" data-efcol="orig">元の色</button>
+            </div>
+          </div>
         </div>
         <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
-        <div class="e-subbox" id="eLogoPadBox" hidden>
-          <div class="e-sublbl"><span>🛡️ 札ロゴのうしろ（透過させない・周り枠の形と幅）</span></div>
-          <div class="e-chips" id="eLogoPadMode">
-            <button type="button" data-epm="silhouette">シルエット<small>うしろ透過なし</small></button>
-            <button type="button" data-epm="roundRect">四角枠<small>うしろ透過なし</small></button>
-            <button type="button" data-epm="circle">丸枠<small>うしろ透過なし</small></button>
-            <button type="button" data-epm="none">透過のまま<small>柄が透ける</small></button>
+        <div class="e-subbox" id="eLogoPadBox" hidden style="background:#fffbeb;border:1.5px solid #f59e0b">
+          <div class="e-sublbl"><span style="color:#92400e;font-weight:800">🛡️ ロゴの透過／透過しない ＆ ロゴの背景の余白設定</span></div>
+          <div class="e-chips" id="eLogoPadMode" style="grid-template-columns:repeat(2,1fr)">
+            <button type="button" data-epm="none">✨ ロゴを透過する<small>背景なし（柄が透ける）</small></button>
+            <button type="button" data-epm="silhouette">🛡️ ロゴは透過しない<small>シルエット背景（柄を隠す）</small></button>
+            <button type="button" data-epm="roundRect">🔲 透過しない（四角背景）<small>四角・角丸の背景枠</small></button>
+            <button type="button" data-epm="circle">⭕ 透過しない（丸背景）<small>正円の背景枠</small></button>
           </div>
           <div id="eLogoPadControls" style="display:flex;flex-direction:column;gap:6px">
-            <div class="e-range" data-for="logoPadMarginMm"><span>周りの枠の広さ</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
-            <div class="e-range" data-for="logoPadCornerMm" id="eLogoPadCornerRow"><span>四角枠の角丸</span><input type="range" min="0" max="30" step="1"><b></b></div>
-            <div class="e-range" data-for="logoPadStrokeMm"><span>周りの枠線の太さ</span><input type="range" min="0" max="8" step="0.5"><b></b></div>
+            <div style="display:flex;flex-direction:column;gap:4px;background:#fef3c7;padding:6px 8px;border-radius:6px;border:1px solid #fcd34d">
+              <div class="e-range" data-for="logoPadMarginMm"><span>📏 ロゴの背景の余白</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
+              <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+                <span style="font-size:10.5px;font-weight:700;color:#92400e">余白プリセット:</span>
+                <div class="e-chips small" id="eLogoPadMarginPresets" style="flex:1;grid-template-columns:repeat(6,1fr)">
+                  <button type="button" data-pmargin="0">0mm</button>
+                  <button type="button" data-pmargin="3">3mm</button>
+                  <button type="button" data-pmargin="6">6mm</button>
+                  <button type="button" data-pmargin="10">10mm</button>
+                  <button type="button" data-pmargin="15">15mm</button>
+                  <button type="button" data-pmargin="25">25mm</button>
+                </div>
+              </div>
+            </div>
+            <div class="e-range" data-for="logoPadCornerMm" id="eLogoPadCornerRow"><span>四角背景の角丸</span><input type="range" min="0" max="30" step="1"><b></b></div>
+            <div class="e-range" data-for="logoPadStrokeMm"><span>背景の周り枠線の太さ</span><input type="range" min="0" max="8" step="0.5"><b></b></div>
+            <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px;border-top:1px dashed #fcd34d">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
+                <span style="font-size:11px;font-weight:700;color:#92400e">🎨 透過しないときのロゴ背景色:</span>
+                <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#92400e;cursor:pointer">自由色 <input type="color" id="eStep5FudaPadCol" value="#046e7e" style="width:26px;height:20px;border:1px solid #f59e0b;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+              </div>
+              <div class="e-chips small" id="eStep5PadColBtns" style="grid-template-columns:repeat(4,1fr)">
+                <button type="button" data-epc="bg">地の色</button>
+                <button type="button" data-epc="white">白</button>
+                <button type="button" data-epc="black">黒</button>
+                <button type="button" data-epc="none">✨ 透過に戻す</button>
+              </div>
+            </div>
             <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px;border-top:1px dashed #cbd5e1">
               <span style="font-size:11px;font-weight:700;color:#0c4a6e">🔄 札の揺れの表現の色（左右の揺れ線・側面斜線）:</span>
               <div class="e-chips small" id="eStep5ShakeColorBtns" style="grid-template-columns:repeat(4,1fr)">
@@ -511,7 +556,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
                 <button type="button" data-fshake="invert_both">🔄 両方逆色</button>
               </div>
             </div>
-            <button type="button" class="mini-btn" id="eJumpToStep3ColorBtn" style="background:#f0f9ff;border-color:#7dd3fc;color:#0369a1;font-weight:700;padding:4px 8px;text-align:center">🎨 札の4つの色（本体・文字・うしろ・枠線）は上の「3 色」で変更 ↑</button>
+            <button type="button" class="mini-btn" id="eJumpToStep3ColorBtn" style="background:#f0f9ff;border-color:#7dd3fc;color:#0369a1;font-weight:700;padding:4px 8px;text-align:center">🎨 札の4つの色（本体・文字・うしろ・枠線）は上の「3 色」でも変更 ↑</button>
           </div>
         </div>
         <p class="e-note" id="eLogoNote">ロゴは手ぬぐいの上でもダボシャツの上でもドラッグして動かせます。</p>
@@ -1224,29 +1269,38 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <div class="row"><label for="logoX">ロゴの横位置</label><input type="range" id="logoX" min="5" max="95" step="0.5" value="50"><output for="logoX" id="logoX-o"></output></div>
         <div class="row"><label for="logoY">ロゴの縦位置</label><input type="range" id="logoY" min="5" max="95" step="0.5" value="28"><output for="logoY" id="logoY-o"></output></div>
 
-        <!-- 🛡️ 札ロゴ・画像のうしろを透過させない＆周りの枠のサイズ調整（常時表示でワンタッチ設定可能） -->
+        <!-- 🛡️ 札ロゴ・画像のうしろを透過させない＆ロゴの背景の余白調整（常時表示でワンタッチ設定可能） -->
         <div style="background:#fffbeb;border:1.5px solid #f59e0b;border-radius:6px;padding:7px 8px;display:flex;flex-direction:column;gap:5px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
-            <span style="font-size:11.5px;font-weight:700;color:#92400e">🛡️ うしろを透過させない＆周りの枠のサイズ調整</span>
+            <span style="font-size:11.5px;font-weight:800;color:#92400e">🛡️ ロゴは透過しない／透過する ＆ ロゴの背景の余白調整</span>
             <select id="logoPadMode" style="font-size:11.5px;font-weight:700;padding:2px 6px">
-              <option value="none">透過のまま（うしろの柄が透ける）</option>
-              <option value="silhouette">🏷️ 札の形（うしろ透過なし＋周り枠）</option>
-              <option value="roundRect">🔲 四角・角丸枠（うしろ透過なし＋枠調整）</option>
-              <option value="circle">⭕ 丸枠（うしろ透過なし＋枠調整）</option>
+              <option value="none">✨ ロゴを透過する（うしろの柄が透ける）</option>
+              <option value="silhouette">🛡️ ロゴは透過しない（シルエット背景＋余白）</option>
+              <option value="roundRect">🔲 ロゴは透過しない（四角・角丸背景＋余白）</option>
+              <option value="circle">⭕ ロゴは透過しない（丸背景＋余白）</option>
             </select>
           </div>
           <div class="chips" id="logoPadQuickChips" style="gap:4px">
-            <button type="button" class="mini-btn" data-pm="silhouette" data-pquick="silhouette" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">🏷️ 札の形（透過なし）</button>
-            <button type="button" class="mini-btn" data-pm="roundRect" data-pquick="roundRect" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">🔲 四角枠（透過なし）</button>
-            <button type="button" class="mini-btn" data-pm="circle" data-pquick="circle" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">⭕ 丸枠（透過なし）</button>
-            <button type="button" class="mini-btn" data-pm="none" data-pquick="none">透過のまま</button>
+            <button type="button" class="mini-btn" data-pm="none" data-pquick="none">✨ ロゴを透過する</button>
+            <button type="button" class="mini-btn" data-pm="silhouette" data-pquick="silhouette" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">🛡️ ロゴは透過しない（シルエット）</button>
+            <button type="button" class="mini-btn" data-pm="roundRect" data-pquick="roundRect" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">🔲 透過しない（四角背景）</button>
+            <button type="button" class="mini-btn" data-pm="circle" data-pquick="circle" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">⭕ 透過しない（丸背景）</button>
           </div>
           <div id="logoPadDetailControls" style="display:flex;flex-direction:column;gap:4px">
-            <div class="row"><label for="logoPadMarginMm">周りの枠(余白)の広さ</label><input type="range" id="logoPadMarginMm" min="0" max="45" step="0.5" value="6"><output for="logoPadMarginMm" id="logoPadMarginMm-o">6 mm</output></div>
-            <div class="row" id="logoPadCornerDetailRow"><label for="logoPadCornerMm">四角枠の角丸</label><input type="range" id="logoPadCornerMm" min="0" max="30" step="1" value="6"><output for="logoPadCornerMm" id="logoPadCornerMm-o">6 mm</output></div>
+            <div class="row"><label for="logoPadMarginMm">📏 ロゴの背景の余白</label><input type="range" id="logoPadMarginMm" min="0" max="45" step="0.5" value="6"><output for="logoPadMarginMm" id="logoPadMarginMm-o">6 mm</output></div>
+            <div class="chips" id="dLogoPadMarginPresets" style="gap:4px">
+              <span style="font-size:10.5px;color:#78350f;font-weight:700">余白プリセット:</span>
+              <button type="button" class="mini-btn" data-pmargin="0">0mm(余白なし)</button>
+              <button type="button" class="mini-btn" data-pmargin="3">3mm</button>
+              <button type="button" class="mini-btn" data-pmargin="6">6mm(標準)</button>
+              <button type="button" class="mini-btn" data-pmargin="10">10mm</button>
+              <button type="button" class="mini-btn" data-pmargin="15">15mm</button>
+              <button type="button" class="mini-btn" data-pmargin="25">25mm</button>
+            </div>
+            <div class="row" id="logoPadCornerDetailRow"><label for="logoPadCornerMm">四角背景の角丸</label><input type="range" id="logoPadCornerMm" min="0" max="30" step="1" value="6"><output for="logoPadCornerMm" id="logoPadCornerMm-o">6 mm</output></div>
             <div class="row"><label for="logoPadStrokeMm">周りの枠線の太さ</label><input type="range" id="logoPadStrokeMm" min="0" max="8" step="0.5" value="0"><output for="logoPadStrokeMm" id="logoPadStrokeMm-o">0 mm</output></div>
             <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;font-size:11px">
-              <span style="color:#78350f;font-weight:700">うしろ・枠の色:</span>
+              <span style="color:#78350f;font-weight:700">うしろ背景色:</span>
               <button type="button" class="mini-btn" id="logoPadMatchBgBtn" style="font-weight:700">地の色(自動連動)</button>
               <button type="button" class="mini-btn" id="logoPadWhiteBtn" style="font-weight:700">白</button>
               <button type="button" class="mini-btn" id="logoPadBlackBtn" style="font-weight:700">黒</button>
@@ -2530,39 +2584,6 @@ const GOLDEN_LOGO_BUILDERS = (function(){
   const waveTypeFullFn = (px, py) => [px + 8 * Math.sin(((py - 368) / 248) * Math.PI * 2), py + 16 * Math.sin(((px - 66) / 868) * Math.PI * 2)];
   const tairyoArchFn = (px, py) => [px + 5 * Math.sin(((py - 410) / 210) * Math.PI * 2), py - 18 * Math.sin(((px - 90) / 820) * Math.PI)];
   const tairyoSwellFn = (px, py) => [px + 6 * Math.sin(((py - 390) / 230) * Math.PI * 2), py + 14 * Math.sin(((px - 70) / 860) * Math.PI * 2)];
-  const tairyoSunburst = (cx, cy, rSun, rRayIn, rRayOut, numRays, degStart, degEnd, duty = 0.46, clipBox = null) => {
-    const polys = [];
-    const sunPts = [];
-    for(let i = 0; i <= 36; i++){
-      const a = Math.PI + (Math.PI * i) / 36;
-      sunPts.push(`${(cx + Math.cos(a) * rSun).toFixed(1)},${(cy + Math.sin(a) * rSun).toFixed(1)}`);
-    }
-    polys.push(`M${sunPts.join('L')}Z`);
-    polys.push(waveArcBand(cx, cy, rSun + 18, rSun + 8, 182, 358, 0, 1, 0, 36));
-    const span = degEnd - degStart, step = span / numRays;
-    for(let i = 0; i < numRays; i++){
-      const a0 = ((degStart + (i + 0.5 - duty * 0.5) * step) * Math.PI) / 180;
-      const a1 = ((degStart + (i + 0.5 + duty * 0.5) * step) * Math.PI) / 180;
-      const reachRay = ang => {
-        let rMax = rRayOut;
-        if(clipBox){
-          const ca = Math.cos(ang), sa = Math.sin(ang);
-          if(ca < -1e-4) rMax = Math.min(rMax, (clipBox.x0 - cx) / ca);
-          if(ca > 1e-4)  rMax = Math.min(rMax, (clipBox.x1 - cx) / ca);
-          if(sa < -1e-4) rMax = Math.min(rMax, (clipBox.y0 - cy) / sa);
-          if(sa > 1e-4)  rMax = Math.min(rMax, (clipBox.y1 - cy) / sa);
-        }
-        return Math.max(rRayIn + 18, rMax);
-      };
-      const ro0 = reachRay(a0), ro1 = reachRay(a1);
-      const x0 = cx + Math.cos(a0) * rRayIn, y0 = cy + Math.sin(a0) * rRayIn;
-      const x1 = cx + Math.cos(a0) * ro0,    y1 = cy + Math.sin(a0) * ro0;
-      const x2 = cx + Math.cos(a1) * ro1,    y2 = cy + Math.sin(a1) * ro1;
-      const x3 = cx + Math.cos(a1) * rRayIn, y3 = cy + Math.sin(a1) * rRayIn;
-      polys.push(`M${x0.toFixed(1)},${y0.toFixed(1)}L${x1.toFixed(1)},${y1.toFixed(1)}L${x2.toFixed(1)},${y2.toFixed(1)}L${x3.toFixed(1)},${y3.toFixed(1)}Z`);
-    }
-    return polys.join(' ');
-  };
   const tairyoFlagFrame = () => {
     const x0 = 56, y0 = 222, w = 900, h = 556, x1 = x0 + w, y1 = y0 + h, c = 58;
     const outer = `M${x0},${y0}H${x1}V${y1}H${x0}Z M${x0+18},${y0+18}V${y1-18}H${x1-18}V${y0+18}Z`;
@@ -2578,6 +2599,12 @@ const GOLDEN_LOGO_BUILDERS = (function(){
   };
 
   return {
+    '__BUILTIN_TRACE_VERT__': wrapSvg(
+      `<path fill-rule="evenodd" d="${xfGroup(NAKA_IDXS, 187.1, 275.7, 500, 195, 2.55, 2.55, -13.1)} ${xfGroup(HANE_IDXS, 162.8, 376.4, 500, 500, 2.50, 2.50, -13.1)} ${xfGroup(TA_IDXS, 143.8, 464.3, 500, 805, 2.55, 2.55, -13.1)}"/>`
+    ),
+    '__BUILTIN_TRACE_HORIZ__': wrapSvg(
+      `<path fill-rule="evenodd" d="${xfGroup(NAKA_IDXS, 187.1, 275.7, 195, 500, 2.45, 2.45, -13.1)} ${xfGroup(HANE_IDXS, 162.8, 376.4, 500, 500, 2.42, 2.42, -13.1)} ${xfGroup(TA_IDXS, 143.8, 464.3, 805, 500, 2.45, 2.45, -13.1)}"/>`
+    ),
     '__BUILTIN_MANGA_1__': wrapSvg(
       build3dHatchedSvg(getCharLoops(NAKA_IDXS, 187.1, 275.7, 465, 205, 2.38, -13.1 - 14), 26, 20, 6.0) +
       build3dHatchedSvg(getCharLoops(HANE_IDXS, 162.8, 376.4, 525, 495, 2.32, -13.1 + 15), 26, 20, 6.0) +
@@ -2681,21 +2708,20 @@ const GOLDEN_LOGO_BUILDERS = (function(){
     ),
     '__BUILTIN_TAIRYO_1__': wrapSvg(
       tairyoFlagFrame() +
-      `<path d="${tairyoSunburst(506, 392, 68, 96, 420, 13, 192, 348, 0.45, {x0:104, x1:908, y0:268, y1:392})}"/>` +
-      `<path d="${gNaka(102,418,236,198,tairyoArchFn)} ${gHane(388,418,236,198,tairyoArchFn)} ${gTa(674,418,236,198,tairyoArchFn)}"/>` +
+      `<path fill-rule="evenodd" d="${placeSpList(UP_KNOT,506,294,1.18,1.18,0)} ${placeSpList(UP_SHKL,148,318,1.05,1.05,28)} ${placeSpList(UP_SHKR,864,318,1.05,1.05,-28)}"/><path fill-rule="nonzero" d="${braidedRopeD(156,298,448,282,9)} ${braidedRopeD(564,282,856,298,9)} ${waveRibbonH(126,886,342,14,2.5,0.0,6,20,6,52)}"/>` +
+      `<path d="${gNaka(102,404,236,206,tairyoArchFn)} ${gHane(388,404,236,206,tairyoArchFn)} ${gTa(674,404,236,206,tairyoArchFn)}"/>` +
       `<path d="${waveRibbonH(96,916,658,18,2.5,0.0,10,28,10,56)} ${waveRibbonH(108,904,698,15,2.5,0.9,8,22,8,52)} ${waveRibbonH(126,886,732,11,2.0,1.8,6,16,6,48)}"/>`
     ),
     '__BUILTIN_TAIRYO_2__': wrapSvg(
-      `<path d="${waveRibbonH(48,952,226,18,1.5,0.2,14,28,14,56)} ${waveRibbonH(64,936,262,14,1.5,0.2,6,13,6,52)} ${waveRibbonH(64,936,738,14,1.5,1.6,6,13,6,52)} ${waveRibbonH(48,952,774,18,1.5,1.6,14,28,14,56)} ${waveRibbonV(222,778,56,12,1.5,0.0,12,22,12,44)} ${waveRibbonV(222,778,944,12,1.5,1.2,12,22,12,44)}"/>` +
-      `<path d="${tairyoSunburst(500, 386, 60, 84, 385, 15, 195, 345, 0.44, {x0:96, x1:904, y0:280, y1:386})}"/>` +
-      build3dHatchedSvg(getCharLoops(NAKA_IDXS, 187.1, 275.7, 232, 512, 2.22, -13.1 - 10), 22, 16, 5.2) +
-      build3dHatchedSvg(getCharLoops(HANE_IDXS, 162.8, 376.4, 500, 495, 2.22, -13.1 + 10), 22, 16, 5.2) +
-      build3dHatchedSvg(getCharLoops(TA_IDXS, 143.8, 464.3, 768, 512, 2.22, -13.1 - 8), 22, 16, 5.2) +
+      `<path d="${waveRibbonH(48,952,226,18,1.5,0.2,14,28,14,56)} ${waveRibbonH(64,936,262,14,1.5,0.2,6,13,6,52)} ${waveRibbonH(92,908,312,16,2.5,0.0,8,22,8,52)} ${waveRibbonH(128,872,350,12,2.5,1.1,6,16,6,48)} ${waveRibbonH(64,936,738,14,1.5,1.6,6,13,6,52)} ${waveRibbonH(48,952,774,18,1.5,1.6,14,28,14,56)} ${waveRibbonV(222,778,56,12,1.5,0.0,12,22,12,44)} ${waveRibbonV(222,778,944,12,1.5,1.2,12,22,12,44)}"/>` +
+      build3dHatchedSvg(getCharLoops(NAKA_IDXS, 187.1, 275.7, 232, 504, 2.22, -13.1 - 10), 22, 16, 5.2) +
+      build3dHatchedSvg(getCharLoops(HANE_IDXS, 162.8, 376.4, 500, 488, 2.22, -13.1 + 10), 22, 16, 5.2) +
+      build3dHatchedSvg(getCharLoops(TA_IDXS, 143.8, 464.3, 768, 504, 2.22, -13.1 - 8), 22, 16, 5.2) +
       `<path fill-rule="evenodd" d="${waveRibbonH(86,914,668,18,2.5,0.4,8,24,8,52)} ${waveRibbonH(106,894,704,14,2.5,1.3,6,18,6,48)} ${placeSpList(UP_SHKL,98,430,1.15,1.15,32)} ${placeSpList(UP_SHKR,902,425,1.15,1.15,-30)}"/>`
     ),
     '__BUILTIN_TAIRYO_3__': wrapSvg(
-      `<path d="${tairyoSunburst(500, 378, 76, 106, 440, 15, 188, 352, 0.46, {x0:64, x1:936, y0:218, y1:378})}"/>` +
-      `<path d="${gNaka(68,402,252,216,tairyoSwellFn)} ${gHane(374,402,252,216,tairyoSwellFn)} ${gTa(680,402,252,216,tairyoSwellFn)}"/>` +
+      `<path d="${waveRibbonH(64,936,274,20,2.5,0.3,8,28,8,56)} ${waveRibbonH(104,896,322,16,2.5,1.2,6,22,6,52)} ${waveRibbonH(156,844,362,11,2.0,2.1,5,15,5,48)}"/>` +
+      `<path d="${gNaka(68,392,252,222,tairyoSwellFn)} ${gHane(374,392,252,222,tairyoSwellFn)} ${gTa(680,392,252,222,tairyoSwellFn)}"/>` +
       `<path d="${waveRibbonH(52,948,664,22,2.5,0.0,10,32,10,56)} ${waveRibbonH(76,924,712,18,2.5,0.85,8,25,8,52)} ${waveRibbonH(112,888,754,14,2.5,1.7,6,19,6,48)} ${waveRibbonH(168,832,790,10,2.0,2.55,4,14,4,44)}"/>`
     )
   };
@@ -3598,6 +3624,30 @@ function getDefaultLogoShelfItems(){
       })
     },
     {
+      id: 'shelf_trace_vert',
+      name: '🖌️ 仲羽田トレース (縦・色変更可)',
+      savedAt: Date.now() + 500,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '仲羽田トレース(縦)',
+        logoDataUrl: '__BUILTIN_TRACE_VERT__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'none', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
+      id: 'shelf_trace_horiz',
+      name: '🖌️ 仲羽田トレース (横・色変更可)',
+      savedAt: Date.now() + 400,
+      slot: Object.assign(extractLogoSlotFromS(DEF), {
+        logoName: '仲羽田トレース(横)',
+        logoDataUrl: '__BUILTIN_TRACE_HORIZ__',
+        logoRemoveBg: false, logoBgMode: 'none',
+        logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
+        logoPadMode: 'none', logoPadColorMode: 'bg', logoPadMarginMm: 6
+      })
+    },
+    {
       id: 'shelf_hanten_std',
       name: '🏮 仲羽半纏ロゴ (標準)',
       savedAt: Date.now(),
@@ -3851,10 +3901,10 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_tairyo_1_flag',
-      name: '🎌 ⑲黄金大漁旗・旭日荒波（横向き）',
+      name: '🎌 ⑲黄金大漁旗・荒波飛沫（横向き）',
       savedAt: Date.now() - 4200,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
-        logoName: '黄金大漁旗・旭日荒波（横向きフラッグ）',
+        logoName: '黄金大漁旗・荒波飛沫（横向きフラッグ）',
         logoDataUrl: '__BUILTIN_TAIRYO_1__',
         logoRemoveBg: false, logoBgMode: 'none',
         logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
@@ -3863,10 +3913,10 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_tairyo_2_wind',
-      name: '🎌 ⑳黄金大漁旗・風なびき潮波（横・3D筆文字）',
+      name: '🎌 ⑳黄金大漁旗・潮風なびき大波（横・3D筆文字）',
       savedAt: Date.now() - 4300,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
-        logoName: '黄金大漁旗・風なびき潮波（横・3D筆文字）',
+        logoName: '黄金大漁旗・潮風なびき大波（横・3D筆文字）',
         logoDataUrl: '__BUILTIN_TAIRYO_2__',
         logoRemoveBg: false, logoBgMode: 'none',
         logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
@@ -3875,10 +3925,10 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_tairyo_3_emblem',
-      name: '🎌 ㉑黄金大漁旗・日輪大波エンブレム（横・枠なし）',
+      name: '🎌 ㉑黄金大漁旗・双波エンブレム（横・枠なし）',
       savedAt: Date.now() - 4400,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
-        logoName: '黄金大漁旗・日輪大波エンブレム（横・枠なし）',
+        logoName: '黄金大漁旗・双波エンブレム（横・枠なし）',
         logoDataUrl: '__BUILTIN_TAIRYO_3__',
         logoRemoveBg: false, logoBgMode: 'none',
         logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
@@ -3896,8 +3946,10 @@ function normalizeBuiltInShelfItemsInPlace(){
     if(!item || !item.slot) return;
     if(defMap.has(item.id)){
       const defItem = defMap.get(item.id);
+      const keepColor = item.slot.logoMono ? item.slot.logoColor : null;
       item.name = defItem.name;
       item.slot = Object.assign({}, defItem.slot);
+      if(keepColor) item.slot.logoColor = keepColor;
       return;
     }
     if(!item.slot.logoDataUrl || (hUrl && item.slot.logoDataUrl === hUrl)){
@@ -3907,6 +3959,10 @@ function normalizeBuiltInShelfItemsInPlace(){
       item.slot.logoRemoveBg = false;
       item.slot.logoBgMode = 'none';
       item.slot.logoInvert = false;
+    }
+    // カスタム登録された「仲羽田トレース」等のロゴがいつでも色変更できるよう設定を整える
+    if(/トレース/i.test(item.name || '') || /トレース/i.test(item.slot.logoName || '')){
+      if(!item.slot.logoColor) item.slot.logoColor = S.kakuColor || '#ffffff';
     }
     if(needMigrateTransparent){
       item.slot.logoPadMode = 'none';
@@ -4129,15 +4185,25 @@ function autoMakeTransparentLogoDataUrl(dataUrl, isSvg){
           (h - 1) * w * 4,
           ((h - 1) * w + (w - 1)) * 4
         ];
-        // 既に四隅が透明ならそのまま高画質透過PNGとして出力
+        // 既に四隅が透明かどうか判定し、仲羽田トレース等のように文字内部や背景に白ピクセルが残っている場合も自動透過する
         const alreadyTrans = corners.every(ci => d[ci + 3] < 16);
-        if(!alreadyTrans){
+        let darkOpaqueCnt = 0, whiteOpaqueCnt = 0;
+        for(let i = 0; i < d.length; i += 4){
+          const a = d[i + 3];
+          if(a < 30) continue;
+          const r = d[i], g = d[i + 1], b = d[i + 2];
+          const br = (r + g + b) / 3;
+          if(br < 185) darkOpaqueCnt++;
+          else if(r > 220 && g > 220 && b > 220 && Math.max(r, g, b) - Math.min(r, g, b) < 25) whiteOpaqueCnt++;
+        }
+        const hasDarkStrokesAndWhiteHoles = (darkOpaqueCnt > (w * h * 0.002) && whiteOpaqueCnt > (w * h * 0.003));
+        if(!alreadyTrans || hasDarkStrokesAndWhiteHoles){
           // 四隅の平均色を背景色として検出
           let cr = 0, cg = 0, cb = 0;
           for(const ci of corners){ cr += d[ci]; cg += d[ci + 1]; cb += d[ci + 2]; }
           cr /= 4; cg /= 4; cb /= 4;
           const cornerSpread = corners.reduce((mx, ci) => Math.max(mx, Math.hypot(d[ci] - cr, d[ci + 1] - cg, d[ci + 2] - cb)), 0);
-          const isWhiteBg = (cr > 220 && cg > 220 && cb > 220);
+          const isWhiteBg = hasDarkStrokesAndWhiteHoles || (cr > 220 && cg > 220 && cb > 220);
           if(isWhiteBg){
             const th = 228, soft = 22, startT = th - soft;
             for(let i = 0; i < d.length; i += 4){
@@ -4147,7 +4213,7 @@ function autoMakeTransparentLogoDataUrl(dataUrl, isSvg){
               else if(br > startT) d[i + 3] = Math.round(d[i + 3] * ((th - br) / soft));
             }
             ctx.putImageData(id, 0, 0);
-          }else if(cornerSpread < 28){
+          }else if(!alreadyTrans && cornerSpread < 28){
             const tol = 32, soft = 20;
             for(let i = 0; i < d.length; i += 4){
               if(d[i + 3] === 0) continue;
@@ -4212,13 +4278,32 @@ function renderLogoShelf(){
     const isSelected = S.showLogo && ((sl.logoDataUrl && sl.logoDataUrl === curActiveUrl && (item.name === curActiveName || sl.logoName === curActiveName)) || (sl.logoDataUrl && sl.logoDataUrl.startsWith('__BUILTIN_') && sl.logoDataUrl === curActiveUrl));
     const applyToCurrentFn = () => {
       const keepX = S.logoX ?? 50, keepY = S.logoY ?? 28, keepSz = S.logoSize || 85;
+      const keepPadMode = S.logoPadMode || sl.logoPadMode || 'none';
+      const keepPadMargin = S.logoPadMarginMm ?? sl.logoPadMarginMm ?? 6;
+      const keepPadCorner = S.logoPadCornerMm ?? sl.logoPadCornerMm ?? 6;
+      const keepPadStroke = S.logoPadStrokeMm ?? sl.logoPadStrokeMm ?? 0;
+      const keepPadColMode = S.logoPadColorMode || sl.logoPadColorMode || 'bg';
+      const keepPadCol = S.logoPadColor || sl.logoPadColor || S.bgColor || '#046e7e';
+      const keepPadStrokeCol = S.logoPadStrokeColor || sl.logoPadStrokeColor || '#ffffff';
       S.showLogo = true;
-      applySlotToS(Object.assign({}, extractLogoSlotFromS(DEF), sl, { logoName: item.name, logoX: keepX, logoY: keepY, logoSize: keepSz }));
+      applySlotToS(Object.assign({}, extractLogoSlotFromS(DEF), sl, {
+        logoName: item.name,
+        logoX: keepX,
+        logoY: keepY,
+        logoSize: keepSz,
+        logoPadMode: keepPadMode,
+        logoPadMarginMm: keepPadMargin,
+        logoPadCornerMm: keepPadCorner,
+        logoPadStrokeMm: keepPadStroke,
+        logoPadColorMode: keepPadColMode,
+        logoPadColor: keepPadCol,
+        logoPadStrokeColor: keepPadStrokeCol
+      }));
       syncActiveSlotFromS();
       PROC_LOGO_KEY = '';
       update(false);
       if(typeof saySave === 'function'){
-        saySave(`📚 マイ・ロゴ保管棚から「${item.name}」を配置しました！（ドラッグで移動・＋で複数追加できます）`);
+        saySave(`📚 マイ・ロゴ保管棚から「${item.name}」を配置しました！（色変更・透過しない枠・ドラッグ移動が可能です）`);
       }
     };
     const addAnotherFn = (ev) => {
@@ -4241,7 +4326,7 @@ function renderLogoShelf(){
       renderLogoShelf();
       if(typeof saySave === 'function') saySave(`「${item.name}」を保管棚から外しました。「↩️ 戻す」でいつでも復元できます。`);
     };
-    const isWhiteFuda = (sl.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || (sl.logoName && sl.logoName.includes('white')) || (sl.logoMono && (sl.logoColor||'').toLowerCase() === '#ffffff'));
+    const isWhiteFuda = (/^__BUILTIN_(FUDA_WHITE|MANGA|GOLD|WAVE|TAIRYO|TRACE)/.test(sl.logoDataUrl || '') || (sl.logoName && sl.logoName.includes('white')) || (sl.logoMono && (sl.logoColor||'').toLowerCase() === '#ffffff'));
     const imgSrc = resolveLogoDataUrl(sl.logoDataUrl) || (typeof HANTEN_LOGO_B64 !== 'undefined' ? HANTEN_LOGO_B64 : '');
 
     if(listEl){
@@ -4401,7 +4486,9 @@ function renderLogoShelf(){
       eTxt.textContent = (item.name || sl.logoName || 'ロゴ').replace(/^(?:🏷️|🏮)\s*/u, '');
       eBtn.appendChild(eThumb);
       eBtn.appendChild(eTxt);
-      eBtn.addEventListener('click', applyToCurrentFn);
+      eBtn.addEventListener('click', ev => { ev.stopPropagation(); applyToCurrentFn(); });
+      eCard.style.cursor = 'pointer';
+      eCard.addEventListener('click', applyToCurrentFn);
 
       const eAddBtn = document.createElement('button');
       eAddBtn.type = 'button';
@@ -4818,15 +4905,39 @@ function getProcessedLogoCanvas(cfg){
   ox.restore();
 
   const id = ox.getImageData(0,0,w,h), d = id.data;
+  const isBuiltinFuda = (st.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || st.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || st.logoName === 'fuda_logo_teal' || st.logoName === 'fuda_logo_white');
+  const hUrl = (typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64) ? HANTEN_LOGO_B64 : '';
+  const isHantenStd = (!st.logoMono && (st.logoDataUrl === '__BUILTIN_HANTEN__' || (hUrl && effectiveUrl === hUrl)));
   // 既に四隅が完全透過されている画像（SVGや透過PNG）の場合、白背景除去によるロゴ本体の消失やネガ反転時のベタ化を防ぐ
   const cornersTransparent = (w > 2 && h > 2) &&
     d[3] < 10 &&
     d[(w - 1) * 4 + 3] < 10 &&
     d[(h - 1) * w * 4 + 3] < 10 &&
     d[((h - 1) * w + (w - 1)) * 4 + 3] < 10;
+  // ただし「仲羽田トレース」等のカスタム画像やSVGで、黒・濃色の文字線と不透明な白ピクセル（背景や文字の穴）が混在している場合は、白ピクセルを自動透過して文字線だけを綺麗に色変更できるようにする
+  let hasTracedDarkAndWhite = false;
+  if(!isBuiltinFuda && !isHantenStd && !(st.logoDataUrl && /^__BUILTIN_(MANGA|GOLD|WAVE|TAIRYO|TRACE)_/.test(st.logoDataUrl))){
+    let darkCnt = 0, whiteCnt = 0;
+    const step = Math.max(4, Math.floor((w * h) / 9000) * 4);
+    for(let i = 0; i < d.length; i += step){
+      const a = d[i + 3];
+      if(a < 30) continue;
+      const r = d[i], g = d[i + 1], b = d[i + 2];
+      const br = (r + g + b) / 3;
+      if(br < 185) darkCnt++;
+      else if(r > 220 && g > 220 && b > 220 && Math.max(r, g, b) - Math.min(r, g, b) < 25) whiteCnt++;
+    }
+    const sampledTotal = d.length / step;
+    if(darkCnt > sampledTotal * 0.002 && whiteCnt > sampledTotal * 0.003){
+      hasTracedDarkAndWhite = true;
+    }
+  }
   let bgMode = (st.logoRemoveBg === false) ? 'none' : (st.logoBgMode || 'white');
-  if(cornersTransparent && bgMode === 'white'){
+  if(cornersTransparent && bgMode === 'white' && !hasTracedDarkAndWhite){
     bgMode = 'none';
+  }
+  if(hasTracedDarkAndWhite && bgMode === 'none'){
+    bgMode = 'white';
   }
   const th = st.logoThreshold ?? 225;
   const softSpan = Math.max(1, st.logoSoftness ?? 18);
@@ -4921,8 +5032,8 @@ function getProcessedLogoCanvas(cfg){
   }
   ox.putImageData(id, 0, 0);
 
-  // 6. 余白自動トリミング（Auto Trim）
-  if(st.logoAutoTrim){
+  // 6. 余白自動トリミング（Auto Trim：内蔵札ロゴ以外は外周の透明余白を自動トリムし、「ロゴの背景の余白」が上下左右均等になるようにする）
+  if(st.logoAutoTrim || (!isBuiltinFuda && st.logoAutoTrim !== false)){
     let minX = w, minY = h, maxX = 0, maxY = 0, found = false;
     for(let y=0; y<h; y++){
       for(let x=0; x<w; x++){
@@ -4936,7 +5047,7 @@ function getProcessedLogoCanvas(cfg){
       }
     }
     if(found && maxX > minX + 4 && maxY > minY + 4){
-      const pad = 4;
+      const pad = 2;
       const tx0 = Math.max(0, minX - pad), ty0 = Math.max(0, minY - pad);
       const tw = Math.min(w - tx0, (maxX - minX) + pad*2);
       const th2 = Math.min(h - ty0, (maxY - minY) + pad*2);
@@ -5180,34 +5291,146 @@ const LOGO_SIL_CACHE = new Map();
 function getLogoAlphaSilhouetteCanvas(lcv, ratioExpand, fillCol){
   if(!lcv) return null;
   const w = lcv.width || 100, h = lcv.height || 100;
-  const padPx = Math.max(2, Math.min(80, Math.round(Math.max(w, h) * ratioExpand)));
+  const maxDim = Math.max(w, h);
+  const padPx = Math.max(0, Math.min(180, Math.round(maxDim * Math.max(0, ratioExpand || 0))));
   const key = [w, h, padPx, fillCol].join(':');
-  // 同じlcv参照に対する軽量キャッシュ
-  if(lcv._silKey === key && lcv._silCv) return lcv._silCv;
-  const outW = w + padPx * 2, outH = h + padPx * 2;
-  const sil = document.createElement('canvas');
-  sil.width = w; sil.height = h;
-  const sx = sil.getContext('2d');
-  sx.drawImage(lcv, 0, 0);
-  sx.globalCompositeOperation = 'source-in';
-  sx.fillStyle = fillCol;
-  sx.fillRect(0, 0, w, h);
+  if(!lcv._silCacheMap) lcv._silCacheMap = new Map();
+  if(lcv._silCacheMap.has(key)) return lcv._silCacheMap.get(key);
 
+  // モルフォロジー閉処理＋外周フラッドフィルでロゴ内部の隙間・文字穴を100%不透明に埋めつつ、外周は指定した余白(padPx=0〜)分だけ正確に広げる
+  const workMax = 240;
+  const sc = maxDim > workMax ? (workMax / maxDim) : 1;
+  const gw = Math.max(8, Math.round(w * sc));
+  const gh = Math.max(8, Math.round(h * sc));
+  const gPad = Math.max(0, Math.round(padPx * sc));
+  const closeR = Math.max(3, Math.min(16, Math.round(Math.min(gw, gh) * 0.065)));
+  const marginG = closeR + gPad + 3;
+  const bw = gw + marginG * 2;
+  const bh = gh + marginG * 2;
+
+  const tmpCv = document.createElement('canvas');
+  tmpCv.width = gw; tmpCv.height = gh;
+  const tx = tmpCv.getContext('2d');
+  tx.drawImage(lcv, 0, 0, gw, gh);
+  const srcData = tx.getImageData(0, 0, gw, gh).data;
+
+  // 1. 元の前景マスク作成
+  const fg = new Uint8Array(bw * bh);
+  for(let y = 0; y < gh; y++){
+    const rowOff = (y + marginG) * bw + marginG;
+    const sOff = y * gw * 4;
+    for(let x = 0; x < gw; x++){
+      if(srcData[sOff + x * 4 + 3] > 20) fg[rowOff + x] = 1;
+    }
+  }
+
+  // 2. 距離変換ヘルパー（Chamfer 3-4 近似で高速にユークリッド距離を計算）
+  const computeDist = (mask, W, H) => {
+    const INF = 30000;
+    const dt = new Int16Array(W * H);
+    for(let i = 0; i < dt.length; i++) dt[i] = mask[i] ? 0 : INF;
+    for(let y = 0; y < H; y++){
+      const r = y * W;
+      for(let x = 0; x < W; x++){
+        const idx = r + x;
+        let d = dt[idx];
+        if(d === 0) continue;
+        if(x > 0 && dt[idx - 1] + 3 < d) d = dt[idx - 1] + 3;
+        if(y > 0){
+          const up = idx - W;
+          if(dt[up] + 3 < d) d = dt[up] + 3;
+          if(x > 0 && dt[up - 1] + 4 < d) d = dt[up - 1] + 4;
+          if(x + 1 < W && dt[up + 1] + 4 < d) d = dt[up + 1] + 4;
+        }
+        dt[idx] = d;
+      }
+    }
+    for(let y = H - 1; y >= 0; y--){
+      const r = y * W;
+      for(let x = W - 1; x >= 0; x--){
+        const idx = r + x;
+        let d = dt[idx];
+        if(d === 0) continue;
+        if(x + 1 < W && dt[idx + 1] + 3 < d) d = dt[idx + 1] + 3;
+        if(y + 1 < H){
+          const dn = idx + W;
+          if(dt[dn] + 3 < d) d = dt[dn] + 3;
+          if(x + 1 < W && dt[dn + 1] + 4 < d) d = dt[dn + 1] + 4;
+          if(x > 0 && dt[dn - 1] + 4 < d) d = dt[dn - 1] + 4;
+        }
+        dt[idx] = d;
+      }
+    }
+    return dt;
+  };
+
+  // 3. closeR 膨張 ➔ 外周(0,0)からフラッドフィルして内部の穴をすべて埋める ➔ closeR 収縮で外輪郭を元の0mm位置へ戻す
+  const dtFg = computeDist(fg, bw, bh);
+  const closed = new Uint8Array(bw * bh);
+  const closeThresh = closeR * 3;
+  for(let i = 0; i < closed.length; i++){
+    if(dtFg[i] <= closeThresh) closed[i] = 1;
+  }
+  const ext = new Uint8Array(bw * bh);
+  const q = new Int32Array(bw * bh);
+  let qHead = 0, qTail = 0;
+  ext[0] = 1;
+  q[qTail++] = 0;
+  while(qHead < qTail){
+    const cur = q[qHead++];
+    const cx = cur % bw, cy = (cur / bw) | 0;
+    if(cx > 0){ const n = cur - 1; if(!ext[n] && !closed[n]){ ext[n] = 1; q[qTail++] = n; } }
+    if(cx + 1 < bw){ const n = cur + 1; if(!ext[n] && !closed[n]){ ext[n] = 1; q[qTail++] = n; } }
+    if(cy > 0){ const n = cur - bw; if(!ext[n] && !closed[n]){ ext[n] = 1; q[qTail++] = n; } }
+    if(cy + 1 < bh){ const n = cur + bw; if(!ext[n] && !closed[n]){ ext[n] = 1; q[qTail++] = n; } }
+  }
+  // 内部が埋まった膨張領域 = !ext。外周(ext)からの距離が closeThresh より大きい点（または元のfg）が 0mm ベースシルエット
+  const dtExt = computeDist(ext, bw, bh);
+  const baseSil = new Uint8Array(bw * bh);
+  for(let i = 0; i < baseSil.length; i++){
+    if(fg[i] || dtExt[i] > closeThresh) baseSil[i] = 1;
+  }
+
+  // 4. ベースシルエットから余白 gPad 分だけ外側に広げる
+  const dtBase = computeDist(baseSil, bw, bh);
+  const expandThresh = gPad * 3;
+
+  const [fr, fgCol, fb] = hexToRgbArr(fillCol || '#046e7e');
+  const gOutW = gw + gPad * 2, gOutH = gh + gPad * 2;
+  const gCv = document.createElement('canvas');
+  gCv.width = gOutW; gCv.height = gOutH;
+  const gx = gCv.getContext('2d');
+  const outImg = gx.createImageData(gOutW, gOutH);
+  const od = outImg.data;
+  const offStart = marginG - gPad;
+
+  for(let y = 0; y < gOutH; y++){
+    const by = y + offStart;
+    const bRow = by * bw;
+    const oRow = y * gOutW * 4;
+    for(let x = 0; x < gOutW; x++){
+      const bx = x + offStart;
+      const dist = dtBase[bRow + bx];
+      if(dist <= expandThresh + 3){
+        const oi = oRow + x * 4;
+        od[oi] = fr;
+        od[oi + 1] = fgCol;
+        od[oi + 2] = fb;
+        od[oi + 3] = dist <= expandThresh ? 255 : Math.round(255 * ((expandThresh + 3 - dist) / 3));
+      }
+    }
+  }
+  gx.putImageData(outImg, 0, 0);
+
+  const outW = w + padPx * 2, outH = h + padPx * 2;
   const out = document.createElement('canvas');
   out.width = outW; out.height = outH;
   const ox = out.getContext('2d');
-  const rings = [0.35, 0.7, 1.0];
-  const steps = 16;
-  for(const rMul of rings){
-    const r = padPx * rMul;
-    for(let s = 0; s < steps; s++){
-      const ang = (s / steps) * Math.PI * 2;
-      ox.drawImage(sil, padPx + Math.cos(ang) * r, padPx + Math.sin(ang) * r);
-    }
-  }
-  ox.drawImage(sil, padPx, padPx);
-  lcv._silKey = key;
-  lcv._silCv = out;
+  ox.imageSmoothingEnabled = true;
+  ox.drawImage(gCv, 0, 0, outW, outH);
+
+  if(lcv._silCacheMap.size > 12) lcv._silCacheMap.clear();
+  lcv._silCacheMap.set(key, out);
   return out;
 }
 
@@ -11742,10 +11965,15 @@ function syncUI(){
   if($('logoPadMode')) $('logoPadMode').value=S.logoPadMode||'none';
   if($('logoPadColor')) $('logoPadColor').value=resolveLogoPadColor(S);
   if($('logoPadStrokeColor')) $('logoPadStrokeColor').value=S.logoPadStrokeColor||'#ffffff';
-  if($('logoPadParamsBox')) $('logoPadParamsBox').hidden=(!S.logoPadMode || S.logoPadMode==='none');
+  if($('logoPadParamsBox')) $('logoPadParamsBox').hidden=false;
   if($('logoPadCornerRow')) $('logoPadCornerRow').hidden=(S.logoPadMode !== 'roundRect');
   for(const b of document.querySelectorAll('#logoPadQuickChips button[data-pquick]')){
     b.setAttribute('aria-pressed', (b.dataset.pquick === (S.logoPadMode || 'none')) + '');
+  }
+  for(const b of document.querySelectorAll('#dLogoPadMarginPresets button[data-pmargin]')){
+    const pm = parseFloat(b.dataset.pmargin);
+    const isAct = (S.logoPadMode && S.logoPadMode !== 'none') && Math.abs((S.logoPadMarginMm ?? 6) - pm) < 0.25;
+    b.setAttribute('aria-pressed', isAct + '');
   }
   if($('logoRepeatMode')) $('logoRepeatMode').value=S.logoRepeatMode||'none';
   if($('logoRepeatParamsBox')) $('logoRepeatParamsBox').hidden=(!S.logoRepeatMode || S.logoRepeatMode==='none');
@@ -11978,6 +12206,11 @@ for(const k in ranges){
   if($(k)) $(k).addEventListener('input',e=>{
     S[k]=parseFloat(e.target.value);
     if(k==='knockoutMm' && S.mode!=='both') S.mode='both';
+    if((k==='logoPadMarginMm' || k==='logoPadStrokeMm') && (!S.logoPadMode || S.logoPadMode==='none')){
+      S.logoPadMode = 'silhouette';
+      if(S.logoPadColorMode === 'none') S.logoPadColorMode = 'bg';
+      S.showLogo = true;
+    }
     update(!NO_LAYOUT_KEYS.has(k));
   });
 }
@@ -12317,7 +12550,7 @@ function applyBuiltinFudaLogoPreset(variant){
   S.logoInvert = false;
   S.logoMono = !!customHex;
   S.logoColor = hex;
-  S.logoPadMode = 'none';
+  S.logoPadMode = S.logoPadMode || 'none';
   ensureLogoLoaded(S.logoDataUrl);
   syncActiveSlotFromS();
   if($('logoFileStatus')) $('logoFileStatus').textContent = label + ' (SVG内蔵)';
@@ -12584,6 +12817,14 @@ $('logoPadMode').addEventListener('change',e=>{S.logoPadMode=e.target.value; upd
 document.querySelectorAll('#logoPadQuickChips button[data-pquick]').forEach(b=>b.addEventListener('click',()=>{
   S.logoPadMode = b.dataset.pquick || 'none';
   if(S.logoPadMode !== 'none' && S.logoPadColorMode === 'none') S.logoPadColorMode = 'bg';
+  S.showLogo = true;
+  update(false);
+}));
+document.querySelectorAll('#dLogoPadMarginPresets button[data-pmargin]').forEach(b=>b.addEventListener('click',()=>{
+  const m = parseFloat(b.dataset.pmargin);
+  if(!isNaN(m)) S.logoPadMarginMm = m;
+  if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+  if(S.logoPadColorMode === 'none') S.logoPadColorMode = 'bg';
   S.showLogo = true;
   update(false);
 }));
@@ -13692,7 +13933,12 @@ function applyFudaMainColor(val){
     S.logoRemoveBg = false;
     S.logoBgMode = 'none';
   }
-  if(v === 'teal' || v === '#00a3af'){
+  if(v === 'orig'){
+    S.logoMono = false;
+    S.logoInvert = false;
+    S.showLogo = true;
+    if(S.logoDataUrl) ensureLogoLoaded(S.logoDataUrl);
+  }else if(v === 'teal' || v === '#00a3af'){
     if(!S.logoDataUrl || isBuiltinFudaSlot(S)){
       S.logoName = 'fuda_logo_teal';
       S.logoDataUrl = '__BUILTIN_FUDA_TEAL__';
@@ -13739,6 +13985,19 @@ function applyFudaMainColor(val){
     S.logoMono = true;
     S.showLogo = true;
     ensureLogoLoaded(S.logoDataUrl);
+  }
+  // マイ・ロゴ保管棚（仲羽田トレース等）のカスタム登録ロゴを選択中なら、保管棚側の色設定も同期更新する
+  if(S.logoDataUrl && Array.isArray(LOGO_SHELF)){
+    let shelfChanged = false;
+    LOGO_SHELF.forEach(it => {
+      if(it && !(it.id && it.id.startsWith('shelf_')) && it.slot && (it.slot.logoDataUrl === S.logoDataUrl || (S.logoName && it.name === S.logoName))){
+        it.slot.logoColor = S.logoColor;
+        it.slot.logoMono = S.logoMono;
+        it.slot.logoInvert = S.logoInvert;
+        shelfChanged = true;
+      }
+    });
+    if(shelfChanged && typeof saveLogoShelfToStorage === 'function') saveLogoShelfToStorage();
   }
   PROC_LOGO_KEY = '';
   PROC_LOGO_MAP.clear();
@@ -14778,20 +15037,22 @@ function easyRenderImpl(){
       b.setAttribute('aria-pressed', String(isPressed));
     });
   }
-  if($('eFudaColChips')){
+  [$('eFudaColChips'), $('eStep5LogoColChips')].forEach(function(box){
+    if(!box) return;
     var isTealStd = !!(S.showLogo && !S.logoMono && (S.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || S.logoName === 'fuda_logo_teal'));
     var isWhiteStd = !!(S.showLogo && !S.logoMono && (S.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || S.logoName === 'fuda_logo_white'));
     var kakuLowF = eLow(S.kakuColor || '#ffffff');
-    $('eFudaColChips').querySelectorAll('button').forEach(function(b){
+    box.querySelectorAll('button').forEach(function(b){
       var v = eLow(b.dataset.efcol);
       var isPressed = false;
-      if(v === 'same') isPressed = (fudaHex === kakuLowF);
+      if(v === 'orig') isPressed = !!(S.showLogo && !S.logoMono);
+      else if(v === 'same') isPressed = (fudaHex === kakuLowF);
       else if(v === 'teal') isPressed = isTealStd || (fudaHex === '#00a3af');
       else if(v === 'white') isPressed = isWhiteStd || (fudaHex === '#ffffff');
       else isPressed = (v === fudaHex);
       b.setAttribute('aria-pressed', String(isPressed));
     });
-  }
+  });
   if($('eFudaTextColChips')){
     var isTxtTrans = (S.logoTextColorMode === 'transparent');
     $('eFudaTextColChips').querySelectorAll('button').forEach(function(b){
@@ -14876,9 +15137,9 @@ function easyRenderImpl(){
     arareOuterWidthMm: hasArareOuter,
     arareOuterPadMm: hasArareOuter,
     logoSize: !!S.showLogo,
-    logoPadMarginMm: hasPad,
+    logoPadMarginMm: !!S.showLogo,
     logoPadCornerMm: hasPad && S.logoPadMode === 'roundRect',
-    logoPadStrokeMm: hasPad
+    logoPadStrokeMm: !!S.showLogo
   };
   document.querySelectorAll('#easyPanel .e-range').forEach(function(r){
     var k = r.dataset.for, real = $(k), inp = r.querySelector('input');
@@ -14899,13 +15160,24 @@ function easyRenderImpl(){
       b.setAttribute('aria-pressed', String(b.dataset.epm === pm));
     });
   }
-  if($('eLogoPadColBtns')){
-    var pmCur = S.logoPadMode || 'none';
-    var cm = (pmCur === 'none') ? 'none' : (S.logoPadColorMode || 'bg');
-    $('eLogoPadColBtns').querySelectorAll('button').forEach(function(b){
-      b.setAttribute('aria-pressed', String(b.dataset.epc === cm));
+  if($('eLogoPadMarginPresets')){
+    var curMargin = S.logoPadMarginMm ?? 6;
+    $('eLogoPadMarginPresets').querySelectorAll('button[data-pmargin]').forEach(function(b){
+      var pmVal = parseFloat(b.dataset.pmargin);
+      var isActM = hasPad && Math.abs(curMargin - pmVal) < 0.25;
+      b.setAttribute('aria-pressed', String(isActM));
     });
   }
+  [$('eLogoPadColBtns'), $('eStep5PadColBtns')].forEach(function(box){
+    if(!box) return;
+    var pmCur = S.logoPadMode || 'none';
+    var cm = (pmCur === 'none') ? 'none' : (S.logoPadColorMode || 'bg');
+    box.querySelectorAll('button').forEach(function(b){
+      var v = b.dataset.epc;
+      var isActC = (v === 'roundRect') ? (pmCur === 'roundRect') : (v === cm && pmCur !== 'roundRect');
+      b.setAttribute('aria-pressed', String(isActC));
+    });
+  });
   if($('eLogoPadCustomCol') && document.activeElement !== $('eLogoPadCustomCol')){
     $('eLogoPadCustomCol').value = resolveLogoPadColor(S);
   }
@@ -15066,11 +15338,12 @@ function easyRenderImpl(){
       applyFudaMainColor(e.target.value);
     });
   }
-  if($('eFudaColChips')){
-    $('eFudaColChips').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+  [$('eFudaColChips'), $('eStep5LogoColChips')].forEach(function(box){
+    if(!box) return;
+    box.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       applyFudaMainColor(b.dataset.efcol || 'teal');
     }); });
-  }
+  });
   if($('eFudaTextCol')){
     $('eFudaTextCol').addEventListener('input', function(e){
       applyFudaTextColor(e.target.value);
@@ -15263,11 +15536,31 @@ function easyRenderImpl(){
       update(false);
     }); });
   }
-  if($('eLogoPadColBtns')){
-    $('eLogoPadColBtns').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+  if($('eLogoPadMarginPresets')){
+    $('eLogoPadMarginPresets').querySelectorAll('button[data-pmargin]').forEach(function(b){ b.addEventListener('click', function(){
+      var m = parseFloat(b.dataset.pmargin);
+      if(!isNaN(m)) S.logoPadMarginMm = m;
+      if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
+      if(S.logoPadColorMode === 'none') S.logoPadColorMode = 'bg';
+      S.showLogo = true;
+      syncActiveSlotFromS();
+      update(false);
+    }); });
+  }
+  [$('eLogoPadColBtns'), $('eStep5PadColBtns')].forEach(function(box){
+    if(!box) return;
+    box.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       var c = b.dataset.epc || 'bg';
       if(c === 'none'){
         S.logoPadMode = 'none';
+        S.showLogo = true;
+        syncActiveSlotFromS();
+        update(false);
+        return;
+      }
+      if(c === 'roundRect'){
+        S.logoPadMode = 'roundRect';
+        if(S.logoPadColorMode === 'none') S.logoPadColorMode = 'bg';
         S.showLogo = true;
         syncActiveSlotFromS();
         update(false);
@@ -15282,7 +15575,7 @@ function easyRenderImpl(){
       syncActiveSlotFromS();
       update(false);
     }); });
-  }
+  });
   if($('eLogoPadCustomCol')){
     $('eLogoPadCustomCol').addEventListener('input', function(e){
       S.logoPadColor = e.target.value;
