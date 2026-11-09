@@ -210,6 +210,9 @@ header{
   background-size:20px 20px;
   transition:background-color .2s;
 }
+.stage.checker-bg{
+  background:repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%) 50% / 22px 22px !important;
+}
 .stage svg{
   max-width:100%;
   max-height:100%;
@@ -303,14 +306,15 @@ body.hide-guides .guide-layer{
       <input type="color" id="customFgPicker" value="#ffffff" style="width:24px;height:24px;border:none;background:none;cursor:pointer">
     </div>
     <div class="ctrl-group">
-      <span>背景色:</span>
-      <button type="button" class="sw-btn active" data-bg="#046e7e" style="background:#046e7e" title="羽田納戸 (#046E7E)"></button>
+      <span>背景確認:</span>
+      <button type="button" class="sw-btn active" data-bg="checker" style="background:repeating-conic-gradient(#475569 0% 25%, #0f172a 0% 50%) 50% / 10px 10px" title="透過チェック柄（背景なし確認）"></button>
+      <button type="button" class="sw-btn" data-bg="#046e7e" style="background:#046e7e" title="羽田納戸 (#046E7E)"></button>
       <button type="button" class="sw-btn" data-bg="#0f172a" style="background:#0f172a" title="濃紺・墨 (#0F172A)"></button>
       <button type="button" class="sw-btn" data-bg="#183574" style="background:#183574" title="藍 (#183574)"></button>
       <button type="button" class="sw-btn" data-bg="#f8fafc" style="background:#f8fafc" title="白生地 (#F8FAFC)"></button>
     </div>
     <label class="ctrl-group" style="cursor:pointer;font-weight:700;color:#fde047">
-      <input type="checkbox" id="toggleGuideChk" checked> 📐 黄金比・波ガイド線(φ)
+      <input type="checkbox" id="toggleGuideChk"> 📐 黄金比・波ガイド線(φ)を表示
     </label>
     <a href="arare_app.html" class="btn ghost">← 手ぬぐい・ダボ工房へ戻る</a>
   </div>
@@ -1461,8 +1465,8 @@ const TAIRYO_LOGOS = [
 const ALL_LOGOS = TAIRYO_LOGOS.concat(MANGA_LOGOS, WAVE_LOGOS, GEO_LOGOS);
 
 let curFg = '#ffffff';
-let curBg = '#046e7e';
-let showGuide = true;
+let curBg = 'checker';
+let showGuide = false;
 let curCat = 'all';
 
 function showToast(msg){
@@ -1477,21 +1481,22 @@ function buildCardElement(item){
   const idx = ALL_LOGOS.indexOf(item);
   const card = document.createElement('article');
   card.className = 'card' + (item.cat === 'manga' ? ' manga-card' : (item.cat === 'wave' ? ' wave-card' : ''));
+  const isChecker = (curBg === 'checker');
   card.innerHTML = `
     <div class="card-head">
       <h3>${item.title}</h3>
       <span class="ratio-tag">${item.ratioLabel}</span>
     </div>
-    <div class="stage" style="--stage-bg:${curBg}">
+    <div class="stage${isChecker ? ' checker-bg' : ''}" style="--stage-bg:${isChecker ? '#0f172a' : curBg}">
       ${item.buildSvg(curFg, showGuide)}
     </div>
     <div class="card-body">
       <p class="desc">${item.desc}</p>
       <div class="math-note">📐 黄金律設計: ${item.math}</div>
       <div class="card-actions">
-        <button type="button" class="btn gold use-in-app-btn" data-idx="${idx}">⚡ 手ぬぐい・ダボに配置する</button>
-        <button type="button" class="btn ghost dl-svg-btn" data-idx="${idx}">📐 SVG保存</button>
-        <button type="button" class="btn ghost dl-png-btn" data-idx="${idx}">🖼️ PNG保存</button>
+        <button type="button" class="btn gold use-in-app-btn" data-idx="${idx}">⚡ 手ぬぐい・ダボに透過配置</button>
+        <button type="button" class="btn ghost dl-svg-btn" data-idx="${idx}">📐 透過SVG保存</button>
+        <button type="button" class="btn ghost dl-png-btn" data-idx="${idx}">🖼️ 透過PNG保存</button>
       </div>
     </div>
   `;

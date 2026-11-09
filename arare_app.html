@@ -490,6 +490,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <div style="display:flex;gap:4px;flex-wrap:wrap">
               <button type="button" class="mini-btn" id="eUploadToShelfBtn" style="background:#16a34a;color:#fff;border-color:#15803d;font-weight:700;font-size:10.5px;padding:2px 6px" title="パソコン・スマホ内の画像や.ai/PDF/SVGを何個でもまとめて透過登録できます">📁 画像追加登録（複数可）</button>
               <button type="button" class="mini-btn" id="eSaveCurrentToShelfBtn" style="background:#2563eb;color:#fff;border-color:#1d4ed8;font-weight:700;font-size:10.5px;padding:2px 6px">📌 今のロゴを登録</button>
+              <button type="button" class="mini-btn" id="eDlTransparentLogoPngBtn" style="background:#0f766e;color:#fff;border-color:#115e59;font-weight:700;font-size:10.5px;padding:2px 6px" title="現在選択しているロゴを背景なしの透過PNGファイルとして保存します">📥 透過PNG保存</button>
               <button type="button" class="mini-btn" id="eRestoreLogoShelfBtn" style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;font-size:10.5px;padding:2px 6px" title="誤って消したマイロゴや初期ロゴを元に戻します">↩️ 消したマイロゴを戻す</button>
               <a href="golden_logos.html" target="_blank" class="mini-btn" style="background:linear-gradient(135deg,#e11d48,#0284c7,#b45309);color:#fff;border-color:#fda4af;font-weight:700;font-size:10.5px;padding:2px 6px;text-decoration:none" title="横向き大漁旗3選・漫画立体揺れ6選・波揺れ6選・黄金比6選（計21選）の一覧ページを開きます">🎌💥🌊📐 21選一覧 ↗</a>
             </div>
@@ -1168,6 +1169,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             <span style="font-size:11px;font-weight:700;color:#1e40af">📚 マイ・ロゴ保管棚（何個でも登録可能・クリックで即配置）</span>
             <div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap">
               <button type="button" class="mini-btn" id="shelfUploadMultiBtn" style="background:#16a34a;color:#fff;border-color:#15803d;font-weight:700;padding:2px 6px" title="パソコン・スマホ内の画像や.ai/PDF/SVGを複数まとめて透過登録できます">📁 ファイルから複数追加登録</button>
+              <button type="button" class="mini-btn" id="dlTransparentLogoPngBtn" style="background:#0f766e;color:#fff;border-color:#115e59;font-weight:700;padding:2px 6px" title="現在選択しているロゴを背景なしの透過PNGファイルとして保存します">📥 今のロゴを透過PNG保存</button>
               <a href="golden_logos.html" target="_blank" class="mini-btn" style="background:linear-gradient(135deg,#e11d48,#0284c7,#b45309);color:#fff;border-color:#fda4af;font-weight:700;padding:2px 6px;text-decoration:none" title="横向き大漁旗3選・漫画立体揺れ6選・波揺れ6選・黄金比6選（計21選）の一覧ページを開きます">🎌💥🌊📐 大漁旗・漫画揺れ・波・黄金律21選 ↗</a>
               <button type="button" class="mini-btn" id="restoreLogoShelfBtn" style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;padding:2px 6px" title="誤って消したマイロゴや初期ロゴをすべて元に戻します">↩️ 消したマイロゴを戻す</button>
               <span id="logoShelfCountBadge" class="badge" style="background:#dbeafe;color:#1e40af">0個</span>
@@ -3896,7 +3898,7 @@ function getDefaultLogoShelfItems(){
 
 function normalizeBuiltInShelfItemsInPlace(){
   const hUrl = (typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64) ? HANTEN_LOGO_B64 : '';
-  const needMigrateTransparent = !localStorage.getItem('haneda-transparent-logos-v1138');
+  const needMigrateTransparent = !localStorage.getItem('haneda-transparent-logos-v1139');
   const defMap = new Map(getDefaultLogoShelfItems().map(d => [d.id, d]));
   LOGO_SHELF.forEach(item => {
     if(!item || !item.slot) return;
@@ -3914,13 +3916,19 @@ function normalizeBuiltInShelfItemsInPlace(){
       item.slot.logoBgMode = 'none';
       item.slot.logoInvert = false;
     }
-    if(needMigrateTransparent && item.id && /^(shelf_hanten_|shelf_manga_|shelf_gold_|shelf_wave_|shelf_tairyo_|shelf_fuda_)/.test(item.id)){
+    if(needMigrateTransparent){
       item.slot.logoPadMode = 'none';
     }
   });
   if(needMigrateTransparent){
+    S.logoPadMode = 'none';
     if(S.logoDataUrl && hUrl && S.logoDataUrl === hUrl){
       S.logoDataUrl = '__BUILTIN_HANTEN__';
+      S.logoRemoveBg = false;
+      S.logoBgMode = 'none';
+      S.logoInvert = false;
+    }
+    if(S.logoDataUrl && /^__BUILTIN_/.test(S.logoDataUrl)){
       S.logoRemoveBg = false;
       S.logoBgMode = 'none';
       S.logoInvert = false;
@@ -3928,21 +3936,24 @@ function normalizeBuiltInShelfItemsInPlace(){
     if(Array.isArray(S.logoSlots)){
       S.logoSlots.forEach(sl => {
         if(!sl) return;
+        sl.logoPadMode = 'none';
         if(hUrl && sl.logoDataUrl === hUrl){
           sl.logoDataUrl = '__BUILTIN_HANTEN__';
           sl.logoRemoveBg = false;
           sl.logoBgMode = 'none';
           sl.logoInvert = false;
         }
-        if(sl.logoDataUrl && /^__BUILTIN_(HANTEN|MANGA|GOLD|WAVE|TAIRYO)/.test(sl.logoDataUrl)){
-          sl.logoPadMode = 'none';
+        if(sl.logoDataUrl && /^__BUILTIN_/.test(sl.logoDataUrl)){
           sl.logoRemoveBg = false;
           sl.logoBgMode = 'none';
           sl.logoInvert = false;
         }
       });
     }
-    try{ localStorage.setItem('haneda-transparent-logos-v1138', '1'); }catch(e){}
+    try{
+      localStorage.setItem('haneda-transparent-logos-v1139', '1');
+      localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
+    }catch(e){}
   }
 }
 
@@ -12314,12 +12325,78 @@ function applyBuiltinFudaLogoPreset(variant){
   S.logoInvert = false;
   S.logoMono = !!customHex;
   S.logoColor = hex;
+  S.logoPadMode = 'none';
   ensureLogoLoaded(S.logoDataUrl);
   syncActiveSlotFromS();
   if($('logoFileStatus')) $('logoFileStatus').textContent = label + ' (SVG内蔵)';
   update(false);
   saySave('🏷️ 「' + label + '」を配置しました！ドラッグで位置移動・サイズ変更できます。');
 }
+function downloadActiveLogoAsTransparentPng(){
+  const prevShow = S.showLogo;
+  S.showLogo = true;
+  const lcv = getProcessedLogoCanvas(S);
+  S.showLogo = prevShow;
+  if(!lcv){
+    if(typeof saySave === 'function') saySave('⚠️ 保存するロゴが読み込まれていません。');
+    return;
+  }
+  const outCv = document.createElement('canvas');
+  outCv.width = lcv.width;
+  outCv.height = lcv.height;
+  const ox = outCv.getContext('2d');
+  const isBuiltinFuda = (S.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || S.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || S.logoName === 'fuda_logo_teal' || S.logoName === 'fuda_logo_white');
+  const effPadColor = resolveLogoPadColor(S, S.bgColor);
+  const effTextCol = isBuiltinFuda ? resolveLogoTextColor(S, S.bgColor, effPadColor) : null;
+  const shakeMode = isBuiltinFuda ? (S.logoShakeColorMode || 'normal') : 'normal';
+  if(isBuiltinFuda && effTextCol && FUDA_TEXT_HOLES_PATH2D){
+    const sx = outCv.width / FUDA_VB_W, sy = outCv.height / FUDA_VB_H;
+    ox.save();
+    ox.scale(sx, sy);
+    ox.translate(-FUDA_VB_X, -FUDA_VB_Y);
+    ox.fillStyle = effTextCol;
+    ox.fill(FUDA_TEXT_HOLES_PATH2D, 'nonzero');
+    ox.restore();
+  }
+  ox.drawImage(lcv, 0, 0);
+  if(isBuiltinFuda && shakeMode !== 'normal'){
+    const { primaryCol, secondaryCol } = resolveFudaShakeColors(S, S.bgColor, effPadColor, effTextCol);
+    const sx = outCv.width / FUDA_VB_W, sy = outCv.height / FUDA_VB_H;
+    ox.save();
+    ox.scale(sx, sy);
+    ox.translate(-FUDA_VB_X, -FUDA_VB_Y);
+    ox.lineJoin = 'round';
+    ox.lineCap = 'round';
+    if((shakeMode === 'invert_wobble' || shakeMode === 'invert_both') && FUDA_WOBBLE_HULL_PATH2D && FUDA_WOBBLE_LINES_PATH2D){
+      ox.fillStyle = primaryCol;
+      ox.strokeStyle = primaryCol;
+      ox.lineWidth = 8;
+      ox.fill(FUDA_WOBBLE_HULL_PATH2D, 'nonzero');
+      ox.stroke(FUDA_WOBBLE_HULL_PATH2D);
+      ox.fillStyle = secondaryCol;
+      ox.fill(FUDA_WOBBLE_LINES_PATH2D, 'nonzero');
+    }
+    if((shakeMode === 'invert_side' || shakeMode === 'invert_both') && FUDA_SIDE_FRAME_PATH2D && FUDA_SIDE_STRIPES_PATH2D){
+      ox.fillStyle = secondaryCol;
+      ox.strokeStyle = secondaryCol;
+      ox.lineWidth = 1.6;
+      ox.fill(FUDA_SIDE_FRAME_PATH2D, 'nonzero');
+      ox.stroke(FUDA_SIDE_FRAME_PATH2D);
+      ox.fillStyle = primaryCol;
+      ox.fill(FUDA_SIDE_STRIPES_PATH2D, 'nonzero');
+    }
+    ox.restore();
+  }
+  outCv.toBlob(blob => {
+    if(!blob) return;
+    const safeNm = (S.logoName || 'nakahaneda_logo').replace(/[\\/:*?"<>|\s]+/g, '_');
+    plainDownload(safeNm + '_transparent.png', blob);
+    if(typeof saySave === 'function') saySave(`📥 「${S.logoName || 'ロゴ'}」を背景なしの透過PNGファイルとして保存しました！`);
+  }, 'image/png');
+}
+['dlTransparentLogoPngBtn','eDlTransparentLogoPngBtn'].forEach(id=>{
+  if($(id)) $(id).addEventListener('click', downloadActiveLogoAsTransparentPng);
+});
 ['useFudaLogoTealPresetBtn','quickUseFudaTealTopBtn','stageTopFudaTealBtn'].forEach(id=>{
   if($(id)) $(id).addEventListener('click',()=>applyBuiltinFudaLogoPreset('teal'));
 });
