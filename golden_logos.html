@@ -111,10 +111,8 @@ header{
   border-radius:6px;
   border:2px solid rgba(255,255,255,0.25);
   cursor:pointer;
-  transition:transform .12s,border-color .12s;
 }
 .sw-btn:hover,.sw-btn.active{
-  transform:scale(1.12);
   border-color:#38bdf8;
 }
 .btn{
@@ -208,7 +206,6 @@ header{
   background:var(--stage-bg,#046e7e);
   background-image:radial-gradient(rgba(255,255,255,0.06) 1px, transparent 0);
   background-size:20px 20px;
-  transition:background-color .2s;
 }
 .stage.checker-bg{
   background:repeating-conic-gradient(#1e293b 0% 25%, #0f172a 0% 50%) 50% / 22px 22px !important;
@@ -222,7 +219,6 @@ header{
 }
 .guide-layer{
   pointer-events:none;
-  transition:opacity .2s;
 }
 body.hide-guides .guide-layer{
   opacity:0 !important;
@@ -1531,35 +1527,41 @@ function renderAllCards(){
 function sendLogoToMainApp(item){
   const cleanSvg = item.buildSvg(curFg, false);
   const dataUrl = 'data:image/svg+xml;utf8,' + encodeURIComponent(cleanSvg);
+  const cleanTitle = item.title.replace(/^[①-㉕]\s*/, '');
+  const prefix = item.cat === 'tairyo' ? '🎌 ' : (item.cat === 'manga' ? '💥 ' : (item.cat === 'wave' ? '🌊 ' : '📐 '));
+  const tokenOrUrl = item.token || dataUrl;
+  const slotObj = {
+    logoName: prefix + cleanTitle,
+    logoDataUrl: tokenOrUrl,
+    logoRemoveBg: false,
+    logoBgMode: 'none',
+    logoInvert: false,
+    logoMono: true,
+    logoColor: curFg,
+    logoOutlineMm: 0,
+    logoPadMode: 'none',
+    logoPadColorMode: 'bg',
+    logoPadColor: '#046e7e',
+    logoPadMarginMm: 6,
+    logoSize: 88,
+    logoX: 50,
+    logoY: 22,
+    daboSpotPart: 'all'
+  };
+  // 1. 軽量ブリッジキーへ保存（localStorage容量逼迫時でも確実に通る極小データ）
   try{
-    const shelfStorageId = 'haneda-logo-shelf-v1';
-    const shelf = JSON.parse(localStorage.getItem(shelfStorageId) || '[]');
-    const cleanTitle = item.title.replace(/^[①-㉕]\s*/, '');
-    const prefix = item.cat === 'tairyo' ? '🎌 ' : (item.cat === 'manga' ? '💥 ' : (item.cat === 'wave' ? '🌊 ' : '📐 '));
-    const slotObj = {
-      logoName: cleanTitle,
-      logoDataUrl: item.token || dataUrl,
-      logoRemoveBg: false,
-      logoBgMode: 'none',
-      logoInvert: false,
-      logoMono: true,
-      logoColor: curFg,
-      logoOutlineMm: 0,
-      logoPadMode: 'none',
-      logoPadColorMode: 'bg',
-      logoPadColor: '#046e7e',
-      logoPadMarginMm: 6,
-      logoSize: 88,
-      logoX: 50,
-      logoY: 22,
-      daboSpotPart: 'all'
-    };
-    const existIdx = shelf.findIndex(x => x && x.id === 'shelf_' + item.id);
-    const entry = { id: 'shelf_' + item.id, name: prefix + cleanTitle, savedAt: Date.now(), slot: slotObj };
-    if(existIdx >= 0) shelf[existIdx] = entry;
-    else shelf.unshift(entry);
-    localStorage.setItem(shelfStorageId, JSON.stringify(shelf));
-
+    localStorage.setItem('haneda-pending-golden-logo', JSON.stringify({
+      token: tokenOrUrl,
+      id: item.id,
+      title: cleanTitle,
+      name: prefix + cleanTitle,
+      cat: item.cat,
+      fg: curFg,
+      ts: Date.now()
+    }));
+  }catch(e){}
+  // 2. メイン設定オブジェクトへ反映
+  try{
     const stStorageId = 'haneda-arare-settings';
     const st = JSON.parse(localStorage.getItem(stStorageId) || '{}');
     Object.assign(st, slotObj, {
@@ -1569,11 +1571,21 @@ function sendLogoToMainApp(item){
       daboLogoTarget: 'all'
     });
     localStorage.setItem(stStorageId, JSON.stringify(st));
-    showToast(`⚡ 「${item.title}」を手ぬぐい＆ダボに配置しました！移動します...`);
-    setTimeout(() => { window.location.href = 'arare_app.html'; }, 550);
-  }catch(e){
-    alert('設定の保存に失敗しました: ' + e.message);
-  }
+  }catch(e){}
+  // 3. マイ・ロゴ保管棚へ反映（容量超過時はエラーを無視してURLパラメータ経由でメインアプリ側で登録）
+  try{
+    const shelfStorageId = 'haneda-logo-shelf-v1';
+    const shelf = JSON.parse(localStorage.getItem(shelfStorageId) || '[]');
+    const existIdx = shelf.findIndex(x => x && x.id === 'shelf_' + item.id);
+    const entry = { id: 'shelf_' + item.id, name: prefix + cleanTitle, savedAt: Date.now(), slot: slotObj };
+    if(existIdx >= 0) shelf[existIdx] = entry;
+    else shelf.unshift(entry);
+    localStorage.setItem(shelfStorageId, JSON.stringify(shelf));
+  }catch(e){}
+
+  showToast(`⚡ 「${item.title}」を手ぬぐい＆ダボに配置しました！移動します...`);
+  const targetUrl = `arare_app.html?use_logo=${encodeURIComponent(item.token || item.id)}&fg=${encodeURIComponent(curFg)}`;
+  setTimeout(() => { window.location.href = targetUrl; }, 250);
 }
 
 document.querySelectorAll('#catFilterBar .cat-btn').forEach(btn => {

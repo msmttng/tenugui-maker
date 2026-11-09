@@ -1,5 +1,21 @@
 # Changelog (手ぬぐい工房 - Tenugui Studio)
 
+## [1.14.2] - 2026-11-09
+
+### Fixed & Improved
+- **🖌️ 「仲はねだ(トレス済)・仲羽田トレース」の画質を2048px純粋ベクター品質へ大幅向上 (`daishou_arare_kit/app_template.html` / `arare_app.html`)**:
+  - **純粋ベクターSVG版「🖌️ 仲はねだ (トレス済・丸紋ベクター) (`__BUILTIN_TRACE_MARU__` / `shelf_trace_maru`)」を標準搭載**:
+    - 元SVG（`仲はねだ(トレス済).svg`）から白背景楕円（`<g id="_楕円形_2">`）を除去し、文字と丸枠の4つのベクターパスのみを抽出した **`2048×2031px` 純粋ベクターSVG** として内蔵。
+    - 過去に画像追加されて `720px` の低解像度PNG＆二重輝度しきい値処理でエッジが荒れていた「仲はねだ(トレス済)」も、起動時に自動で `2048px` 純粋ベクター版（`__BUILTIN_TRACE_MARU__`）へアップグレード。
+    - かんたんモード「⑤ 札・ロゴを入れる (`#eLogo`)」に **`仲羽田トレース (高画質ベクター)`** ワンクリックボタンを新設。
+    - 新規に `.svg` ファイルを画像追加した際も、PNGへラスタライズ縮小せずベクターSVGのまま `2048px` 高解像度属性を付与して保持するよう `autoMakeTransparentLogoDataUrl` を改善し、`getProcessedLogoCanvas` の描画上限解像度も `1200px` → `2048px` に引き上げ。
+- **📐 「黄金比・大漁旗・潮波ロゴ（全15選）」が配置されない・反映されない不具合を完全修正 (`daishou_arare_kit/app_template.html` / `arare_app.html` / `golden_logos.html`)**:
+  - **非同期画像ロード時のキャッシュ競合バグ（`ensureLogoLoaded` / `getProcessedLogoCanvas` / 起動時プリロード）を修正**:
+    - 従来は `ensureLogoLoaded(url)` が `img.onload` 完了前に `RAW_LOGO_URL` を書き換え、直後の `getProcessedLogoCanvas` が旧ロゴ画像（`RAW_LOGO_IMG`）を新しい黄金比ロゴのキャッシュキーで `PROC_LOGO_MAP` に誤登録してしまう競合、およびスクリプト末尾の `ensureLogoLoaded('__BUILTIN_HANTEN__')` が選択中の黄金比ロゴを上書きしてしまう不具合があったため、`RAW_LOGO_MAP` へのロード完了後にのみキャッシュ・再描画する方式と非破壊プリロード (`preloadBuiltInLogos`) に刷新。
+  - **`golden_logos.html` から `arare_app.html` への受け渡しを三重化（軽量ブリッジキー＋URLパラメータ `?use_logo=...`＋同一タブ遷移）**:
+    - `localStorage` 容量超過時でも失敗アラートを出さず、軽量ブリッジキー `haneda-pending-golden-logo` と URLクエリ `?use_logo=...&fg=...` で確実にメインアプリへ受け渡し、`target="_blank"` による別タブ不整合も解消。
+    - かんたんモード「⑤ 札・ロゴを入れる (`#eLogo`)」にも **`黄金比・大漁旗・波 (15選から選ぶ)`** ボタンを追加。
+
 ## [1.14.1] - 2026-11-09
 
 ### Improved
