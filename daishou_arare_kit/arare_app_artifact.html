@@ -9405,26 +9405,29 @@ function getCollarFillColor(bodyCfg){
 }
 
 // ダボシャツ / 鯉口シャツ 1着（front または back）を本物の祭り衣装（浅草中屋・江戸一等の実物構造）に基づいて精密描画
-function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, exportMode){
+function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, exportMode, opts){
   const isKoi = (S.daboStyle === 'koikuchi');
+  const for3d = !!(opts && opts.for3d);
   // 全体バウンディングボックス: 横幅 350 (-175..+175), 縦幅 265 (-130..+135)
-  const S_unit = Math.min(maxW / 350, maxH / 265);
-  const centerStageY = cy + 4 * S_unit;
+  const S_unit = for3d ? (opts.scaleUnit || 2.0) : Math.min(maxW / 350, maxH / 265);
+  const centerStageY = for3d ? cy : (cy + 4 * S_unit);
 
   x.save();
   x.translate(cx, centerStageY);
   x.scale(S_unit, S_unit);
 
-  // ラベルバッジ
-  x.save();
-  x.fillStyle = side === 'front' ? '#0284c7' : '#d97706';
-  x.beginPath(); x.roundRect(-78, -126, 156, 20, 99); x.fill();
-  x.fillStyle = '#ffffff'; x.font = '700 10.5px sans-serif'; x.textAlign = 'center';
-  const badgeTitle = side === 'front'
-    ? (isKoi ? '【前 面】鯉口シャツ（関東襟・5つ釦）' : '【前 面】ダボシャツ（前開き・広袖）')
-    : (isKoi ? '【背 面】鯉口シャツ（背中）' : '【背 面】ダボシャツ（背中）');
-  x.fillText(badgeTitle, 0, -112);
-  x.restore();
+  // ラベルバッジ（3Dテクスチャ生成時は非表示）
+  if(!for3d){
+    x.save();
+    x.fillStyle = side === 'front' ? '#0284c7' : '#d97706';
+    x.beginPath(); x.roundRect(-78, -126, 156, 20, 99); x.fill();
+    x.fillStyle = '#ffffff'; x.font = '700 10.5px sans-serif'; x.textAlign = 'center';
+    const badgeTitle = side === 'front'
+      ? (isKoi ? '【前 面】鯉口シャツ（関東襟・5つ釦）' : '【前 面】ダボシャツ（前開き・広袖）')
+      : (isKoi ? '【背 面】鯉口シャツ（背中）' : '【背 面】ダボシャツ（背中）');
+    x.fillText(badgeTitle, 0, -112);
+    x.restore();
+  }
 
   // ■ 本物の「ダボシャツ」「鯉口シャツ」の実物構造と決定的な違い
   // 1. 襟（えり）：法被や半纏のような「深いV字の掛け襟・斜め打ち合わせ（着物襟）」ではなく、
@@ -9516,9 +9519,11 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
     };
 
     x.save();
-    x.shadowColor = 'rgba(0,0,0,0.45)';
-    x.shadowBlur = 14;
-    x.shadowOffsetY = 5;
+    if(!for3d){
+      x.shadowColor = 'rgba(0,0,0,0.45)';
+      x.shadowBlur = 14;
+      x.shadowOffsetY = 5;
+    }
     traceSleeve();
     x.fillStyle = bodyCfg.bgColor || '#046e7e';
     x.fill();
@@ -9621,9 +9626,11 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
   };
 
   x.save();
-  x.shadowColor = 'rgba(0,0,0,0.45)';
-  x.shadowBlur = 16;
-  x.shadowOffsetY = 5;
+  if(!for3d){
+    x.shadowColor = 'rgba(0,0,0,0.45)';
+    x.shadowBlur = 16;
+    x.shadowOffsetY = 5;
+  }
   traceTorsoOutline();
   x.fillStyle = bodyCfg.bgColor || '#046e7e';
   x.fill();
@@ -10042,24 +10049,27 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
 }
 
 // 👖 ダボパンツ（ダボズボン・股引風ゆったり祭礼パンツ）の前面・背面をリアルに描画
-function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shirtSUnit, exportMode){
+function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shirtSUnit, exportMode, opts){
+  const for3d = !!(opts && opts.for3d);
   // バウンディングボックス: 横幅 230 (-115..+115), 縦幅 225 (-112..+113)
-  const S_unit = Math.min(maxW / 230, maxH / 225);
-  const centerStageY = cy + 4 * S_unit;
+  const S_unit = for3d ? (opts.scaleUnit || 2.5) : Math.min(maxW / 230, maxH / 225);
+  const centerStageY = for3d ? cy : (cy + 4 * S_unit);
   x.save();
   x.translate(cx, centerStageY);
   x.scale(S_unit, S_unit);
 
-  // ラベルバッジ（前面＝青、背面＝琥珀色でダボシャツと統一）
-  x.save();
-  x.fillStyle = side === 'front' ? '#0284c7' : '#d97706';
-  x.beginPath(); x.roundRect(-86, -108, 172, 19, 99); x.fill();
-  x.fillStyle = '#ffffff'; x.font = '700 10px sans-serif'; x.textAlign = 'center';
-  const badgeTitle = side === 'front'
-    ? '【前 面】ダボパンツ（腰紐・両脇ポケ）'
-    : '【背 面】ダボパンツ（右尻ポケット）';
-  x.fillText(badgeTitle, 0, -95);
-  x.restore();
+  // ラベルバッジ（前面＝青、背面＝琥珀色でダボシャツと統一。3Dテクスチャ生成時は非表示）
+  if(!for3d){
+    x.save();
+    x.fillStyle = side === 'front' ? '#0284c7' : '#d97706';
+    x.beginPath(); x.roundRect(-86, -108, 172, 19, 99); x.fill();
+    x.fillStyle = '#ffffff'; x.font = '700 10px sans-serif'; x.textAlign = 'center';
+    const badgeTitle = side === 'front'
+      ? '【前 面】ダボパンツ（腰紐・両脇ポケ）'
+      : '【背 面】ダボパンツ（右尻ポケット）';
+    x.fillText(badgeTitle, 0, -95);
+    x.restore();
+  }
 
   const topY = -80, botY = 96, crotchY = -12;
   const pantsH = botY - topY; // 176
@@ -10084,7 +10094,9 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
   };
 
   x.save();
-  x.shadowColor = 'rgba(0,0,0,0.45)'; x.shadowBlur = 14; x.shadowOffsetY = 5;
+  if(!for3d){
+    x.shadowColor = 'rgba(0,0,0,0.45)'; x.shadowBlur = 14; x.shadowOffsetY = 5;
+  }
   tracePants();
   x.fillStyle = bodyCfg.bgColor || '#046e7e';
   x.fill();
@@ -10266,7 +10278,7 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
   x.stroke();
 
   // 前面のウエスト腰紐（生成り綿紐＋結び目＋ハトメ穴）
-  if(side === 'front'){
+  if(side === 'front' && !(opts && opts.hideWaistCord)){
     x.save();
     // ハトメ2つ
     x.fillStyle = '#0f172a';
@@ -10386,6 +10398,21 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
  * ============================================================================ */
 let _3D_TEX_CACHE_KEY = '';
 let _3D_TEX_CACHE = null;
+let _3D_LIT_CV = null;
+let _3D_SHADE_GRID_CV = null;
+
+function make3dDarkenedEdgeCv(srcCv, darkAlpha){
+  const c = document.createElement('canvas');
+  c.width = srcCv.width;
+  c.height = srcCv.height;
+  const cx = c.getContext('2d');
+  cx.drawImage(srcCv, 0, 0);
+  cx.globalCompositeOperation = 'source-atop';
+  cx.fillStyle = `rgba(5, 10, 20, ${darkAlpha})`;
+  cx.fillRect(0, 0, c.width, c.height);
+  cx.globalCompositeOperation = 'source-over';
+  return c;
+}
 
 function build3dGarmentTextures(partMap, bodyCfg, bodyVec){
   const activeSlotsJson = (S.showLogo && Array.isArray(S.logoSlots)) ? JSON.stringify(S.logoSlots) : '';
@@ -10406,235 +10433,37 @@ function build3dGarmentTextures(partMap, bodyCfg, bodyVec){
 
   if(_3D_TEX_CACHE && _3D_TEX_CACHE_KEY === key) return _3D_TEX_CACHE;
 
-  const isKoi = (S.daboStyle === 'koikuchi');
-  const collarCol = getCollarFillColor(bodyCfg);
+  // 1. 👕 仕立て済みダボシャツ/鯉口シャツ統合高解像度テクスチャ (664 x 436, 透過背景, Local gx: -166..+166, gy: -98..+120)
+  const sW = 664, sH = 436;
+  const shirtFrontCv = document.createElement('canvas');
+  shirtFrontCv.width = sW; shirtFrontCv.height = sH;
+  drawSingleDaboShirt(shirtFrontCv.getContext('2d'), 332, 196, sW, sH, 'front', partMap, bodyCfg, true, { for3d: true, scaleUnit: 2.0 });
 
-  // 1. 前身頃テクスチャ (frontTorsoCv: 320 x 440)
-  const fW = 320, fH = 440;
-  const frontTorsoCv = document.createElement('canvas');
-  frontTorsoCv.width = fW; frontTorsoCv.height = fH;
-  const fx = frontTorsoCv.getContext('2d');
-  fx.fillStyle = bodyCfg.bgColor || '#046e7e';
-  fx.fillRect(0, 0, fW, fH);
-  {
-    const sc = fH / 206; // 206 units -> 440px
-    fx.save();
-    fx.translate(fW * 0.5, 0);
-    fx.scale(sc, sc);
-    const shldrW = 66, bodyH = 206, placketHalfW = 5.5;
-    // 向かって左: 右前身頃 (frontR)
-    fx.save();
-    fx.beginPath(); fx.rect(-shldrW - 10, 0, shldrW + 10 + placketHalfW, bodyH); fx.clip();
-    drawCroppedPiece(fx, partMap.frontR, -shldrW, 0, shldrW + placketHalfW, bodyH, 0);
-    fx.restore();
-    // 向かって右: 左前身頃 (frontL)
-    fx.save();
-    fx.beginPath(); fx.rect(-placketHalfW, 0, shldrW + 10 + placketHalfW, bodyH); fx.clip();
-    drawCroppedPiece(fx, partMap.frontL, -placketHalfW, 0, shldrW + placketHalfW, bodyH, 0);
-    fx.restore();
-    // 垂直な前立て＋5つボタン
-    const plTopY = 14;
-    if(collarCol){
-      fx.fillStyle = collarCol;
-      fx.fillRect(-placketHalfW, plTopY, placketHalfW * 2, bodyH - plTopY);
-    }else{
-      fx.fillStyle = 'rgba(255,255,255,0.05)';
-      fx.fillRect(-placketHalfW, plTopY, placketHalfW * 2, bodyH - plTopY);
-    }
-    fx.strokeStyle = 'rgba(0,0,0,0.55)';
-    fx.lineWidth = 1.4;
-    fx.beginPath();
-    fx.moveTo(-placketHalfW, plTopY); fx.lineTo(-placketHalfW, bodyH);
-    fx.moveTo(placketHalfW, plTopY);  fx.lineTo(placketHalfW, bodyH);
-    fx.stroke();
-    fx.strokeStyle = 'rgba(255,255,255,0.32)';
-    fx.lineWidth = 0.8;
-    fx.setLineDash([2.5, 2.5]);
-    fx.beginPath();
-    fx.moveTo(-placketHalfW + 1.8, plTopY); fx.lineTo(-placketHalfW + 1.8, bodyH);
-    fx.moveTo(placketHalfW - 1.8, plTopY);  fx.lineTo(placketHalfW - 1.8, bodyH);
-    fx.stroke();
-    fx.setLineDash([]);
-    const btnFill = collarCol || bodyCfg.kakuColor || '#ffffff';
-    for(let i = 0; i < 5; i++){
-      const by = plTopY + 14 + ((bodyH - 42 - (plTopY + 14)) / 4) * i;
-      fx.strokeStyle = btnFill; fx.lineWidth = 1.3;
-      fx.beginPath(); fx.moveTo(-placketHalfW, by); fx.lineTo(1.5, by); fx.stroke();
-      fx.fillStyle = btnFill;
-      fx.beginPath(); fx.arc(0, by, 2.6, 0, Math.PI * 2); fx.fill();
-      fx.strokeStyle = 'rgba(0,0,0,0.55)'; fx.lineWidth = 0.8; fx.stroke();
-    }
-    // 左胸ポケット
-    if(S.daboPocketMode !== 'none'){
-      const pkX = 14, pkY = 56, pkW = 32, pkH = 36;
-      fx.save();
-      fx.shadowColor = 'rgba(0,0,0,0.38)'; fx.shadowBlur = 4; fx.shadowOffsetY = 1.5;
-      fx.beginPath();
-      fx.moveTo(pkX, pkY); fx.lineTo(pkX + pkW, pkY);
-      fx.lineTo(pkX + pkW, pkY + pkH - 4); fx.lineTo(pkX + pkW - 4, pkY + pkH);
-      fx.lineTo(pkX + 4, pkY + pkH); fx.lineTo(pkX, pkY + pkH - 4);
-      fx.closePath();
-      fx.save(); fx.clip();
-      if(S.daboPocketMode === 'bias'){
-        drawCroppedPiece(fx, partMap.pocket || partMap.frontL, pkX - 8, pkY - 8, pkW + 16, pkH + 16, 45);
-      }else if(partMap.frontL && (S.daboLogoTarget === 'all' || (partMap.frontL.hasLogo && (!partMap.pocket || !partMap.pocket.hasLogo || S.daboLogoTarget === 'frontLOnly' || S.daboLogoTarget === 'frontOnly')))){
-        drawCroppedPiece(fx, partMap.frontL, -placketHalfW, 0, shldrW + placketHalfW, bodyH, 0);
-      }else{
-        drawCroppedPiece(fx, partMap.pocket || partMap.frontL, pkX, pkY, pkW, pkH, 0);
-      }
-      fx.fillStyle = 'rgba(0,0,0,0.18)'; fx.fillRect(pkX, pkY, pkW, 4.5);
-      fx.restore();
-      fx.strokeStyle = 'rgba(0,0,0,0.52)'; fx.lineWidth = 1.1; fx.stroke();
-      fx.strokeStyle = 'rgba(255,255,255,0.42)'; fx.lineWidth = 0.8; fx.setLineDash([2, 2]); fx.stroke(); fx.setLineDash([]);
-      fx.restore();
-    }
-    fx.restore();
-  }
+  const shirtBackCv = document.createElement('canvas');
+  shirtBackCv.width = sW; shirtBackCv.height = sH;
+  drawSingleDaboShirt(shirtBackCv.getContext('2d'), 332, 196, sW, sH, 'back', partMap, bodyCfg, true, { for3d: true, scaleUnit: 2.0 });
 
-  // 2. 後身頃テクスチャ (backTorsoCv: 320 x 440)
-  const backTorsoCv = document.createElement('canvas');
-  backTorsoCv.width = fW; backTorsoCv.height = fH;
-  const bx = backTorsoCv.getContext('2d');
-  bx.fillStyle = bodyCfg.bgColor || '#046e7e';
-  bx.fillRect(0, 0, fW, fH);
-  {
-    const sc = fH / 206;
-    bx.save();
-    bx.translate(fW * 0.5, 0);
-    bx.scale(sc, sc);
-    const shldrW = 66, bodyH = 206;
-    if((S.daboCutMode === 'backCenter' || S.daboCutMode === 'adult8_crest') && partMap.backCenter){
-      const centerHalfW = 44;
-      bx.save(); bx.beginPath(); bx.rect(-shldrW - 10, 0, shldrW + 10 - centerHalfW, bodyH); bx.clip();
-      drawCroppedPiece(bx, partMap.backSideL || partMap.backCenter, -shldrW, 0, shldrW - centerHalfW + 4, bodyH, 0);
-      bx.restore();
-      bx.save(); bx.beginPath(); bx.rect(centerHalfW, 0, shldrW + 10 - centerHalfW, bodyH); bx.clip();
-      drawCroppedPiece(bx, partMap.backSideR || partMap.backCenter, centerHalfW - 2, 0, shldrW - centerHalfW + 4, bodyH, 0);
-      bx.restore();
-      bx.save(); bx.beginPath(); bx.rect(-centerHalfW, 0, centerHalfW * 2, bodyH); bx.clip();
-      drawCroppedPiece(bx, partMap.backCenter, -centerHalfW, 0, centerHalfW * 2, bodyH, 0);
-      bx.restore();
-      bx.strokeStyle = 'rgba(0,0,0,0.38)'; bx.lineWidth = 1.1; bx.setLineDash([3, 3]);
-      bx.beginPath();
-      bx.moveTo(-centerHalfW, 0); bx.lineTo(-centerHalfW, bodyH);
-      bx.moveTo(centerHalfW, 0);  bx.lineTo(centerHalfW, bodyH);
-      bx.stroke(); bx.setLineDash([]);
-    }else{
-      bx.save(); bx.beginPath(); bx.rect(-shldrW - 10, 0, shldrW + 10, bodyH); bx.clip();
-      drawCroppedPiece(bx, partMap.backL, -shldrW, 0, shldrW, bodyH, 0);
-      bx.restore();
-      bx.save(); bx.beginPath(); bx.rect(0, 0, shldrW + 10, bodyH); bx.clip();
-      drawCroppedPiece(bx, partMap.backR, 0, 0, shldrW, bodyH, 0);
-      bx.restore();
-      bx.strokeStyle = 'rgba(0,0,0,0.48)'; bx.lineWidth = 1.3;
-      bx.beginPath(); bx.moveTo(0, 0); bx.lineTo(0, bodyH); bx.stroke();
-    }
-    bx.restore();
-  }
+  const shirtFrontEdgeCv = make3dDarkenedEdgeCv(shirtFrontCv, 0.54);
+  const shirtBackEdgeCv  = make3dDarkenedEdgeCv(shirtBackCv, 0.54);
 
-  // 3. 左右の袖テクスチャ (sleeveRCv, sleeveLCv: 220 x 180)
-  const makeSleeveTex = (entry) => {
-    const sw = 220, sh = 180;
-    const scv = document.createElement('canvas');
-    scv.width = sw; scv.height = sh;
-    const sx = scv.getContext('2d');
-    sx.fillStyle = bodyCfg.bgColor || '#046e7e';
-    sx.fillRect(0, 0, sw, sh);
-    const sc = sw / 108;
-    sx.save();
-    sx.scale(sc, sc);
-    drawCroppedPiece(sx, entry, 0, 0, 108, sh / sc, 0);
-    sx.restore();
-    return scv;
-  };
-  const sleeveRCv = makeSleeveTex(partMap.sleeveR || partMap.frontR);
-  const sleeveLCv = makeSleeveTex(partMap.sleeveL || partMap.frontL);
+  // 2. 👖 仕立て済みダボパンツ統合高解像度テクスチャ (360 x 460, 透過背景, Local gx: -72..+72, gy: -84..+100)
+  const pW = 360, pH = 460;
+  const pantsFrontCv = document.createElement('canvas');
+  pantsFrontCv.width = pW; pantsFrontCv.height = pH;
+  drawSingleDaboPants(pantsFrontCv.getContext('2d'), 180, 210, pW, pH, 'front', partMap, bodyCfg, 2.0, true, { for3d: true, scaleUnit: 2.5, hideWaistCord: false });
 
-  // 4. ダボパンツ前面・背面テクスチャ (frontPantsCv, backPantsCv: 280 x 360)
-  const pW = 280, pH = 360;
-  const makePantsTex = (side) => {
-    const pcv = document.createElement('canvas');
-    pcv.width = pW; pcv.height = pH;
-    const px = pcv.getContext('2d');
-    px.fillStyle = bodyCfg.bgColor || '#046e7e';
-    px.fillRect(0, 0, pW, pH);
-    const sc = pH / 176;
-    px.save();
-    px.translate(pW * 0.5, 0);
-    px.scale(sc, sc);
-    const hipW = 64, pantsH = 176;
-    const leftLegEntry = (side === 'front')
-      ? (partMap.frontR || partMap.backCenter)
-      : (partMap.backL || partMap.backCenter || partMap.frontL);
-    const rightLegEntry = (side === 'front')
-      ? (partMap.frontL || partMap.backCenter)
-      : (partMap.backR || partMap.backCenter || partMap.frontR);
-    const refEntry = leftLegEntry || rightLegEntry;
-    const refCv = refEntry && refEntry.cv ? refEntry.cv : null;
-    const longPx = refCv ? Math.max(1, Math.max(refCv.width, refCv.height)) : 1035;
-    const pantsFixedScale = pantsH / (0.86 * longPx);
+  const pantsFrontUnderShirtCv = document.createElement('canvas');
+  pantsFrontUnderShirtCv.width = pW; pantsFrontUnderShirtCv.height = pH;
+  drawSingleDaboPants(pantsFrontUnderShirtCv.getContext('2d'), 180, 210, pW, pH, 'front', partMap, bodyCfg, 2.0, true, { for3d: true, scaleUnit: 2.5, hideWaistCord: true });
 
-    px.save(); px.beginPath(); px.rect(-hipW - 6, 0, hipW + 6, pantsH); px.clip();
-    drawCroppedPiece(px, leftLegEntry, -hipW, 0, hipW, pantsH, 0, undefined, pantsFixedScale);
-    px.restore();
+  const pantsBackCv = document.createElement('canvas');
+  pantsBackCv.width = pW; pantsBackCv.height = pH;
+  drawSingleDaboPants(pantsBackCv.getContext('2d'), 180, 210, pW, pH, 'back', partMap, bodyCfg, 2.0, true, { for3d: true, scaleUnit: 2.5, hideWaistCord: true });
 
-    px.save(); px.beginPath(); px.rect(0, 0, hipW + 6, pantsH); px.clip();
-    drawCroppedPiece(px, rightLegEntry, 0, 0, hipW, pantsH, 0, undefined, pantsFixedScale);
-    px.restore();
+  const pantsFrontEdgeCv = make3dDarkenedEdgeCv(pantsFrontUnderShirtCv, 0.54);
+  const pantsBackEdgeCv  = make3dDarkenedEdgeCv(pantsBackCv, 0.54);
 
-    // ウエスト総ゴム帯
-    px.fillStyle = 'rgba(0,0,0,0.26)';
-    px.fillRect(-hipW - 6, 0, (hipW + 6) * 2, 14);
-    px.strokeStyle = 'rgba(255,255,255,0.28)';
-    px.lineWidth = 0.9;
-    px.setLineDash([2.5, 2.5]);
-    px.beginPath(); px.moveTo(-hipW, 7); px.lineTo(hipW, 7); px.stroke();
-    px.setLineDash([]);
-
-    if(side === 'front'){
-      // 前立てJステッチ＋腰紐
-      px.strokeStyle = 'rgba(0,0,0,0.5)'; px.lineWidth = 1.3;
-      px.beginPath(); px.moveTo(0, 14); px.lineTo(0, 68); px.stroke();
-      px.strokeStyle = '#f8fafc'; px.lineWidth = 2.2; px.lineCap = 'round';
-      px.beginPath();
-      px.moveTo(-5, 7); px.quadraticCurveTo(0, 9, 5, 7);
-      px.moveTo(0, 8); px.bezierCurveTo(-15, 2, -16, 17, 0, 10);
-      px.moveTo(0, 8); px.bezierCurveTo(15, 2, 16, 17, 0, 10);
-      px.moveTo(-1, 9); px.quadraticCurveTo(-11, 24, -8, 38);
-      px.moveTo(1, 9);  px.quadraticCurveTo(11, 24, 9, 36);
-      px.stroke();
-    }else if(S.daboPocketMode !== 'none'){
-      // 背面・右尻ポケット
-      const pkX = 11, pkY = 26, pkW = 36, pkH = 40;
-      px.save();
-      px.shadowColor = 'rgba(0,0,0,0.38)'; px.shadowBlur = 4; px.shadowOffsetY = 1.5;
-      px.beginPath();
-      px.moveTo(pkX, pkY); px.lineTo(pkX + pkW, pkY);
-      px.lineTo(pkX + pkW, pkY + pkH - 7); px.lineTo(pkX + pkW * 0.5, pkY + pkH);
-      px.lineTo(pkX, pkY + pkH - 7); px.closePath();
-      px.save(); px.clip();
-      const pkRot = (S.daboPocketMode === 'bias') ? 45 : 0;
-      const pkEntry = (S.daboLogoTarget === 'pocketOnly' || S.daboLogoTarget === 'backPocket')
-        ? (partMap.pocket || rightLegEntry)
-        : rightLegEntry;
-      if(pkRot === 0 && pkEntry === rightLegEntry){
-        drawCroppedPiece(px, rightLegEntry, 0, 0, hipW, pantsH, 0, undefined, pantsFixedScale);
-      }else{
-        drawCroppedPiece(px, partMap.pocket || rightLegEntry, pkX, pkY, pkW, pkH, pkRot, undefined, pantsFixedScale);
-      }
-      px.fillStyle = 'rgba(0,0,0,0.18)'; px.fillRect(pkX, pkY, pkW, 4.5);
-      px.restore();
-      px.strokeStyle = 'rgba(0,0,0,0.58)'; px.lineWidth = 1.2; px.stroke();
-      px.strokeStyle = 'rgba(255,255,255,0.42)'; px.lineWidth = 0.8; px.setLineDash([2.2, 2.2]); px.stroke(); px.setLineDash([]);
-      px.restore();
-    }
-    px.restore();
-    return pcv;
-  };
-  const frontPantsCv = makePantsTex('front');
-  const backPantsCv = makePantsTex('back');
-
-  // 5. 手ぬぐい全体テクスチャ (tenuguiFullCv)
+  // 3. 🧣 手ぬぐい全体テクスチャ (tenuguiFullCv)
   const tAr = (bodyCfg.W || 350) / Math.max(1, bodyCfg.H || 900);
   const tW = tAr >= 1 ? 760 : Math.round(760 * tAr);
   const tH = tAr >= 1 ? Math.round(760 / tAr) : 760;
@@ -10645,7 +10474,11 @@ function build3dGarmentTextures(partMap, bodyCfg, bodyVec){
   bodyVec.logoStrip.drawVector(tx, 0, 0, tenuguiFullCv.width, tenuguiFullCv.height);
 
   _3D_TEX_CACHE_KEY = key;
-  _3D_TEX_CACHE = { frontTorsoCv, backTorsoCv, sleeveRCv, sleeveLCv, frontPantsCv, backPantsCv, tenuguiFullCv };
+  _3D_TEX_CACHE = {
+    shirtFrontCv, shirtBackCv, shirtFrontEdgeCv, shirtBackEdgeCv,
+    pantsFrontCv, pantsFrontUnderShirtCv, pantsBackCv, pantsFrontEdgeCv, pantsBackEdgeCv,
+    tenuguiFullCv
+  };
   return _3D_TEX_CACHE;
 }
 
@@ -10792,22 +10625,76 @@ function draw3dTurntablePedestal(x, cx, floorY, radius, scale, yawRad, pitchRad,
   x.restore();
 }
 
+function buildLitShellTexture(baseTexCv, verts, NX, NY){
+  if(!_3D_SHADE_GRID_CV) _3D_SHADE_GRID_CV = document.createElement('canvas');
+  const gw = NX + 1, gh = NY + 1;
+  if(_3D_SHADE_GRID_CV.width !== gw || _3D_SHADE_GRID_CV.height !== gh){
+    _3D_SHADE_GRID_CV.width = gw;
+    _3D_SHADE_GRID_CV.height = gh;
+  }
+  const gx = _3D_SHADE_GRID_CV.getContext('2d');
+  const imgData = gx.createImageData(gw, gh);
+  const d = imgData.data;
+  for(let iy = 0; iy <= NY; iy++){
+    for(let ix = 0; ix <= NX; ix++){
+      const v = verts[iy][ix];
+      const darkA = Math.min(0.68, Math.max(0, (1.02 - v.lightMul) * 0.86));
+      const specA = Math.min(0.40, Math.max(0, v.specAdd + Math.max(0, v.lightMul - 1.0) * 0.45));
+      const totalA = 1 - (1 - darkA) * (1 - specA);
+      const idx = (iy * gw + ix) * 4;
+      if(totalA > 0.004){
+        const cDark = darkA * (1 - specA);
+        d[idx]     = Math.round((6 * cDark + 255 * specA) / totalA);
+        d[idx + 1] = Math.round((10 * cDark + 255 * specA) / totalA);
+        d[idx + 2] = Math.round((20 * cDark + 255 * specA) / totalA);
+        d[idx + 3] = Math.round(totalA * 255);
+      }
+    }
+  }
+  gx.putImageData(imgData, 0, 0);
+
+  if(!_3D_LIT_CV) _3D_LIT_CV = document.createElement('canvas');
+  const tw = baseTexCv.width, th = baseTexCv.height;
+  if(_3D_LIT_CV.width !== tw || _3D_LIT_CV.height !== th){
+    _3D_LIT_CV.width = tw;
+    _3D_LIT_CV.height = th;
+  }
+  const lx = _3D_LIT_CV.getContext('2d');
+  lx.clearRect(0, 0, tw, th);
+  lx.globalCompositeOperation = 'source-over';
+  lx.drawImage(baseTexCv, 0, 0);
+  lx.imageSmoothingEnabled = true;
+  lx.imageSmoothingQuality = 'high';
+  lx.globalCompositeOperation = 'source-atop';
+  lx.drawImage(_3D_SHADE_GRID_CV, 0, 0, tw, th);
+  lx.globalCompositeOperation = 'source-over';
+  return _3D_LIT_CV;
+}
+
 function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShirt, includePants, tex, bodyCfg, badgeTitle, badgeAccent){
   const isKoi = (S.daboStyle === 'koikuchi');
-  const collarCol = getCollarFillColor(bodyCfg) || bodyCfg.bgColor || '#046e7e';
-  const yaw = (yawDeg * Math.PI) / 180;
+  const bgCol = bodyCfg.bgColor || '#046e7e';
+  const pedYaw = (yawDeg * Math.PI) / 180;
   const pitch = (pitchDeg * Math.PI) / 180;
+
+  // -180..+180 に正規化し、背面側 (|normYaw| > 90°) のときは背面仕立てキャンバスを正面基準の立体角で自然に表示
+  const normYaw = ((yawDeg % 360) + 540) % 360 - 180;
+  const isBackView = Math.abs(normYaw) > 90;
+  const rawFaceYaw = isBackView ? (normYaw > 0 ? normYaw - 180 : normYaw + 180) : normYaw;
+  const effYawDeg = Math.max(-62, Math.min(62, rawFaceYaw));
+  const yaw = (effYawDeg * Math.PI) / 180;
   const cyaw = Math.cos(yaw), syaw = Math.sin(yaw);
   const cpitch = Math.cos(pitch), spitch = Math.sin(pitch);
+  const bulgeScale = Math.min(1.0, 0.72 * Math.abs(cyaw) / Math.max(0.25, Math.abs(syaw)) + 0.32);
 
-  const yShift = (includeShirt && includePants) ? -66 : (includePants ? -18 : 8);
-  const floorY = cy + ((includeShirt && includePants) ? 168 : 124) * scale;
-  draw3dTurntablePedestal(x, cx, floorY, (includeShirt && includePants) ? 108 : 116, scale, yaw, Math.max(0.22, pitch), null, null, badgeAccent);
+  const yShift = (includeShirt && includePants) ? -74 : (includePants ? -8 : -8);
+  const floorY = cy + ((includeShirt && includePants) ? 176 : 126) * scale;
+  draw3dTurntablePedestal(x, cx, floorY, (includeShirt && includePants) ? 108 : 116, scale, pedYaw, Math.max(0.22, pitch), null, null, badgeAccent);
 
   // 上部タイトルバッジ
   if(badgeTitle){
     x.save();
-    const topBadgeY = cy - ((includeShirt && includePants) ? 194 : 145) * scale;
+    const topBadgeY = cy - ((includeShirt && includePants) ? 196 : 145) * scale;
     const bw = Math.min(310, Math.max(195, badgeTitle.length * 12.5 + 28));
     x.fillStyle = badgeAccent || '#0284c7';
     x.beginPath(); x.roundRect(cx - bw * 0.5, topBadgeY, bw, 23, 99); x.fill();
@@ -10824,7 +10711,7 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
     const z1 = -px * syaw + pz * cyaw;
     const y2 = py * cpitch - z1 * spitch;
     const z2 = py * spitch + z1 * cpitch;
-    const fov = 720;
+    const fov = 740;
     const persp = fov / Math.max(200, fov - z2);
     return { sx: cx + x1 * persp * scale, sy: cy + y2 * persp * scale, z: z2 };
   };
@@ -10834,335 +10721,327 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
     const z1 = -nx * syaw + nz * cyaw;
     const rny = ny * cpitch - z1 * spitch;
     const rnz = ny * spitch + z1 * cpitch;
-    const d1 = Math.max(0, rnx * (-0.38) + rny * (-0.42) + rnz * 0.82);
-    const d2 = Math.max(0, rnx * 0.55 + rny * 0.18 + rnz * 0.81);
-    const rim = Math.pow(1 - Math.min(1, Math.abs(rnz)), 2.2) * 0.22;
-    const lightMul = Math.min(1.06, 0.34 + d1 * 0.62 + d2 * 0.22 + rim);
-    const specAdd = Math.pow(Math.max(0, rnz * 0.86 - rnx * 0.32 - rny * 0.38), 14) * 0.18 + rim * 0.35;
+    const d1 = Math.max(0, rnx * (-0.38) + rny * (-0.40) + rnz * 0.83);
+    const d2 = Math.max(0, rnx * 0.52 + rny * 0.18 + rnz * 0.83);
+    const rim = Math.pow(1 - Math.min(1, Math.abs(rnz)), 2.1) * 0.20;
+    const lightMul = Math.min(1.06, 0.36 + d1 * 0.60 + d2 * 0.22 + rim);
+    const specAdd = Math.pow(Math.max(0, rnz * 0.88 - rnx * 0.30 - rny * 0.36), 14) * 0.18 + rim * 0.28;
     return { lightMul, specAdd, rnz };
   };
 
-  const quads = [];
-
-  // -------------------------------------------------------------------------
-  // 1. 👕 ダボシャツ / 鯉口シャツ 3Dメッシュ生成 (身頃・襟・前立て・ポケット・左右3D袖)
-  // -------------------------------------------------------------------------
-  if(includeShirt){
-    const yTop = -96, yBot = 88, torsoH = yBot - yTop; // 184
-    const shldrW = isKoi ? 56 : 64;
-    const waistW = isKoi ? 49 : 62;
-    const hemW   = isKoi ? 52 : 64;
-    const NU = 28, NV = 14;
-
-    const getTorsoPt = (theta, v) => {
-      const c = Math.cos(theta), s = Math.sin(theta);
-      // 襟ぐりの深さ（前＝丸首、後ろ＝浅いカーブ）＋なで肩傾斜
-      const neckDip = (c > 0)
-        ? Math.pow(c, 1.8) * (isKoi ? 13 : 16) * Math.max(0, 1 - v * 2.4)
-        : Math.pow(-c, 1.8) * 5 * Math.max(0, 1 - v * 2.4);
-      const shldrSlope = Math.pow(Math.abs(s), 1.35) * (isKoi ? 6.5 : 4.5) * Math.max(0, 1 - v * 0.75);
-      const py = yTop + v * torsoH + neckDip + shldrSlope;
-
-      // 身幅 rx(v) と 胸板・背中の立体厚み rz(v)
-      let rx = (v < 0.45)
-        ? (shldrW * (1 - v / 0.45) + waistW * (v / 0.45))
-        : (waistW * (1 - (v - 0.45) / 0.55) + hemW * ((v - 0.45) / 0.55));
-      let rz = 25.5 + (c > 0 ? 4.2 * Math.sin(v * Math.PI * 0.85) : 2.2 * Math.sin(v * Math.PI * 0.75));
-      // 自然な布の3Dドレープひだ
-      const drape = Math.sin(theta * 6 + v * 3.2) * 1.15 * Math.pow(v, 0.75);
-      rx += drape;
-      rz += drape * 0.6;
-      // 前立て（前中心）と左胸ポケットの3D浮き出し
-      if(c > 0.95 && v > 0.08) rz += 1.25;
-      if(S.daboPocketMode !== 'none' && theta > 0.20 && theta < 0.68 && v > 0.27 && v < 0.46) rz += 1.35;
-
-      const px = s * rx;
-      const pz = c * rz;
-      const nx = s / Math.max(1, rx), nz = c / Math.max(1, rz), ny = -0.06;
-      const nLen = Math.hypot(nx, ny, nz) || 1;
-      return { px, py, pz, nx: nx / nLen, ny: ny / nLen, nz: nz / nLen };
-    };
-
-    // 1-A. 首元の内側マネキン・裏地リング (v = 0..0.08)
-    for(let iu = 0; iu < NU; iu++){
-      const th0 = (iu / NU) * Math.PI * 2;
-      const th1 = ((iu + 1) / NU) * Math.PI * 2;
-      const a00 = getTorsoPt(th0, 0), a10 = getTorsoPt(th1, 0);
-      const a01 = getTorsoPt(th0, 0.09), a11 = getTorsoPt(th1, 0.09);
-      const p00 = proj(a00.px * 0.42, a00.py - 3, a00.pz * 0.42);
-      const p10 = proj(a10.px * 0.42, a10.py - 3, a10.pz * 0.42);
-      const p11 = proj(a11.px * 0.96, a11.py, a11.pz * 0.96);
-      const p01 = proj(a01.px * 0.96, a01.py, a01.pz * 0.96);
-      quads.push({
-        z: (p00.z + p10.z + p11.z + p01.z) * 0.25 - 6,
-        texCv: null, fillCol: shadeHexColor(collarCol, 0.35),
-        p00, p10, p11, p01, lightMul: 0.55, specAdd: 0
-      });
+  // 3D円筒開口部（袖口・裾・足首）の背面側内側裏地クレセントを描画するヘルパー
+  const drawHollowOpeningCrescent = (frontPts, backPts, innerColDark, innerColMid) => {
+    const segs = frontPts.length - 1;
+    if(segs < 2) return;
+    x.save();
+    x.beginPath();
+    for(let i = 0; i <= segs; i++){
+      const p = frontPts[i];
+      if(i === 0) x.moveTo(p.sx, p.sy);
+      else x.lineTo(p.sx, p.sy);
     }
-
-    // 1-B. 身頃3Dメッシュ本体
-    for(let iv = 0; iv < NV; iv++){
-      const v0 = iv / NV, v1 = (iv + 1) / NV;
-      for(let iu = 0; iu < NU; iu++){
-        const th0 = (iu / NU) * Math.PI * 2 - Math.PI; // -PI .. +PI
-        const th1 = ((iu + 1) / NU) * Math.PI * 2 - Math.PI;
-        const thMid = (th0 + th1) * 0.5;
-        const isFront = Math.cos(thMid) >= 0;
-
-        const g00 = getTorsoPt(th0, v0), g10 = getTorsoPt(th1, v0);
-        const g11 = getTorsoPt(th1, v1), g01 = getTorsoPt(th0, v1);
-        const p00 = proj(g00.px, g00.py, g00.pz);
-        const p10 = proj(g10.px, g10.py, g10.pz);
-        const p11 = proj(g11.px, g11.py, g11.pz);
-        const p01 = proj(g01.px, g01.py, g01.pz);
-        const { lightMul, specAdd, rnz } = calcLight(
-          (g00.nx + g11.nx) * 0.5,
-          (g00.ny + g11.ny) * 0.5,
-          (g00.nz + g11.nz) * 0.5
-        );
-        // 背面カリング（首元・裾端以外は裏向き面をスキップして高速＆クリーンに描画）
-        if(rnz < -0.18 && iv > 1 && iv < NV - 1) continue;
-
-        let u0, u1, texCv;
-        if(isFront){
-          // th in [-PI/2 .. +PI/2] -> u in [0 .. 1]
-          u0 = Math.max(0, Math.min(1, 0.5 + th0 / Math.PI));
-          u1 = Math.max(0, Math.min(1, 0.5 + th1 / Math.PI));
-          texCv = tex.frontTorsoCv;
-        }else{
-          // 背面: th in [PI/2 .. PI] or [-PI .. -PI/2] -> u in [0 .. 1] (向かって左=backL, 向かって右=backR)
-          const wrapAngle = (th) => {
-            let d = Math.PI - th; // th = +PI/2 -> +PI/2, th = PI -> 0, th = -PI -> 2*PI -> 0, th = -PI/2 -> -PI/2
-            while(d > Math.PI) d -= Math.PI * 2;
-            while(d < -Math.PI) d += Math.PI * 2;
-            return 0.5 + d / Math.PI;
-          };
-          u0 = Math.max(0, Math.min(1, wrapAngle(th0)));
-          u1 = Math.max(0, Math.min(1, wrapAngle(th1)));
-          texCv = tex.backTorsoCv;
-        }
-        quads.push({
-          z: (p00.z + p10.z + p11.z + p01.z) * 0.25,
-          texCv, u0, v0, u1, v1,
-          p00, p10, p11, p01,
-          lightMul: rnz < 0 ? lightMul * 0.55 : lightMul,
-          specAdd: rnz < 0 ? 0 : specAdd
-        });
-      }
+    for(let i = segs; i >= 0; i--){
+      const p = backPts[i];
+      x.lineTo(p.sx, p.sy);
     }
+    x.closePath();
+    const midF = frontPts[Math.floor(segs * 0.5)];
+    const midB = backPts[Math.floor(segs * 0.5)];
+    const g = x.createLinearGradient(midF.sx, midF.sy, midB.sx, midB.sy);
+    g.addColorStop(0, innerColDark);
+    g.addColorStop(0.65, innerColMid);
+    g.addColorStop(1, innerColDark);
+    x.fillStyle = g;
+    x.fill();
+    x.strokeStyle = 'rgba(0,0,0,0.62)';
+    x.lineWidth = 1.2 * scale;
+    x.stroke();
+    x.restore();
+  };
 
-    // 1-C. 左右の3D立体袖（円筒テーパードチューブ）
-    const slvSpanX = isKoi ? 72 : 78;
-    const slvDropY = isKoi ? 32 : 24;
-    const armDropR = isKoi ? 23 : 28;
-    const cuffR    = isKoi ? 13 : 25;
-    const N_SLEN = 9, N_SANG = 14;
+  const innerDarkCol = shadeHexColor(bgCol, 0.20);
+  const innerMidCol  = shadeHexColor(bgCol, 0.34);
 
-    for(const dir of [-1, 1]){
-      const slvTex = (dir < 0) ? tex.sleeveRCv : tex.sleeveLCv;
-      const getSleevePt = (t, phi) => {
-        // phi = 0: 前面 (+Z), phi = PI/2: 下側 (+Y), phi = PI: 背面 (-Z), phi = -PI/2: 上側(肩山, -Y)
-        const cxS = dir * (shldrW - 3 + t * slvSpanX);
-        const cyS = yTop + 25 + t * slvDropY;
-        const czS = Math.sin(t * Math.PI * 0.65) * 8; // 自然に少し前へ振る立体姿勢
-        const ry = armDropR * (1 - t) + cuffR * t;
-        const rz = 19 * (1 - t) + (isKoi ? 11.5 : 18) * t;
-        const c = Math.cos(phi), s = Math.sin(phi);
-        // 袖の傾き角に合わせて断面を回転
-        const tilt = dir * 0.30;
-        const ct = Math.cos(tilt), st = Math.sin(tilt);
-        const localY = s * ry;
-        const localX = -localY * st;
-        const rotY   = localY * ct;
-        const px = cxS + localX;
-        const py = cyS + rotY;
-        const pz = czS + c * rz;
-        const nx = -s * st, ny = s * ct, nz = c;
-        const nLen = Math.hypot(nx, ny, nz) || 1;
-        return { px, py, pz, nx: nx / nLen, ny: ny / nLen, nz: nz / nLen };
-      };
-
-      for(let it = 0; it < N_SLEN; it++){
-        const t0 = it / N_SLEN, t1 = (it + 1) / N_SLEN;
-        for(let ip = 0; ip < N_SANG; ip++){
-          const ph0 = (ip / N_SANG) * Math.PI * 2 - Math.PI;
-          const ph1 = ((ip + 1) / N_SANG) * Math.PI * 2 - Math.PI;
-          const g00 = getSleevePt(t0, ph0), g10 = getSleevePt(t1, ph0);
-          const g11 = getSleevePt(t1, ph1), g01 = getSleevePt(t0, ph1);
-          const p00 = proj(g00.px, g00.py, g00.pz);
-          const p10 = proj(g10.px, g10.py, g10.pz);
-          const p11 = proj(g11.px, g11.py, g11.pz);
-          const p01 = proj(g01.px, g01.py, g01.pz);
-          const { lightMul, specAdd, rnz } = calcLight(
-            (g00.nx + g11.nx) * 0.5,
-            (g00.ny + g11.ny) * 0.5,
-            (g00.nz + g11.nz) * 0.5
-          );
-          if(rnz < -0.25 && it < N_SLEN - 2) continue;
-          const vTex0 = Math.abs( Math.sin(ph0 * 0.5 + Math.PI * 0.25) );
-          const vTex1 = Math.abs( Math.sin(ph1 * 0.5 + Math.PI * 0.25) );
-          quads.push({
-            z: (p00.z + p10.z + p11.z + p01.z) * 0.25,
-            texCv: slvTex,
-            u0: dir > 0 ? t0 : (1 - t0),
-            v0: Math.max(0.02, Math.min(0.98, vTex0)),
-            u1: dir > 0 ? t1 : (1 - t1),
-            v1: Math.max(0.02, Math.min(0.98, vTex1)),
-            p00, p10, p11, p01,
-            lightMul: rnz < 0 ? lightMul * 0.48 : lightMul,
-            specAdd: rnz < 0 ? 0 : specAdd
-          });
-        }
-      }
-    }
-  }
-
-  // -------------------------------------------------------------------------
-  // 2. 👖 ダボパンツ 3Dメッシュ生成 (腰帯・ヒップ・右尻ポケ・左右3Dテーパード脚)
-  // -------------------------------------------------------------------------
+  // =========================================================================
+  // 1. 👖 ダボパンツ 統合3Dスカルプトシェル描画 (つなぎ目ゼロ・立体円筒脚)
+  // =========================================================================
   if(includePants){
-    const pTopY = includeShirt ? 76 : -88;
-    const pCrotchY = pTopY + (includeShirt ? 48 : 58);
-    const pBotY = pTopY + (includeShirt ? 150 : 184);
-    const pTotalH = pBotY - pTopY;
+    const pScale = includeShirt ? 0.92 : 1.04;
+    const pOffsetY = includeShirt ? 156 : 0;
+    const NX_P = 22, NY_P = 26;
 
-    // 2-A. 腰〜ヒップ上部 3D円筒 (pTopY .. pCrotchY)
-    const NU_H = 24, NV_H = 5;
-    const getHipPt = (theta, vh) => {
-      const c = Math.cos(theta), s = Math.sin(theta);
-      const py = pTopY + vh * (pCrotchY - pTopY);
-      const rx = 50 + vh * 8 + (vh < 0.26 ? Math.sin(theta * 20) * 0.7 : 0);
-      const rz = 22.5 + vh * 3.5 + (c < -0.2 && theta > 1.6 && theta < 2.8 && vh > 0.35 ? 1.2 : 0);
-      const px = s * rx, pz = c * rz;
-      const nx = s / rx, nz = c / rz, ny = 0;
-      const nLen = Math.hypot(nx, ny, nz) || 1;
-      return { px, py, pz, nx: nx / nLen, ny: 0, nz: nz / nLen };
+    const getPants3dPt = (u, v) => {
+      const gx = (u - 0.5) * 144; // -72 .. +72
+      const gy = -84 + v * 184;   // -84 .. +100
+      const absX = Math.abs(gx);
+
+      // 股下 (-12) から足首 (+96) への縦進行度
+      const tLegY = Math.max(0, Math.min(1, (gy - (-12)) / 108));
+      const inX = 3 + tLegY * 8;      // 内股ライン: 3 -> 11
+      const outX = 63 - tLegY * 11;   // 外脇ライン: 63 -> 52
+      const legMidX = (inX + outX) * 0.5;
+      const legHalfW = Math.max(10, (outX - inX) * 0.5);
+      const sLeg = Math.max(-1, Math.min(1, (absX - legMidX) / legHalfW));
+      const legTubeArch = Math.cos(sLeg * Math.PI * 0.5); // 左右それぞれの脚の中心で1.0、両端で0.0
+
+      // 腰〜ヒップ上部の骨盤ドーム
+      const hipHalfW = 48 + Math.sin(Math.max(0, Math.min(1, (gy - (-80)) / 90)) * Math.PI * 0.75) * 16;
+      const tHip = Math.min(1, absX / hipHalfW);
+      const hipArch = Math.cos(tHip * Math.PI * 0.5);
+
+      // ヒップ1円筒 -> 左右2本の脚円筒への滑らかなC1分岐
+      const uBlend = Math.max(0, Math.min(1, (gy - (-32)) / 26));
+      const wLeg = uBlend * uBlend * (3 - 2 * uBlend);
+      const waistUnderMul = includeShirt ? Math.max(0.48, Math.min(1, (gy - (-80)) / 42)) : 1.0;
+      const kneeCurve = Math.sin(tLegY * Math.PI) * 2.8;
+      const drapeP = Math.sin(gx * 0.11 + gy * 0.05) * 0.85 * legTubeArch * wLeg;
+      const hipPocketRelief = (isBackView && S.daboPocketMode !== 'none' && gx > 11 && gx < 47 && gy > -54 && gy < -14) ? 1.4 : 0;
+
+      const pz = (3.0 + (18.5 * hipArch * (1 - wLeg) + (20.0 * legTubeArch + kneeCurve + drapeP) * wLeg + hipPocketRelief) * waistUnderMul) * bulgeScale;
+      const px = gx * pScale;
+      const py = pOffsetY + gy * pScale;
+      return { px, py, pz, gx, gy };
     };
-    for(let iv = 0; iv < NV_H; iv++){
-      const vh0 = iv / NV_H, vh1 = (iv + 1) / NV_H;
-      const vTex0 = vh0 * 0.34, vTex1 = vh1 * 0.34;
-      for(let iu = 0; iu < NU_H; iu++){
-        const th0 = (iu / NU_H) * Math.PI * 2 - Math.PI;
-        const th1 = ((iu + 1) / NU_H) * Math.PI * 2 - Math.PI;
-        const thMid = (th0 + th1) * 0.5;
-        const isFront = Math.cos(thMid) >= 0;
-        const g00 = getHipPt(th0, vh0), g10 = getHipPt(th1, vh0);
-        const g11 = getHipPt(th1, vh1), g01 = getHipPt(th0, vh1);
-        const p00 = proj(g00.px, g00.py, g00.pz);
-        const p10 = proj(g10.px, g10.py, g10.pz);
-        const p11 = proj(g11.px, g11.py, g11.pz);
-        const p01 = proj(g01.px, g01.py, g01.pz);
-        const { lightMul, specAdd, rnz } = calcLight(
-          (g00.nx + g11.nx) * 0.5, 0, (g00.nz + g11.nz) * 0.5
-        );
-        if(rnz < -0.20 && iv > 0) continue;
-        let u0, u1, texCv;
-        if(isFront){
-          u0 = Math.max(0, Math.min(1, 0.5 + th0 / Math.PI));
-          u1 = Math.max(0, Math.min(1, 0.5 + th1 / Math.PI));
-          texCv = tex.frontPantsCv;
-        }else{
-          const wrapAngle = (th) => {
-            let d = Math.PI - th;
-            while(d > Math.PI) d -= Math.PI * 2;
-            while(d < -Math.PI) d += Math.PI * 2;
-            return 0.5 + d / Math.PI;
-          };
-          u0 = Math.max(0, Math.min(1, wrapAngle(th0)));
-          u1 = Math.max(0, Math.min(1, wrapAngle(th1)));
-          texCv = tex.backPantsCv;
+
+    // 1-A. 左右の足首の3D中空開口部（背面側リム）をパンツ本体の奥に描画
+    for(const legSign of [-1, 1]){
+      const fPts = [], bPts = [];
+      const N_ANK = 14;
+      for(let i = 0; i <= N_ANK; i++){
+        const s = -1 + (i / N_ANK) * 2; // -1 .. +1
+        const gxAnk = legSign * (31.5 + s * 20.5); // +-11 .. +-52
+        const uAnk = (gxAnk + 72) / 144;
+        const vAnk = (96 + 84) / 184;
+        const ptF = getPants3dPt(uAnk, vAnk);
+        const pzB = (3.0 - 10.5 * Math.cos(s * Math.PI * 0.5)) * bulgeScale;
+        fPts.push(proj(ptF.px, ptF.py, ptF.pz));
+        bPts.push(proj(ptF.px, ptF.py + 1.2 * pScale, pzB));
+      }
+      drawHollowOpeningCrescent(fPts, bPts, innerDarkCol, innerMidCol);
+    }
+
+    // 1-B. パンツ頂点グリッドと法線・3Dライティング（＋シャツ裾下の自然な落ち影）を計算
+    const pVerts = [];
+    for(let iy = 0; iy <= NY_P; iy++){
+      const row = [];
+      const v = iy / NY_P;
+      for(let ix = 0; ix <= NX_P; ix++){
+        const u = ix / NX_P;
+        row.push(getPants3dPt(u, v));
+      }
+      pVerts.push(row);
+    }
+    for(let iy = 0; iy <= NY_P; iy++){
+      for(let ix = 0; ix <= NX_P; ix++){
+        const cur = pVerts[iy][ix];
+        const xL = pVerts[iy][Math.max(0, ix - 1)], xR = pVerts[iy][Math.min(NX_P, ix + 1)];
+        const yU = pVerts[Math.max(0, iy - 1)][ix], yD = pVerts[Math.min(NY_P, iy + 1)][ix];
+        const dzdx = (xR.pz - xL.pz) / Math.max(0.5, xR.px - xL.px);
+        const dzdy = (yD.pz - yU.pz) / Math.max(0.5, yD.py - yU.py);
+        const nx = -dzdx * 1.45, ny = -dzdy * 1.15, nz = 1.0;
+        const nLen = Math.hypot(nx, ny, nz) || 1;
+        const lt = calcLight(nx / nLen, ny / nLen, nz / nLen);
+        // 上下セット着用時はシャツ裾 (py ≈ +114, すなわちパンツ local gy ≈ -45) の直下に自然な落ち影を付与
+        let hemShadow = 1.0;
+        if(includeShirt && cur.gy < -18){
+          const tSh = Math.max(0, Math.min(1, (cur.gy - (-46)) / 26));
+          hemShadow = 0.48 + 0.52 * (tSh * tSh * (3 - 2 * tSh));
         }
-        quads.push({
-          z: (p00.z + p10.z + p11.z + p01.z) * 0.25 - 1.5, // シャツ裾の内側に入るようわずかに奥へ
-          texCv, u0, v0: vTex0, u1, v1: vTex1,
-          p00, p10, p11, p01,
-          lightMul: (includeShirt && iv < 2) ? lightMul * 0.78 : lightMul,
-          specAdd
-        });
+        cur.lightMul = lt.lightMul * hemShadow;
+        cur.specAdd  = (includeShirt && cur.gy < -28) ? 0 : lt.specAdd;
+        cur.projPt   = proj(cur.px, cur.py, cur.pz);
       }
     }
 
-    // 2-B. 左右の脚 3D円筒テーパード (pCrotchY .. pBotY)
-    const NU_L = 16, NV_L = 9;
-    for(const legDir of [-1, 1]){
-      const getLegPt = (theta, vl) => {
-        const c = Math.cos(theta), s = Math.sin(theta);
-        const py = pCrotchY + vl * (pBotY - pCrotchY);
-        const cxLeg = legDir * (27 + vl * 4.5);
-        const czLeg = Math.sin(vl * Math.PI) * 3.2;
-        const rx = 26 * (1 - vl) + 19.5 * vl + Math.sin(theta * 4 + vl * 4.5) * 0.85;
-        const rz = 22.5 * (1 - vl) + 17.5 * vl;
-        const px = cxLeg + s * rx;
-        const pz = czLeg + c * rz;
-        const nx = s / rx, nz = c / rz;
-        const nLen = Math.hypot(nx, nz) || 1;
-        return { px, py, pz, nx: nx / nLen, ny: 0, nz: nz / nLen };
-      };
-      for(let iv = 0; iv < NV_L; iv++){
-        const vl0 = iv / NV_L, vl1 = (iv + 1) / NV_L;
-        const vTex0 = 0.34 + vl0 * 0.66, vTex1 = 0.34 + vl1 * 0.66;
-        for(let iu = 0; iu < NU_L; iu++){
-          const th0 = (iu / NU_L) * Math.PI * 2 - Math.PI;
-          const th1 = ((iu + 1) / NU_L) * Math.PI * 2 - Math.PI;
-          const thMid = (th0 + th1) * 0.5;
-          const isFront = Math.cos(thMid) >= 0;
-          const g00 = getLegPt(th0, vl0), g10 = getLegPt(th1, vl0);
-          const g11 = getLegPt(th1, vl1), g01 = getLegPt(th0, vl1);
-          const p00 = proj(g00.px, g00.py, g00.pz);
-          const p10 = proj(g10.px, g10.py, g10.pz);
-          const p11 = proj(g11.px, g11.py, g11.pz);
-          const p01 = proj(g01.px, g01.py, g01.pz);
-          const { lightMul, specAdd, rnz } = calcLight(
-            (g00.nx + g11.nx) * 0.5, 0, (g00.nz + g11.nz) * 0.5
+    // 1-C. 3D生地厚みのエッジ積層 (dZ = 5.2, 2.6)
+    const pEdgeCv = isBackView ? tex.pantsBackEdgeCv : tex.pantsFrontEdgeCv;
+    for(const dZ of [5.2, 2.6]){
+      for(let iy = 0; iy < NY_P; iy++){
+        const v0 = iy / NY_P, v1 = (iy + 1) / NY_P;
+        for(let ix = 0; ix < NX_P; ix++){
+          const u0 = ix / NX_P, u1 = (ix + 1) / NX_P;
+          const g00 = pVerts[iy][ix], g10 = pVerts[iy][ix + 1];
+          const g11 = pVerts[iy + 1][ix + 1], g01 = pVerts[iy + 1][ix];
+          drawTexturedQuad2D(
+            x, pEdgeCv, u0, v0, u1, v1,
+            proj(g00.px, g00.py, g00.pz - dZ),
+            proj(g10.px, g10.py, g10.pz - dZ),
+            proj(g11.px, g11.py, g11.pz - dZ),
+            proj(g01.px, g01.py, g01.pz - dZ),
+            1.0, 0
           );
-          if(rnz < -0.22 && iv < NV_L - 1) continue;
-          const uBase = (legDir < 0) ? 0.0 : 0.5;
-          let uLocal0, uLocal1, texCv;
-          if(isFront){
-            uLocal0 = Math.max(0, Math.min(1, 0.5 + th0 / Math.PI));
-            uLocal1 = Math.max(0, Math.min(1, 0.5 + th1 / Math.PI));
-            texCv = tex.frontPantsCv;
-          }else{
-            const wrapAngle = (th) => {
-              let d = Math.PI - th;
-              while(d > Math.PI) d -= Math.PI * 2;
-              while(d < -Math.PI) d += Math.PI * 2;
-              return 0.5 + d / Math.PI;
-            };
-            uLocal0 = Math.max(0, Math.min(1, wrapAngle(th0)));
-            uLocal1 = Math.max(0, Math.min(1, wrapAngle(th1)));
-            texCv = tex.backPantsCv;
-          }
-          quads.push({
-            z: (p00.z + p10.z + p11.z + p01.z) * 0.25,
-            texCv,
-            u0: uBase + uLocal0 * 0.5, v0: vTex0,
-            u1: uBase + uLocal1 * 0.5, v1: vTex1,
-            p00, p10, p11, p01,
-            lightMul: rnz < 0 ? lightMul * 0.5 : lightMul,
-            specAdd: rnz < 0 ? 0 : specAdd
-          });
         }
+      }
+    }
+
+    // 1-D. 連続Gouraudシェーディング済み3Dパンツ表面メッシュの投影
+    const basePantsCv = isBackView
+      ? tex.pantsBackCv
+      : (includeShirt ? tex.pantsFrontUnderShirtCv : tex.pantsFrontCv);
+    const litPantsCv = buildLitShellTexture(basePantsCv, pVerts, NX_P, NY_P);
+    for(let iy = 0; iy < NY_P; iy++){
+      const v0 = iy / NY_P, v1 = (iy + 1) / NY_P;
+      for(let ix = 0; ix < NX_P; ix++){
+        const u0 = ix / NX_P, u1 = (ix + 1) / NX_P;
+        const g00 = pVerts[iy][ix], g10 = pVerts[iy][ix + 1];
+        const g11 = pVerts[iy + 1][ix + 1], g01 = pVerts[iy + 1][ix];
+        drawTexturedQuad2D(x, litPantsCv, u0, v0, u1, v1, g00.projPt, g10.projPt, g11.projPt, g01.projPt, 1.0, 0);
       }
     }
   }
 
-  // 奥（Zが小さい）から手前（Zが大きい）へZソートして描画（Painter's Algorithm）
-  quads.sort((a, b) => a.z - b.z);
-  for(const q of quads){
-    if(q.fillCol && !q.texCv){
-      x.save();
-      x.beginPath();
-      x.moveTo(q.p00.sx, q.p00.sy);
-      x.lineTo(q.p10.sx, q.p10.sy);
-      x.lineTo(q.p11.sx, q.p11.sy);
-      x.lineTo(q.p01.sx, q.p01.sy);
-      x.closePath();
-      x.fillStyle = q.fillCol;
-      x.fill();
-      x.restore();
-    }else{
-      drawTexturedQuad2D(x, q.texCv, q.u0, q.v0, q.u1, q.v1, q.p00, q.p10, q.p11, q.p01, q.lightMul, q.specAdd);
+  // =========================================================================
+  // 2. 👕 ダボシャツ / 鯉口シャツ 統合3Dスカルプトシェル描画 (つなぎ目ゼロ)
+  // =========================================================================
+  if(includeShirt){
+    const shldrW = isKoi ? 56 : 66;
+    const hemW = isKoi ? 53 : 66;
+    const slvSpanX = isKoi ? 88 : 94;
+    const shldrY = -92 + (isKoi ? 6 : 4);
+    const armDrop = isKoi ? 52 : 66;
+    const armPitY = shldrY + armDrop;
+    const slvDropTop = isKoi ? 28 : 20;
+    const cuffH = isKoi ? 30 : 60;
+    const NX_S = 28, NY_S = 30;
+
+    const getShirt3dPt = (u, v) => {
+      const gx = (u - 0.5) * 332; // -166 .. +166
+      const gy = -98 + v * 218;   // -98 .. +120
+      const absX = Math.abs(gx);
+      const signX = gx < 0 ? -1 : 1;
+      const vTorso = Math.max(0, Math.min(1, (gy - (-92)) / 206));
+
+      // 胴体（胸・腹・背中）の3Dドーム曲面
+      const tTorso = Math.min(1, absX / shldrW);
+      const torsoArch = Math.cos(tTorso * Math.PI * 0.5);
+      const chestCurveY = Math.sin(vTorso * Math.PI * 0.88);
+      const hemFlare = Math.pow(vTorso, 2.0) * 5.2;
+      const zTorsoCore = (22.0 + 4.5 * chestCurveY + hemFlare) * Math.pow(torsoArch, 0.85);
+
+      // 肩〜袖口まで段差ゼロで連続する3Dチューブ袖曲面
+      const slvExtend = Math.max(0, Math.min(1.08, (absX - shldrW) / slvSpanX));
+      const slvTopY = shldrY + slvExtend * slvDropTop;
+      const ey1 = shldrY + slvDropTop + cuffH;
+      const slvBotY = armPitY + slvExtend * (ey1 - armPitY);
+      const slvMidY = (slvTopY + slvBotY) * 0.5;
+      const slvHalfH = Math.max(10, (slvBotY - slvTopY) * 0.5);
+      const sSlv = Math.max(-1, Math.min(1, (gy - slvMidY) / slvHalfH));
+      const slvTubeArch = Math.cos(sSlv * Math.PI * 0.5);
+      const uArmMask = Math.max(0, Math.min(1, (absX - shldrW * 0.42) / (shldrW * 0.56)));
+      const armHorizMask = uArmMask * uArmMask * (3 - 2 * uArmMask);
+      const armVertMask = Math.max(0, Math.min(1, (4 - gy) / 26));
+      const zSleeveTube = (16.0 + slvExtend * 4.5) * slvTubeArch * armHorizMask * armVertMask;
+
+      // 自然な布ドレープと前立て・胸ポケットの微細レリーフ
+      const drapeWave = Math.sin(gx * 0.085 + gy * 0.04) * 1.0 * Math.pow(vTorso, 0.7) * torsoArch;
+      const placketRelief = (!isBackView && absX < 6.0 && gy > -74) ? 1.3 : 0;
+      const pocketRelief = (!isBackView && S.daboPocketMode !== 'none' && gx > 13 && gx < 47 && gy > -37 && gy < 1) ? 1.5 : 0;
+
+      const pz = (4.0 + zTorsoCore + zSleeveTube + drapeWave + placketRelief + pocketRelief) * bulgeScale;
+      const px = gx - signX * slvExtend * 3.5;
+      const py = gy;
+      return { px, py, pz, gx, gy };
+    };
+
+    // 2-A. カメラ側を向いている袖口の3D中空開口部（背面側リム）をシャツ本体の奥に描画
+    for(const dir of [-1, 1]){
+      if(dir * syaw >= -0.04) continue; // カメラからそっぽを向いている側の袖口は開口部が見えないためスキップ
+      const ex0 = dir * (shldrW + slvSpanX), ey0 = shldrY + slvDropTop;
+      const ex1 = dir * (shldrW + slvSpanX - (isKoi ? 9 : 5)), ey1 = ey0 + cuffH;
+      const fPts = [], bPts = [];
+      const N_CUFF = 14;
+      for(let i = 0; i <= N_CUFF; i++){
+        const t = i / N_CUFF;
+        const s = -1 + t * 2; // -1 .. +1
+        const gxC = ex0 * (1 - t) + ex1 * t;
+        const gyC = ey0 * (1 - t) + ey1 * t;
+        const uC = (gxC + 166) / 332;
+        const vC = (gyC + 98) / 218;
+        const ptF = getShirt3dPt(uC, vC);
+        const pzB = (4.0 - 11.5 * Math.cos(s * Math.PI * 0.5)) * bulgeScale;
+        fPts.push(proj(ptF.px, ptF.py, ptF.pz));
+        bPts.push(proj(ptF.px - dir * 1.5, ptF.py + 0.6, pzB));
+      }
+      drawHollowOpeningCrescent(fPts, bPts, innerDarkCol, innerMidCol);
+    }
+
+    // 2-B. シャツ裾の3D中空背面リム（上だけ表示時）
+    if(!includePants){
+      const fPts = [], bPts = [];
+      const N_HEM = 20;
+      const hSpan = hemW - 3.5;
+      for(let i = 0; i <= N_HEM; i++){
+        const s = -1 + (i / N_HEM) * 2;
+        const gxH = s * hSpan;
+        const uH = (gxH + 166) / 332;
+        const vH = (114 + 98) / 218;
+        const ptF = getShirt3dPt(uH, vH);
+        const pzB = (4.0 - 12.0 * Math.cos(s * Math.PI * 0.5)) * bulgeScale;
+        fPts.push(proj(ptF.px, ptF.py, ptF.pz));
+        bPts.push(proj(ptF.px, ptF.py + 1.5, pzB));
+      }
+      drawHollowOpeningCrescent(fPts, bPts, innerDarkCol, innerMidCol);
+    }
+
+    // 2-C. シャツ頂点グリッドと法線・3Dライティングを計算
+    const sVerts = [];
+    for(let iy = 0; iy <= NY_S; iy++){
+      const row = [];
+      const v = iy / NY_S;
+      for(let ix = 0; ix <= NX_S; ix++){
+        const u = ix / NX_S;
+        row.push(getShirt3dPt(u, v));
+      }
+      sVerts.push(row);
+    }
+    for(let iy = 0; iy <= NY_S; iy++){
+      for(let ix = 0; ix <= NX_S; ix++){
+        const cur = sVerts[iy][ix];
+        const xL = sVerts[iy][Math.max(0, ix - 1)], xR = sVerts[iy][Math.min(NX_S, ix + 1)];
+        const yU = sVerts[Math.max(0, iy - 1)][ix], yD = sVerts[Math.min(NY_S, iy + 1)][ix];
+        const dzdx = (xR.pz - xL.pz) / Math.max(0.5, xR.px - xL.px);
+        const dzdy = (yD.pz - yU.pz) / Math.max(0.5, yD.py - yU.py);
+        const nx = -dzdx * 1.45, ny = -dzdy * 1.15, nz = 1.0;
+        const nLen = Math.hypot(nx, ny, nz) || 1;
+        const lt = calcLight(nx / nLen, ny / nLen, nz / nLen);
+        cur.lightMul = lt.lightMul;
+        cur.specAdd  = lt.specAdd;
+        cur.projPt   = proj(cur.px, cur.py, cur.pz);
+      }
+    }
+
+    // 2-E. 3D生地厚みのエッジ積層 (dZ = 5.5, 2.8)
+    const sEdgeCv = isBackView ? tex.shirtBackEdgeCv : tex.shirtFrontEdgeCv;
+    for(const dZ of [5.5, 2.8]){
+      for(let iy = 0; iy < NY_S; iy++){
+        const v0 = iy / NY_S, v1 = (iy + 1) / NY_S;
+        for(let ix = 0; ix < NX_S; ix++){
+          const u0 = ix / NX_S, u1 = (ix + 1) / NX_S;
+          const g00 = sVerts[iy][ix], g10 = sVerts[iy][ix + 1];
+          const g11 = sVerts[iy + 1][ix + 1], g01 = sVerts[iy + 1][ix];
+          drawTexturedQuad2D(
+            x, sEdgeCv, u0, v0, u1, v1,
+            proj(g00.px, g00.py, g00.pz - dZ),
+            proj(g10.px, g10.py, g10.pz - dZ),
+            proj(g11.px, g11.py, g11.pz - dZ),
+            proj(g01.px, g01.py, g01.pz - dZ),
+            1.0, 0
+          );
+        }
+      }
+    }
+
+    // 2-F. 連続Gouraudシェーディング済み3Dシャツ表面メッシュの投影
+    const baseShirtCv = isBackView ? tex.shirtBackCv : tex.shirtFrontCv;
+    const litShirtCv = buildLitShellTexture(baseShirtCv, sVerts, NX_S, NY_S);
+    for(let iy = 0; iy < NY_S; iy++){
+      const v0 = iy / NY_S, v1 = (iy + 1) / NY_S;
+      for(let ix = 0; ix < NX_S; ix++){
+        const u0 = ix / NX_S, u1 = (ix + 1) / NX_S;
+        const g00 = sVerts[iy][ix], g10 = sVerts[iy][ix + 1];
+        const g11 = sVerts[iy + 1][ix + 1], g01 = sVerts[iy + 1][ix];
+        drawTexturedQuad2D(x, litShirtCv, u0, v0, u1, v1, g00.projPt, g10.projPt, g11.projPt, g01.projPt, 1.0, 0);
+      }
     }
   }
 }
