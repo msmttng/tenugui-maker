@@ -134,10 +134,10 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 .mini-btn:hover{border-color:var(--ai);color:var(--ai);background:#f8fafc}
 .mini-btn[aria-pressed="true"]{background:var(--ai);color:#ffffff;border-color:var(--ai);box-shadow:0 1px 3px rgba(4,110,126,.22)}
 .mini-btn.del:hover{border-color:#dc2626;color:#dc2626}
-.view-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;background:var(--panel);padding:6px 8px;border-radius:8px;border:1px solid var(--line)}
-.view-bar .chip{text-align:center;padding:7px 6px;border-radius:7px;font-weight:700;font-size:12px;background:#f8fafc;border-color:#cbd5e1;color:#334155;transition:all .12s}
+.view-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;background:var(--panel);padding:6px 8px;border-radius:9px;border:1px solid #cbd5e1;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+.view-bar .chip{text-align:center;padding:7px 6px;border-radius:7px;font-weight:800;font-size:12px;background:#f8fafc;border-color:#cbd5e1;color:#334155;transition:all .12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .view-bar .chip:hover{border-color:var(--ai);color:var(--ai);background:#ffffff}
-.view-bar .chip[aria-pressed="true"]{background:var(--ai);border-color:var(--ai);color:#ffffff;box-shadow:0 2px 6px rgba(4,110,126,.22)}
+.view-bar .chip[aria-pressed="true"]{background:var(--ai);border-color:var(--ai);color:#ffffff;box-shadow:0 2px 6px rgba(4,110,126,.25)}
 .dabo-spec-box{background:#f8fafc;border:1px solid #cbd5e1;border-radius:7px;padding:8px 10px;font-size:11.5px;line-height:1.5;color:var(--fg)}
 /* ✨ かんたん／詳細の切り替え */
 .uimode{display:flex;gap:2px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px;flex:none}
@@ -149,15 +149,15 @@ html.ui-easy .full-only{display:none !important}
 html:not(.ui-easy) #easyPanel{display:none}
 html.ui-easy .panel > :not(header):not(#easyPanel){display:none !important}
 html.ui-easy #stageDirectTextBar,html.ui-easy #stageDirectTextCard,html.ui-easy #stageHelpPill,html.ui-easy #zoomChips{display:none !important}
-html.ui-easy header{padding:11px 14px}
-html.ui-easy h1{font-size:19px}
-.easy-panel{display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding:2px 0 14px;min-width:0}
-.e-step{padding:12px 15px 14px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr);gap:9px;min-width:0}
+html.ui-easy header{padding:11px 14px;background:#ffffff;border-bottom:1px solid #cbd5e1}
+html.ui-easy h1{font-size:18.5px}
+.easy-panel{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:10px 10px 18px;background:#edf1f7;min-width:0}
+.e-step{background:#ffffff;border:1px solid #cbd5e1;border-radius:10px;padding:12px 13px 14px;box-shadow:0 1px 3px rgba(15,23,42,.05);display:grid;grid-template-columns:minmax(0,1fr);gap:9px;min-width:0}
 .e-step>*{min-width:0}
-.e-h{display:flex;align-items:center;gap:8px;font-weight:700;font-size:13.5px;color:#0f172a}
-.e-h b{width:22px;height:22px;border-radius:50%;background:var(--ai);color:#fff;font-size:11.5px;display:inline-flex;align-items:center;justify-content:center;flex:none}
-.e-h span{flex:1}
-.e-more{border:1px solid #cbd5e1;background:#f8fafc;color:#475569;font:inherit;font-size:11px;font-weight:700;cursor:pointer;padding:2px 8px;border-radius:999px}
+.e-h{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13.5px;color:#0f172a;padding-bottom:7px;border-bottom:1.5px solid #e2e8f0;margin-bottom:1px}
+.e-h b{width:24px;height:24px;border-radius:7px;background:var(--ai);color:#fff;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex:none;box-shadow:0 1px 3px rgba(4,110,126,.22)}
+.e-h span{flex:1;line-height:1.3}
+.e-more{border:1px solid #cbd5e1;background:#f8fafc;color:#475569;font:inherit;font-size:11px;font-weight:700;cursor:pointer;padding:3px 9px;border-radius:999px;flex:none}
 .e-more::after{content:" ›"}
 .e-pat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 .e-pat button{display:flex;align-items:center;gap:9px;border:1px solid #cbd5e1;background:#ffffff;color:#1e293b;border-radius:8px;padding:7px 9px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;text-align:left;min-height:48px;transition:all .12s}
@@ -169,12 +169,15 @@ html.ui-easy h1{font-size:19px}
 .e-pat em.dots{position:absolute;right:0;bottom:0;width:15px;height:15px;border-top-left-radius:5px}
 .e-pat i.fuda{background:#fff;color:var(--ai);border:1.5px solid var(--ai)}
 .e-pat button[aria-pressed=true]{border-color:var(--ai);background:var(--ai-soft);color:#0f172a;box-shadow:inset 0 0 0 1.5px var(--ai)}
-.e-chips{display:flex;flex-wrap:wrap;gap:5px}
-.e-chips button{border:1px solid #cbd5e1;background:#ffffff;color:#334155;border-radius:7px;padding:6px 9px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;line-height:1.28;min-height:38px;text-align:center;transition:all .12s}
-.e-chips button small{display:block;font-weight:400;font-size:10px;color:var(--muted)}
+.e-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.e-chips button{border:1px solid #cbd5e1;background:#ffffff;color:#334155;border-radius:7px;padding:6px 8px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;line-height:1.28;min-height:38px;text-align:center;transition:all .12s;min-width:0}
+.e-chips button small{display:block;font-weight:500;font-size:10px;color:var(--muted);margin-top:1px}
 .e-chips button[aria-pressed=true]{border-color:var(--ai);background:var(--ai);color:#ffffff;box-shadow:0 1px 4px rgba(4,110,126,.22)}
 .e-chips button[aria-pressed=true] small{color:#e0f2f4}
-.e-chips.small button{min-height:32px;padding:4px 9px;font-size:11.5px}
+.e-chips.small{display:flex;flex-wrap:wrap;gap:5px}
+.e-chips.small[style*="grid-template-columns"]{display:grid}
+.e-chips.small button{min-height:31px;padding:4px 7px;font-size:11.5px}
+.e-chips[style*="repeat(3"] button{padding:6px 4px;font-size:11.5px;white-space:nowrap}
 .e-colors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
 .e-colors button{min-height:42px;border-radius:8px;border:1.5px solid var(--line);cursor:pointer;padding:2px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-disp);font-size:15px;font-weight:800;line-height:1.05;gap:1px;overflow:hidden}
 .e-colors button small{font-family:var(--f-ui);font-size:8.5px;font-weight:700;line-height:1.05;opacity:.95;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
@@ -182,8 +185,8 @@ html.ui-easy h1{font-size:19px}
 .e-pick{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:#334155;background:#f8fafc;padding:7px 10px;border-radius:7px;border:1px solid #e2e8f0}
 .e-pick label{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-weight:600}
 .e-pick input[type=color]{width:30px;height:24px;border:1px solid #cbd5e1;border-radius:5px;padding:0;background:none;cursor:pointer}
-.e-range{display:grid;grid-template-columns:92px minmax(0,1fr) 50px;align-items:center;gap:8px;font-size:12px}
-.e-range span{color:#475569;font-weight:600}
+.e-range{display:grid;grid-template-columns:108px minmax(0,1fr) 48px;align-items:center;gap:8px;font-size:12px}
+.e-range span{color:#475569;font-weight:600;white-space:nowrap}
 .e-range input{width:100%;accent-color:var(--ai)}
 .e-range b{text-align:right;font-variant-numeric:tabular-nums;font-size:12px;color:#1e293b}
 .e-note{margin:0;font-size:11.5px;color:var(--muted)}
@@ -468,7 +471,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
       </div>
       <div class="e-step" id="eTuneStep">
         <div class="e-h"><b>4</b><span>柄の大きさ・太さ・あられ周り枠</span><button type="button" class="e-more" data-emore="step4">詳しく</button></div>
-        <div class="e-chips small" id="eStyles">
+        <div class="e-chips small" id="eStyles" style="grid-template-columns:repeat(4,1fr)">
           <button type="button" data-style="std">標準</button>
           <button type="button" data-style="fine">細め・細かく</button>
           <button type="button" data-style="bold">太め・大きく</button>
@@ -622,7 +625,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           </div>
           <div style="display:flex;flex-direction:column;gap:5px">
             <div style="font-size:11px;font-weight:700;color:#334155">🅰️ ロゴ・札の3D立体厚み加工（手ぬぐい・ダボ・3Dすべてに反映）:</div>
-            <div class="e-chips" id="eLogo3dModeBtns" style="grid-template-columns:repeat(4,1fr)">
+            <div class="e-chips" id="eLogo3dModeBtns" style="grid-template-columns:repeat(2,1fr)">
               <button type="button" data-l3d="none" aria-pressed="true">平面<small>標準(2D)</small></button>
               <button type="button" data-l3d="extrude" aria-pressed="false">🧊 3D押し出し<small>重厚ブロック立体</small></button>
               <button type="button" data-l3d="gold_block" aria-pressed="false">✨ 3D金塊彫り<small>ゴールド立体札</small></button>
@@ -651,14 +654,14 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         <div class="e-subbox dabo-box">
           <div class="e-sublbl"><span>① 表示する衣装（上：ダボシャツ ／ 下：ダボパンツ ／ 🧊3D立体化）</span></div>
           <div class="e-chips" id="eDaboGarmentViewBtns" style="grid-template-columns:repeat(3,1fr)">
-            <button type="button" data-egv="both" aria-pressed="true">👕👖 上下セット<small>シャツ＋ダボパンツ</small></button>
-            <button type="button" data-egv="top" aria-pressed="false">👕 上のみ<small>ダボシャツを大きく</small></button>
-            <button type="button" data-egv="pants" aria-pressed="false">👖 下のみ拡大<small>ダボパンツを大きく</small></button>
+            <button type="button" data-egv="both" aria-pressed="true">👕👖 上下セット<small>シャツ＋パンツ</small></button>
+            <button type="button" data-egv="top" aria-pressed="false">👕 上のみ<small>シャツを拡大</small></button>
+            <button type="button" data-egv="pants" aria-pressed="false">👖 下のみ<small>パンツを拡大</small></button>
           </div>
           <div class="e-chips" id="eStep6Open3dBtns" style="grid-template-columns:repeat(3,1fr);margin-top:3px">
-            <button type="button" data-open3d="dabo_top">🧊 上だけ 3D化<small>シャツ立体3D</small></button>
-            <button type="button" data-open3d="dabo_both">🧊 上下セット 3D化<small>上下とも立体3D</small></button>
-            <button type="button" data-open3d="dabo_compare">🧊 上だけ＆上下 両方3D<small>両方並べて立体3D</small></button>
+            <button type="button" data-open3d="dabo_top">🧊 上だけ3D<small>シャツ立体3D</small></button>
+            <button type="button" data-open3d="dabo_both">🧊 上下セット3D<small>上下とも立体3D</small></button>
+            <button type="button" data-open3d="dabo_compare">🧊 両方同時3D<small>並べて立体3D</small></button>
           </div>
           <div class="e-sublbl" style="margin-top:2px"><span>② 札・ロゴのうしろ背景（今の札色を保ったまま切り替え）</span></div>
           <div class="e-chips" id="eDaboQuickLogo">
@@ -2186,10 +2189,10 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         </div>
       </div>
       <!-- 🧊 3D立体プレビュー専用コントロールバー（2トーン整理済み：選択項目のみアクセント表示） -->
-      <div id="stage3dControlBar" hidden style="display:none;flex-direction:column;gap:6px;margin-bottom:6px;background:var(--panel);padding:7px 10px;border-radius:8px;border:1px solid var(--line);color:var(--fg)">
+      <div id="stage3dControlBar" hidden style="display:none;flex-direction:column;gap:6px;margin-bottom:6px;background:var(--panel);padding:8px 11px;border-radius:9px;border:1px solid #cbd5e1;box-shadow:0 1px 2px rgba(15,23,42,.04);color:var(--fg)">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">
-          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap" id="stage3dModelBtns">
-            <span style="font-size:11px;font-weight:700;color:#475569;margin-right:2px">3D表示:</span>
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap" id="stage3dModelBtns">
+            <span style="font-size:11px;font-weight:800;color:#0f172a;background:#f1f5f9;border:1px solid #cbd5e1;padding:2px 7px;border-radius:5px;margin-right:1px">3D表示</span>
             <button type="button" class="mini-btn" data-m3d="dabo_top" aria-pressed="false">👕 上だけ</button>
             <button type="button" class="mini-btn" data-m3d="dabo_both" aria-pressed="true">👕👖 上下セット</button>
             <button type="button" class="mini-btn" data-m3d="dabo_compare" aria-pressed="false">👕＋👕👖 上だけ＆上下 両方</button>
@@ -2197,14 +2200,14 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
             <button type="button" class="mini-btn" data-m3d="tenugui" aria-pressed="false">🧣 手ぬぐい3D</button>
             <button type="button" class="mini-btn" data-m3d="relief" aria-pressed="false">🪨 ロゴ立体レリーフ</button>
           </div>
-          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
             <button type="button" class="mini-btn" id="stage3dBackTwinBtn" aria-pressed="true" title="3Dの前面アングルと背面（背紋）アングルを並べて同時表示します">🪞 前面＋背面 同時表示: ON</button>
             <button type="button" class="mini-btn" id="stage3dSavePngBtn">📥 3D画面をPNG保存</button>
           </div>
         </div>
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid #e2e8f0;padding-top:5px">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid #e2e8f0;padding-top:6px">
           <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap" id="stage3dAngleBtns">
-            <span style="font-size:11px;font-weight:700;color:#475569;margin-right:2px">角度:</span>
+            <span style="font-size:11px;font-weight:800;color:#0f172a;background:#f1f5f9;border:1px solid #cbd5e1;padding:2px 7px;border-radius:5px;margin-right:1px">角度</span>
             <button type="button" class="mini-btn" data-yaw="-28" data-pitch="10">斜め右</button>
             <button type="button" class="mini-btn" data-yaw="0" data-pitch="6">正面</button>
             <button type="button" class="mini-btn" data-yaw="28" data-pitch="10">斜め左</button>
@@ -2214,7 +2217,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
             <button type="button" class="mini-btn" data-yaw="-22" data-pitch="28">見下ろし</button>
           </div>
           <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap" id="stage3dThicknessBtns">
-            <span style="font-size:11px;font-weight:700;color:#475569;margin-right:2px">ロゴ厚み:</span>
+            <span style="font-size:11px;font-weight:800;color:#0f172a;background:#f1f5f9;border:1px solid #cbd5e1;padding:2px 7px;border-radius:5px;margin-right:1px">ロゴ厚み</span>
             <button type="button" class="mini-btn" data-s3dl="none">平面</button>
             <button type="button" class="mini-btn" data-s3dl="extrude">3D押し出し</button>
             <button type="button" class="mini-btn" data-s3dl="gold_block">3D金塊彫り</button>
@@ -9330,9 +9333,9 @@ function drawDaboGarmentsPanel(x, px, py, pw, ph, plan, partMap, bodyCfg, export
       drawSingleDaboShirt(x, px + colW * 1.5, innerY + innerH * 0.52, colW * 0.95, innerH * 0.92, 'back', partMap, bodyCfg, exportMode);
     }
   }else{
-    // 👕👖 上下とも表示（上段：シャツ前面・背面 ／ 下段：ダボパンツ前面・背面）
-    const shirtAreaH = innerH * 0.54;
-    const pantsAreaH = innerH * 0.46;
+    // 👕👖 上下とも表示（上段：シャツ前面・背面 ／ 下段：ダボパンツ前面・背面 — 実物の着丈・ズボン総丈比率に合わせて上下バランスを最適化）
+    const shirtAreaH = innerH * 0.45;
+    const pantsAreaH = innerH * 0.55;
     const colW = pw / 2;
     const shirtSUnit = Math.min((colW * 0.95) / 350, (shirtAreaH * 0.94) / 265);
     drawSingleDaboShirt(x, px + colW * 0.5, innerY + shirtAreaH * 0.51, colW * 0.95, shirtAreaH * 0.94, 'front', partMap, bodyCfg, exportMode);
@@ -10121,7 +10124,9 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
 function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shirtSUnit, exportMode, opts){
   const for3d = !!(opts && opts.for3d);
   // バウンディングボックス: 横幅 230 (-115..+115), 縦幅 225 (-112..+113)
-  const S_unit = for3d ? (opts.scaleUnit || 2.5) : Math.min(maxW / 230, maxH / 225);
+  // 2D上下セット表示時(shirtSUnit指定時)は、シャツの身幅・着丈と実寸比率が自然に揃うスケール(shirtSUnit * 1.15)を採用
+  const fitUnit = Math.min(maxW / 230, maxH / 225);
+  const S_unit = for3d ? (opts.scaleUnit || 2.5) : (shirtSUnit ? Math.min(fitUnit, shirtSUnit * 1.16) : fitUnit);
   const centerStageY = for3d ? cy : (cy + 4 * S_unit);
   x.save();
   x.translate(cx, centerStageY);
@@ -10142,7 +10147,7 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
 
   const topY = -80, botY = 96, crotchY = -12;
   const pantsH = botY - topY; // 176
-  const waistW = 48, hipW = 64, ankleOutX = 52, ankleInX = 11;
+  const waistW = 52, hipW = 66, ankleOutX = 53, ankleInX = 11;
 
   // 本物のダボパンツ（ワタリ広め・股マチ付き・裾にかけて緩やかにテーパード）のシルエット
   const tracePants = () => {
@@ -10185,19 +10190,30 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
   const refEntry = leftLegEntry || rightLegEntry;
   const refCv = refEntry && refEntry.cv ? refEntry.cv : null;
   const longPx = refCv ? Math.max(1, Math.max(refCv.width, refCv.height)) : 1035;
-  // ズボン丈(176 units)が手ぬぐい1本の有効長(0.86 * longPx)に対応するスケール
-  const pantsFixedScale = pantsH / (0.86 * longPx);
+  // 3D着装時はシャツ(sScale=0.80x0.72)とパンツ(pScale=0.98x1.22)の画面上柄ピッチ・ロゴサイズが1:1に揃うよう実寸スケールを統一
+  const pantsFixedScale = (for3d ? 150 : pantsH) / (0.86 * longPx);
+
+  // パンツ本体の脚生地は、ユーザーが「前太もも」またはパンツ脚を直接指定した時のみ脚にロゴを出し、
+  // 標準時（背紋・胸・右尻ポケット配置時）はシャツ裾のすぐ下に胸ロゴが重複しないようベース柄(plainCv)でスッキリ仕立てる
+  const showLogoOnPantLegs = (S.daboActiveSpot === 'pantsThighL' || S.daboActiveSpot === 'allParts') ||
+    Boolean(DABO_ACTIVE_REVERSE_HIT && (DABO_ACTIVE_REVERSE_HIT.side === 'front_pants' || (DABO_ACTIVE_REVERSE_HIT.side === 'back_pants' && DABO_ACTIVE_REVERSE_HIT.partId !== 'pocket')));
+  const leftLegDrawEntry = (!showLogoOnPantLegs && leftLegEntry && leftLegEntry.plainCv)
+    ? Object.assign({}, leftLegEntry, { cv: leftLegEntry.plainCv })
+    : leftLegEntry;
+  const rightLegDrawEntry = (!showLogoOnPantLegs && rightLegEntry && rightLegEntry.plainCv)
+    ? Object.assign({}, rightLegEntry, { cv: rightLegEntry.plainCv })
+    : rightLegEntry;
 
   // 向かって左の脚 [-hipW .. 0]
   x.save();
   x.beginPath(); x.rect(-hipW - 4, topY - 4, hipW + 5, pantsH + 8); x.clip();
-  drawCroppedPiece(x, leftLegEntry, -hipW, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
+  drawCroppedPiece(x, leftLegDrawEntry, -hipW, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
   x.restore();
 
   // 向かって右の脚 [0 .. +hipW]
   x.save();
   x.beginPath(); x.rect(-1, topY - 4, hipW + 5, pantsH + 8); x.clip();
-  drawCroppedPiece(x, rightLegEntry, 0, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
+  drawCroppedPiece(x, rightLegDrawEntry, 0, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
   x.restore();
 
   // 背面・右尻パッチポケット（向かって右のヒップ）
@@ -10223,13 +10239,11 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
     traceHipPocket();
     x.clip();
     const pkRot = (S.daboPocketMode === 'bias') ? 45 : 0;
-    const pkEntry = (S.daboLogoTarget === 'pocketOnly' || S.daboLogoTarget === 'backPocket')
-      ? (partMap.pocket || rightLegEntry)
-      : rightLegEntry;
-    if(pkRot === 0 && pkEntry === rightLegEntry){
+    const pkEntry = partMap.pocket || rightLegEntry;
+    if(pkRot === 0 && showLogoOnPantLegs && pkEntry === rightLegEntry){
       drawCroppedPiece(x, rightLegEntry, 0, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
     }else{
-      drawCroppedPiece(x, partMap.pocket || rightLegEntry, pkX, pkY, pkW, pkH, pkRot, undefined, pantsFixedScale);
+      drawCroppedPiece(x, pkEntry, pkX, pkY, pkW, pkH, pkRot, undefined, pantsFixedScale);
     }
     // ポケット口折り返しステッチ
     x.strokeStyle = 'rgba(255,255,255,0.45)';
@@ -10763,14 +10777,14 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
   const cpitch = Math.cos(pitch), spitch = Math.sin(pitch);
   const bulgeScale = Math.min(1.0, 0.72 * Math.abs(cyaw) / Math.max(0.25, Math.abs(syaw)) + 0.32);
 
-  const yShift = (includeShirt && includePants) ? -74 : (includePants ? -8 : -8);
-  const floorY = cy + ((includeShirt && includePants) ? 176 : 126) * scale;
+  const yShift = (includeShirt && includePants) ? -80 : (includePants ? -8 : -8);
+  const floorY = cy + ((includeShirt && includePants) ? 182 : 126) * scale;
   draw3dTurntablePedestal(x, cx, floorY, (includeShirt && includePants) ? 108 : 116, scale, pedYaw, Math.max(0.22, pitch), null, null, badgeAccent);
 
   // 上部タイトルバッジ
   if(badgeTitle){
     x.save();
-    const topBadgeY = cy - ((includeShirt && includePants) ? 196 : 145) * scale;
+    const topBadgeY = cy - ((includeShirt && includePants) ? 198 : 145) * scale;
     const bw = Math.min(310, Math.max(195, badgeTitle.length * 12.5 + 28));
     x.fillStyle = badgeAccent || '#0284c7';
     x.beginPath(); x.roundRect(cx - bw * 0.5, topBadgeY, bw, 23, 99); x.fill();
@@ -10835,8 +10849,8 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
     x.restore();
   };
 
-  // 🧍 人間トルソー・腕・足首を描く3Dテーパード円筒ヘルパー（人間が実際に着用している自然な立体感を演出）
-  const draw3dHumanLimbTube = (p0, p1, r0, r1, colDark, colMid, colLight, endCapCol) => {
+  // 🧍 人間トルソー・腕・足首を描く3Dテーパード円筒ヘルパー（継ぎ目のない一体成型＋袖口・裾の自然な落ち影つき）
+  const draw3dHumanLimbTube = (p0, p1, r0, r1, colDark, colMid, colLight, endCapCol, cuffShadowAlpha) => {
     const s0 = proj(p0.px, p0.py, p0.pz);
     const s1 = proj(p1.px, p1.py, p1.pz);
     const dx = s1.sx - s0.sx, dy = s1.sy - s0.sy;
@@ -10850,8 +10864,8 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
     x.moveTo(s0.sx - nx * sr0, s0.sy - ny * sr0);
     x.lineTo(s1.sx - nx * sr1, s1.sy - ny * sr1);
     x.quadraticCurveTo(
-      s1.sx + ux * sr1 * 0.55,
-      s1.sy + uy * sr1 * 0.55,
+      s1.sx + ux * sr1 * 0.58,
+      s1.sy + uy * sr1 * 0.58,
       s1.sx + nx * sr1,
       s1.sy + ny * sr1
     );
@@ -10868,13 +10882,27 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
     const rm = (sr0 + sr1) * 0.55;
     const g = x.createLinearGradient(mx - nx * rm, my - ny * rm, mx + nx * rm, my + ny * rm);
     g.addColorStop(0, colDark);
-    g.addColorStop(0.38, colLight);
+    g.addColorStop(0.36, colLight);
     g.addColorStop(0.68, colMid);
     g.addColorStop(1, colDark);
     x.fillStyle = g;
     x.fill();
-    x.strokeStyle = 'rgba(15, 23, 42, 0.45)';
-    x.lineWidth = 1.0 * scale;
+
+    // 袖口やパンツ裾の奥から腕・足首が伸びる境界に自然な落ち影（アンビエントオクルージョン）を重ねる
+    if(cuffShadowAlpha && cuffShadowAlpha > 0){
+      const sg = x.createLinearGradient(
+        s0.sx, s0.sy,
+        s0.sx + ux * len * 0.55, s0.sy + uy * len * 0.55
+      );
+      sg.addColorStop(0, 'rgba(8, 15, 28, ' + cuffShadowAlpha + ')');
+      sg.addColorStop(0.55, 'rgba(8, 15, 28, ' + (cuffShadowAlpha * 0.28).toFixed(3) + ')');
+      sg.addColorStop(1, 'rgba(8, 15, 28, 0)');
+      x.fillStyle = sg;
+      x.fill();
+    }
+
+    x.strokeStyle = 'rgba(15, 23, 42, 0.28)';
+    x.lineWidth = 0.85 * scale;
     x.stroke();
 
     if(endCapCol){
@@ -10904,10 +10932,12 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
 
   // =========================================================================
   // 1. 👖 ダボパンツ 統合3Dスカルプトシェル描画 (人間着用シルエット・地下足袋付き)
+  //    ※上下セット時は上半身(約44%) : 下半身(約56%)の自然な人間等身バランスになるようスケールを最適化
   // =========================================================================
   if(includePants){
-    const pScale = includeShirt ? 0.92 : 1.04;
-    const pOffsetY = includeShirt ? 156 : 0;
+    const pScaleX = includeShirt ? 0.98 : 1.06;
+    const pScaleY = includeShirt ? 1.22 : 1.15;
+    const pOffsetY = includeShirt ? 126 : -4;
     const NX_P = 22, NY_P = 26;
 
     const getPants3dPt = (u, v) => {
@@ -10918,28 +10948,28 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
       // 股下 (-12) から足首 (+96) への縦進行度
       const tLegY = Math.max(0, Math.min(1, (gy - (-12)) / 108));
       const inX = 3 + tLegY * 8;      // 内股ライン: 3 -> 11
-      const outX = 63 - tLegY * 11;   // 外脇ライン: 63 -> 52
+      const outX = 65 - tLegY * 12;   // 外脇ライン: 65 -> 53
       const legMidX = (inX + outX) * 0.5;
       const legHalfW = Math.max(10, (outX - inX) * 0.5);
       const sLeg = Math.max(-1, Math.min(1, (absX - legMidX) / legHalfW));
       const legTubeArch = Math.cos(sLeg * Math.PI * 0.5); // 左右それぞれの脚の中心で1.0、両端で0.0
 
       // 腰〜ヒップ上部の骨盤ドーム
-      const hipHalfW = 48 + Math.sin(Math.max(0, Math.min(1, (gy - (-80)) / 90)) * Math.PI * 0.75) * 16;
+      const hipHalfW = 52 + Math.sin(Math.max(0, Math.min(1, (gy - (-80)) / 90)) * Math.PI * 0.75) * 14;
       const tHip = Math.min(1, absX / hipHalfW);
       const hipArch = Math.cos(tHip * Math.PI * 0.5);
 
       // ヒップ1円筒 -> 左右2本の脚円筒への滑らかなC1分岐
       const uBlend = Math.max(0, Math.min(1, (gy - (-32)) / 26));
       const wLeg = uBlend * uBlend * (3 - 2 * uBlend);
-      const waistUnderMul = includeShirt ? Math.max(0.48, Math.min(1, (gy - (-80)) / 42)) : 1.0;
+      const waistUnderMul = includeShirt ? Math.max(0.45, Math.min(1, (gy - (-78)) / 32)) : 1.0;
       const kneeCurve = Math.sin(tLegY * Math.PI) * 3.8 * (isBackView ? -0.45 : 1.0);
       const drapeP = Math.sin(gx * 0.11 + gy * 0.05) * 0.85 * legTubeArch * wLeg;
       const hipPocketRelief = (isBackView && S.daboPocketMode !== 'none' && gx > 11 && gx < 47 && gy > -54 && gy < -14) ? 1.4 : 0;
 
       const pz = (3.0 + (18.5 * hipArch * (1 - wLeg) + (20.5 * legTubeArch + kneeCurve + drapeP) * wLeg + hipPocketRelief) * waistUnderMul) * bulgeScale;
-      const px = gx * pScale;
-      const py = pOffsetY + gy * pScale;
+      const px = gx * pScaleX;
+      const py = pOffsetY + gy * pScaleY;
       return { px, py, pz, gx, gy };
     };
 
@@ -10949,38 +10979,38 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
       const N_ANK = 14;
       for(let i = 0; i <= N_ANK; i++){
         const s = -1 + (i / N_ANK) * 2; // -1 .. +1
-        const gxAnk = legSign * (31.5 + s * 20.5); // +-11 .. +-52
+        const gxAnk = legSign * (32.0 + s * 21.0); // +-11 .. +-53
         const uAnk = (gxAnk + 72) / 144;
         const vAnk = (96 + 84) / 184;
         const ptF = getPants3dPt(uAnk, vAnk);
         const pzB = (3.0 - 10.5 * Math.cos(s * Math.PI * 0.5)) * bulgeScale;
         fPts.push(proj(ptF.px, ptF.py, ptF.pz));
-        bPts.push(proj(ptF.px, ptF.py + 1.2 * pScale, pzB));
+        bPts.push(proj(ptF.px, ptF.py + 1.2 * pScaleY, pzB));
       }
       drawHollowOpeningCrescent(fPts, bPts, innerDarkCol, innerMidCol);
     }
 
     // 1-0. パンツ裾の背面リムの手前・前面生地の奥に、人間の足首と祭礼用の紺「地下足袋（じかたび）」を描画
     for(const legSign of [-1, 1]){
-      const ankX = legSign * 31.5 * pScale;
-      const ankTopY = pOffsetY + 89 * pScale;
-      const ankBotY = pOffsetY + 104 * pScale;
-      const tabiToeY = pOffsetY + 113 * pScale;
+      const ankX = legSign * 32.0 * pScaleX;
+      const ankTopY = pOffsetY + 89 * pScaleY;
+      const ankBotY = pOffsetY + 103 * pScaleY;
+      const tabiToeY = pOffsetY + 111 * pScaleY;
       const ankZ = 6.5 * bulgeScale;
       const toeDirZ = isBackView ? -8.5 : 11.5;
-      // 足首（肌）
+      // 足首（肌：裾の奥から伸びる自然な落ち影つき）
       draw3dHumanLimbTube(
         { px: ankX, py: ankTopY, pz: ankZ },
         { px: ankX, py: ankBotY, pz: ankZ },
-        10.2 * pScale, 8.6 * pScale,
-        skinDark, skinMid, skinLight, null
+        10.2 * pScaleX, 8.6 * pScaleX,
+        skinDark, skinMid, skinLight, null, 0.52
       );
       // 祭礼用の紺地下足袋（こはぜ留め足首〜白ゴム底つま先）
       draw3dHumanLimbTube(
-        { px: ankX, py: ankBotY - 2.5 * pScale, pz: ankZ },
-        { px: ankX + legSign * 2.2 * pScale, py: tabiToeY, pz: (ankZ + toeDirZ) * bulgeScale },
-        9.0 * pScale, 10.2 * pScale,
-        '#090d16', '#1e293b', '#334155', '#e2e8f0'
+        { px: ankX, py: ankBotY - 2.5 * pScaleY, pz: ankZ },
+        { px: ankX + legSign * 2.2 * pScaleX, py: tabiToeY, pz: (ankZ + toeDirZ) * bulgeScale },
+        9.0 * pScaleX, 10.2 * pScaleX,
+        '#090d16', '#1e293b', '#334155', '#e2e8f0', 0.25
       );
     }
 
@@ -11005,14 +11035,14 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
         const nx = -dzdx * 1.45, ny = -dzdy * 1.15, nz = 1.0;
         const nLen = Math.hypot(nx, ny, nz) || 1;
         const lt = calcLight(nx / nLen, ny / nLen, nz / nLen);
-        // 上下セット着用時はシャツ裾 (py ≈ +114, すなわちパンツ local gy ≈ -45) の直下に自然な落ち影を付与
+        // 上下セット着用時はシャツ裾 (py ≈ +60, すなわちパンツ local gy ≈ -54) の直下に自然な落ち影を付与
         let hemShadow = 1.0;
-        if(includeShirt && cur.gy < -18){
-          const tSh = Math.max(0, Math.min(1, (cur.gy - (-46)) / 26));
+        if(includeShirt && cur.gy < -22){
+          const tSh = Math.max(0, Math.min(1, (cur.gy - (-56)) / 30));
           hemShadow = 0.48 + 0.52 * (tSh * tSh * (3 - 2 * tSh));
         }
         cur.lightMul = lt.lightMul * hemShadow;
-        cur.specAdd  = (includeShirt && cur.gy < -28) ? 0 : lt.specAdd;
+        cur.specAdd  = (includeShirt && cur.gy < -34) ? 0 : lt.specAdd;
         cur.projPt   = proj(cur.px, cur.py, cur.pz);
       }
     }
@@ -11056,9 +11086,13 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
 
   // =========================================================================
   // 2. 👕 ダボシャツ / 鯉口シャツ 統合3Dスカルプトシェル描画 (人間着用ポーズ worn3d)
+  //    ※上下セット着用時は胴長・頭でっかちにならないようコンパクトな人間上半身比率(sScaleX=0.80, sScaleY=0.72)に調整
   // =========================================================================
   if(includeShirt){
-    // worn3d: true の自然になで肩で垂れ下がる袖ジオメトリに完全同期
+    const sScaleX = includePants ? 0.80 : 1.0;
+    const sScaleY = includePants ? 0.72 : 1.0;
+    const sOffsetY = includePants ? -22 : 0;
+    // worn3d: true の自然になで肩で垂れ下がる袖ジオメトリに完全同期（cuffH = 16 / 24, cuffInward = 18 / 22）
     const shldrW = isKoi ? 56 : 66;
     const hemW = isKoi ? 53 : 66;
     const slvSpanX = isKoi ? 52 : 56;
@@ -11066,7 +11100,8 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
     const armDrop = isKoi ? 49 : 60;
     const armPitY = shldrY + armDrop;
     const slvDropTop = isKoi ? 64 : 68;
-    const cuffH = isKoi ? 26 : 42;
+    const cuffH = isKoi ? 16 : 24;
+    const cuffInward = isKoi ? 18 : 22;
     const NX_S = 30, NY_S = 32;
 
     const getShirt3dPt = (u, v) => {
@@ -11095,8 +11130,8 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
       const slvTubeArch = Math.cos(sSlv * Math.PI * 0.5);
       const uArmMask = Math.max(0, Math.min(1, (absX - shldrW * 0.44) / (shldrW * 0.54)));
       const armHorizMask = uArmMask * uArmMask * (3 - 2 * uArmMask);
-      const armVertMask = Math.max(0, Math.min(1, (38 - gy) / 36));
-      const zArmForward = slvExtend * 8.5 * (isBackView ? -0.55 : 1.0); // 人間の肘〜前腕が自然に少し前へ出る立体角度
+      const armVertMask = Math.max(0, Math.min(1, (54 - gy) / 36));
+      const zArmForward = slvExtend * 3.5 * (isBackView ? -0.55 : 1.0); // 人間の肘〜前腕が自然に少し前へ出る立体角度
       const zSleeveTube = ((16.5 + slvExtend * 3.5) * slvTubeArch + zArmForward) * armHorizMask * armVertMask;
 
       // 自然な布ドレープと前立て・胸ポケットの微細レリーフ
@@ -11106,8 +11141,8 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
 
       const pz = (4.0 + zTorsoCore + zSleeveTube + drapeWave + placketRelief + pocketRelief) * bulgeScale;
       // 3D空間でも袖が自然に下へ垂れ、人間の腕のラインに沿うよう調整
-      const px = gx - signX * slvExtend * 5.0;
-      const py = gy + slvExtend * 7.5;
+      const px = (gx - signX * slvExtend * 5.0) * sScaleX;
+      const py = sOffsetY + (gy + slvExtend * 7.5) * sScaleY;
       return { px, py, pz, gx, gy };
     };
 
@@ -11115,20 +11150,21 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
     for(const dir of [-1, 1]){
       if(dir * syaw >= -0.04) continue;
       const ex0 = dir * (shldrW + slvSpanX), ey0 = shldrY + slvDropTop;
-      const ex1 = dir * (shldrW + slvSpanX - (isKoi ? 14 : 18)), ey1 = ey0 + cuffH;
+      const ex1 = dir * (shldrW + slvSpanX - cuffInward), ey1 = ey0 + cuffH;
       const fPts = [], bPts = [];
       const N_CUFF = 14;
       for(let i = 0; i <= N_CUFF; i++){
         const t = i / N_CUFF;
         const s = -1 + t * 2; // -1 .. +1
+        const archC = Math.cos(s * Math.PI * 0.5); // 両端(s=±1)で0、中央(s=0)で1
         const gxC = ex0 * (1 - t) + ex1 * t;
         const gyC = ey0 * (1 - t) + ey1 * t;
         const uC = (gxC + 166) / 332;
         const vC = (gyC + 98) / 218;
         const ptF = getShirt3dPt(uC, vC);
-        const pzB = (4.0 - 11.5 * Math.cos(s * Math.PI * 0.5)) * bulgeScale;
+        const pzB = ptF.pz - 18.0 * archC * bulgeScale;
         fPts.push(proj(ptF.px, ptF.py, ptF.pz));
-        bPts.push(proj(ptF.px - dir * 1.5, ptF.py + 0.6, pzB));
+        bPts.push(proj(ptF.px - dir * 1.2 * archC * sScaleX, ptF.py + 0.5 * archC * sScaleY, pzB));
       }
       drawHollowOpeningCrescent(fPts, bPts, innerDarkCol, innerMidCol);
     }
@@ -11140,32 +11176,33 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
       const hSpan = hemW - 3.5;
       for(let i = 0; i <= N_HEM; i++){
         const s = -1 + (i / N_HEM) * 2;
+        const archH = Math.cos(s * Math.PI * 0.5);
         const gxH = s * hSpan;
         const uH = (gxH + 166) / 332;
         const vH = (114 + 98) / 218;
         const ptF = getShirt3dPt(uH, vH);
-        const pzB = (4.0 - 12.0 * Math.cos(s * Math.PI * 0.5)) * bulgeScale;
+        const pzB = ptF.pz - 22.0 * archH * bulgeScale;
         fPts.push(proj(ptF.px, ptF.py, ptF.pz));
-        bPts.push(proj(ptF.px, ptF.py + 1.5, pzB));
+        bPts.push(proj(ptF.px, ptF.py + 1.4 * archH * sScaleY, pzB));
       }
       drawHollowOpeningCrescent(fPts, bPts, innerDarkCol, innerMidCol);
     }
 
-    // 2-0. 🧍 人間の首元（ネック＆鎖骨インナー）と、七分袖口から自然に伸びる人間の前腕・手首を背面リムの手前・前面シャツ生地の奥に描画
+    // 2-0. 🧍 人間の首元（ネック＆鎖骨インナー）と、七分袖口から自然に伸びる人間の前腕〜手首を背面リムの手前・前面シャツ生地の奥に描画
     {
       // (a) 首元の3Dネック円筒＆鎖骨シャドウ（シャツ襟の奥から立体的に立ち上がる首筋）
       draw3dHumanLimbTube(
-        { px: 0, py: -110, pz: 8.5 * bulgeScale },
-        { px: 0, py: -72,  pz: 14.5 * bulgeScale },
-        15.0, 20.5,
-        skinDark, skinMid, skinLight, null
+        { px: 0, py: sOffsetY - 108 * sScaleY, pz: 8.5 * bulgeScale },
+        { px: 0, py: sOffsetY - 72 * sScaleY,  pz: 14.5 * bulgeScale },
+        14.8 * sScaleX, 20.0 * sScaleX,
+        skinDark, skinMid, skinLight, null, 0.15
       );
       // 襟元の奥に見えるインナー肌・鎖骨の陰影ドーム
-      const neckBase = proj(0, -82, 14.0 * bulgeScale);
+      const neckBase = proj(0, sOffsetY - 82 * sScaleY, 14.0 * bulgeScale);
       x.save();
       x.beginPath();
-      x.ellipse(neckBase.sx, neckBase.sy, 22 * scale, 12.5 * scale, 0, 0, Math.PI * 2);
-      const ng = x.createRadialGradient(neckBase.sx, neckBase.sy - 3 * scale, 2 * scale, neckBase.sx, neckBase.sy, 22 * scale);
+      x.ellipse(neckBase.sx, neckBase.sy, 22 * sScaleX * scale, 12.5 * sScaleY * scale, 0, 0, Math.PI * 2);
+      const ng = x.createRadialGradient(neckBase.sx, neckBase.sy - 3 * sScaleY * scale, 2 * sScaleX * scale, neckBase.sx, neckBase.sy, 22 * sScaleX * scale);
       ng.addColorStop(0, skinLight);
       ng.addColorStop(0.65, skinMid);
       ng.addColorStop(1, skinDark);
@@ -11173,35 +11210,33 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
       x.fill();
       x.restore();
 
-      // (b) 左右の七分袖から自然に伸びる人間の前腕〜手首（背面袖口の上・前面袖生地の下に挟まれる正しい3D前後関係）
+      // (b) 左右の七分袖から自然に伸びる人間の前腕〜手首（関節の継ぎ目線がない一体成型テーパードシルエット＋袖口の落ち影）
       for(const dir of [-1, 1]){
         const ex0 = dir * (shldrW + slvSpanX), ey0 = shldrY + slvDropTop;
-        const ex1 = dir * (shldrW + slvSpanX - (isKoi ? 14 : 18)), ey1 = ey0 + cuffH;
+        const ex1 = dir * (shldrW + slvSpanX - cuffInward), ey1 = ey0 + cuffH;
         const cuffMidGx = (ex0 + ex1) * 0.5;
         const cuffMidGy = (ey0 + ey1) * 0.5;
         const uC = (cuffMidGx + 166) / 332;
         const vC = (cuffMidGy + 98) / 218;
         const cuffPt = getShirt3dPt(uC, vC);
-        const armForwardZ = isBackView ? -9.0 : 12.5;
+        const armForwardZ = isBackView ? -2.5 : 3.5;
         const elbowPt = {
-          px: cuffPt.px - dir * 12,
-          py: cuffPt.py - 16,
-          pz: cuffPt.pz - 6.0 * bulgeScale
+          px: cuffPt.px - dir * 14 * sScaleX,
+          py: cuffPt.py - 18 * sScaleY,
+          pz: cuffPt.pz - 3.5 * bulgeScale
         };
-        const wristPt = {
-          px: cuffPt.px + dir * 15,
-          py: cuffPt.py + 36,
+        const wristHandPt = {
+          px: cuffPt.px + dir * 16.5 * sScaleX,
+          py: cuffPt.py + 33 * sScaleY,
           pz: cuffPt.pz + armForwardZ * bulgeScale
         };
-        const handPt = {
-          px: wristPt.px + dir * 3.5,
-          py: wristPt.py + 10,
-          pz: wristPt.pz + (isBackView ? -2.5 : 4.0) * bulgeScale
-        };
-        // 前腕（袖口の中〜手首）
-        draw3dHumanLimbTube(elbowPt, wristPt, isKoi ? 11.2 : 12.5, 8.0, skinDark, skinMid, skinLight, null);
-        // 手首〜手のシルエット
-        draw3dHumanLimbTube(wristPt, handPt, 8.0, 8.6, skinDark, skinMid, skinLight, null);
+        // 前腕〜手首まで継ぎ目のない1本の滑らかなテーパード円筒＋袖口奥の自然な落ち影(0.55)
+        draw3dHumanLimbTube(
+          elbowPt, wristHandPt,
+          (isKoi ? 10.6 : 11.8) * sScaleX,
+          7.6 * sScaleX,
+          skinDark, skinMid, skinLight, null, 0.55
+        );
       }
     }
 
@@ -11517,9 +11552,9 @@ function draw3dScene(targetCv, exportMode){
     const sc = Math.min(cw / 520, (ch - 70) / 390);
     render3dTenuguiOrRelief(x, cw * 0.5, centerY, sc, yaw, pitch, m3d, tex, bodyCfg);
   }else if(m3d === 'dabo_compare'){
-    // 👕 上だけ 3D と 👕👖 上下セット 3D の【両方】を左右に並べて同時表示！
-    const scTop  = Math.min((cw * 0.48) / 340, (ch - 80) / 345);
-    const scBoth = Math.min((cw * 0.48) / 340, (ch - 80) / 445);
+    // 👕 上だけ 3D と 👕👖 上下セット 3D の【両方】を左右に並べて同時表示（左の上だけモデルと右の上下セットのシャツサイズが自然に揃うスケール）
+    const scBoth = Math.min((cw * 0.48) / 330, (ch - 80) / 435);
+    const scTop  = scBoth * 0.88;
     render3dMannequinFigure(
       x, cw * 0.26, centerY + 6, scTop, yaw, pitch, true, false, tex, bodyCfg,
       '① 👕 ダボシャツ【上だけ】3D立体', '#0284c7'
@@ -11531,7 +11566,7 @@ function draw3dScene(targetCv, exportMode){
   }else{
     const incShirt = (m3d !== 'dabo_pants');
     const incPants = (m3d === 'dabo_both' || m3d === 'dabo_pants');
-    const baseHeightUnit = (incShirt && incPants) ? 445 : 345;
+    const baseHeightUnit = (incShirt && incPants) ? 435 : 345;
     if(twinBack){
       // 🪞 前面3Dアングル と 背面(背紋)3Dアングル を左右に並べて同時3D表示
       const sc = Math.min((cw * 0.48) / 330, (ch - 80) / baseHeightUnit);
