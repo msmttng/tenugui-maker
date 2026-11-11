@@ -609,16 +609,51 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
             </details>
           </div>
         </div>
+        <!-- 🧊 ③ ロゴ・図案の3D立体厚み加工 ＆ 360°立体3Dプレビュー（上だけ・上下・両方） -->
+        <div class="e-subbox" id="eLogo3dBox" style="background:linear-gradient(135deg,#f0f9ff 0%,#e0f2fe 100%);border:1.5px solid #0284c7">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+            <span style="font-size:11.5px;font-weight:800;color:#0c4a6e">③ 🧊 デザイン・ロゴを3D立体化する（厚み加工 ＆ 3D表示）</span>
+            <span class="badge" style="background:#0284c7;color:#fff;font-size:10px">上だけ・上下・両方対応</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="font-size:11px;font-weight:700;color:#0369a1">🅰️ ロゴ・札の3D立体厚み加工（手ぬぐい・ダボ・3Dすべてに反映）:</div>
+            <div class="e-chips" id="eLogo3dModeBtns" style="grid-template-columns:repeat(4,1fr)">
+              <button type="button" data-l3d="none" aria-pressed="true">平面<small>標準(2D)</small></button>
+              <button type="button" data-l3d="extrude" aria-pressed="false">🧊 3D押し出し<small>重厚ブロック立体</small></button>
+              <button type="button" data-l3d="gold_block" aria-pressed="false">✨ 3D金塊彫り<small>ゴールド立体札</small></button>
+              <button type="button" data-l3d="emboss" aria-pressed="false">🪨 3D浮き彫り<small>同色レリーフ</small></button>
+            </div>
+            <div class="e-range" data-for="logo3dDepthMm" id="eLogo3dDepthRange"><span>🧊 3D厚みの深さ</span><input type="range" min="0" max="16" step="0.5"><b></b></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap">
+              <button type="button" class="mini-btn" id="ePattern3dToggleBtn" aria-pressed="false" style="flex:1;background:#ffffff;border-color:#38bdf8;color:#0369a1;font-weight:700;padding:4px 8px;font-size:11px">🧊 ベース柄（仲羽田・あられ）も3D浮き彫りにする: OFF</button>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#0c4a6e;cursor:pointer">3D側面色 <input type="color" id="eLogo3dSideCol" value="#0c2d3a" style="width:24px;height:20px;border:1px solid #0284c7;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div style="border-top:1px dashed #7dd3fc;padding-top:5px;margin-top:1px;display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:11px;font-weight:700;color:#0c4a6e">🅱️ できたデザインを360°回せる立体3Dで見る（マウスドラッグで自由回転）:</div>
+              <div class="e-chips" id="eOpen3dQuickBtns" style="grid-template-columns:repeat(2,1fr)">
+                <button type="button" data-open3d="dabo_top" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:800">👕 ダボ【上だけ】3D化<small style="color:#e0f2fe">シャツ単体の立体3D</small></button>
+                <button type="button" data-open3d="dabo_both" style="background:#0369a1;color:#fff;border-color:#075985;font-weight:800">👕👖 ダボ【上下】3D化<small style="color:#e0f2fe">シャツ＋パンツ立体3D</small></button>
+                <button type="button" data-open3d="dabo_compare" style="background:#1e3a8a;color:#fff;border-color:#1e40af;font-weight:800">👕＋👕👖 【上だけ＆上下 両方】3D<small style="color:#dbeafe">上だけと上下を並べて3D表示</small></button>
+                <button type="button" data-open3d="tenugui" style="background:#0f766e;color:#fff;border-color:#115e59;font-weight:800">🧣 手ぬぐい・立体看板 3D<small style="color:#ccfbf1">布ドレープ＆立体レリーフ</small></button>
+              </div>
+            </div>
+          </div>
+        </div>
         <p class="e-note" id="eLogoNote">ロゴは手ぬぐいの上でもダボシャツの上でもドラッグして動かせます。</p>
       </div>
       <div class="e-step" id="eDaboFromLogoStep">
         <div class="e-h"><b>6</b><span>👕👖 ダボシャツ・ダボパンツのロゴ位置から手ぬぐいを作る</span><button type="button" class="e-more" data-emore="step6">詳しく</button></div>
         <div class="e-subbox dabo-box">
-          <div class="e-sublbl"><span>① 表示する衣装（上：ダボシャツ ／ 下：ダボパンツ）</span></div>
+          <div class="e-sublbl"><span>① 表示する衣装（上：ダボシャツ ／ 下：ダボパンツ ／ 🧊3D立体化）</span></div>
           <div class="e-chips" id="eDaboGarmentViewBtns" style="grid-template-columns:repeat(3,1fr)">
             <button type="button" data-egv="both" aria-pressed="true">👕👖 上下セット<small>シャツ＋ダボパンツ</small></button>
             <button type="button" data-egv="top" aria-pressed="false">👕 上のみ<small>ダボシャツを大きく</small></button>
             <button type="button" data-egv="pants" aria-pressed="false">👖 下のみ拡大<small>ダボパンツを大きく</small></button>
+          </div>
+          <div class="e-chips" id="eStep6Open3dBtns" style="grid-template-columns:repeat(3,1fr);margin-top:3px">
+            <button type="button" data-open3d="dabo_top" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:800">🧊 上だけ 3D化<small style="color:#e0f2fe">シャツ立体3D</small></button>
+            <button type="button" data-open3d="dabo_both" style="background:#0369a1;color:#fff;border-color:#075985;font-weight:800">🧊 上下セット 3D化<small style="color:#e0f2fe">上下とも立体3D</small></button>
+            <button type="button" data-open3d="dabo_compare" style="background:#1e3a8a;color:#fff;border-color:#1e40af;font-weight:800">🧊 上だけ＆上下 両方3D<small style="color:#dbeafe">両方並べて立体3D</small></button>
           </div>
           <div class="e-sublbl" style="margin-top:2px"><span>② 札・ロゴのうしろ背景（今の札色を保ったまま切り替え）</span></div>
           <div class="e-chips" id="eDaboQuickLogo">
@@ -677,6 +712,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         </div>
         <div class="e-save" style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
           <button type="button" class="btn" id="eSavePng" style="grid-column:span 2">📜 手ぬぐい画像で保存（300dpi PNG）</button>
+          <button type="button" class="btn" id="eSave3dPng" style="grid-column:span 2;background:linear-gradient(135deg,#1e3a8a 0%,#0284c7 100%);border-color:#38bdf8;color:#fff;font-weight:800" title="現在の3D立体プレビュー（ダボ上だけ・ダボ上下・両方・手ぬぐい3D）を高解像度PNG画像で保存します">🧊 3D立体プレビュー画像を保存（PNG）</button>
           <button type="button" class="btn" id="eSaveDaboOnlyPng" style="background:#0284c7;border-color:#0369a1;color:#fff" title="ダボシャツ（上）＋ダボパンツ（下）の完成図をPNG画像でダウンロードします">👕👖 完成図を保存（上下・PNG）</button>
           <button type="button" class="btn" id="eSaveDaboPng" style="background:#0369a1;border-color:#075985;color:#fff" title="生地の取り方（裁断図）＋ダボ上下完成図をセットでPNG保存します">✂️👕 裁断図＋完成図（PNG）</button>
           <button type="button" class="btn ghost" id="eSaveDaboPantsPng" style="border-color:#0284c7;color:#0369a1;font-weight:700">👖 ダボパンツ完成図（PNG）</button>
@@ -1375,6 +1411,28 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
               <span style="color:#78350f;margin-left:auto">枠線色:</span>
               <input type="color" id="logoPadStrokeColor" value="#ffffff" title="周りの枠線の色">
             </div>
+          </div>
+        </div>
+
+        <!-- 🧊 ロゴ・柄の3D立体厚み加工 ＆ 3Dプレビュー起動（詳細モード） -->
+        <div id="logo3dDetailBox" style="background:linear-gradient(135deg,#f0f9ff 0%,#e0f2fe 100%);border:1.5px solid #0284c7;border-radius:6px;padding:7px 8px;display:flex;flex-direction:column;gap:5px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
+            <span style="font-size:11.5px;font-weight:800;color:#0c4a6e">🧊 ロゴ・柄の3D立体厚み加工 ＆ 360°立体3Dプレビュー</span>
+            <select id="logo3dMode" style="font-size:11.5px;font-weight:700;padding:2px 6px">
+              <option value="none">平面（標準2D）</option>
+              <option value="extrude">🧊 3D立体押し出し（重厚ブロック）</option>
+              <option value="gold_block">✨ 3D金塊・木札彫り（ゴールド立体）</option>
+              <option value="emboss">🪨 3D浮き彫り（同色レリーフ）</option>
+            </select>
+          </div>
+          <div class="row"><label for="logo3dDepthMm">🧊 3D厚みの深さ</label><input type="range" id="logo3dDepthMm" min="0" max="16" step="0.5" value="4.5"><output for="logo3dDepthMm" id="logo3dDepthMm-o">4.5 mm</output></div>
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:11px">
+            <span style="color:#0c4a6e;font-weight:700">3D側面色:</span>
+            <input type="color" id="logo3dColor" value="#0c2d3a" title="3D押し出し側面の色">
+            <button type="button" class="mini-btn" id="dPattern3dToggleBtn" aria-pressed="false" style="font-weight:700;color:#0369a1;border-color:#38bdf8">🧊 ベース柄も3D浮き彫り: OFF</button>
+            <button type="button" class="mini-btn" data-open3d="dabo_top" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700">👕 上だけ3D</button>
+            <button type="button" class="mini-btn" data-open3d="dabo_both" style="background:#0369a1;color:#fff;border-color:#075985;font-weight:700">👕👖 上下3D</button>
+            <button type="button" class="mini-btn" data-open3d="dabo_compare" style="background:#1e3a8a;color:#fff;border-color:#1e40af;font-weight:700">👕＋👕👖 両方3D</button>
           </div>
         </div>
 
@@ -2087,6 +2145,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <button type="button" class="btn" id="saveOutCutDaboPngBtn" style="background:#0369a1;border-color:#075985;color:#fff;padding:8px 8px;font-size:12px" title="手ぬぐいの生地の取り方（裁断割付図）＋ダボ上下完成図をセットで高解像度PNG保存します">✂️👕 裁断図＋完成図（PNG）</button>
           <button type="button" class="btn ghost" id="saveOutDaboPantsPngBtn" style="background:#ffffff;border-color:#0284c7;color:#0369a1;font-weight:700;padding:7px 8px;font-size:11.5px" title="下のダボパンツ（前面・背面）を大きく拡大した完成図PNGをダウンロードします">👖 ダボパンツ完成図のみ（PNG）</button>
           <button type="button" class="btn ghost" id="saveOutDaboTopPngBtn" style="background:#ffffff;border-color:#0284c7;color:#0369a1;font-weight:700;padding:7px 8px;font-size:11.5px" title="上のダボシャツ・鯉口シャツ（前面・背面）を大きく拡大した完成図PNGをダウンロードします">👕 ダボシャツ完成図のみ（PNG）</button>
+          <button type="button" class="btn" id="saveOut3dPngBtn" style="grid-column:span 2;background:linear-gradient(135deg,#1e3a8a 0%,#0284c7 100%);border-color:#38bdf8;color:#fff;font-weight:800;padding:8px 8px;font-size:12px" title="現在の3D立体プレビュー（上だけ・上下セット・両方・手ぬぐい3D）を高解像度PNGで保存します">🧊 3D立体プレビューを高画質PNG保存</button>
           <button type="button" class="btn ghost" id="saveOutDaboSvgBtn" style="grid-column:span 2;background:#fff7ed;border-color:#ea580c;color:#c2410c;font-weight:700;padding:7px 8px;font-size:11.5px" title="ダボ完成図と手ぬぐいベクターパスをセットにしたIllustrator用SVGファイルを保存します">📐 完成図＆裁断図をイラレSVGで保存（.svg）</button>
         </div>
       </div>
@@ -2101,6 +2160,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
         <button type="button" class="chip" data-view="fabric" aria-pressed="true"><span class="full-only desk-only">📜 手ぬぐい生地（反物）</span><span class="easy-only desk-only">📜 生地</span><span class="mob-only">📜 生地</span></button>
         <button type="button" class="chip" data-view="cut_dabo" aria-pressed="false"><span class="full-only desk-only">✂️ 生地の取り方（裁断図）＋ 👕👖 ダボ上下完成図</span><span class="easy-only desk-only">✂️👕👖 裁断図・ダボ上下</span><span class="mob-only">✂️👕 裁断・ダボ</span></button>
         <button type="button" class="chip" data-view="dabo" aria-pressed="false"><span class="full-only desk-only">👕👖 ダボ完成プレビュー（シャツ＋ダボパンツ）</span><span class="easy-only desk-only">👕👖 ダボ完成図（上下）</span><span class="mob-only">👕👖 完成図</span></button>
+        <button type="button" class="chip" data-view="view3d" aria-pressed="false" style="background:linear-gradient(135deg,#1e3a8a 0%,#0284c7 100%);color:#fff;border-color:#38bdf8;font-weight:800"><span class="full-only desk-only">🧊 3D立体プレビュー（上だけ・上下・両方）</span><span class="easy-only desk-only">🧊 3D立体化（上・上下・両方）</span><span class="mob-only">🧊 3D立体</span></button>
       </div>
       <div id="stageGarmentViewChips" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:6px;background:var(--panel);padding:5px 10px;border-radius:8px;border:1px solid var(--line)">
         <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
@@ -2108,12 +2168,53 @@ html.ui-easy .view-bar{grid-template-columns:repeat(3,1fr)}
           <button type="button" class="mini-btn" data-sgv="both" aria-pressed="true" style="font-size:11.5px;padding:4px 9px;font-weight:700"><span class="desk-only">👕👖 上下とも見る（シャツ＋ダボパンツ）</span><span class="mob-only">👕👖 上下</span></button>
           <button type="button" class="mini-btn" data-sgv="top" aria-pressed="false" style="font-size:11.5px;padding:4px 9px;font-weight:700"><span class="desk-only">👕 上（シャツ）のみ</span><span class="mob-only">👕 上のみ</span></button>
           <button type="button" class="mini-btn" data-sgv="pants" aria-pressed="false" style="font-size:11.5px;padding:4px 9px;font-weight:700"><span class="desk-only">👖 下（ダボパンツ）のみ拡大</span><span class="mob-only">👖 下のみ</span></button>
+          <button type="button" class="mini-btn" data-open3d="dabo_top" style="background:#0284c7;color:#fff;border-color:#0369a1;font-size:11px;padding:4px 8px;font-weight:800">🧊 上だけ3D</button>
+          <button type="button" class="mini-btn" data-open3d="dabo_both" style="background:#0369a1;color:#fff;border-color:#075985;font-size:11px;padding:4px 8px;font-weight:800">🧊 上下3D</button>
+          <button type="button" class="mini-btn" data-open3d="dabo_compare" style="background:#1e3a8a;color:#fff;border-color:#1e40af;font-size:11px;padding:4px 8px;font-weight:800">🧊 両方3D</button>
         </div>
         <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
           <button type="button" class="mini-btn" id="stageQuickSaveDaboPngBtn" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700;padding:4px 9px;font-size:11.5px" title="現在の完成図を高解像度PNGで保存します"><span class="desk-only">📥 完成図をPNG保存</span><span class="mob-only">📥 完成図</span></button>
           <button type="button" class="mini-btn" id="stageQuickSaveCutDaboPngBtn" style="background:#f0f9ff;color:#0369a1;border-color:#7dd3fc;font-weight:700;padding:4px 8px;font-size:11px" title="生地の取り方（裁断図）＋完成図をセットでPNG保存します"><span class="desk-only">📥 裁断図＋完成図PNG</span><span class="mob-only">📥 裁断+完成</span></button>
           <button type="button" class="mini-btn mob-only" id="mobStageSizeBtn" style="background:#f8fafc;color:#0f172a;border-color:#94a3b8;font-weight:700" title="スマホのプレビュー画面の高さを切り替えます（標準 / 拡大 / 小）">🔍 拡大</button>
           <button type="button" class="mini-btn mob-only" id="mobStagePinBtn" aria-pressed="true" style="font-weight:700" title="スクロール時にプレビューを上部に固定するかを切り替えます">📌 固定</button>
+        </div>
+      </div>
+      <!-- 🧊 3D立体プレビュー専用コントロールバー（上だけ・上下セット・両方同時・手ぬぐい・立体レリーフ ＆ 角度ワンタッチ切替） -->
+      <div id="stage3dControlBar" hidden style="display:none;flex-direction:column;gap:5px;margin-bottom:6px;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);padding:7px 10px;border-radius:8px;border:1.5px solid #38bdf8;color:#f8fafc">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px">
+          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap" id="stage3dModelBtns">
+            <span style="font-size:11.5px;font-weight:800;color:#38bdf8">🧊 3D表示モデル:</span>
+            <button type="button" class="mini-btn" data-m3d="dabo_top" aria-pressed="false" style="font-size:11.5px;padding:4px 9px;font-weight:800">👕 上だけ（ダボシャツ3D）</button>
+            <button type="button" class="mini-btn" data-m3d="dabo_both" aria-pressed="true" style="font-size:11.5px;padding:4px 9px;font-weight:800">👕👖 上下セット（シャツ＋パンツ3D）</button>
+            <button type="button" class="mini-btn" data-m3d="dabo_compare" aria-pressed="false" style="font-size:11.5px;padding:4px 9px;font-weight:800">👕＋👕👖 上だけ＆上下 両方同時3D</button>
+            <button type="button" class="mini-btn" data-m3d="dabo_pants" aria-pressed="false" style="font-size:11.5px;padding:4px 8px;font-weight:700">👖 下だけ3D</button>
+            <button type="button" class="mini-btn" data-m3d="tenugui" aria-pressed="false" style="font-size:11.5px;padding:4px 8px;font-weight:700">🧣 手ぬぐい3Dクロス</button>
+            <button type="button" class="mini-btn" data-m3d="relief" aria-pressed="false" style="font-size:11.5px;padding:4px 8px;font-weight:700">🪨 ロゴ立体レリーフ3D</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+            <button type="button" class="mini-btn" id="stage3dBackTwinBtn" aria-pressed="true" style="background:#0f766e;color:#fff;border-color:#2dd4bf;font-weight:800;padding:4px 8px;font-size:11px" title="3Dの前面アングルと背面（背紋）アングルを並べて同時表示します">🪞 前面＋背面(背中)を同時3D表示</button>
+            <button type="button" class="mini-btn" id="stage3dSavePngBtn" style="background:#0284c7;color:#fff;border-color:#7dd3fc;font-weight:800;padding:4px 9px;font-size:11.5px">📥 この3D画面をPNG保存</button>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px;border-top:1px solid rgba(148,163,184,0.25);padding-top:4px">
+          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap" id="stage3dAngleBtns">
+            <span style="font-size:11px;font-weight:700;color:#bae6fd">🔄 3Dカメラ角度（ドラッグでも360°回転）:</span>
+            <button type="button" class="mini-btn" data-yaw="-28" data-pitch="10" style="font-size:11px;padding:3px 7px;font-weight:700">斜め右(立体)</button>
+            <button type="button" class="mini-btn" data-yaw="0" data-pitch="6" style="font-size:11px;padding:3px 7px;font-weight:700">正面</button>
+            <button type="button" class="mini-btn" data-yaw="28" data-pitch="10" style="font-size:11px;padding:3px 7px;font-weight:700">斜め左</button>
+            <button type="button" class="mini-btn" data-yaw="-75" data-pitch="8" style="font-size:11px;padding:3px 7px;font-weight:700">横(袖)</button>
+            <button type="button" class="mini-btn" data-yaw="180" data-pitch="8" style="font-size:11px;padding:3px 7px;font-weight:700">背面(背紋)</button>
+            <button type="button" class="mini-btn" data-yaw="150" data-pitch="10" style="font-size:11px;padding:3px 7px;font-weight:700">斜め後ろ</button>
+            <button type="button" class="mini-btn" data-yaw="-22" data-pitch="28" style="font-size:11px;padding:3px 7px;font-weight:700">見下ろし</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap" id="stage3dThicknessBtns">
+            <span style="font-size:11px;font-weight:700;color:#fde047">✨ ロゴ・柄の3D厚み:</span>
+            <button type="button" class="mini-btn" data-s3dl="none" style="font-size:10.5px;padding:2px 6px">平面</button>
+            <button type="button" class="mini-btn" data-s3dl="extrude" style="font-size:10.5px;padding:2px 6px;font-weight:700">🧊 3D押し出し</button>
+            <button type="button" class="mini-btn" data-s3dl="gold_block" style="font-size:10.5px;padding:2px 6px;font-weight:700">✨ 3D金塊彫り</button>
+            <button type="button" class="mini-btn" data-s3dl="emboss" style="font-size:10.5px;padding:2px 6px;font-weight:700">🪨 3D浮き彫り</button>
+            <button type="button" class="mini-btn" id="stage3dPatReliefBtn" aria-pressed="false" style="font-size:10.5px;padding:2px 6px;font-weight:700">🧱 仲羽田・柄も3D化</button>
+          </div>
         </div>
       </div>
       <div class="stats" aria-live="polite">
@@ -3125,8 +3226,12 @@ function getFudaSideStripesPolys(){
 (function(){
 const $=id=>document.getElementById(id);
 const DEF={
-  viewMode:'fabric', // 'fabric' | 'cut_dabo' | 'dabo'
+  viewMode:'fabric', // 'fabric' | 'cut_dabo' | 'dabo' | 'view3d'
+  model3d:'dabo_both', // 'dabo_top' (上だけ) | 'dabo_both' (上下セット) | 'dabo_compare' (上だけ＆上下 両方) | 'dabo_pants' (下だけ) | 'tenugui' (手ぬぐい3D) | 'relief' (立体看板3D)
+  rot3dYaw:-28, rot3dPitch:10, show3dBackTwin:true,
   mode:'haneda', // 'haneda' | 'arare' | 'both' | 'scatter'
+  pattern3dMode:'none', // 'none' | 'extrude' | 'gold_block'
+  pattern3dDepthMm:2.2,
   layerOrder:'kakuFront', // 'kakuFront' (仲羽田が前) | 'arareFront' (大小あられが前)
   knockoutMm:0, // 前面レイヤーのフチ抜き（地色縁取り）幅 mm
   W:350, H:900,
@@ -3158,6 +3263,7 @@ const DEF={
   logoOutlineMm:0, logoOutlineColor:'#ffffff', logoMaskShape:'none',
   logoPadMode:'none', logoPadColor:'#046e7e', logoPadColorMode:'bg',
   logoPadMarginMm:6, logoPadCornerMm:6, logoPadStrokeMm:0, logoPadStrokeColor:'#ffffff',
+  logo3dMode:'none', logo3dDepthMm:4.5, logo3dAngle:45, logo3dColor:'#0c2d3a',
   logoSize:85, logoAngle:0, logoX:50, logoY:28, daboSpotPart:'auto',
   logoRepeatMode:'none', logoRepeatGapX:72, logoRepeatGapY:72, logoRepeatGridAngle:0, logoRepeatAngleVar:0, logoRepeatSizeVar:0,
   logoSlots:[], activeLogoSlot:0,
@@ -3319,6 +3425,7 @@ const LOGO_SLOT_KEYS = [
   'logoFlipH','logoFlipV','logoAutoTrim','logoMono','logoColor','logoTextColor','logoTextColorMode','logoShakeColorMode',
   'logoOutlineMm','logoOutlineColor','logoMaskShape',
   'logoPadMode','logoPadColor','logoPadColorMode','logoPadMarginMm','logoPadCornerMm','logoPadStrokeMm','logoPadStrokeColor',
+  'logo3dMode','logo3dDepthMm','logo3dAngle','logo3dColor',
   'logoSize','logoAngle','logoX','logoY','daboSpotPart',
   'logoRepeatMode','logoRepeatGapX','logoRepeatGapY','logoRepeatGridAngle','logoRepeatAngleVar','logoRepeatSizeVar'
 ];
@@ -3358,7 +3465,8 @@ function syncActiveSlotFromS(){
         'logoName','logoDataUrl','logoColor','logoMono',
         'logoTextColor','logoTextColorMode','logoShakeColorMode',
         'logoPadMode','logoPadColor','logoPadColorMode',
-        'logoPadMarginMm','logoPadCornerMm','logoPadStrokeMm','logoPadStrokeColor'
+        'logoPadMarginMm','logoPadCornerMm','logoPadStrokeMm','logoPadStrokeColor',
+        'logo3dMode','logo3dDepthMm','logo3dAngle','logo3dColor'
       ];
       for(let i = 0; i < S.logoSlots.length; i++){
         if(i === idx) continue;
@@ -5573,6 +5681,40 @@ function getLogoAlphaSilhouetteCanvas(lcv, ratioExpand, fillCol){
   return out;
 }
 
+function shadeHexColor(hex, factor){
+  const [r, g, b] = hexToRgbArr(hex || '#046e7e');
+  let nr, ng, nb;
+  if(factor < 1){
+    nr = Math.round(r * factor);
+    ng = Math.round(g * factor);
+    nb = Math.round(b * factor);
+  }else{
+    const t = Math.min(1, factor - 1);
+    nr = Math.round(r + (255 - r) * t);
+    ng = Math.round(g + (255 - g) * t);
+    nb = Math.round(b + (255 - b) * t);
+  }
+  const cl = v => Math.max(0, Math.min(255, v)).toString(16).padStart(2, '0');
+  return '#' + cl(nr) + cl(ng) + cl(nb);
+}
+
+function getLogoTintedCanvas(lcv, fillCol){
+  if(!lcv) return null;
+  const col = (fillCol || '#0f172a').toLowerCase();
+  if(!lcv._tintCache) lcv._tintCache = new Map();
+  if(lcv._tintCache.has(col)) return lcv._tintCache.get(col);
+  const c = document.createElement('canvas');
+  c.width = lcv.width; c.height = lcv.height;
+  const cx = c.getContext('2d');
+  cx.drawImage(lcv, 0, 0);
+  cx.globalCompositeOperation = 'source-in';
+  cx.fillStyle = col;
+  cx.fillRect(0, 0, c.width, c.height);
+  if(lcv._tintCache.size > 18) lcv._tintCache.clear();
+  lcv._tintCache.set(col, c);
+  return c;
+}
+
 function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
   const lcv = getProcessedLogoCanvas(slot);
   if(!lcv) return;
@@ -5591,6 +5733,8 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
   const isBuiltinFuda = (slot.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || slot.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || slot.logoName === 'fuda_logo_teal' || slot.logoName === 'fuda_logo_white');
   const effTextCol = isBuiltinFuda ? resolveLogoTextColor(slot, bgColor, effPadColor) : null;
   const shakeMode = isBuiltinFuda ? (slot.logoShakeColorMode || S.logoShakeColorMode || 'normal') : 'normal';
+  const l3dMode = slot.logo3dMode || S.logo3dMode || 'none';
+  const l3dDepth = (l3dMode !== 'none') ? Math.max(0, slot.logo3dDepthMm ?? S.logo3dDepthMm ?? 4.5) : 0;
 
   const placements = generateScatterPlacementsMm({
     W, H,
@@ -5608,9 +5752,14 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
     const sz = baseSz * (pt.scaleMul || 1);
     const lw = ar >= 1 ? sz : sz * ar;
     const lh = ar >= 1 ? sz / ar : sz;
+    const rotDeg = baseAng + (pt.addAngle || 0);
+    const rotRad = (rotDeg * Math.PI) / 180;
+    const extAngRad = (((slot.logo3dAngle ?? S.logo3dAngle ?? 45) * Math.PI) / 180) - rotRad;
+    const dx3d = l3dDepth > 0 ? Math.cos(extAngRad) * l3dDepth : 0;
+    const dy3d = l3dDepth > 0 ? Math.sin(extAngRad) * l3dDepth : 0;
     x.save();
     x.translate(pt.x, pt.y);
-    x.rotate(((baseAng + (pt.addAngle || 0)) * Math.PI) / 180);
+    x.rotate(rotRad);
 
     if(pm === 'silhouette'){
       if(isBuiltinFuda && FUDA_SOLID_SIL_PATH2D){
@@ -5618,6 +5767,23 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
         const scAvg = (sx + sy) * 0.5;
         const baseCloseSvg = 12; // 札本体と3D側面の間の3unit溝＆横揺れ線を埋めて完全不透明シルエット化する基本幅
         const expandSvg = (marginMm / Math.max(0.001, scAvg)) * 2;
+        if(l3dDepth > 0){
+          const padSideCol = shadeHexColor(effPadColor, 0.42);
+          for(let s = 4; s >= 1; s--){
+            const t = (s / 4) * 0.85;
+            x.save();
+            x.translate(-lw / 2 + dx3d * t, -lh / 2 + dy3d * t);
+            x.scale(sx, sy);
+            x.translate(-FUDA_VB_X, -FUDA_VB_Y);
+            x.lineJoin = 'round'; x.lineCap = 'round';
+            x.fillStyle = s === 4 ? 'rgba(0,0,0,0.32)' : padSideCol;
+            x.strokeStyle = s === 4 ? 'rgba(0,0,0,0.32)' : padSideCol;
+            x.lineWidth = baseCloseSvg + expandSvg + (strokeMm > 0 ? (strokeMm / Math.max(0.001, scAvg)) * 2 : 0);
+            x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero');
+            x.stroke(FUDA_SOLID_SIL_PATH2D);
+            x.restore();
+          }
+        }
         x.save();
         x.translate(-lw / 2, -lh / 2);
         x.scale(sx, sy);
@@ -5640,6 +5806,16 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
         x.restore();
       }else{
         const maxDimMm = Math.max(10, lw, lh);
+        if(l3dDepth > 0){
+          const padSideCv = getLogoAlphaSilhouetteCanvas(lcv, (marginMm + strokeMm) / maxDimMm, shadeHexColor(effPadColor, 0.42));
+          if(padSideCv){
+            const sw = lw + (marginMm + strokeMm) * 2, sh = lh + (marginMm + strokeMm) * 2;
+            for(let s = 4; s >= 1; s--){
+              const t = (s / 4) * 0.85;
+              x.drawImage(padSideCv, -sw / 2 + dx3d * t, -sh / 2 + dy3d * t, sw, sh);
+            }
+          }
+        }
         if(strokeMm > 0){
           const strkCv = getLogoAlphaSilhouetteCanvas(lcv, (marginMm + strokeMm) / maxDimMm, effStrokeColor);
           if(strkCv){
@@ -5655,6 +5831,16 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
       }
     }else if(pm === 'circle'){
       const rad = Math.max(lw, lh) * 0.5 + marginMm;
+      if(l3dDepth > 0){
+        const padSideCol = shadeHexColor(effPadColor, 0.42);
+        for(let s = 4; s >= 1; s--){
+          const t = (s / 4) * 0.85;
+          x.beginPath();
+          x.arc(dx3d * t, dy3d * t, rad + strokeMm * 0.5, 0, Math.PI * 2);
+          x.fillStyle = s === 4 ? 'rgba(0,0,0,0.32)' : padSideCol;
+          x.fill();
+        }
+      }
       x.beginPath();
       x.arc(0, 0, rad, 0, Math.PI * 2);
       x.fillStyle = effPadColor;
@@ -5667,6 +5853,17 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
     }else if(pm === 'roundRect'){
       const pw = lw + marginMm * 2, ph = lh + marginMm * 2;
       const r = Math.min(cornerMm, pw * 0.48, ph * 0.48);
+      if(l3dDepth > 0){
+        const padSideCol = shadeHexColor(effPadColor, 0.42);
+        for(let s = 4; s >= 1; s--){
+          const t = (s / 4) * 0.85;
+          x.beginPath();
+          if(x.roundRect && r > 0) x.roundRect(-pw/2 + dx3d * t, -ph/2 + dy3d * t, pw, ph, r);
+          else x.rect(-pw/2 + dx3d * t, -ph/2 + dy3d * t, pw, ph);
+          x.fillStyle = s === 4 ? 'rgba(0,0,0,0.32)' : padSideCol;
+          x.fill();
+        }
+      }
       x.beginPath();
       if(x.roundRect && r > 0) x.roundRect(-pw/2, -ph/2, pw, ph, r);
       else x.rect(-pw/2, -ph/2, pw, ph);
@@ -5678,6 +5875,52 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
         x.stroke();
       }
     }
+
+    // 🧊 ロゴ本体の3D立体押し出し（extrude / gold_block / emboss）
+    if(l3dDepth > 0){
+      let backSideCol = '#091e28', midSideCol = '#0f3647', bevelCol = '#ffffff';
+      if(l3dMode === 'gold_block'){
+        backSideCol = '#5c4008';
+        midSideCol = '#9a6f12';
+        bevelCol = '#fef08a';
+      }else if(l3dMode === 'emboss'){
+        const refCol = (pm !== 'none') ? effPadColor : (bgColor || '#046e7e');
+        backSideCol = shadeHexColor(refCol, 0.36);
+        midSideCol = shadeHexColor(refCol, 0.58);
+        bevelCol = '#ffffff';
+      }else{
+        const c3d = slot.logo3dColor || S.logo3dColor || '#0c2d3a';
+        backSideCol = shadeHexColor(c3d, 0.62);
+        midSideCol = c3d;
+        bevelCol = '#e0f2fe';
+      }
+      const shadowCv = getLogoTintedCanvas(lcv, '#000000');
+      const backCv = getLogoTintedCanvas(lcv, backSideCol);
+      const midCv = getLogoTintedCanvas(lcv, midSideCol);
+      const bevCv = getLogoTintedCanvas(lcv, bevelCol);
+      const steps = Math.max(5, Math.min(16, Math.round(l3dDepth * 1.8)));
+      if(shadowCv){
+        x.save();
+        x.globalAlpha = alpha * 0.34;
+        x.drawImage(shadowCv, -lw/2 + dx3d * 1.24, -lh/2 + dy3d * 1.24, lw, lh);
+        x.restore();
+      }
+      x.save();
+      x.globalAlpha = alpha;
+      for(let s = steps; s >= 1; s--){
+        const t = s / steps;
+        const sideImg = (t > 0.52) ? backCv : midCv;
+        if(sideImg){
+          x.drawImage(sideImg, -lw/2 + dx3d * t, -lh/2 + dy3d * t, lw, lh);
+        }
+      }
+      if(bevCv){
+        x.globalAlpha = alpha * 0.72;
+        x.drawImage(bevCv, -lw/2 - dx3d * 0.14, -lh/2 - dy3d * 0.14, lw, lh);
+      }
+      x.restore();
+    }
+
     // 札ロゴ内部の彫り文字「仲羽田・青年会」の7文字外周穴だけを指定した文字色（effTextCol）で塗りつぶす
     if(isBuiltinFuda && effTextCol && FUDA_TEXT_HOLES_PATH2D){
       const sx = lw / FUDA_VB_W, sy = lh / FUDA_VB_H;
@@ -5692,6 +5935,15 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
     }
     x.globalAlpha = alpha;
     x.drawImage(lcv, -lw/2, -lh/2, lw, lh);
+    if(l3dDepth > 0 && l3dMode === 'gold_block'){
+      const goldTintCv = getLogoTintedCanvas(lcv, '#eab308');
+      if(goldTintCv){
+        x.save();
+        x.globalAlpha = alpha * 0.42;
+        x.drawImage(goldTintCv, -lw/2, -lh/2, lw, lh);
+        x.restore();
+      }
+    }
     // 🔄 札の揺れの表現（左右の揺れ線・3D側面の斜線）の色反転描画
     if(isBuiltinFuda && shakeMode !== 'normal'){
       const { primaryCol, secondaryCol } = resolveFudaShakeColors(slot, bgColor, effPadColor, effTextCol);
@@ -8308,6 +8560,8 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
     }
 
     const apVec = getArarePadMetrics(cfg);
+    const pat3d = (cfg.pattern3dMode && cfg.pattern3dMode !== 'none') ? (cfg.pattern3dDepthMm || 2.2) : 0;
+    const pat3dSideCol = shadeHexColor(cfg.bgColor || '#046e7e', 0.42);
     const drawArareVec = (isFront) => {
       if(!ararePath) return;
       const effPad = Math.max(apVec.padMm, (isFront && ko > 0) ? ko : 0);
@@ -8330,6 +8584,18 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
         }
         x.restore();
       }
+      if(pat3d > 0){
+        x.save();
+        x.translate(pat3d * 0.78, pat3d * 0.78);
+        x.fillStyle = 'rgba(0,0,0,0.34)';
+        x.fill(ararePath);
+        x.restore();
+        x.save();
+        x.translate(pat3d * 0.42, pat3d * 0.42);
+        x.fillStyle = pat3dSideCol;
+        x.fill(ararePath);
+        x.restore();
+      }
       x.fillStyle = cfg.dotColor || '#ffffff';
       x.fill(ararePath);
     };
@@ -8340,6 +8606,26 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
         if(kakuPath) x.stroke(kakuPath);
         if(kakuSpotPath) x.stroke(kakuSpotPath);
         x.restore();
+      }
+      if(pat3d > 0){
+        for(const pth of [kakuPath, kakuSpotPath]){
+          if(!pth) continue;
+          x.save();
+          x.translate(pat3d * 0.85, pat3d * 0.85);
+          x.fillStyle = 'rgba(0,0,0,0.36)';
+          x.fill(pth);
+          x.restore();
+          x.save();
+          x.translate(pat3d * 0.46, pat3d * 0.46);
+          x.fillStyle = pat3dSideCol;
+          x.fill(pth);
+          x.restore();
+          x.save();
+          x.translate(-pat3d * 0.16, -pat3d * 0.16);
+          x.fillStyle = 'rgba(255,255,255,0.55)';
+          x.fill(pth);
+          x.restore();
+        }
       }
       if(kakuPath){
         x.fillStyle = cfg.kakuColor || '#ffffff';
@@ -10097,6 +10383,1101 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
   x.restore();
 }
 
+/* ============================================================================
+ * 🧊 3D立体プレビュー＆3D厚み加工レンダリングエンジン (Canvas 2D Perspective 3D Mesh)
+ * - 👕 ダボシャツ【上だけ】3D (dabo_top)
+ * - 👕👖 ダボ【上下セット】3D (dabo_both)
+ * - 👕＋👕👖 【上だけ＆上下 両方同時】3D (dabo_compare)
+ * - 👖 ダボパンツ【下だけ】3D (dabo_pants)
+ * - 🧣 手ぬぐい 3D立体クロス (tenugui)
+ * - 🪨 ロゴ・札 3D立体レリーフ看板 (relief)
+ * ============================================================================ */
+let _3D_TEX_CACHE_KEY = '';
+let _3D_TEX_CACHE = null;
+
+function build3dGarmentTextures(partMap, bodyCfg, bodyVec){
+  const activeSlotsJson = (S.showLogo && Array.isArray(S.logoSlots)) ? JSON.stringify(S.logoSlots) : '';
+  const key = [
+    bodyCfg.mode, bodyCfg.W, bodyCfg.H, bodyCfg.bgColor, bodyCfg.kakuColor, bodyCfg.dotColor,
+    bodyCfg.kakuMotif, bodyCfg.seinenSpotMode, bodyCfg.seinenSpotColor, bodyCfg.seinenSpotX, bodyCfg.seinenSpotY,
+    bodyCfg.kakuSize, bodyCfg.kakuScale, bodyCfg.kakuDensity, bodyCfg.kakuWeight, bodyCfg.kakuAngle,
+    bodyCfg.count, bodyCfg.scale, bodyCfg.shape, bodyCfg.ararePadMode, bodyCfg.ararePadMarginMm, bodyCfg.ararePadStrokeMm,
+    bodyCfg.pattern3dMode, bodyCfg.pattern3dDepthMm,
+    S.showLogo, S.logoDataUrl, S.logoName, S.logoColor, S.logoMono, S.logoTextColor, S.logoTextColorMode, S.logoShakeColorMode,
+    S.logoSize, S.logoAngle, S.logoX, S.logoY, S.logoPadMode, S.logoPadColor, S.logoPadColorMode, S.logoPadMarginMm, S.logoPadCornerMm, S.logoPadStrokeMm, S.logoPadStrokeColor,
+    S.logo3dMode, S.logo3dDepthMm, S.logo3dAngle, S.logo3dColor,
+    S.showText, S.customTextStr, S.customTextSubStr, S.customTextFrame, S.customTextColor, S.customTextBg, S.textSize, S.textX, S.textY,
+    S.showCrest, S.crestSize, S.crestX, S.crestY, S.crestFg, S.crestBg,
+    S.daboStyle, S.daboCutMode, S.daboLogoTarget, S.daboStripRot, S.daboPatScale, S.daboCollarMode, S.daboPocketMode, S.daboSleevePreset,
+    JSON.stringify(S.daboCutOffset || {}), activeSlotsJson, PROC_LOGO_KEY
+  ].join('|');
+
+  if(_3D_TEX_CACHE && _3D_TEX_CACHE_KEY === key) return _3D_TEX_CACHE;
+
+  const isKoi = (S.daboStyle === 'koikuchi');
+  const collarCol = getCollarFillColor(bodyCfg);
+
+  // 1. 前身頃テクスチャ (frontTorsoCv: 320 x 440)
+  const fW = 320, fH = 440;
+  const frontTorsoCv = document.createElement('canvas');
+  frontTorsoCv.width = fW; frontTorsoCv.height = fH;
+  const fx = frontTorsoCv.getContext('2d');
+  fx.fillStyle = bodyCfg.bgColor || '#046e7e';
+  fx.fillRect(0, 0, fW, fH);
+  {
+    const sc = fH / 206; // 206 units -> 440px
+    fx.save();
+    fx.translate(fW * 0.5, 0);
+    fx.scale(sc, sc);
+    const shldrW = 66, bodyH = 206, placketHalfW = 5.5;
+    // 向かって左: 右前身頃 (frontR)
+    fx.save();
+    fx.beginPath(); fx.rect(-shldrW - 10, 0, shldrW + 10 + placketHalfW, bodyH); fx.clip();
+    drawCroppedPiece(fx, partMap.frontR, -shldrW, 0, shldrW + placketHalfW, bodyH, 0);
+    fx.restore();
+    // 向かって右: 左前身頃 (frontL)
+    fx.save();
+    fx.beginPath(); fx.rect(-placketHalfW, 0, shldrW + 10 + placketHalfW, bodyH); fx.clip();
+    drawCroppedPiece(fx, partMap.frontL, -placketHalfW, 0, shldrW + placketHalfW, bodyH, 0);
+    fx.restore();
+    // 垂直な前立て＋5つボタン
+    const plTopY = 14;
+    if(collarCol){
+      fx.fillStyle = collarCol;
+      fx.fillRect(-placketHalfW, plTopY, placketHalfW * 2, bodyH - plTopY);
+    }else{
+      fx.fillStyle = 'rgba(255,255,255,0.05)';
+      fx.fillRect(-placketHalfW, plTopY, placketHalfW * 2, bodyH - plTopY);
+    }
+    fx.strokeStyle = 'rgba(0,0,0,0.55)';
+    fx.lineWidth = 1.4;
+    fx.beginPath();
+    fx.moveTo(-placketHalfW, plTopY); fx.lineTo(-placketHalfW, bodyH);
+    fx.moveTo(placketHalfW, plTopY);  fx.lineTo(placketHalfW, bodyH);
+    fx.stroke();
+    fx.strokeStyle = 'rgba(255,255,255,0.32)';
+    fx.lineWidth = 0.8;
+    fx.setLineDash([2.5, 2.5]);
+    fx.beginPath();
+    fx.moveTo(-placketHalfW + 1.8, plTopY); fx.lineTo(-placketHalfW + 1.8, bodyH);
+    fx.moveTo(placketHalfW - 1.8, plTopY);  fx.lineTo(placketHalfW - 1.8, bodyH);
+    fx.stroke();
+    fx.setLineDash([]);
+    const btnFill = collarCol || bodyCfg.kakuColor || '#ffffff';
+    for(let i = 0; i < 5; i++){
+      const by = plTopY + 14 + ((bodyH - 42 - (plTopY + 14)) / 4) * i;
+      fx.strokeStyle = btnFill; fx.lineWidth = 1.3;
+      fx.beginPath(); fx.moveTo(-placketHalfW, by); fx.lineTo(1.5, by); fx.stroke();
+      fx.fillStyle = btnFill;
+      fx.beginPath(); fx.arc(0, by, 2.6, 0, Math.PI * 2); fx.fill();
+      fx.strokeStyle = 'rgba(0,0,0,0.55)'; fx.lineWidth = 0.8; fx.stroke();
+    }
+    // 左胸ポケット
+    if(S.daboPocketMode !== 'none'){
+      const pkX = 14, pkY = 56, pkW = 32, pkH = 36;
+      fx.save();
+      fx.shadowColor = 'rgba(0,0,0,0.38)'; fx.shadowBlur = 4; fx.shadowOffsetY = 1.5;
+      fx.beginPath();
+      fx.moveTo(pkX, pkY); fx.lineTo(pkX + pkW, pkY);
+      fx.lineTo(pkX + pkW, pkY + pkH - 4); fx.lineTo(pkX + pkW - 4, pkY + pkH);
+      fx.lineTo(pkX + 4, pkY + pkH); fx.lineTo(pkX, pkY + pkH - 4);
+      fx.closePath();
+      fx.save(); fx.clip();
+      if(S.daboPocketMode === 'bias'){
+        drawCroppedPiece(fx, partMap.pocket || partMap.frontL, pkX - 8, pkY - 8, pkW + 16, pkH + 16, 45);
+      }else if(partMap.frontL && (S.daboLogoTarget === 'all' || (partMap.frontL.hasLogo && (!partMap.pocket || !partMap.pocket.hasLogo || S.daboLogoTarget === 'frontLOnly' || S.daboLogoTarget === 'frontOnly')))){
+        drawCroppedPiece(fx, partMap.frontL, -placketHalfW, 0, shldrW + placketHalfW, bodyH, 0);
+      }else{
+        drawCroppedPiece(fx, partMap.pocket || partMap.frontL, pkX, pkY, pkW, pkH, 0);
+      }
+      fx.fillStyle = 'rgba(0,0,0,0.18)'; fx.fillRect(pkX, pkY, pkW, 4.5);
+      fx.restore();
+      fx.strokeStyle = 'rgba(0,0,0,0.52)'; fx.lineWidth = 1.1; fx.stroke();
+      fx.strokeStyle = 'rgba(255,255,255,0.42)'; fx.lineWidth = 0.8; fx.setLineDash([2, 2]); fx.stroke(); fx.setLineDash([]);
+      fx.restore();
+    }
+    fx.restore();
+  }
+
+  // 2. 後身頃テクスチャ (backTorsoCv: 320 x 440)
+  const backTorsoCv = document.createElement('canvas');
+  backTorsoCv.width = fW; backTorsoCv.height = fH;
+  const bx = backTorsoCv.getContext('2d');
+  bx.fillStyle = bodyCfg.bgColor || '#046e7e';
+  bx.fillRect(0, 0, fW, fH);
+  {
+    const sc = fH / 206;
+    bx.save();
+    bx.translate(fW * 0.5, 0);
+    bx.scale(sc, sc);
+    const shldrW = 66, bodyH = 206;
+    if((S.daboCutMode === 'backCenter' || S.daboCutMode === 'adult8_crest') && partMap.backCenter){
+      const centerHalfW = 44;
+      bx.save(); bx.beginPath(); bx.rect(-shldrW - 10, 0, shldrW + 10 - centerHalfW, bodyH); bx.clip();
+      drawCroppedPiece(bx, partMap.backSideL || partMap.backCenter, -shldrW, 0, shldrW - centerHalfW + 4, bodyH, 0);
+      bx.restore();
+      bx.save(); bx.beginPath(); bx.rect(centerHalfW, 0, shldrW + 10 - centerHalfW, bodyH); bx.clip();
+      drawCroppedPiece(bx, partMap.backSideR || partMap.backCenter, centerHalfW - 2, 0, shldrW - centerHalfW + 4, bodyH, 0);
+      bx.restore();
+      bx.save(); bx.beginPath(); bx.rect(-centerHalfW, 0, centerHalfW * 2, bodyH); bx.clip();
+      drawCroppedPiece(bx, partMap.backCenter, -centerHalfW, 0, centerHalfW * 2, bodyH, 0);
+      bx.restore();
+      bx.strokeStyle = 'rgba(0,0,0,0.38)'; bx.lineWidth = 1.1; bx.setLineDash([3, 3]);
+      bx.beginPath();
+      bx.moveTo(-centerHalfW, 0); bx.lineTo(-centerHalfW, bodyH);
+      bx.moveTo(centerHalfW, 0);  bx.lineTo(centerHalfW, bodyH);
+      bx.stroke(); bx.setLineDash([]);
+    }else{
+      bx.save(); bx.beginPath(); bx.rect(-shldrW - 10, 0, shldrW + 10, bodyH); bx.clip();
+      drawCroppedPiece(bx, partMap.backL, -shldrW, 0, shldrW, bodyH, 0);
+      bx.restore();
+      bx.save(); bx.beginPath(); bx.rect(0, 0, shldrW + 10, bodyH); bx.clip();
+      drawCroppedPiece(bx, partMap.backR, 0, 0, shldrW, bodyH, 0);
+      bx.restore();
+      bx.strokeStyle = 'rgba(0,0,0,0.48)'; bx.lineWidth = 1.3;
+      bx.beginPath(); bx.moveTo(0, 0); bx.lineTo(0, bodyH); bx.stroke();
+    }
+    bx.restore();
+  }
+
+  // 3. 左右の袖テクスチャ (sleeveRCv, sleeveLCv: 220 x 180)
+  const makeSleeveTex = (entry) => {
+    const sw = 220, sh = 180;
+    const scv = document.createElement('canvas');
+    scv.width = sw; scv.height = sh;
+    const sx = scv.getContext('2d');
+    sx.fillStyle = bodyCfg.bgColor || '#046e7e';
+    sx.fillRect(0, 0, sw, sh);
+    const sc = sw / 108;
+    sx.save();
+    sx.scale(sc, sc);
+    drawCroppedPiece(sx, entry, 0, 0, 108, sh / sc, 0);
+    sx.restore();
+    return scv;
+  };
+  const sleeveRCv = makeSleeveTex(partMap.sleeveR || partMap.frontR);
+  const sleeveLCv = makeSleeveTex(partMap.sleeveL || partMap.frontL);
+
+  // 4. ダボパンツ前面・背面テクスチャ (frontPantsCv, backPantsCv: 280 x 360)
+  const pW = 280, pH = 360;
+  const makePantsTex = (side) => {
+    const pcv = document.createElement('canvas');
+    pcv.width = pW; pcv.height = pH;
+    const px = pcv.getContext('2d');
+    px.fillStyle = bodyCfg.bgColor || '#046e7e';
+    px.fillRect(0, 0, pW, pH);
+    const sc = pH / 176;
+    px.save();
+    px.translate(pW * 0.5, 0);
+    px.scale(sc, sc);
+    const hipW = 64, pantsH = 176;
+    const leftLegEntry = (side === 'front')
+      ? (partMap.frontR || partMap.backCenter)
+      : (partMap.backL || partMap.backCenter || partMap.frontL);
+    const rightLegEntry = (side === 'front')
+      ? (partMap.frontL || partMap.backCenter)
+      : (partMap.backR || partMap.backCenter || partMap.frontR);
+    const refEntry = leftLegEntry || rightLegEntry;
+    const refCv = refEntry && refEntry.cv ? refEntry.cv : null;
+    const longPx = refCv ? Math.max(1, Math.max(refCv.width, refCv.height)) : 1035;
+    const pantsFixedScale = pantsH / (0.86 * longPx);
+
+    px.save(); px.beginPath(); px.rect(-hipW - 6, 0, hipW + 6, pantsH); px.clip();
+    drawCroppedPiece(px, leftLegEntry, -hipW, 0, hipW, pantsH, 0, undefined, pantsFixedScale);
+    px.restore();
+
+    px.save(); px.beginPath(); px.rect(0, 0, hipW + 6, pantsH); px.clip();
+    drawCroppedPiece(px, rightLegEntry, 0, 0, hipW, pantsH, 0, undefined, pantsFixedScale);
+    px.restore();
+
+    // ウエスト総ゴム帯
+    px.fillStyle = 'rgba(0,0,0,0.26)';
+    px.fillRect(-hipW - 6, 0, (hipW + 6) * 2, 14);
+    px.strokeStyle = 'rgba(255,255,255,0.28)';
+    px.lineWidth = 0.9;
+    px.setLineDash([2.5, 2.5]);
+    px.beginPath(); px.moveTo(-hipW, 7); px.lineTo(hipW, 7); px.stroke();
+    px.setLineDash([]);
+
+    if(side === 'front'){
+      // 前立てJステッチ＋腰紐
+      px.strokeStyle = 'rgba(0,0,0,0.5)'; px.lineWidth = 1.3;
+      px.beginPath(); px.moveTo(0, 14); px.lineTo(0, 68); px.stroke();
+      px.strokeStyle = '#f8fafc'; px.lineWidth = 2.2; px.lineCap = 'round';
+      px.beginPath();
+      px.moveTo(-5, 7); px.quadraticCurveTo(0, 9, 5, 7);
+      px.moveTo(0, 8); px.bezierCurveTo(-15, 2, -16, 17, 0, 10);
+      px.moveTo(0, 8); px.bezierCurveTo(15, 2, 16, 17, 0, 10);
+      px.moveTo(-1, 9); px.quadraticCurveTo(-11, 24, -8, 38);
+      px.moveTo(1, 9);  px.quadraticCurveTo(11, 24, 9, 36);
+      px.stroke();
+    }else if(S.daboPocketMode !== 'none'){
+      // 背面・右尻ポケット
+      const pkX = 11, pkY = 26, pkW = 36, pkH = 40;
+      px.save();
+      px.shadowColor = 'rgba(0,0,0,0.38)'; px.shadowBlur = 4; px.shadowOffsetY = 1.5;
+      px.beginPath();
+      px.moveTo(pkX, pkY); px.lineTo(pkX + pkW, pkY);
+      px.lineTo(pkX + pkW, pkY + pkH - 7); px.lineTo(pkX + pkW * 0.5, pkY + pkH);
+      px.lineTo(pkX, pkY + pkH - 7); px.closePath();
+      px.save(); px.clip();
+      const pkRot = (S.daboPocketMode === 'bias') ? 45 : 0;
+      const pkEntry = (S.daboLogoTarget === 'pocketOnly' || S.daboLogoTarget === 'backPocket')
+        ? (partMap.pocket || rightLegEntry)
+        : rightLegEntry;
+      if(pkRot === 0 && pkEntry === rightLegEntry){
+        drawCroppedPiece(px, rightLegEntry, 0, 0, hipW, pantsH, 0, undefined, pantsFixedScale);
+      }else{
+        drawCroppedPiece(px, partMap.pocket || rightLegEntry, pkX, pkY, pkW, pkH, pkRot, undefined, pantsFixedScale);
+      }
+      px.fillStyle = 'rgba(0,0,0,0.18)'; px.fillRect(pkX, pkY, pkW, 4.5);
+      px.restore();
+      px.strokeStyle = 'rgba(0,0,0,0.58)'; px.lineWidth = 1.2; px.stroke();
+      px.strokeStyle = 'rgba(255,255,255,0.42)'; px.lineWidth = 0.8; px.setLineDash([2.2, 2.2]); px.stroke(); px.setLineDash([]);
+      px.restore();
+    }
+    px.restore();
+    return pcv;
+  };
+  const frontPantsCv = makePantsTex('front');
+  const backPantsCv = makePantsTex('back');
+
+  // 5. 手ぬぐい全体テクスチャ (tenuguiFullCv)
+  const tAr = (bodyCfg.W || 350) / Math.max(1, bodyCfg.H || 900);
+  const tW = tAr >= 1 ? 760 : Math.round(760 * tAr);
+  const tH = tAr >= 1 ? Math.round(760 / tAr) : 760;
+  const tenuguiFullCv = document.createElement('canvas');
+  tenuguiFullCv.width = Math.max(180, tW);
+  tenuguiFullCv.height = Math.max(180, tH);
+  const tx = tenuguiFullCv.getContext('2d');
+  bodyVec.logoStrip.drawVector(tx, 0, 0, tenuguiFullCv.width, tenuguiFullCv.height);
+
+  _3D_TEX_CACHE_KEY = key;
+  _3D_TEX_CACHE = { frontTorsoCv, backTorsoCv, sleeveRCv, sleeveLCv, frontPantsCv, backPantsCv, tenuguiFullCv };
+  return _3D_TEX_CACHE;
+}
+
+// 3D空間の4頂点クワッド (P00, P10, P11, P01) にテクスチャのUV領域 [u0..u1, v0..v1] をシームレス投影＋陰影描画
+function drawTexturedQuad2D(x, texCv, u0, v0, u1, v1, p00, p10, p11, p01, lightMul, specAdd){
+  const cx = (p00.sx + p10.sx + p11.sx + p01.sx) * 0.25;
+  const cy = (p00.sy + p10.sy + p11.sy + p01.sy) * 0.25;
+  // 隣接ポリゴン間のサブピクセル隙間を防ぐため重なりマージン(0.55px)を外側へ広げる
+  const expandPt = (p) => {
+    const dx = p.sx - cx, dy = p.sy - cy;
+    const len = Math.hypot(dx, dy) || 1;
+    return { x: p.sx + (dx / len) * 0.58, y: p.sy + (dy / len) * 0.58 };
+  };
+  const q00 = expandPt(p00), q10 = expandPt(p10), q11 = expandPt(p11), q01 = expandPt(p01);
+
+  x.save();
+  x.beginPath();
+  x.moveTo(q00.x, q00.y);
+  x.lineTo(q10.x, q10.y);
+  x.lineTo(q11.x, q11.y);
+  x.lineTo(q01.x, q01.y);
+  x.closePath();
+  x.clip();
+
+  if(texCv){
+    const tw = texCv.width, th = texCv.height;
+    const sx = u0 * tw, sy = v0 * th;
+    const sw = (u1 - u0) * tw, sh = (v1 - v0) * th;
+    if(Math.abs(sw) > 0.05 && Math.abs(sh) > 0.05){
+      const scx = sx + sw * 0.5, scy = sy + sh * 0.5;
+      const vx = ((p10.sx - p00.sx) + (p11.sx - p01.sx)) * 0.5;
+      const vy = ((p10.sy - p00.sy) + (p11.sy - p01.sy)) * 0.5;
+      const ux = ((p01.sx - p00.sx) + (p11.sx - p10.sx)) * 0.5;
+      const uy = ((p01.sy - p00.sy) + (p11.sy - p10.sy)) * 0.5;
+      const a = vx / sw, b = vy / sw;
+      const c = ux / sh, d = uy / sh;
+      const e = cx - a * scx - c * scy;
+      const f = cy - b * scx - d * scy;
+      x.transform(a, b, c, d, e, f);
+      x.drawImage(texCv, 0, 0);
+    }
+  }
+  x.restore();
+
+  // 3Dライティング（陰影シェーディング＆ハイライト）
+  if(lightMul < 0.99 || specAdd > 0.01){
+    x.save();
+    x.beginPath();
+    x.moveTo(q00.x, q00.y);
+    x.lineTo(q10.x, q10.y);
+    x.lineTo(q11.x, q11.y);
+    x.lineTo(q01.x, q01.y);
+    x.closePath();
+    if(lightMul < 0.99){
+      const darkAlpha = Math.min(0.76, Math.max(0, (1 - lightMul) * 0.92));
+      x.fillStyle = `rgba(6, 10, 20, ${darkAlpha.toFixed(3)})`;
+      x.fill();
+    }
+    if(specAdd > 0.01){
+      const specAlpha = Math.min(0.45, specAdd);
+      x.fillStyle = `rgba(255, 255, 255, ${specAlpha.toFixed(3)})`;
+      x.fill();
+    }
+    x.restore();
+  }
+}
+
+function draw3dTurntablePedestal(x, cx, floorY, radius, scale, yawRad, pitchRad, labelTitle, subTitle, accentCol){
+  const cyaw = Math.cos(yawRad), syaw = Math.sin(yawRad);
+  const cpitch = Math.cos(pitchRad), spitch = Math.sin(pitchRad);
+  const projFloor = (px, py, pz) => {
+    const x1 = px * cyaw + pz * syaw;
+    const z1 = -px * syaw + pz * cyaw;
+    const y2 = py * cpitch - z1 * spitch;
+    const z2 = py * spitch + z1 * cpitch;
+    const fov = 720;
+    const persp = fov / Math.max(200, fov - z2);
+    return { sx: cx + x1 * persp * scale, sy: floorY + y2 * persp * scale, z: z2 };
+  };
+
+  // 床面ドロップシャドウ＆3Dターンテーブルリング
+  x.save();
+  for(const rMul of [1.05, 0.78, 0.48]){
+    x.beginPath();
+    const segs = 48;
+    for(let i = 0; i <= segs; i++){
+      const a = (i / segs) * Math.PI * 2;
+      const p = projFloor(Math.cos(a) * radius * rMul, 0, Math.sin(a) * radius * rMul);
+      if(i === 0) x.moveTo(p.sx, p.sy);
+      else x.lineTo(p.sx, p.sy);
+    }
+    x.closePath();
+    if(rMul === 1.05){
+      const g = x.createRadialGradient(cx, floorY, radius * scale * 0.1, cx, floorY, radius * scale * 1.15);
+      g.addColorStop(0, 'rgba(2, 6, 23, 0.65)');
+      g.addColorStop(0.7, 'rgba(15, 23, 42, 0.35)');
+      g.addColorStop(1, 'rgba(56, 189, 248, 0.08)');
+      x.fillStyle = g;
+      x.fill();
+      x.strokeStyle = accentCol || 'rgba(56, 189, 248, 0.55)';
+      x.lineWidth = 1.6;
+      x.stroke();
+    }else{
+      x.strokeStyle = 'rgba(148, 163, 184, 0.22)';
+      x.lineWidth = 1.0;
+      x.setLineDash([4, 4]);
+      x.stroke();
+      x.setLineDash([]);
+    }
+  }
+  // 放射グリッド線と方位マーカー (FRONT / BACK / L / R)
+  for(let d = 0; d < 360; d += 30){
+    const a = (d * Math.PI) / 180;
+    const p0 = projFloor(Math.cos(a) * radius * 0.28, 0, Math.sin(a) * radius * 0.28);
+    const p1 = projFloor(Math.cos(a) * radius * 1.05, 0, Math.sin(a) * radius * 1.05);
+    x.strokeStyle = (d % 90 === 0) ? 'rgba(56, 189, 248, 0.38)' : 'rgba(148, 163, 184, 0.14)';
+    x.lineWidth = (d % 90 === 0) ? 1.3 : 0.8;
+    x.beginPath(); x.moveTo(p0.sx, p0.sy); x.lineTo(p1.sx, p1.sy); x.stroke();
+  }
+  const frontMarker = projFloor(0, 0, radius * 1.16);
+  const backMarker  = projFloor(0, 0, -radius * 1.16);
+  x.font = '700 10px sans-serif';
+  x.textAlign = 'center';
+  x.fillStyle = '#38bdf8';
+  x.fillText('▲ FRONT(前)', frontMarker.sx, frontMarker.sy + 4);
+  x.fillStyle = '#fbbf24';
+  x.fillText('▲ BACK(背中)', backMarker.sx, backMarker.sy + 4);
+
+  if(labelTitle){
+    x.fillStyle = 'rgba(15, 23, 42, 0.88)';
+    x.strokeStyle = accentCol || '#38bdf8';
+    x.lineWidth = 1.4;
+    const bw = Math.min(280, Math.max(170, labelTitle.length * 12 + 26));
+    x.beginPath(); x.roundRect(cx - bw * 0.5, floorY + radius * scale * 0.34, bw, subTitle ? 34 : 22, 99); x.fill(); x.stroke();
+    x.fillStyle = '#ffffff';
+    x.font = '700 11.5px sans-serif';
+    x.fillText(labelTitle, cx, floorY + radius * scale * 0.34 + 14, bw - 14);
+    if(subTitle){
+      x.fillStyle = '#bae6fd';
+      x.font = '700 9.5px sans-serif';
+      x.fillText(subTitle, cx, floorY + radius * scale * 0.34 + 27, bw - 14);
+    }
+  }
+  x.restore();
+}
+
+function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShirt, includePants, tex, bodyCfg, badgeTitle, badgeAccent){
+  const isKoi = (S.daboStyle === 'koikuchi');
+  const collarCol = getCollarFillColor(bodyCfg) || bodyCfg.bgColor || '#046e7e';
+  const yaw = (yawDeg * Math.PI) / 180;
+  const pitch = (pitchDeg * Math.PI) / 180;
+  const cyaw = Math.cos(yaw), syaw = Math.sin(yaw);
+  const cpitch = Math.cos(pitch), spitch = Math.sin(pitch);
+
+  const yShift = (includeShirt && includePants) ? -66 : (includePants ? -18 : 8);
+  const floorY = cy + ((includeShirt && includePants) ? 168 : 124) * scale;
+  draw3dTurntablePedestal(x, cx, floorY, (includeShirt && includePants) ? 108 : 116, scale, yaw, Math.max(0.22, pitch), null, null, badgeAccent);
+
+  // 上部タイトルバッジ
+  if(badgeTitle){
+    x.save();
+    const topBadgeY = cy - ((includeShirt && includePants) ? 194 : 145) * scale;
+    const bw = Math.min(310, Math.max(195, badgeTitle.length * 12.5 + 28));
+    x.fillStyle = badgeAccent || '#0284c7';
+    x.beginPath(); x.roundRect(cx - bw * 0.5, topBadgeY, bw, 23, 99); x.fill();
+    x.fillStyle = '#ffffff';
+    x.font = '700 11.5px sans-serif';
+    x.textAlign = 'center';
+    x.fillText(badgeTitle, cx, topBadgeY + 15.5, bw - 14);
+    x.restore();
+  }
+
+  const proj = (px, py0, pz) => {
+    const py = py0 + yShift;
+    const x1 = px * cyaw + pz * syaw;
+    const z1 = -px * syaw + pz * cyaw;
+    const y2 = py * cpitch - z1 * spitch;
+    const z2 = py * spitch + z1 * cpitch;
+    const fov = 720;
+    const persp = fov / Math.max(200, fov - z2);
+    return { sx: cx + x1 * persp * scale, sy: cy + y2 * persp * scale, z: z2 };
+  };
+
+  const calcLight = (nx, ny, nz) => {
+    const rnx = nx * cyaw + nz * syaw;
+    const z1 = -nx * syaw + nz * cyaw;
+    const rny = ny * cpitch - z1 * spitch;
+    const rnz = ny * spitch + z1 * cpitch;
+    const d1 = Math.max(0, rnx * (-0.38) + rny * (-0.42) + rnz * 0.82);
+    const d2 = Math.max(0, rnx * 0.55 + rny * 0.18 + rnz * 0.81);
+    const rim = Math.pow(1 - Math.min(1, Math.abs(rnz)), 2.2) * 0.22;
+    const lightMul = Math.min(1.06, 0.34 + d1 * 0.62 + d2 * 0.22 + rim);
+    const specAdd = Math.pow(Math.max(0, rnz * 0.86 - rnx * 0.32 - rny * 0.38), 14) * 0.18 + rim * 0.35;
+    return { lightMul, specAdd, rnz };
+  };
+
+  const quads = [];
+
+  // -------------------------------------------------------------------------
+  // 1. 👕 ダボシャツ / 鯉口シャツ 3Dメッシュ生成 (身頃・襟・前立て・ポケット・左右3D袖)
+  // -------------------------------------------------------------------------
+  if(includeShirt){
+    const yTop = -96, yBot = 88, torsoH = yBot - yTop; // 184
+    const shldrW = isKoi ? 56 : 64;
+    const waistW = isKoi ? 49 : 62;
+    const hemW   = isKoi ? 52 : 64;
+    const NU = 28, NV = 14;
+
+    const getTorsoPt = (theta, v) => {
+      const c = Math.cos(theta), s = Math.sin(theta);
+      // 襟ぐりの深さ（前＝丸首、後ろ＝浅いカーブ）＋なで肩傾斜
+      const neckDip = (c > 0)
+        ? Math.pow(c, 1.8) * (isKoi ? 13 : 16) * Math.max(0, 1 - v * 2.4)
+        : Math.pow(-c, 1.8) * 5 * Math.max(0, 1 - v * 2.4);
+      const shldrSlope = Math.pow(Math.abs(s), 1.35) * (isKoi ? 6.5 : 4.5) * Math.max(0, 1 - v * 0.75);
+      const py = yTop + v * torsoH + neckDip + shldrSlope;
+
+      // 身幅 rx(v) と 胸板・背中の立体厚み rz(v)
+      let rx = (v < 0.45)
+        ? (shldrW * (1 - v / 0.45) + waistW * (v / 0.45))
+        : (waistW * (1 - (v - 0.45) / 0.55) + hemW * ((v - 0.45) / 0.55));
+      let rz = 25.5 + (c > 0 ? 4.2 * Math.sin(v * Math.PI * 0.85) : 2.2 * Math.sin(v * Math.PI * 0.75));
+      // 自然な布の3Dドレープひだ
+      const drape = Math.sin(theta * 6 + v * 3.2) * 1.15 * Math.pow(v, 0.75);
+      rx += drape;
+      rz += drape * 0.6;
+      // 前立て（前中心）と左胸ポケットの3D浮き出し
+      if(c > 0.95 && v > 0.08) rz += 1.25;
+      if(S.daboPocketMode !== 'none' && theta > 0.20 && theta < 0.68 && v > 0.27 && v < 0.46) rz += 1.35;
+
+      const px = s * rx;
+      const pz = c * rz;
+      const nx = s / Math.max(1, rx), nz = c / Math.max(1, rz), ny = -0.06;
+      const nLen = Math.hypot(nx, ny, nz) || 1;
+      return { px, py, pz, nx: nx / nLen, ny: ny / nLen, nz: nz / nLen };
+    };
+
+    // 1-A. 首元の内側マネキン・裏地リング (v = 0..0.08)
+    for(let iu = 0; iu < NU; iu++){
+      const th0 = (iu / NU) * Math.PI * 2;
+      const th1 = ((iu + 1) / NU) * Math.PI * 2;
+      const a00 = getTorsoPt(th0, 0), a10 = getTorsoPt(th1, 0);
+      const a01 = getTorsoPt(th0, 0.09), a11 = getTorsoPt(th1, 0.09);
+      const p00 = proj(a00.px * 0.42, a00.py - 3, a00.pz * 0.42);
+      const p10 = proj(a10.px * 0.42, a10.py - 3, a10.pz * 0.42);
+      const p11 = proj(a11.px * 0.96, a11.py, a11.pz * 0.96);
+      const p01 = proj(a01.px * 0.96, a01.py, a01.pz * 0.96);
+      quads.push({
+        z: (p00.z + p10.z + p11.z + p01.z) * 0.25 - 6,
+        texCv: null, fillCol: shadeHexColor(collarCol, 0.35),
+        p00, p10, p11, p01, lightMul: 0.55, specAdd: 0
+      });
+    }
+
+    // 1-B. 身頃3Dメッシュ本体
+    for(let iv = 0; iv < NV; iv++){
+      const v0 = iv / NV, v1 = (iv + 1) / NV;
+      for(let iu = 0; iu < NU; iu++){
+        const th0 = (iu / NU) * Math.PI * 2 - Math.PI; // -PI .. +PI
+        const th1 = ((iu + 1) / NU) * Math.PI * 2 - Math.PI;
+        const thMid = (th0 + th1) * 0.5;
+        const isFront = Math.cos(thMid) >= 0;
+
+        const g00 = getTorsoPt(th0, v0), g10 = getTorsoPt(th1, v0);
+        const g11 = getTorsoPt(th1, v1), g01 = getTorsoPt(th0, v1);
+        const p00 = proj(g00.px, g00.py, g00.pz);
+        const p10 = proj(g10.px, g10.py, g10.pz);
+        const p11 = proj(g11.px, g11.py, g11.pz);
+        const p01 = proj(g01.px, g01.py, g01.pz);
+        const { lightMul, specAdd, rnz } = calcLight(
+          (g00.nx + g11.nx) * 0.5,
+          (g00.ny + g11.ny) * 0.5,
+          (g00.nz + g11.nz) * 0.5
+        );
+        // 背面カリング（首元・裾端以外は裏向き面をスキップして高速＆クリーンに描画）
+        if(rnz < -0.18 && iv > 1 && iv < NV - 1) continue;
+
+        let u0, u1, texCv;
+        if(isFront){
+          // th in [-PI/2 .. +PI/2] -> u in [0 .. 1]
+          u0 = Math.max(0, Math.min(1, 0.5 + th0 / Math.PI));
+          u1 = Math.max(0, Math.min(1, 0.5 + th1 / Math.PI));
+          texCv = tex.frontTorsoCv;
+        }else{
+          // 背面: th in [PI/2 .. PI] or [-PI .. -PI/2] -> u in [0 .. 1] (向かって左=backL, 向かって右=backR)
+          const wrapAngle = (th) => {
+            let d = Math.PI - th; // th = +PI/2 -> +PI/2, th = PI -> 0, th = -PI -> 2*PI -> 0, th = -PI/2 -> -PI/2
+            while(d > Math.PI) d -= Math.PI * 2;
+            while(d < -Math.PI) d += Math.PI * 2;
+            return 0.5 + d / Math.PI;
+          };
+          u0 = Math.max(0, Math.min(1, wrapAngle(th0)));
+          u1 = Math.max(0, Math.min(1, wrapAngle(th1)));
+          texCv = tex.backTorsoCv;
+        }
+        quads.push({
+          z: (p00.z + p10.z + p11.z + p01.z) * 0.25,
+          texCv, u0, v0, u1, v1,
+          p00, p10, p11, p01,
+          lightMul: rnz < 0 ? lightMul * 0.55 : lightMul,
+          specAdd: rnz < 0 ? 0 : specAdd
+        });
+      }
+    }
+
+    // 1-C. 左右の3D立体袖（円筒テーパードチューブ）
+    const slvSpanX = isKoi ? 72 : 78;
+    const slvDropY = isKoi ? 32 : 24;
+    const armDropR = isKoi ? 23 : 28;
+    const cuffR    = isKoi ? 13 : 25;
+    const N_SLEN = 9, N_SANG = 14;
+
+    for(const dir of [-1, 1]){
+      const slvTex = (dir < 0) ? tex.sleeveRCv : tex.sleeveLCv;
+      const getSleevePt = (t, phi) => {
+        // phi = 0: 前面 (+Z), phi = PI/2: 下側 (+Y), phi = PI: 背面 (-Z), phi = -PI/2: 上側(肩山, -Y)
+        const cxS = dir * (shldrW - 3 + t * slvSpanX);
+        const cyS = yTop + 25 + t * slvDropY;
+        const czS = Math.sin(t * Math.PI * 0.65) * 8; // 自然に少し前へ振る立体姿勢
+        const ry = armDropR * (1 - t) + cuffR * t;
+        const rz = 19 * (1 - t) + (isKoi ? 11.5 : 18) * t;
+        const c = Math.cos(phi), s = Math.sin(phi);
+        // 袖の傾き角に合わせて断面を回転
+        const tilt = dir * 0.30;
+        const ct = Math.cos(tilt), st = Math.sin(tilt);
+        const localY = s * ry;
+        const localX = -localY * st;
+        const rotY   = localY * ct;
+        const px = cxS + localX;
+        const py = cyS + rotY;
+        const pz = czS + c * rz;
+        const nx = -s * st, ny = s * ct, nz = c;
+        const nLen = Math.hypot(nx, ny, nz) || 1;
+        return { px, py, pz, nx: nx / nLen, ny: ny / nLen, nz: nz / nLen };
+      };
+
+      for(let it = 0; it < N_SLEN; it++){
+        const t0 = it / N_SLEN, t1 = (it + 1) / N_SLEN;
+        for(let ip = 0; ip < N_SANG; ip++){
+          const ph0 = (ip / N_SANG) * Math.PI * 2 - Math.PI;
+          const ph1 = ((ip + 1) / N_SANG) * Math.PI * 2 - Math.PI;
+          const g00 = getSleevePt(t0, ph0), g10 = getSleevePt(t1, ph0);
+          const g11 = getSleevePt(t1, ph1), g01 = getSleevePt(t0, ph1);
+          const p00 = proj(g00.px, g00.py, g00.pz);
+          const p10 = proj(g10.px, g10.py, g10.pz);
+          const p11 = proj(g11.px, g11.py, g11.pz);
+          const p01 = proj(g01.px, g01.py, g01.pz);
+          const { lightMul, specAdd, rnz } = calcLight(
+            (g00.nx + g11.nx) * 0.5,
+            (g00.ny + g11.ny) * 0.5,
+            (g00.nz + g11.nz) * 0.5
+          );
+          if(rnz < -0.25 && it < N_SLEN - 2) continue;
+          const vTex0 = Math.abs( Math.sin(ph0 * 0.5 + Math.PI * 0.25) );
+          const vTex1 = Math.abs( Math.sin(ph1 * 0.5 + Math.PI * 0.25) );
+          quads.push({
+            z: (p00.z + p10.z + p11.z + p01.z) * 0.25,
+            texCv: slvTex,
+            u0: dir > 0 ? t0 : (1 - t0),
+            v0: Math.max(0.02, Math.min(0.98, vTex0)),
+            u1: dir > 0 ? t1 : (1 - t1),
+            v1: Math.max(0.02, Math.min(0.98, vTex1)),
+            p00, p10, p11, p01,
+            lightMul: rnz < 0 ? lightMul * 0.48 : lightMul,
+            specAdd: rnz < 0 ? 0 : specAdd
+          });
+        }
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // 2. 👖 ダボパンツ 3Dメッシュ生成 (腰帯・ヒップ・右尻ポケ・左右3Dテーパード脚)
+  // -------------------------------------------------------------------------
+  if(includePants){
+    const pTopY = includeShirt ? 76 : -88;
+    const pCrotchY = pTopY + (includeShirt ? 48 : 58);
+    const pBotY = pTopY + (includeShirt ? 150 : 184);
+    const pTotalH = pBotY - pTopY;
+
+    // 2-A. 腰〜ヒップ上部 3D円筒 (pTopY .. pCrotchY)
+    const NU_H = 24, NV_H = 5;
+    const getHipPt = (theta, vh) => {
+      const c = Math.cos(theta), s = Math.sin(theta);
+      const py = pTopY + vh * (pCrotchY - pTopY);
+      const rx = 50 + vh * 8 + (vh < 0.26 ? Math.sin(theta * 20) * 0.7 : 0);
+      const rz = 22.5 + vh * 3.5 + (c < -0.2 && theta > 1.6 && theta < 2.8 && vh > 0.35 ? 1.2 : 0);
+      const px = s * rx, pz = c * rz;
+      const nx = s / rx, nz = c / rz, ny = 0;
+      const nLen = Math.hypot(nx, ny, nz) || 1;
+      return { px, py, pz, nx: nx / nLen, ny: 0, nz: nz / nLen };
+    };
+    for(let iv = 0; iv < NV_H; iv++){
+      const vh0 = iv / NV_H, vh1 = (iv + 1) / NV_H;
+      const vTex0 = vh0 * 0.34, vTex1 = vh1 * 0.34;
+      for(let iu = 0; iu < NU_H; iu++){
+        const th0 = (iu / NU_H) * Math.PI * 2 - Math.PI;
+        const th1 = ((iu + 1) / NU_H) * Math.PI * 2 - Math.PI;
+        const thMid = (th0 + th1) * 0.5;
+        const isFront = Math.cos(thMid) >= 0;
+        const g00 = getHipPt(th0, vh0), g10 = getHipPt(th1, vh0);
+        const g11 = getHipPt(th1, vh1), g01 = getHipPt(th0, vh1);
+        const p00 = proj(g00.px, g00.py, g00.pz);
+        const p10 = proj(g10.px, g10.py, g10.pz);
+        const p11 = proj(g11.px, g11.py, g11.pz);
+        const p01 = proj(g01.px, g01.py, g01.pz);
+        const { lightMul, specAdd, rnz } = calcLight(
+          (g00.nx + g11.nx) * 0.5, 0, (g00.nz + g11.nz) * 0.5
+        );
+        if(rnz < -0.20 && iv > 0) continue;
+        let u0, u1, texCv;
+        if(isFront){
+          u0 = Math.max(0, Math.min(1, 0.5 + th0 / Math.PI));
+          u1 = Math.max(0, Math.min(1, 0.5 + th1 / Math.PI));
+          texCv = tex.frontPantsCv;
+        }else{
+          const wrapAngle = (th) => {
+            let d = Math.PI - th;
+            while(d > Math.PI) d -= Math.PI * 2;
+            while(d < -Math.PI) d += Math.PI * 2;
+            return 0.5 + d / Math.PI;
+          };
+          u0 = Math.max(0, Math.min(1, wrapAngle(th0)));
+          u1 = Math.max(0, Math.min(1, wrapAngle(th1)));
+          texCv = tex.backPantsCv;
+        }
+        quads.push({
+          z: (p00.z + p10.z + p11.z + p01.z) * 0.25 - 1.5, // シャツ裾の内側に入るようわずかに奥へ
+          texCv, u0, v0: vTex0, u1, v1: vTex1,
+          p00, p10, p11, p01,
+          lightMul: (includeShirt && iv < 2) ? lightMul * 0.78 : lightMul,
+          specAdd
+        });
+      }
+    }
+
+    // 2-B. 左右の脚 3D円筒テーパード (pCrotchY .. pBotY)
+    const NU_L = 16, NV_L = 9;
+    for(const legDir of [-1, 1]){
+      const getLegPt = (theta, vl) => {
+        const c = Math.cos(theta), s = Math.sin(theta);
+        const py = pCrotchY + vl * (pBotY - pCrotchY);
+        const cxLeg = legDir * (27 + vl * 4.5);
+        const czLeg = Math.sin(vl * Math.PI) * 3.2;
+        const rx = 26 * (1 - vl) + 19.5 * vl + Math.sin(theta * 4 + vl * 4.5) * 0.85;
+        const rz = 22.5 * (1 - vl) + 17.5 * vl;
+        const px = cxLeg + s * rx;
+        const pz = czLeg + c * rz;
+        const nx = s / rx, nz = c / rz;
+        const nLen = Math.hypot(nx, nz) || 1;
+        return { px, py, pz, nx: nx / nLen, ny: 0, nz: nz / nLen };
+      };
+      for(let iv = 0; iv < NV_L; iv++){
+        const vl0 = iv / NV_L, vl1 = (iv + 1) / NV_L;
+        const vTex0 = 0.34 + vl0 * 0.66, vTex1 = 0.34 + vl1 * 0.66;
+        for(let iu = 0; iu < NU_L; iu++){
+          const th0 = (iu / NU_L) * Math.PI * 2 - Math.PI;
+          const th1 = ((iu + 1) / NU_L) * Math.PI * 2 - Math.PI;
+          const thMid = (th0 + th1) * 0.5;
+          const isFront = Math.cos(thMid) >= 0;
+          const g00 = getLegPt(th0, vl0), g10 = getLegPt(th1, vl0);
+          const g11 = getLegPt(th1, vl1), g01 = getLegPt(th0, vl1);
+          const p00 = proj(g00.px, g00.py, g00.pz);
+          const p10 = proj(g10.px, g10.py, g10.pz);
+          const p11 = proj(g11.px, g11.py, g11.pz);
+          const p01 = proj(g01.px, g01.py, g01.pz);
+          const { lightMul, specAdd, rnz } = calcLight(
+            (g00.nx + g11.nx) * 0.5, 0, (g00.nz + g11.nz) * 0.5
+          );
+          if(rnz < -0.22 && iv < NV_L - 1) continue;
+          const uBase = (legDir < 0) ? 0.0 : 0.5;
+          let uLocal0, uLocal1, texCv;
+          if(isFront){
+            uLocal0 = Math.max(0, Math.min(1, 0.5 + th0 / Math.PI));
+            uLocal1 = Math.max(0, Math.min(1, 0.5 + th1 / Math.PI));
+            texCv = tex.frontPantsCv;
+          }else{
+            const wrapAngle = (th) => {
+              let d = Math.PI - th;
+              while(d > Math.PI) d -= Math.PI * 2;
+              while(d < -Math.PI) d += Math.PI * 2;
+              return 0.5 + d / Math.PI;
+            };
+            uLocal0 = Math.max(0, Math.min(1, wrapAngle(th0)));
+            uLocal1 = Math.max(0, Math.min(1, wrapAngle(th1)));
+            texCv = tex.backPantsCv;
+          }
+          quads.push({
+            z: (p00.z + p10.z + p11.z + p01.z) * 0.25,
+            texCv,
+            u0: uBase + uLocal0 * 0.5, v0: vTex0,
+            u1: uBase + uLocal1 * 0.5, v1: vTex1,
+            p00, p10, p11, p01,
+            lightMul: rnz < 0 ? lightMul * 0.5 : lightMul,
+            specAdd: rnz < 0 ? 0 : specAdd
+          });
+        }
+      }
+    }
+  }
+
+  // 奥（Zが小さい）から手前（Zが大きい）へZソートして描画（Painter's Algorithm）
+  quads.sort((a, b) => a.z - b.z);
+  for(const q of quads){
+    if(q.fillCol && !q.texCv){
+      x.save();
+      x.beginPath();
+      x.moveTo(q.p00.sx, q.p00.sy);
+      x.lineTo(q.p10.sx, q.p10.sy);
+      x.lineTo(q.p11.sx, q.p11.sy);
+      x.lineTo(q.p01.sx, q.p01.sy);
+      x.closePath();
+      x.fillStyle = q.fillCol;
+      x.fill();
+      x.restore();
+    }else{
+      drawTexturedQuad2D(x, q.texCv, q.u0, q.v0, q.u1, q.v1, q.p00, q.p10, q.p11, q.p01, q.lightMul, q.specAdd);
+    }
+  }
+}
+
+// 🧣 手ぬぐい 3D立体クロス（波打つ布ドレープ）＆ 🪨 ロゴ・札 3D立体レリーフ看板の描画
+function render3dTenuguiOrRelief(x, cx, cy, scale, yawDeg, pitchDeg, modeType, tex, bodyCfg){
+  const yaw = (yawDeg * Math.PI) / 180;
+  const pitch = (pitchDeg * Math.PI) / 180;
+  const cyaw = Math.cos(yaw), syaw = Math.sin(yaw);
+  const cpitch = Math.cos(pitch), spitch = Math.sin(pitch);
+
+  const floorY = cy + 150 * scale;
+  draw3dTurntablePedestal(
+    x, cx, floorY, 128, scale, yaw, Math.max(0.22, pitch),
+    modeType === 'relief' ? '🪨 ロゴ・札 3D立体レリーフ看板' : '🧣 手ぬぐい 3D立体クロス（布ドレープ）',
+    'マウスドラッグで360°立体回転 ／ ホイールで拡大縮小',
+    '#2dd4bf'
+  );
+
+  const proj = (px, py, pz) => {
+    const x1 = px * cyaw + pz * syaw;
+    const z1 = -px * syaw + pz * cyaw;
+    const y2 = py * cpitch - z1 * spitch;
+    const z2 = py * spitch + z1 * cpitch;
+    const fov = 740;
+    const persp = fov / Math.max(200, fov - z2);
+    return { sx: cx + x1 * persp * scale, sy: cy + y2 * persp * scale, z: z2 };
+  };
+
+  if(modeType === 'tenugui'){
+    const tCv = tex.tenuguiFullCv;
+    const ar = tCv.width / Math.max(1, tCv.height);
+    const meshW = ar >= 1 ? 250 : 250 * ar * 1.15;
+    const meshH = ar >= 1 ? 250 / ar : 250;
+    const NX = 18, NY = 26;
+    const quads = [];
+    const getClothPt = (u, v) => {
+      const px = (u - 0.5) * meshW;
+      const py = (v - 0.52) * meshH;
+      const pz = Math.sin(u * Math.PI * 2.2 + v * 2.0) * 14 + Math.cos(v * Math.PI * 2.5 - u * 1.5) * 10;
+      const dzdu = Math.cos(u * Math.PI * 2.2 + v * 2.0) * (14 * Math.PI * 2.2) / meshW;
+      const dzdv = -Math.sin(v * Math.PI * 2.5 - u * 1.5) * (10 * Math.PI * 2.5) / meshH;
+      const nx = -dzdu, ny = -dzdv, nz = 1;
+      const nLen = Math.hypot(nx, ny, nz) || 1;
+      return { px, py, pz, nx: nx / nLen, ny: ny / nLen, nz: nz / nLen };
+    };
+    for(let iy = 0; iy < NY; iy++){
+      const v0 = iy / NY, v1 = (iy + 1) / NY;
+      for(let ix = 0; ix < NX; ix++){
+        const u0 = ix / NX, u1 = (ix + 1) / NX;
+        const g00 = getClothPt(u0, v0), g10 = getClothPt(u1, v0);
+        const g11 = getClothPt(u1, v1), g01 = getClothPt(u0, v1);
+        const p00 = proj(g00.px, g00.py, g00.pz);
+        const p10 = proj(g10.px, g10.py, g10.pz);
+        const p11 = proj(g11.px, g11.py, g11.pz);
+        const p01 = proj(g01.px, g01.py, g01.pz);
+        const nx = (g00.nx + g11.nx) * 0.5, ny = (g00.ny + g11.ny) * 0.5, nz = (g00.nz + g11.nz) * 0.5;
+        const rnx = nx * cyaw + nz * syaw;
+        const z1 = -nx * syaw + nz * cyaw;
+        const rny = ny * cpitch - z1 * spitch;
+        const rnz = ny * spitch + z1 * cpitch;
+        const d = Math.max(0.25, Math.abs(rnx * (-0.35) + rny * (-0.42) + rnz * 0.84));
+        const lightMul = Math.min(1.06, 0.35 + d * 0.72);
+        const specAdd = Math.pow(Math.max(0, Math.abs(rnz) * 0.88 - rnx * 0.3), 12) * 0.22;
+        quads.push({
+          z: (p00.z + p10.z + p11.z + p01.z) * 0.25,
+          texCv: tCv, u0, v0, u1, v1, p00, p10, p11, p01, lightMul, specAdd
+        });
+      }
+    }
+    quads.sort((a, b) => a.z - b.z);
+    for(const q of quads){
+      drawTexturedQuad2D(x, q.texCv, q.u0, q.v0, q.u1, q.v1, q.p00, q.p10, q.p11, q.p01, q.lightMul, q.specAdd);
+    }
+    return;
+  }
+
+  // 🪨 立体レリーフ看板モード: 厚みのある木札・アクリル立体ボード上に手ぬぐい地と3D押し出しロゴを積層描画
+  const tCv = tex.tenuguiFullCv;
+  const bw = 185, bh = 235, boardDepth = 18;
+  // ベースボードの3D積層
+  for(let layer = 0; layer <= 14; layer++){
+    const z = -boardDepth + (layer / 14) * boardDepth;
+    const p00 = proj(-bw * 0.5, -bh * 0.52, z);
+    const p10 = proj( bw * 0.5, -bh * 0.52, z);
+    const p11 = proj( bw * 0.5,  bh * 0.48, z);
+    const p01 = proj(-bw * 0.5,  bh * 0.48, z);
+    if(layer < 14){
+      x.save();
+      x.beginPath();
+      x.moveTo(p00.sx, p00.sy); x.lineTo(p10.sx, p10.sy); x.lineTo(p11.sx, p11.sy); x.lineTo(p01.sx, p01.sy);
+      x.closePath();
+      x.fillStyle = (layer === 0) ? 'rgba(0,0,0,0.45)' : shadeHexColor(bodyCfg.bgColor || '#046e7e', 0.38 + (layer / 14) * 0.28);
+      x.fill();
+      x.strokeStyle = '#877028';
+      x.lineWidth = 1.2;
+      x.stroke();
+      x.restore();
+    }else{
+      drawTexturedQuad2D(x, tCv, 0, 0, 1, 1, p00, p10, p11, p01, 0.98, 0.08);
+    }
+  }
+  // アクティブロゴをさらに手前 (z = +1 .. +24) に3D押し出し積層
+  const lcv = getProcessedLogoCanvas(S);
+  if(lcv){
+    const ar = lcv.width / Math.max(1, lcv.height);
+    const lSz = 128;
+    const lw = ar >= 1 ? lSz : lSz * ar;
+    const lh = ar >= 1 ? lSz / ar : lSz;
+    const sideCv = getLogoTintedCanvas(lcv, S.logo3dMode === 'gold_block' ? '#855d0e' : shadeHexColor(S.logo3dColor || '#0c2d3a', 0.8));
+    const bevCv  = getLogoTintedCanvas(lcv, '#fef08a');
+    for(let s = 1; s <= 18; s++){
+      const z = (s / 18) * 22;
+      const p00 = proj(-lw * 0.5, -lh * 0.5, z);
+      const p10 = proj( lw * 0.5, -lh * 0.5, z);
+      const p11 = proj( lw * 0.5,  lh * 0.5, z);
+      const p01 = proj(-lw * 0.5,  lh * 0.5, z);
+      const img = (s < 17) ? (sideCv || lcv) : (s === 17 ? (bevCv || lcv) : lcv);
+      drawTexturedQuad2D(x, img, 0, 0, 1, 1, p00, p10, p11, p01, 1.0, 0);
+    }
+  }
+}
+
+function draw3dScene(targetCv, exportMode){
+  const vW = exportMode ? 1680 : Math.max(320, Math.floor((box.clientWidth || 640) - 16));
+  const vH = exportMode ? 1040 : Math.max(340, Math.floor((box.clientHeight || 640) - 16));
+  const dpr = exportMode ? 2 : Math.max(2, window.devicePixelRatio || 1);
+  const cw = exportMode ? 1680 : Math.max(vW, 740);
+  const ch = exportMode ? 1040 : Math.max(vH, 500);
+  const baseS = exportMode ? 1 : Math.min(1, vW / cw, vH / ch);
+
+  if(!exportMode){
+    targetCv.style.width = vW + 'px';
+    targetCv.style.height = vH + 'px';
+    LAST_RENDER_ZOOM = ZOOM;
+    applyStageTransform();
+    syncZoomUI();
+    if($('stageHelpPill')){
+      $('stageHelpPill').textContent = '🧊 画面を左右・上下にドラッグすると3Dモデルが360°回転します ／ ホイールで拡大縮小 ／ 上部ボタンで「上だけ」「上下」「両方」切替';
+    }
+  }
+  targetCv.width = Math.floor(vW * dpr);
+  targetCv.height = Math.floor(vH * dpr);
+  const x = targetCv.getContext('2d');
+  x.imageSmoothingEnabled = true;
+  x.imageSmoothingQuality = 'high';
+
+  // 3Dスタジオ背景グラデーション
+  x.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const bgGrad = x.createRadialGradient(vW * 0.5, vH * 0.42, 40, vW * 0.5, vH * 0.5, Math.max(vW, vH) * 0.75);
+  bgGrad.addColorStop(0, '#1e293b');
+  bgGrad.addColorStop(0.55, '#0f172a');
+  bgGrad.addColorStop(1, '#060b16');
+  x.fillStyle = bgGrad;
+  x.fillRect(0, 0, vW, vH);
+
+  if(!exportMode){
+    const stageLeft = vW * 0.5 + PAN_X - (cw * baseS * ZOOM) * 0.5;
+    const stageTop  = vH * 0.5 + PAN_Y - (ch * baseS * ZOOM) * 0.5;
+    STAGE_METRICS = { mode: 'view3d', stageLeft, stageTop, baseS, cw, ch, vW, vH };
+    const effScale = baseS * ZOOM * dpr;
+    x.setTransform(effScale, 0, 0, effScale, stageLeft * dpr, stageTop * dpr);
+  }
+
+  // 身頃・袖・裁断プランの取得
+  let bodyCfg = S;
+  if(S.daboBodyPreset && S.daboBodyPreset !== 'current'){
+    const found = PRESETS.find(p => p.id === S.daboBodyPreset);
+    if(found && found.settings) bodyCfg = Object.assign({}, DEF, found.settings);
+  }
+  let sleeveCfg = bodyCfg;
+  let sleeveRotExtra = false, sleeveSolid = false;
+  if(S.daboSleevePreset === 'rot90') sleeveRotExtra = true;
+  else if(S.daboSleevePreset === 'solidBg') sleeveSolid = true;
+  else if(S.daboSleevePreset && S.daboSleevePreset !== 'same'){
+    const foundS = PRESETS.find(p => p.id === S.daboSleevePreset);
+    if(foundS && foundS.settings) sleeveCfg = Object.assign({}, DEF, foundS.settings);
+  }
+
+  const patMul = 100 / (S.daboPatScale || 100);
+  const rMode = S.daboStripRot || 'auto';
+  const bodyVec = createVectorStripDescriptor(bodyCfg, patMul, rMode, false);
+  const stripBodyLogo = bodyVec.logoStrip;
+  const stripBodyPlain = bodyVec.plainStrip;
+  let stripSleeveLogo = stripBodyLogo, stripSleevePlain = stripBodyPlain;
+  if(sleeveSolid){
+    const slvVec = createVectorStripDescriptor(bodyCfg, patMul, rMode, true);
+    stripSleeveLogo = slvVec.logoStrip; stripSleevePlain = slvVec.plainStrip;
+  }else if(sleeveCfg !== bodyCfg){
+    const slvVec = createVectorStripDescriptor(sleeveCfg, patMul, rMode, false);
+    stripSleeveLogo = slvVec.logoStrip; stripSleevePlain = slvVec.plainStrip;
+  }
+
+  const plan = buildDaboCutPlan();
+  const partMap = {};
+  plan.strips.forEach((st, sIdx) => {
+    let srcCv;
+    if(st.isSleeve){
+      if(!st.hasLogo) srcCv = stripSleevePlain;
+      else if(sleeveSolid || sleeveCfg !== bodyCfg) srcCv = stripSleeveLogo;
+      else srcCv = bodyVec.getPartStrip(st.partFilter || 'sleeves', true);
+    }else{
+      srcCv = st.hasLogo ? bodyVec.getPartStrip(st.partFilter || null, true) : stripBodyPlain;
+    }
+    const plainCv = st.isSleeve ? stripSleevePlain : stripBodyPlain;
+    st.canvas = srcCv; st.stripIndex = sIdx;
+    st.parts.forEach(p => {
+      partMap[p.id] = {
+        part: p, cv: srcCv, plainCv, hasLogo: !!st.hasLogo,
+        rotExtraDeg: (st.isSleeve && sleeveRotExtra) ? 90 : 0,
+        stripTitle: st.title, stripIndex: sIdx
+      };
+    });
+  });
+
+  const tex = build3dGarmentTextures(partMap, bodyCfg, bodyVec);
+  const m3d = S.model3d || 'dabo_both';
+  const yaw = S.rot3dYaw ?? -28;
+  const pitch = S.rot3dPitch ?? 10;
+  const twinBack = (S.show3dBackTwin !== false);
+
+  // 上部ヘッダー案内バー
+  x.save();
+  x.fillStyle = 'rgba(15, 23, 42, 0.78)';
+  x.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+  x.lineWidth = 1;
+  x.beginPath(); x.roundRect(14, 12, cw - 28, 36, 8); x.fill(); x.stroke();
+  const mTitleMap = {
+    dabo_top: '👕 ダボシャツ【上だけ】3D立体プレビュー',
+    dabo_both: '👕👖 ダボ【上下セット（シャツ＋ダボパンツ）】3D立体プレビュー',
+    dabo_compare: '👕＋👕👖 ダボ【上だけ ＆ 上下セット 両方同時】3D立体プレビュー',
+    dabo_pants: '👖 ダボパンツ【下だけ】3D立体プレビュー',
+    tenugui: '🧣 手ぬぐい 3D立体クロス（布ドレープ）プレビュー',
+    relief: '🪨 ロゴ・札 3D立体レリーフ看板プレビュー'
+  };
+  const l3dBadge = (S.logo3dMode && S.logo3dMode !== 'none')
+    ? ` ／ ✨ロゴ3D厚み:${S.logo3dMode === 'gold_block' ? '金塊彫り' : (S.logo3dMode === 'emboss' ? '浮き彫り' : '立体押し出し')}(${S.logo3dDepthMm || 4.5}mm)`
+    : '';
+  const p3dBadge = (S.pattern3dMode && S.pattern3dMode !== 'none') ? ' ／ 🧱ベース柄3D浮き彫りON' : '';
+  x.fillStyle = '#38bdf8';
+  x.font = '700 13px sans-serif';
+  x.fillText('🧊 ' + (mTitleMap[m3d] || mTitleMap.dabo_both) + l3dBadge + p3dBadge, 26, 34, cw - 240);
+  x.fillStyle = '#fde047';
+  x.font = '700 11px sans-serif';
+  x.textAlign = 'right';
+  x.fillText(`回転角: 横 ${Math.round(yaw)}° / 縦 ${Math.round(pitch)}°（ドラッグで360°回転）`, cw - 26, 34);
+  x.restore();
+
+  const centerY = ch * 0.53;
+  if(m3d === 'tenugui' || m3d === 'relief'){
+    const sc = Math.min(cw / 520, (ch - 70) / 390);
+    render3dTenuguiOrRelief(x, cw * 0.5, centerY, sc, yaw, pitch, m3d, tex, bodyCfg);
+  }else if(m3d === 'dabo_compare'){
+    // 👕 上だけ 3D と 👕👖 上下セット 3D の【両方】を左右に並べて同時表示！
+    const scTop  = Math.min((cw * 0.48) / 340, (ch - 80) / 345);
+    const scBoth = Math.min((cw * 0.48) / 340, (ch - 80) / 445);
+    render3dMannequinFigure(
+      x, cw * 0.26, centerY + 6, scTop, yaw, pitch, true, false, tex, bodyCfg,
+      '① 👕 ダボシャツ【上だけ】3D立体', '#0284c7'
+    );
+    render3dMannequinFigure(
+      x, cw * 0.74, centerY + 6, scBoth, yaw, pitch, true, true, tex, bodyCfg,
+      '② 👕👖 ダボ【上下セット】3D立体', '#0f766e'
+    );
+  }else{
+    const incShirt = (m3d !== 'dabo_pants');
+    const incPants = (m3d === 'dabo_both' || m3d === 'dabo_pants');
+    const baseHeightUnit = (incShirt && incPants) ? 445 : 345;
+    if(twinBack){
+      // 🪞 前面3Dアングル と 背面(背紋)3Dアングル を左右に並べて同時3D表示
+      const sc = Math.min((cw * 0.48) / 330, (ch - 80) / baseHeightUnit);
+      const frontLbl = (incShirt && incPants) ? '【3D 前面アングル】ダボ上下セット（胸・前立て・パンツ）'
+        : (incShirt ? '【3D 前面アングル】ダボシャツ 上だけ（胸・前立て・袖）' : '【3D 前面アングル】ダボパンツ 下だけ');
+      const backLbl  = (incShirt && incPants) ? '【3D 背面アングル】ダボ上下セット（背紋・右尻ポケット）'
+        : (incShirt ? '【3D 背面アングル】ダボシャツ 上だけ（背紋・背中全体）' : '【3D 背面アングル】ダボパンツ 下だけ（右尻ポケット）');
+      render3dMannequinFigure(x, cw * 0.27, centerY + 6, sc, yaw, pitch, incShirt, incPants, tex, bodyCfg, frontLbl, '#0284c7');
+      render3dMannequinFigure(x, cw * 0.73, centerY + 6, sc, yaw + 180, pitch, incShirt, incPants, tex, bodyCfg, backLbl, '#d97706');
+    }else{
+      const sc = Math.min((cw * 0.85) / 340, (ch - 80) / baseHeightUnit);
+      const singleLbl = (incShirt && incPants) ? '👕👖 ダボ上下セット 3D（ドラッグで360°回転）'
+        : (incShirt ? '👕 ダボシャツ【上だけ】3D（ドラッグで360°回転）' : '👖 ダボパンツ【下だけ】3D（ドラッグで360°回転）');
+      render3dMannequinFigure(x, cw * 0.50, centerY + 6, sc, yaw, pitch, incShirt, incPants, tex, bodyCfg, singleLbl, '#0284c7');
+    }
+  }
+}
+
+function save3dHighResPng(forceModel3d){
+  const prevModel = S.model3d;
+  if(forceModel3d) S.model3d = forceModel3d;
+  const outCv = document.createElement('canvas');
+  draw3dScene(outCv, true);
+  if(forceModel3d) S.model3d = prevModel;
+  const tag = (forceModel3d || S.model3d || 'dabo_both');
+  outCv.toBlob(b => {
+    if(!b) return;
+    dlBlob(b, `haneda_3d_${tag}_${S.daboSize||'L'}.png`);
+    saySave('🧊 3D立体プレビュー画像（高解像度PNG）を保存しました！');
+  }, 'image/png');
+}
+
+function open3dPreviewWithModel(modelKey){
+  if(modelKey) S.model3d = modelKey;
+  S.viewMode = 'view3d';
+  if($('openDaboViewBtn')) $('openDaboViewBtn').textContent = '手ぬぐい画面へ戻る';
+  update(false);
+}
+
 function updateDaboSpecBox(plan){
   const boxEl = $('daboSpecSummary');
   if(!boxEl) return;
@@ -10637,6 +12018,11 @@ function draw(){
 
   updateLogoDaboWhereBadge();
 
+  // 🧊 3D立体プレビューモードの場合は専用3Dレンダラーへ分岐
+  if(S.viewMode === 'view3d'){
+    draw3dScene(cv, false);
+    return;
+  }
   // ダボ＆生地の取り方モードの場合は専用レンダラーへ分岐
   if(S.viewMode === 'cut_dabo' || S.viewMode === 'dabo'){
     drawDaboAndCutScene(cv, S.viewMode, false);
@@ -10710,6 +12096,8 @@ function draw(){
   // 2 & 3. 大小あられ / 仲羽田（江戸角字）を S.layerOrder の前後順で描画
   const ko = (S.mode === 'both' && S.knockoutMm > 0) ? S.knockoutMm : 0;
   const apMain = getArarePadMetrics(S);
+  const pat3dMain = (S.pattern3dMode && S.pattern3dMode !== 'none') ? (S.pattern3dDepthMm || 2.2) : 0;
+  const pat3dSideMain = shadeHexColor(S.bgColor || '#046e7e', 0.42);
   const drawArareLayer = (isFront) => {
     if(DOTS.length === 0) return;
     const effPad = Math.max(apMain.padMm, (isFront && ko > 0) ? ko : 0);
@@ -10741,7 +12129,6 @@ function draw(){
       }
       x.restore();
     }
-    x.fillStyle=S.dotColor;
     x.beginPath();
     for(const o of DOTS){
       const a=anchors(o), b=beziers(a);
@@ -10749,6 +12136,11 @@ function draw(){
       for(const q of b) x.bezierCurveTo(q[0],q[1],q[2],q[3],q[4],q[5]);
       x.closePath();
     }
+    if(pat3dMain > 0){
+      x.save(); x.translate(pat3dMain * 0.78, pat3dMain * 0.78); x.fillStyle = 'rgba(0,0,0,0.34)'; x.fill(); x.restore();
+      x.save(); x.translate(pat3dMain * 0.42, pat3dMain * 0.42); x.fillStyle = pat3dSideMain; x.fill(); x.restore();
+    }
+    x.fillStyle=S.dotColor;
     x.fill();
   };
 
@@ -10775,23 +12167,32 @@ function draw(){
       x.restore();
     }
     if(KAKU_POLYS.length > 0){
-      x.fillStyle=S.kakuColor;
       x.beginPath();
       for(const poly of KAKU_POLYS){
         x.moveTo(poly[0][0], poly[0][1]);
         for(let i=1; i<poly.length; i++) x.lineTo(poly[i][0], poly[i][1]);
         x.closePath();
       }
+      if(pat3dMain > 0){
+        x.save(); x.translate(pat3dMain * 0.85, pat3dMain * 0.85); x.fillStyle = 'rgba(0,0,0,0.36)'; x.fill(); x.restore();
+        x.save(); x.translate(pat3dMain * 0.46, pat3dMain * 0.46); x.fillStyle = pat3dSideMain; x.fill(); x.restore();
+        x.save(); x.translate(-pat3dMain * 0.16, -pat3dMain * 0.16); x.fillStyle = 'rgba(255,255,255,0.55)'; x.fill(); x.restore();
+      }
+      x.fillStyle=S.kakuColor;
       x.fill();
     }
     if(KAKU_SPOT_POLYS.length > 0){
-      x.fillStyle = (S.seinenSpotMode && S.seinenSpotMode !== 'same') ? (S.seinenSpotColor || '#fbbf24') : S.kakuColor;
       x.beginPath();
       for(const poly of KAKU_SPOT_POLYS){
         x.moveTo(poly[0][0], poly[0][1]);
         for(let i=1; i<poly.length; i++) x.lineTo(poly[i][0], poly[i][1]);
         x.closePath();
       }
+      if(pat3dMain > 0){
+        x.save(); x.translate(pat3dMain * 0.85, pat3dMain * 0.85); x.fillStyle = 'rgba(0,0,0,0.36)'; x.fill(); x.restore();
+        x.save(); x.translate(pat3dMain * 0.46, pat3dMain * 0.46); x.fillStyle = pat3dSideMain; x.fill(); x.restore();
+      }
+      x.fillStyle = (S.seinenSpotMode && S.seinenSpotMode !== 'same') ? (S.seinenSpotColor || '#fbbf24') : S.kakuColor;
       x.fill();
     }
   };
@@ -12061,6 +13462,7 @@ const ranges={
   logoThreshold:v=>v+'', logoSoftness:v=>v+'', logoDilate:v=>(v>0?'+':'')+v+' px', logoContrast:v=>(v>0?'+':'')+v, logoOpacity:v=>v+'%', logoOutlineMm:v=>v+' mm',
   logoSize:v=>v+' mm', logoAngle:v=>(v>0?'+':'')+v+'°', logoX:v=>v+'%', logoY:v=>v+'%',
   logoPadMarginMm:v=>v+' mm', logoPadCornerMm:v=>v+' mm', logoPadStrokeMm:v=>v+' mm',
+  logo3dDepthMm:v=>v+' mm',
   logoRepeatGapX:v=>v+' mm', logoRepeatGapY:v=>v+' mm', logoRepeatGridAngle:v=>(v>0?'+':'')+v+'°', logoRepeatAngleVar:v=>v+'°', logoRepeatSizeVar:v=>v+'%',
   textSize:v=>v+' mm', fudaWidthPct:v=>v+'%', fudaHeightPct:v=>v+'%', fudaDepth3d:v=>v+' mm', fudaNonTextOpacity:v=>v+'%', fudaOpacity:v=>v+'%',
   fudaSubOffX:v=>(v>0?'+':'')+v+'%', fudaSubOffY:v=>(v>0?'+':'')+v+'%', fudaSubAngle:v=>(v>0?'+':'')+v+'°',
@@ -12209,7 +13611,35 @@ function syncUI(){
   for(const b of document.querySelectorAll('#daboStyleTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.dstyle===(S.daboStyle||'dabo'))+'');
   for(const b of document.querySelectorAll('#daboGarmentViewTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.dgview===(S.daboGarmentView||'both'))+'');
   for(const b of document.querySelectorAll('#stageGarmentViewChips button[data-sgv]')) b.setAttribute('aria-pressed',(b.dataset.sgv===(S.daboGarmentView||'both'))+'');
-  if($('stageGarmentViewChips')) $('stageGarmentViewChips').style.display = (S.viewMode === 'fabric') ? 'none' : 'flex';
+  if($('stageGarmentViewChips')) $('stageGarmentViewChips').style.display = (S.viewMode === 'fabric' || S.viewMode === 'view3d') ? 'none' : 'flex';
+  if($('stage3dControlBar')){
+    $('stage3dControlBar').hidden = (S.viewMode !== 'view3d');
+    $('stage3dControlBar').style.display = (S.viewMode === 'view3d') ? 'flex' : 'none';
+  }
+  const curM3d = S.model3d || 'dabo_both';
+  for(const b of document.querySelectorAll('#stage3dModelBtns button[data-m3d]')){
+    b.setAttribute('aria-pressed', (b.dataset.m3d === curM3d) + '');
+  }
+  if($('stage3dBackTwinBtn')){
+    const twinOn = (S.show3dBackTwin !== false);
+    $('stage3dBackTwinBtn').setAttribute('aria-pressed', twinOn + '');
+    $('stage3dBackTwinBtn').textContent = twinOn ? '🪞 前面＋背面(背中)を同時3D表示: ON' : '🪞 1体ずつ大きく3D表示 (前面/背面切替)';
+  }
+  const curL3d = S.logo3dMode || 'none';
+  if($('logo3dMode')) $('logo3dMode').value = curL3d;
+  if($('logo3dColor') && document.activeElement !== $('logo3dColor')) $('logo3dColor').value = S.logo3dColor || '#0c2d3a';
+  for(const b of document.querySelectorAll('#stage3dThicknessBtns button[data-s3dl]')){
+    b.setAttribute('aria-pressed', (b.dataset.s3dl === curL3d) + '');
+  }
+  const pat3dOn = !!(S.pattern3dMode && S.pattern3dMode !== 'none');
+  if($('stage3dPatReliefBtn')){
+    $('stage3dPatReliefBtn').setAttribute('aria-pressed', pat3dOn + '');
+    $('stage3dPatReliefBtn').textContent = pat3dOn ? '🧱 仲羽田・柄も3D化: ON' : '🧱 仲羽田・柄も3D化';
+  }
+  if($('dPattern3dToggleBtn')){
+    $('dPattern3dToggleBtn').setAttribute('aria-pressed', pat3dOn + '');
+    $('dPattern3dToggleBtn').textContent = pat3dOn ? '🧊 ベース柄も3D浮き彫り: ON' : '🧊 ベース柄も3D浮き彫り: OFF';
+  }
   if($('daboCutMode')) $('daboCutMode').value=S.daboCutMode||'adult7';
   if($('daboLogoTarget')) $('daboLogoTarget').value=S.daboLogoTarget||'all';
   if($('daboStripRot')) $('daboStripRot').value=S.daboStripRot||'auto';
@@ -12333,7 +13763,7 @@ function update(relayout){
 const NO_LAYOUT_KEYS = new Set([
   'knockoutMm','crestSize','crestAngle','crestWeight','crestX','crestY',
   'logoThreshold','logoSoftness','logoDilate','logoContrast','logoOpacity','logoOutlineMm',
-  'logoSize','logoAngle','logoX','logoY','logoPadMarginMm','logoPadCornerMm','logoPadStrokeMm',
+  'logoSize','logoAngle','logoX','logoY','logoPadMarginMm','logoPadCornerMm','logoPadStrokeMm','logo3dDepthMm',
   'logoRepeatGapX','logoRepeatGapY','logoRepeatGridAngle','logoRepeatAngleVar','logoRepeatSizeVar',
   'textSize','fudaWidthPct','fudaHeightPct','fudaDepth3d','fudaOpacity','fudaNonTextOpacity','fudaSubOffX','fudaSubOffY','fudaSubAngle','textSpacing','textOutlineW','textAngle','textX','textY',
   'textRepeatGapX','textRepeatGapY','textRepeatGridAngle','textRepeatAngleVar','textRepeatSizeVar',
@@ -12349,6 +13779,10 @@ for(const k in ranges){
     if((k==='logoPadMarginMm' || k==='logoPadStrokeMm') && (!S.logoPadMode || S.logoPadMode==='none')){
       S.logoPadMode = 'silhouette';
       if(S.logoPadColorMode === 'none') S.logoPadColorMode = 'bg';
+      S.showLogo = true;
+    }
+    if(k==='logo3dDepthMm' && S.logo3dDepthMm > 0 && (!S.logo3dMode || S.logo3dMode === 'none')){
+      S.logo3dMode = 'extrude';
       S.showLogo = true;
     }
     update(!NO_LAYOUT_KEYS.has(k));
@@ -13596,15 +15030,73 @@ if($('saveOutCutDaboPngBtn')) $('saveOutCutDaboPngBtn').addEventListener('click'
 if($('saveOutDaboPantsPngBtn')) $('saveOutDaboPantsPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', 'pants'));
 if($('saveOutDaboTopPngBtn')) $('saveOutDaboTopPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', 'top'));
 if($('saveOutDaboSvgBtn')) $('saveOutDaboSvgBtn').addEventListener('click',()=>saveDaboHighResSvg('cut_dabo', 'both'));
+if($('saveOut3dPngBtn')) $('saveOut3dPngBtn').addEventListener('click',()=>save3dHighResPng());
 if($('stageQuickSaveDaboPngBtn')) $('stageQuickSaveDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng('dabo', S.daboGarmentView || 'both'));
 if($('stageQuickSaveCutDaboPngBtn')) $('stageQuickSaveCutDaboPngBtn').addEventListener('click',()=>saveDaboHighResPng('cut_dabo', S.daboGarmentView || 'both'));
+if($('stage3dSavePngBtn')) $('stage3dSavePngBtn').addEventListener('click',()=>save3dHighResPng());
+
+// 🧊 3D立体プレビュー＆3D厚み加工のイベント配線
+document.querySelectorAll('[data-open3d]').forEach(b=>b.addEventListener('click',()=>{
+  open3dPreviewWithModel(b.dataset.open3d || 'dabo_both');
+}));
+document.querySelectorAll('#stage3dModelBtns button[data-m3d]').forEach(b=>b.addEventListener('click',()=>{
+  S.model3d = b.dataset.m3d || 'dabo_both';
+  S.viewMode = 'view3d';
+  update(false);
+}));
+document.querySelectorAll('#stage3dAngleBtns button[data-yaw]').forEach(b=>b.addEventListener('click',()=>{
+  S.rot3dYaw = parseFloat(b.dataset.yaw) || 0;
+  S.rot3dPitch = parseFloat(b.dataset.pitch) || 8;
+  S.viewMode = 'view3d';
+  update(false);
+}));
+if($('stage3dBackTwinBtn')){
+  $('stage3dBackTwinBtn').addEventListener('click',()=>{
+    S.show3dBackTwin = !(S.show3dBackTwin !== false);
+    update(false);
+  });
+}
+function applyLogo3dModeSetting(modeVal){
+  S.logo3dMode = modeVal || 'none';
+  if(S.logo3dMode !== 'none'){
+    if(!(S.logo3dDepthMm > 0)) S.logo3dDepthMm = 4.5;
+    if(!S.showLogo) applyBuiltinFudaLogoPreset('default');
+  }
+  syncActiveSlotFromS();
+  update(false);
+}
+if($('logo3dMode')){
+  $('logo3dMode').addEventListener('change',e=>applyLogo3dModeSetting(e.target.value));
+}
+if($('logo3dColor')){
+  $('logo3dColor').addEventListener('input',e=>{
+    S.logo3dColor = e.target.value;
+    if(!S.logo3dMode || S.logo3dMode === 'none') S.logo3dMode = 'extrude';
+    syncActiveSlotFromS();
+    update(false);
+  });
+}
+document.querySelectorAll('#stage3dThicknessBtns button[data-s3dl]').forEach(b=>b.addEventListener('click',()=>{
+  applyLogo3dModeSetting(b.dataset.s3dl || 'none');
+}));
+function togglePattern3dRelief(){
+  S.pattern3dMode = (S.pattern3dMode && S.pattern3dMode !== 'none') ? 'none' : 'extrude';
+  if(S.pattern3dMode !== 'none' && !(S.pattern3dDepthMm > 0)) S.pattern3dDepthMm = 2.2;
+  update(false);
+}
+if($('stage3dPatReliefBtn')) $('stage3dPatReliefBtn').addEventListener('click', togglePattern3dRelief);
+if($('dPattern3dToggleBtn')) $('dPattern3dToggleBtn').addEventListener('click', togglePattern3dRelief);
 
 // キャンバス上での丸紋・ロゴ・名入れ文字の直接ドラッグ移動
 // ＆ ダボ完成図の上をドラッグして手ぬぐい側のロゴ位置を逆算配置
 // ＆ ステージ全体のマウスドラッグ移動（パン）・ホイール拡大縮小
+// ＆ 3D立体プレビューでの360°マウス/タッチ回転
 let dragTarget = null;
 let isDraggingDaboReverse = false;
 let isPanningStage = false;
+let isRotating3dStage = false;
+let rot3dStartClientX = 0, rot3dStartClientY = 0;
+let rot3dOriginYaw = 0, rot3dOriginPitch = 0;
 let panStartClientX = 0, panStartClientY = 0;
 let panOriginX = 0, panOriginY = 0;
 
@@ -13786,6 +15278,17 @@ function handleStagePointerDown(clientX, clientY, isTouch, shiftOrSpace){
     }
   }
 
+  // 2-B. 3D立体プレビュー（view3dモード）でドラッグしたときは3Dモデルを360°回転させる
+  if(S.viewMode === 'view3d' && !shiftOrSpace){
+    isRotating3dStage = true;
+    rot3dStartClientX = clientX;
+    rot3dStartClientY = clientY;
+    rot3dOriginYaw = S.rot3dYaw ?? -28;
+    rot3dOriginPitch = S.rot3dPitch ?? 10;
+    box.classList.add('is-panning');
+    return true;
+  }
+
   // 3. それ以外（余白または Shift+ドラッグ）はステージ全体をドラッグで自由移動（パン）
   isPanningStage = true;
   panStartClientX = clientX;
@@ -13797,6 +15300,17 @@ function handleStagePointerDown(clientX, clientY, isTouch, shiftOrSpace){
 }
 
 function handleStagePointerMove(clientX, clientY){
+  if(isRotating3dStage){
+    const dx = clientX - rot3dStartClientX;
+    const dy = clientY - rot3dStartClientY;
+    let nextYaw = rot3dOriginYaw + dx * 0.45;
+    while(nextYaw > 180) nextYaw -= 360;
+    while(nextYaw < -180) nextYaw += 360;
+    S.rot3dYaw = Math.round(nextYaw * 10) / 10;
+    S.rot3dPitch = Math.max(-24, Math.min(42, Math.round((rot3dOriginPitch + dy * 0.25) * 10) / 10));
+    requestImmediateVectorDraw();
+    return true;
+  }
   if(CUT_DRAG){
     const { stageX, stageY } = clientToDaboStageXY(clientX, clientY);
     cutDragMove(stageX, stageY);
@@ -13881,6 +15395,11 @@ function handleStagePointerMove(clientX, clientY){
 
 function handleStagePointerUp(){
   if(CUT_DRAG){ cutDragEnd(); box.classList.remove('is-panning'); }
+  if(isRotating3dStage){
+    isRotating3dStage = false;
+    box.classList.remove('is-panning');
+    persist();
+  }
   if(dragTarget || isDraggingDaboReverse || isPanningStage){
     dragTarget = null;
     isDraggingDaboReverse = false;
@@ -15354,7 +16873,8 @@ function easyRenderImpl(){
     logoSize: function(v){ return v + 'mm'; },
     logoPadMarginMm: function(v){ return v + 'mm'; },
     logoPadCornerMm: function(v){ return v + 'mm'; },
-    logoPadStrokeMm: function(v){ return v + 'mm'; }
+    logoPadStrokeMm: function(v){ return v + 'mm'; },
+    logo3dDepthMm: function(v){ return v + 'mm'; }
   };
   var vis = {
     kakuScale: kaku, kakuWeight: kaku, count: arare, scale: arare,
@@ -15366,7 +16886,8 @@ function easyRenderImpl(){
     logoSize: !!S.showLogo,
     logoPadMarginMm: !!S.showLogo,
     logoPadCornerMm: hasPad && S.logoPadMode === 'roundRect',
-    logoPadStrokeMm: !!S.showLogo
+    logoPadStrokeMm: !!S.showLogo,
+    logo3dDepthMm: !!(S.showLogo && S.logo3dMode && S.logo3dMode !== 'none')
   };
   document.querySelectorAll('#easyPanel .e-range').forEach(function(r){
     var k = r.dataset.for, real = $(k), inp = r.querySelector('input');
@@ -15417,6 +16938,25 @@ function easyRenderImpl(){
   }
   if($('eStep5FudaPadCol') && document.activeElement !== $('eStep5FudaPadCol')){
     $('eStep5FudaPadCol').value = resolveLogoPadColor(S);
+  }
+  if($('eLogo3dModeBtns')){
+    var l3m = S.logo3dMode || 'none';
+    $('eLogo3dModeBtns').querySelectorAll('button[data-l3d], button[data-l3m]').forEach(function(b){
+      var v = b.dataset.l3d || b.dataset.l3m || 'none';
+      b.setAttribute('aria-pressed', String(v === l3m));
+    });
+  }
+  if($('ePattern3dToggleBtn')){
+    var patOn = !!(S.pattern3dMode && S.pattern3dMode !== 'none');
+    $('ePattern3dToggleBtn').setAttribute('aria-pressed', String(patOn));
+    $('ePattern3dToggleBtn').textContent = patOn
+      ? '🧊 ベース柄（仲羽田・あられ）も3D浮き彫りにする: ON ✓'
+      : '🧊 ベース柄（仲羽田・あられ）も3D浮き彫りにする: OFF';
+    $('ePattern3dToggleBtn').style.background = patOn ? '#0284c7' : '#ffffff';
+    $('ePattern3dToggleBtn').style.color = patOn ? '#ffffff' : '#0369a1';
+  }
+  if($('eLogo3dSideCol') && document.activeElement !== $('eLogo3dSideCol')){
+    $('eLogo3dSideCol').value = S.logo3dColor || '#0c2d3a';
   }
   if($('eStep3FudaToggleBtn')){
     if(S.showLogo){
@@ -15880,6 +17420,27 @@ function easyRenderImpl(){
       update(false);
     });
   }
+  if($('eLogo3dModeBtns')){
+    $('eLogo3dModeBtns').querySelectorAll('button[data-l3d], button[data-l3m]').forEach(function(b){ b.addEventListener('click', function(){
+      S.logo3dMode = b.dataset.l3d || b.dataset.l3m || 'none';
+      if(S.logo3dMode !== 'none' && (!S.logo3dDepthMm || S.logo3dDepthMm <= 0)) S.logo3dDepthMm = 6;
+      if(!S.showLogo) applyBuiltinFudaLogoPreset('default');
+      syncActiveSlotFromS();
+      update(false);
+    }); });
+  }
+  if($('ePattern3dToggleBtn')){
+    $('ePattern3dToggleBtn').addEventListener('click', togglePattern3dRelief);
+  }
+  if($('eLogo3dSideCol')){
+    $('eLogo3dSideCol').addEventListener('input', function(e){
+      S.logo3dColor = e.target.value;
+      if(!S.logo3dMode || S.logo3dMode === 'none') S.logo3dMode = 'extrude';
+      if(!S.showLogo) applyBuiltinFudaLogoPreset('default');
+      syncActiveSlotFromS();
+      update(false);
+    });
+  }
   if($('eDaboQuickLogo')){
     $('eDaboQuickLogo').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       var v = b.dataset.dql || b.dataset.edl || '';
@@ -15960,6 +17521,7 @@ function easyRenderImpl(){
   if($('eSaveDaboOnlyPng')) $('eSaveDaboOnlyPng').addEventListener('click', function(){ saveDaboHighResPng('dabo', 'both'); });
   if($('eSaveDaboPng')) $('eSaveDaboPng').addEventListener('click', function(){ saveDaboHighResPng('cut_dabo', 'both'); });
   if($('eSaveDaboPantsPng')) $('eSaveDaboPantsPng').addEventListener('click', function(){ saveDaboHighResPng('dabo', 'pants'); });
+  if($('eSave3dPng')) $('eSave3dPng').addEventListener('click', function(){ save3dHighResPng(); });
   if($('eSaveDaboSvg')) $('eSaveDaboSvg').addEventListener('click', function(){ saveDaboHighResSvg('cut_dabo', 'both'); });
   if($('eSaveAi')) $('eSaveAi').addEventListener('click', function(){ $('saveAi').click(); });
   $('eSaveSvg').addEventListener('click', function(){ $('saveSvg').click(); });
