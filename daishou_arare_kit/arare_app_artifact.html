@@ -5,7 +5,7 @@
 <style>
 /* 左に操作盤、右に反物（手ぬぐい）の実寸比プレビュー。羽田納戸・藍染を主色とした和モダンUI */
 :root{
-  --bg:#eef0f4; --panel:#ffffff; --fg:#1b2133; --muted:#5d6577; --line:#d6dae3;
+  --bg:#eef0f4; --panel:#ffffff; --fg:#0f172a; --muted:#475569; --line:#dbe2ea;
   --ai:#046e7e; --ai-soft:#e0f2f4; --warn:#a4570a;
   --f-disp:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;
   --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;
@@ -18,16 +18,16 @@
   --ai:#38bdf8; --ai-soft:#1e2f3d; --warn:#e3a35c; color-scheme:dark}
 html,body{height:100%}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:13.5px;line-height:1.5}
-.wrap{display:grid;grid-template-columns:390px minmax(0,1fr);gap:16px;height:100%;box-sizing:border-box;
+.wrap{display:grid;grid-template-columns:406px minmax(0,1fr);gap:16px;height:100%;box-sizing:border-box;
   padding-block:12px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px))}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow-y:auto;display:flex;flex-direction:column;min-width:0}
 header{padding:13px 16px 10px;border-bottom:1px solid var(--line)}
-h1{font-family:var(--f-disp);font-weight:600;font-size:18.5px;margin:0;letter-spacing:.04em;text-wrap:balance}
+h1{font-family:var(--f-disp);font-weight:600;font-size:16px;margin:0;letter-spacing:.03em;text-wrap:balance}
 header p{margin:3px 0 0;color:var(--muted);font-size:11.5px}
 .nav-cat-tabs{position:sticky;top:0;z-index:30;display:grid;grid-template-columns:repeat(6,1fr);gap:4px;padding:8px 10px;background:var(--panel);border-bottom:2px solid var(--line);box-shadow:0 3px 10px rgba(15,23,42,.06)}
 .nav-cat-tabs button{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:7px;padding:6px 2px;font:inherit;font-size:11px;font-weight:700;cursor:pointer;text-align:center;white-space:nowrap}
 .nav-cat-tabs button:hover{border-color:var(--ai);color:var(--ai)}
-.nav-cat-tabs button[aria-pressed=true]{background:var(--ai);border-color:var(--ai);color:#fff;box-shadow:0 2px 6px rgba(4,110,126,.25)}
+.nav-cat-tabs button[aria-pressed=true]{background:var(--ai);border-color:var(--ai);color:#ffffff;font-weight:800;box-shadow:0 2px 5px rgba(4,110,126,.24)}
 .panel>section.cat-hidden,.cat-hidden{display:none !important}
 .focused-detail-bar{position:sticky;top:0;z-index:35;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:8px 12px;background:#f0f9ff;border-bottom:2px solid var(--ai);box-shadow:0 2px 8px rgba(4,110,126,.12)}
 .focused-detail-bar[hidden]{display:none !important}
@@ -47,9 +47,9 @@ input[type=range]{width:100%;accent-color:var(--ai);cursor:pointer}
 input[type=number],select{width:100%;box-sizing:border-box;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-size:12px;font-variant-numeric:tabular-nums}
 .chips{display:flex;flex-wrap:wrap;gap:5px}
 .chip{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:999px;padding:4px 10px;font:inherit;font-size:11.5px;cursor:pointer;white-space:nowrap}
-.chip[aria-pressed=true]{background:var(--ai);border-color:var(--ai);color:#ffffff;font-weight:600}
+.chip[aria-pressed=true]{background:var(--ai);border-color:var(--ai);color:#ffffff;font-weight:800;box-shadow:0 2px 5px rgba(4,110,126,.24)}
 .mode-tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
-.mode-tabs .chip{text-align:center;padding:6px 5px;border-radius:7px;font-weight:600;white-space:normal;line-height:1.25}
+.mode-tabs .chip,#kakuMotifTabs .chip,#layerOrderTabs .chip{text-align:center;padding:6px 5px;border-radius:7px;font-weight:600;white-space:normal;line-height:1.3}
 input[type=color]{width:32px;height:26px;border:1px solid var(--line);border-radius:5px;padding:0;background:none;cursor:pointer;flex-shrink:0}
 .cgroup{display:grid;gap:7px;padding:9px 11px;background:var(--bg);border-radius:8px;border:1px solid var(--line)}
 .chead{display:grid;grid-template-columns:minmax(0,1fr) auto 32px 76px;gap:6px;align-items:center}
@@ -65,12 +65,12 @@ input[type=color]{width:32px;height:26px;border:1px solid var(--line);border-rad
 .overlay-toggle-grid .chk{background:var(--bg);border:1.5px solid var(--line);border-radius:8px;padding:6px 9px;font-weight:700;font-size:12px}
 .overlay-toggle-grid .chk:has(input:checked){background:var(--ai-soft);border-color:var(--ai);color:var(--ai)}
 .shelf-cat-tabs{display:flex;flex-wrap:wrap;gap:4px}
-.shelf-cat-tabs button{border:1px solid var(--line);background:#ffffff;color:#334155;border-radius:999px;padding:3px 9px;font:inherit;font-size:10.5px;font-weight:700;cursor:pointer}
+.shelf-cat-tabs button{border:1px solid var(--line);background:#ffffff;color:#334155;border-radius:999px;padding:4px 10px;font:inherit;font-size:11px;font-weight:700;cursor:pointer}
 .shelf-cat-tabs button:hover{border-color:var(--ai);color:var(--ai)}
-.shelf-cat-tabs button[aria-pressed="true"]{background:var(--ai);border-color:var(--ai);color:#ffffff}
+.shelf-cat-tabs button[aria-pressed="true"]{background:var(--ai);border-color:var(--ai);color:#ffffff;font-weight:800;box-shadow:0 2px 5px rgba(4,110,126,.24)}
 .e-colors.compact-combos button:nth-child(n+11):not([aria-pressed="true"]){display:none}
 #eDaboSpotBtns.compact-spots button.spot-extra:not([aria-pressed="true"]){display:none}
-.e-expand-btn{width:100%;border:1px dashed #cbd5e1;background:#ffffff;color:#475569;border-radius:7px;padding:5px 8px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;text-align:center}
+.e-expand-btn{width:100%;border:1px dashed #cbd5e1;background:#ffffff;color:#475569;border-radius:7px;padding:6px 8px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;text-align:center}
 .e-expand-btn:hover{border-color:var(--ai);color:var(--ai);background:#f8fafc}
 .btn{font:inherit;font-weight:700;border-radius:7px;padding:7px 8px;cursor:pointer;border:1px solid var(--ai);background:var(--ai);color:#ffffff;font-size:11.5px;line-height:1.25;min-width:0;transition:background .12s,border-color .12s,color .12s}
 .btn:hover{filter:brightness(1.06)}
@@ -79,18 +79,19 @@ input[type=color]{width:32px;height:26px;border:1px solid var(--line);border-rad
 .btn:focus-visible,.chip:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
 .actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:7px;min-width:0}
 .actions .wide{grid-column:1/-1}
-.note{font-size:11px;color:var(--muted);margin:0;line-height:1.4}
+.note{font-size:11px;color:#475569;margin:0;line-height:1.45}
 .msg{font-size:12px;min-height:1.3em;margin:0;font-weight:500}
 .msg.warn{color:var(--warn)}
 details.adv-details{border:1px solid var(--line);border-radius:8px;background:var(--panel);padding:6px 10px}
 details.adv-details[open]{border-color:#94a3b8;box-shadow:0 1px 4px rgba(15,23,42,.04)}
 details.adv-details>summary{cursor:pointer;font-size:11.5px;font-weight:700;color:var(--ai);list-style:none;display:flex;align-items:center;justify-content:space-between;user-select:none;gap:6px}
 details.adv-details>summary::-webkit-details-marker{display:none}
-details.adv-details>summary::after{content:"▼ 開く";font-size:10px;color:var(--muted);font-weight:600;flex-shrink:0}
+details.adv-details>summary::after{content:"▼ 開く";font-size:10.5px;color:var(--muted);font-weight:600;flex-shrink:0}
 details.adv-details[open]>summary::after{content:"▲ 閉じる"}
 details.adv-details>.adv-body{display:grid;gap:7px;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
 .stage{display:grid;grid-template-rows:auto minmax(0,1fr);gap:8px;min-width:0;min-height:0}
 .stats{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);background:var(--panel);padding:6px 12px;border-radius:8px;border:1px solid var(--line)}
+html.ui-easy body[data-view-mode="view3d"] .stats{display:none !important}
 .stats-left{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline}
 .stats-right{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
 .stats b{color:var(--fg);font-weight:700;font-variant-numeric:tabular-nums;font-size:13px}
@@ -101,7 +102,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 .float-zoom-hud button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:3px 8px;font:inherit;font-size:11px;font-weight:700;cursor:pointer;transition:background .12s}
 .float-zoom-hud button:hover{background:var(--ai);border-color:var(--ai)}
 .float-zoom-hud input[type=range]{width:95px;accent-color:#38bdf8}
-.float-help-pill{position:absolute;bottom:12px;left:12px;max-width:calc(100% - 330px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(15,23,42,.82);color:#e2e8f0;padding:4px 10px;border-radius:999px;font-size:10.5px;pointer-events:none;z-index:15;border:1px solid rgba(255,255,255,.14)}
+.float-help-pill{position:absolute;bottom:12px;left:12px;max-width:calc(100% - 330px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:rgba(15,23,42,.82);color:#e2e8f0;padding:4px 10px;border-radius:999px;font-size:11px;pointer-events:none;z-index:15;border:1px solid rgba(255,255,255,.14)}
 .stage-direct-text-bar{position:absolute;top:10px;left:10px;right:10px;z-index:25;display:flex;flex-direction:column;gap:6px;pointer-events:none}
 .stage-direct-text-bar>*{pointer-events:auto}
 .direct-text-card{background:rgba(15,23,42,.94);backdrop-filter:blur(8px);color:#f8fafc;border:1.5px solid #38bdf8;border-radius:10px;padding:8px 11px;box-shadow:0 8px 24px rgba(0,0,0,.45);display:grid;gap:6px;max-width:780px}
@@ -114,7 +115,7 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 .preset-swatch{width:38px;height:38px;border-radius:5px;border:1px solid rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;overflow:hidden;background-size:cover;background-position:center;flex-shrink:0;grid-row:1 / span 2;cursor:pointer}
 .preset-info{min-width:0;cursor:pointer;display:flex;align-items:baseline;justify-content:space-between;gap:6px;flex-wrap:wrap}
 .preset-title{font-weight:700;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;font-size:12.5px}
-.preset-meta{font-size:10.5px;color:var(--muted);display:inline-block;white-space:nowrap}
+.preset-meta{font-size:11px;color:var(--muted);display:inline-block;white-space:nowrap}
 .preset-btns{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-start;grid-column:2}
 .pm-list{display:grid;gap:5px}
 .pm-it{display:grid;grid-template-columns:20px minmax(0,1fr);gap:6px;align-items:start;font-size:11.5px;line-height:1.45;padding:6px 8px;border-radius:6px;background:#ffffff;border:1px solid #fde68a}
@@ -122,74 +123,86 @@ canvas{display:block;box-shadow:0 1px 3px rgba(0,0,0,.2),0 10px 30px rgba(10,20,
 .pm-it .pm-ic{width:18px;height:18px;line-height:18px;border-radius:50%;text-align:center;font-weight:700;font-size:11px;color:#fff}
 .pm-it.ok .pm-ic{background:#16a34a}.pm-it.cau .pm-ic{background:#d97706}.pm-it.ng .pm-ic{background:#dc2626}
 .ft-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px}
-.ft-card{background:#fff;border:1px solid #a5f3fc;border-radius:6px;padding:4px;display:grid;gap:3px;font-size:10.5px}
+.ft-card{background:#fff;border:1px solid #a5f3fc;border-radius:6px;padding:4px;display:grid;gap:3px;font-size:11px}
 .ft-card .ft-ph{border:0;padding:0;background:#f1f5f9;border-radius:4px;cursor:pointer;aspect-ratio:5/2;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .ft-card .ft-ph.tate{aspect-ratio:2/3}
 .ft-card .ft-ph img{max-width:100%;max-height:100%;display:block}
 .ft-card .ft-nm{font-weight:700;color:#0f172a;line-height:1.3}
 .ft-card .ft-row{display:flex;gap:3px;flex-wrap:wrap;align-items:center}
-.ft-card .ft-chip{font-size:9.5px;padding:0 5px;border-radius:99px;border:1px solid #cbd5e1;color:#475569}
+.ft-card .ft-chip{font-size:10.5px;padding:0 5px;border-radius:99px;border:1px solid #cbd5e1;color:#475569}
 .ft-card .ft-chip.ok{border-color:#16a34a;color:#15803d}.ft-card .ft-chip.ng{border-color:#dc2626;color:#b91c1c}
 .mini-btn{border:1px solid #cbd5e1;background:#ffffff;color:#334155;border-radius:6px;padding:4px 8px;font:inherit;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .12s,border-color .12s,color .12s}
 .mini-btn:hover{border-color:var(--ai);color:var(--ai);background:#f8fafc}
-.mini-btn[aria-pressed="true"]{background:var(--ai);color:#ffffff;border-color:var(--ai);box-shadow:0 1px 3px rgba(4,110,126,.22)}
+.mini-btn[aria-pressed="true"]{background:var(--ai);color:#ffffff;border-color:var(--ai);font-weight:800;box-shadow:0 2px 5px rgba(4,110,126,.24)}
 .mini-btn.del:hover{border-color:#dc2626;color:#dc2626}
-.view-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;background:var(--panel);padding:6px 8px;border-radius:9px;border:1px solid #cbd5e1;box-shadow:0 1px 2px rgba(15,23,42,.04)}
-.view-bar .chip{text-align:center;padding:7px 6px;border-radius:7px;font-weight:800;font-size:12px;background:#f8fafc;border-color:#cbd5e1;color:#334155;transition:all .12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.view-bar .chip:hover{border-color:var(--ai);color:var(--ai);background:#ffffff}
-.view-bar .chip[aria-pressed="true"]{background:var(--ai);border-color:var(--ai);color:#ffffff;box-shadow:0 2px 6px rgba(4,110,126,.25)}
+.view-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;background:#e2e8f0;padding:4px;border-radius:9px;border:1px solid #cbd5e1}
+.view-bar .chip{text-align:center;padding:6px 6px;border-radius:7px;font-weight:800;font-size:12px;background:rgba(255,255,255,0.65);border-color:transparent;color:#334155;transition:all .12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.view-bar .chip:hover{background:#ffffff;border-color:transparent;color:var(--ai)}
+.view-bar .chip[aria-pressed="true"]{background:var(--ai);border-color:var(--ai);color:#fff;font-weight:800;box-shadow:0 2px 6px rgba(4,110,126,.25)}
 .dabo-spec-box{background:#f8fafc;border:1px solid #cbd5e1;border-radius:7px;padding:8px 10px;font-size:11.5px;line-height:1.5;color:var(--fg)}
-/* ✨ かんたん／詳細の切り替え */
+/* かんたん／詳細の切り替え */
 .uimode{display:flex;gap:2px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px;flex:none}
 .uimode button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;cursor:pointer;min-height:30px}
-.uimode button[aria-pressed=true]{background:var(--ai);color:#fff}
+.uimode button[aria-pressed=true]{background:var(--ai);color:#fff;font-weight:800;box-shadow:0 2px 5px rgba(4,110,126,.24)}
 .easy-only{display:none}
 html.ui-easy .easy-only{display:inline}
 html.ui-easy .full-only{display:none !important}
 html:not(.ui-easy) #easyPanel{display:none}
 html.ui-easy .panel > :not(header):not(#easyPanel){display:none !important}
-html.ui-easy #stageDirectTextBar,html.ui-easy #stageDirectTextCard,html.ui-easy #stageHelpPill,html.ui-easy #zoomChips{display:none !important}
+html.ui-easy #stageDirectTextBar,html.ui-easy #stageDirectTextCard,html.ui-easy #stageHelpPill,html.ui-easy #zoomChips,body[data-view-mode="view3d"] #stageDirectTextBar{display:none !important}
+html:not(.ui-easy) body:not([data-view-mode="view3d"]) .canvasbox{padding-top:46px}
 html.ui-easy header{padding:11px 14px;background:#ffffff;border-bottom:1px solid #cbd5e1}
 html.ui-easy h1{font-size:18.5px}
 .easy-panel{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:10px 10px 18px;background:#edf1f7;min-width:0}
-.e-step{background:#ffffff;border:1px solid #cbd5e1;border-radius:10px;padding:12px 13px 14px;box-shadow:0 1px 3px rgba(15,23,42,.05);display:grid;grid-template-columns:minmax(0,1fr);gap:9px;min-width:0}
+.e-step-nav{position:sticky;top:0;z-index:28;background:rgba(255,255,255,0.96);backdrop-filter:blur(6px);margin:-10px -10px 2px;padding:7px 10px;border-bottom:1px solid #cbd5e1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;box-shadow:0 2px 6px rgba(15,23,42,.05)}
+.e-step-nav button{border:1px solid #cbd5e1;background:#f8fafc;color:#334155;border-radius:6px;padding:5px 4px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;text-align:center;transition:all .12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.e-step-nav button:hover{border-color:var(--ai);color:var(--ai);background:#ffffff}
+.e-step-nav button.is-active{background:var(--ai-soft);border-color:var(--ai);color:var(--ai);font-weight:800;box-shadow:inset 0 0 0 1px var(--ai)}
+.e-step{background:#ffffff;border:1px solid #cbd5e1;border-radius:10px;padding:12px 13px 14px;box-shadow:0 1px 3px rgba(15,23,42,.05);display:grid;grid-template-columns:minmax(0,1fr);gap:9px;min-width:0;scroll-margin-top:76px}
 .e-step>*{min-width:0}
-.e-h{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13.5px;color:#0f172a;padding-bottom:7px;border-bottom:1.5px solid #e2e8f0;margin-bottom:1px}
+.e-step.is-collapsed{padding-bottom:11px}
+.e-step.is-collapsed > :not(.e-h){display:none !important}
+.e-h{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13.5px;color:#0f172a;padding-bottom:7px;border-bottom:1.5px solid #e2e8f0;margin-bottom:1px;cursor:pointer;user-select:none}
+.e-step.is-collapsed .e-h{border-bottom-color:transparent;padding-bottom:0;margin-bottom:0}
+.e-h::after{content:"▾";font-size:12px;color:#64748b;font-weight:700;margin-left:2px}
+.e-step.is-collapsed .e-h::after{content:"▸"}
 .e-h b{width:24px;height:24px;border-radius:7px;background:var(--ai);color:#fff;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex:none;box-shadow:0 1px 3px rgba(4,110,126,.22)}
 .e-h span{flex:1;line-height:1.3}
 .e-more{border:1px solid #cbd5e1;background:#f8fafc;color:#475569;font:inherit;font-size:11px;font-weight:700;cursor:pointer;padding:3px 9px;border-radius:999px;flex:none}
 .e-more::after{content:" ›"}
 .e-pat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
-.e-pat button{display:flex;align-items:center;gap:9px;border:1px solid #cbd5e1;background:#ffffff;color:#1e293b;border-radius:8px;padding:7px 9px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;text-align:left;min-height:48px;transition:all .12s}
+.e-pat button{display:flex;align-items:center;gap:7px;border:1px solid #cbd5e1;background:#ffffff;color:#0f172a;border-radius:8px;padding:7px 8px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;text-align:left;min-height:50px;transition:all .12s}
 .e-pat button:hover,.e-chips button:hover{border-color:var(--ai);background:#f8fafc}
 .e-pat button.wide{grid-column:1 / -1}
-.e-pat button small{display:block;font-weight:400;font-size:10.5px;color:var(--muted)}
+.e-pat button small{display:block;font-weight:500;font-size:11px;color:#475569;margin-top:1px}
 .e-pat i{font-style:normal;width:34px;height:34px;border-radius:6px;flex:none;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-disp);font-size:19px;font-weight:800;background:var(--e-bg,#046e7e);color:var(--e-fg,#fff);position:relative;overflow:hidden}
 .e-pat i.dots,.e-pat em.dots{background-image:radial-gradient(circle,var(--e-fg,#fff) 0 3.2px,transparent 3.6px),radial-gradient(circle,var(--e-fg,#fff) 0 1.8px,transparent 2.2px);background-size:14px 14px,9px 9px;background-position:2px 3px,8px 9px;background-color:var(--e-bg,#046e7e)}
 .e-pat em.dots{position:absolute;right:0;bottom:0;width:15px;height:15px;border-top-left-radius:5px}
 .e-pat i.fuda{background:#fff;color:var(--ai);border:1.5px solid var(--ai)}
-.e-pat button[aria-pressed=true]{border-color:var(--ai);background:var(--ai-soft);color:#0f172a;box-shadow:inset 0 0 0 1.5px var(--ai)}
+.e-pat button[aria-pressed=true]{background:var(--ai);border-color:var(--ai);color:#ffffff;font-weight:800;box-shadow:0 2px 5px rgba(4,110,126,.24)}
+.e-pat button[aria-pressed=true] small{color:#e0f2f4}
+.e-pat button[aria-pressed=true] i{box-shadow:0 0 0 1.5px rgba(255,255,255,.85)}
 .e-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
-.e-chips button{border:1px solid #cbd5e1;background:#ffffff;color:#334155;border-radius:7px;padding:6px 8px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;line-height:1.28;min-height:38px;text-align:center;transition:all .12s;min-width:0}
-.e-chips button small{display:block;font-weight:500;font-size:10px;color:var(--muted);margin-top:1px}
-.e-chips button[aria-pressed=true]{border-color:var(--ai);background:var(--ai);color:#ffffff;box-shadow:0 1px 4px rgba(4,110,126,.22)}
+.e-chips button{border:1px solid #cbd5e1;background:#ffffff;color:#0f172a;border-radius:7px;padding:6px 8px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;line-height:1.3;min-height:40px;text-align:center;transition:all .12s;min-width:0}
+.e-chips button small{display:block;font-weight:500;font-size:11px;color:#475569;margin-top:1px}
+.e-chips button[aria-pressed=true]{background:var(--ai);border-color:var(--ai);color:#ffffff;font-weight:800;box-shadow:0 2px 5px rgba(4,110,126,.24)}
 .e-chips button[aria-pressed=true] small{color:#e0f2f4}
 .e-chips.small{display:flex;flex-wrap:wrap;gap:5px}
 .e-chips.small[style*="grid-template-columns"]{display:grid}
-.e-chips.small button{min-height:31px;padding:4px 7px;font-size:11.5px}
-.e-chips[style*="repeat(3"] button{padding:6px 4px;font-size:11.5px;white-space:nowrap}
+.e-chips.small button{min-height:32px;padding:4px 8px;font-size:11.5px}
+.e-chips[style*="repeat(3"] button{padding:6px 5px;font-size:11.5px;white-space:nowrap}
 .e-colors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
-.e-colors button{min-height:42px;border-radius:8px;border:1.5px solid var(--line);cursor:pointer;padding:2px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-disp);font-size:15px;font-weight:800;line-height:1.05;gap:1px;overflow:hidden}
-.e-colors button small{font-family:var(--f-ui);font-size:8.5px;font-weight:700;line-height:1.05;opacity:.95;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.e-colors button{min-height:44px;border-radius:8px;border:1.5px solid var(--line);cursor:pointer;padding:3px 2px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--f-disp);font-size:15px;font-weight:800;line-height:1.08;gap:2px;overflow:hidden}
+.e-colors button small{font-family:var(--f-body);font-size:9.5px;font-weight:700;line-height:1.1;opacity:.96;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .e-colors button[aria-pressed=true]{outline:2.5px solid var(--ai);outline-offset:1.5px;box-shadow:0 2px 6px rgba(0,0,0,.22)}
-.e-pick{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:#334155;background:#f8fafc;padding:7px 10px;border-radius:7px;border:1px solid #e2e8f0}
-.e-pick label{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-weight:600}
+.e-pick{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:#0f172a;background:#f8fafc;padding:7px 10px;border-radius:7px;border:1px solid #dbe2ea}
+.e-pick label{display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-weight:700}
 .e-pick input[type=color]{width:30px;height:24px;border:1px solid #cbd5e1;border-radius:5px;padding:0;background:none;cursor:pointer}
 .e-range{display:grid;grid-template-columns:108px minmax(0,1fr) 48px;align-items:center;gap:8px;font-size:12px}
 .e-range span{color:#475569;font-weight:600;white-space:nowrap}
 .e-range input{width:100%;accent-color:var(--ai)}
-.e-range b{text-align:right;font-variant-numeric:tabular-nums;font-size:12px;color:#1e293b}
-.e-note{margin:0;font-size:11.5px;color:var(--muted)}
+.e-range b{text-align:right;font-variant-numeric:tabular-nums;font-size:12px;color:#0f172a}
+.e-note{margin:0;font-size:11px;color:#475569;line-height:1.45}
 #ePm{font:inherit;font-size:12.5px;font-weight:700;padding:7px 8px;border:1px solid #cbd5e1;border-radius:7px;background:var(--panel);color:var(--fg);width:100%}
 .e-pmsum{font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
 .e-pmsum.ok{color:#15803d}.e-pmsum.ng{color:#b91c1c}.e-pmsum.cau{color:#b45309}
@@ -204,14 +217,15 @@ html.ui-easy h1{font-size:18.5px}
 .e-list button span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .e-msg{margin:0;font-size:12px;font-weight:700;color:var(--ai);min-height:1em}
 .e-msg.warn{color:var(--warn)}
-.e-subbox{background:#f8fafc;border:1px solid #dce1e8;border-radius:8px;padding:9px 10px;display:flex;flex-direction:column;gap:7px}
-.e-subbox.dabo-box{background:#f8fafc;border-color:#dce1e8}
-.e-sublbl{font-size:11.5px;font-weight:700;color:#1e293b;display:flex;align-items:center;justify-content:space-between;gap:4px}
-.e-dabo-card{background:#ffffff;border:1px solid #cbd5e1;border-radius:7px;padding:8px 10px;font-size:11.5px;line-height:1.5;color:#334155;display:flex;flex-direction:column;gap:6px}
+.e-subbox{background:#f4f7fa;border:0;border-left:3px solid var(--ai);border-radius:6px;padding:9px 11px;display:flex;flex-direction:column;gap:7px;scroll-margin-top:78px}
+.e-subbox.dabo-box{background:#f4f7fa;border-left-color:var(--ai)}
+.e-sublbl{font-size:11.5px;font-weight:800;color:#0f172a;display:flex;align-items:center;justify-content:space-between;gap:4px}
+.e-subtag{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;border-radius:4px;background:var(--ai-soft);color:var(--ai);font-size:10.5px;font-weight:800;margin-right:4px}
+.e-dabo-card{background:#ffffff;border:1px solid #dbe2ea;border-radius:7px;padding:8px 10px;font-size:11.5px;line-height:1.5;color:#334155;display:flex;flex-direction:column;gap:6px}
 .e-dabo-switch{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
-.e-dabo-switch button{border:1px solid #cbd5e1;background:#f8fafc;color:#334155;border-radius:7px;padding:6px 4px;font:inherit;font-size:11px;font-weight:700;cursor:pointer;text-align:center}
+.e-dabo-switch button{border:1px solid #cbd5e1;background:#f8fafc;color:#334155;border-radius:7px;padding:6px 4px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;text-align:center}
 .e-dabo-switch button:hover{border-color:var(--ai);color:var(--ai)}
-.e-dabo-switch button[aria-pressed="true"]{background:var(--ai);border-color:var(--ai);color:#ffffff}
+.e-dabo-switch button[aria-pressed="true"]{background:var(--ai);border-color:var(--ai);color:#ffffff;font-weight:800;box-shadow:0 2px 5px rgba(4,110,126,.24)}
 .e-tofull{margin:12px 15px 0;border:1px dashed #cbd5e1;background:#f8fafc;color:#475569;font:inherit;font-size:12px;font-weight:700;padding:9px;border-radius:8px;cursor:pointer}
 .e-tofull:hover,.e-more:hover{color:var(--ai);border-color:var(--ai);background:#ffffff}
 html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
@@ -230,8 +244,8 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
   .canvasbox{height:36vh;height:36dvh;padding:6px}
   .stage.mob-sz-lg .canvasbox{height:58vh;height:58dvh}
   .stage.mob-sz-sm .canvasbox{height:18vh;height:18dvh}
-  .view-bar,html.ui-easy .view-bar{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px 6px;margin-bottom:4px !important}
-  .view-bar .chip,html.ui-easy .view-bar .chip{padding:6px 3px;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .view-bar,html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;padding:4px;margin-bottom:4px !important}
+  .view-bar .chip,html.ui-easy .view-bar .chip{padding:6px 2px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   #stageGarmentViewChips{padding:4px 6px !important;margin-bottom:2px !important;gap:4px !important}
   #stageGarmentViewChips .mini-btn{padding:4px 6px !important;font-size:11px !important}
   .stats,#stageHelpPill{display:none !important}
@@ -263,30 +277,40 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
   <aside class="panel">
     <header>
       <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
-        <h1><span class="full-only">🏯 手ぬぐい工房 × 仲羽田・あられ・ダボ統合スタジオ</span><span class="easy-only">手ぬぐい工房</span></h1>
+        <h1><span class="full-only">手ぬぐい工房 統合スタジオ</span><span class="easy-only">手ぬぐい工房</span></h1>
         <div class="uimode" role="group" aria-label="表示の切り替え">
           <button type="button" data-ui="easy" aria-pressed="true">かんたん</button>
           <button type="button" data-ui="full" aria-pressed="false">詳細</button>
         </div>
       </div>
-      <p class="full-only">仲羽田（角字）・大小あられ・1文字/1ロゴちりばめ総柄・手ぬぐい工房連携・ダボ仕立て・Illustrator出力を1つに統合。</p>
+      <p class="full-only">仲羽田（角字）・大小あられ・1文字/1ロゴ総柄・手ぬぐい工房連携・ダボ仕立て・Illustrator出力を統合。</p>
       <div class="full-only" style="display:flex;gap:5px;margin-top:8px;flex-wrap:wrap">
-        <button type="button" class="btn" id="openEmbeddedKoboBtn" style="flex:1;padding:6px 9px;font-size:11.5px">🏯 「手ぬぐい工房 PRO」を画面内で開く（合体モード）</button>
-        <button type="button" class="mini-btn" id="quickImportLiveKoboBtn" style="padding:5px 8px" title="手ぬぐい工房で作成・保存した手ぬぐいをワンクリックでここの生地＆ダボに取り込みます">⚡ 工房の手ぬぐいを取込</button>
+        <button type="button" class="btn" id="openEmbeddedKoboBtn" style="flex:1;padding:6px 9px;font-size:11.5px">「手ぬぐい工房 PRO」を画面内で開く（合体モード）</button>
+        <button type="button" class="mini-btn" id="quickImportLiveKoboBtn" style="padding:5px 8px" title="手ぬぐい工房で作成・保存した手ぬぐいをワンクリックでここの生地＆ダボに取り込みます">工房の手ぬぐいを取込</button>
       </div>
     </header>
 
-    <!-- ✨ かんたんモード：よく使う操作だけ。設定（S）は詳細モードと共通 -->
+    <!-- かんたんモード：よく使う操作だけ。設定（S）は詳細モードと共通 -->
     <div id="easyPanel" class="easy-panel">
-      <div class="e-step" id="easyTopSaveBox" style="background:#f8fafc;border-bottom:1px solid var(--line);padding:7px 14px">
+      <nav class="e-step-nav" id="eStepNav" aria-label="ステップ移動">
+        <button type="button" class="is-active" data-jump="eStep1">1 ベース柄</button>
+        <button type="button" data-jump="eStep2">2 寸法</button>
+        <button type="button" data-jump="eStep3">3 配色</button>
+        <button type="button" data-jump="eTuneStep">4 柄調整</button>
+        <button type="button" data-jump="eStep5">5 ロゴ・3D</button>
+        <button type="button" data-jump="eDaboFromLogoStep">6 ダボ配置</button>
+        <button type="button" data-jump="eStep7">7 印刷方式</button>
+        <button type="button" data-jump="eStep8">8 保存・入稿</button>
+      </nav>
+      <div class="e-step" id="easyTopSaveBox" style="background:#f8fafc;border-bottom:1px solid var(--line);padding:7px 12px">
         <details class="adv-details" id="easyTopSaveDetails" style="border-color:#cbd5e1;background:#ffffff;padding:5px 9px">
-          <summary style="color:#1e293b;font-size:12px">
-            <span style="display:inline-flex;align-items:center;gap:5px;font-weight:800">💾 保存した設定の呼び出し・名前をつけて保存 <span class="badge" id="eTopSavedCountBadge" style="background:var(--ai-soft);color:var(--ai)">0件</span></span>
+          <summary style="color:#0f172a;font-size:12px">
+            <span style="display:inline-flex;align-items:center;gap:6px;font-weight:800">保存データの呼び出し・登録 <span class="badge" id="eTopSavedCountBadge" style="background:var(--ai-soft);color:var(--ai)">0件</span></span>
           </summary>
           <div class="adv-body" style="border-top-color:#e2e8f0">
             <div style="display:flex;justify-content:flex-end;gap:4px;flex-wrap:wrap">
-              <button type="button" class="mini-btn" id="eTopLoadJsonBtn" title="パソコン内の設定ファイル(.json)を読み込んでアプリ内にも名前付きで保存します">📂 設定ファイル(.json)取込</button>
-              <button type="button" class="mini-btn" id="eTopRestorePresetBtn" hidden title="直前に削除した保存設定を元に戻します">↩️ 消した設定を戻す</button>
+              <button type="button" class="mini-btn" id="eTopLoadJsonBtn" title="パソコン内の設定ファイル(.json)を読み込んでアプリ内にも名前付きで保存します">JSON読込</button>
+              <button type="button" class="mini-btn" id="eTopRestorePresetBtn" hidden title="直前に削除した保存設定を元に戻します">削除を戻す</button>
             </div>
             <div class="e-keep">
               <input type="text" id="eTopPresetName" placeholder="設定名を入力（例：仲羽田・白札ダボ案1）" maxlength="40">
@@ -297,20 +321,20 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           </div>
         </details>
       </div>
-      <div class="e-step">
-        <div class="e-h"><b>1</b><span>手ぬぐいのベース柄を選ぶ</span><button type="button" class="e-more" data-emore="step1">詳しく</button></div>
+      <div class="e-step" id="eStep1">
+        <div class="e-h"><b>1</b><span>ベース柄を選ぶ</span><button type="button" class="e-more" data-emore="step1">詳しく</button></div>
         <div class="e-pat" id="ePat">
           <button type="button" data-ep="haneda"><i>仲</i><span>「仲羽田」のみ<small>伝統の3文字総柄</small></span></button>
           <button type="button" data-ep="seinenkai"><i>青</i><span>「仲羽田青年会」<small>6文字連結の総柄</small></span></button>
           <button type="button" data-ep="haneda_one_seinen"><i>1</i><span>1個だけ青年会<small>仲羽田の中に1箇所</small></span></button>
           <button type="button" data-ep="arare"><i class="dots"></i><span>大小あられ<small>江戸小紋の粒柄</small></span></button>
           <button type="button" data-ep="both_haneda"><i>仲<em class="dots"></em></i><span>仲羽田＋あられ<small>3文字角字とあられ</small></span></button>
-          <button type="button" data-ep="both_seinenkai"><i>青<em class="dots"></em></i><span>仲羽田青年会＋あられ<small>6文字角字とあられ</small></span></button>
-          <button type="button" data-ep="fuda" class="wide"><i class="fuda">札</i><span>札入りタオル図案から選ぶ<small>23案から写真で選ぶ。手ぬぐいの大きさにも移せます</small></span></button>
+          <button type="button" data-ep="both_seinenkai"><i>青<em class="dots"></em></i><span>青年会＋あられ<small>6文字角字とあられ</small></span></button>
+          <button type="button" data-ep="fuda" class="wide"><i class="fuda">札</i><span>札入りタオル図案から選ぶ<small>23案から写真で選択・手ぬぐい寸法にも対応</small></span></button>
         </div>
       </div>
-      <div class="e-step">
-        <div class="e-h"><b>2</b><span>大きさ</span><button type="button" class="e-more" data-emore="step2">詳しく</button></div>
+      <div class="e-step" id="eStep2">
+        <div class="e-h"><b>2</b><span>布・タオルの寸法</span><button type="button" class="e-more" data-emore="step2">詳しく</button></div>
         <div class="e-chips" id="eSize">
           <button type="button" data-w="350" data-h="900">手ぬぐい<small>35×90cm</small></button>
           <button type="button" data-w="900" data-h="350">手ぬぐい 横<small>90×35cm</small></button>
@@ -320,14 +344,14 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           <button type="button" data-w="1200" data-h="600">バスタオル<small>120×60cm</small></button>
         </div>
       </div>
-      <div class="e-step">
-        <div class="e-h"><b>3</b><span>色（地の色・仲羽田・あられ・札の色）</span><button type="button" class="e-more" data-emore="step3">詳しく</button></div>
+      <div class="e-step" id="eStep3">
+        <div class="e-h"><b>3</b><span>配色の設定（地色・柄・札）</span><button type="button" class="e-more" data-emore="step3">詳しく</button></div>
         <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
-          <span style="font-size:11.5px;font-weight:700;color:#334155">🎨 2色カラーパターン（札の色も一括同期）</span>
+          <span style="font-size:11.5px;font-weight:700;color:#334155">おすすめ2色配色（札色も連動）</span>
           <span id="eActiveComboBadge" class="badge" style="background:var(--ai-soft);color:var(--ai);font-size:10.5px">羽田納戸×白</span>
         </div>
         <div class="e-colors compact-combos" id="eColors" role="group" aria-label="2色カラーパターン（全30種）"></div>
-        <button type="button" class="e-expand-btn" id="toggleMoreCombosBtn" aria-expanded="false">🎨 おすすめ配色をもっと見る（＋20種・全30種を表示）▾</button>
+        <button type="button" class="e-expand-btn" id="toggleMoreCombosBtn" aria-expanded="false">その他の配色を表示（全30種） ▾</button>
         <div class="e-pick">
           <label><input type="color" id="eBg">地の色</label>
           <label><input type="color" id="eFg">仲羽田の色</label>
@@ -335,11 +359,11 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           <label><input type="color" id="eFudaCol">札本体の色</label>
         </div>
         <div class="e-subbox" id="eArareColorBox">
-          <div class="e-sublbl"><span>・あられの色設定</span></div>
+          <div class="e-sublbl"><span>あられの配色</span></div>
           <!-- ① あられ粒の色 -->
           <div style="display:flex;flex-direction:column;gap:4px">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-              <span style="font-size:11px;font-weight:700;color:#334155">① あられ粒の色:</span>
+              <span style="font-size:11px;font-weight:700;color:#334155">あられ粒の色:</span>
               <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eArareDotPicker" value="#ffffff" title="あられ粒の色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
             <div class="e-chips small" id="eDotColChips">
@@ -353,12 +377,12 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
             </div>
           </div>
           <details class="adv-details" id="eArareAdvColorDetails">
-            <summary>⚙️ ②うしろ抜き色・③周り枠の色を設定</summary>
+            <summary>背景抜き色・周り枠線の詳細設定</summary>
             <div class="adv-body">
               <!-- ② あられうしろ抜き色 -->
               <div style="display:flex;flex-direction:column;gap:4px">
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-                  <span style="font-size:11px;font-weight:700;color:#334155">② うしろ抜き色（粒の周り余白）:</span>
+                  <span style="font-size:11px;font-weight:700;color:#334155">背景抜き色（粒の周り余白）:</span>
                   <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eArarePadCustomCol" value="#046e7e" title="あられうしろ抜き色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
                 </div>
                 <div class="e-chips small" id="eArarePadColBtns" style="grid-template-columns:repeat(4,1fr)">
@@ -371,7 +395,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
               <!-- ③ あられ周り枠線の色（1粒枠・外周枠） -->
               <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #cbd5e1">
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-                  <span style="font-size:11px;font-weight:700;color:#334155">③ 周り枠の色（粒フチ・外周枠）:</span>
+                  <span style="font-size:11px;font-weight:700;color:#334155">周り枠線の色（粒フチ・外周枠）:</span>
                   <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eArarePadStrokeCol" value="#877028" title="あられ周り枠線・外周枠の色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
                 </div>
                 <div class="e-chips small" id="eArarePadStrokeBtns" style="grid-template-columns:repeat(4,1fr)">
@@ -386,14 +410,14 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         </div>
         <div class="e-subbox" id="eFudaColorBox">
           <div class="e-sublbl" style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
-            <span>🏷️ 札・ロゴの色設定</span>
-            <button type="button" class="mini-btn" id="eStep3FudaToggleBtn" style="font-size:10.5px;padding:2px 8px">➕ 札ロゴを表示</button>
+            <span>札・ロゴの配色</span>
+            <button type="button" class="mini-btn" id="eStep3FudaToggleBtn" style="font-size:10.5px;padding:2px 8px">＋ 札ロゴを配置</button>
           </div>
           <div id="eStep3SlotsBar" style="display:flex;flex-wrap:wrap;gap:4px"></div>
           <!-- ① 札本体の色 -->
           <div style="display:flex;flex-direction:column;gap:4px">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-              <span style="font-size:11px;font-weight:700;color:#334155">① 札・ロゴ本体の色:</span>
+              <span style="font-size:11px;font-weight:700;color:#334155">札・ロゴ本体の色:</span>
               <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eFudaBodyPicker" value="#ffffff" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
             <div class="e-chips small" id="eFudaColChips">
@@ -409,7 +433,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           <!-- ② 札の文字色（仲羽田・青年会） -->
           <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #cbd5e1">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-              <span style="font-size:11px;font-weight:700;color:#334155">② 札の文字色（仲羽田・青年会）:</span>
+              <span style="font-size:11px;font-weight:700;color:#334155">札の文字色（仲羽田・青年会）:</span>
               <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eFudaTextCol" value="#ffffff" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
             <div class="e-chips small" id="eFudaTextColChips">
@@ -423,26 +447,26 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
             </div>
           </div>
           <details class="adv-details" id="eFudaAdvColorDetails">
-            <summary>⚙️ ③うしろ背景・④周り枠線・⑤揺れ線の色を設定</summary>
+            <summary>背景抜き色・外枠線・揺れ線の詳細設定</summary>
             <div class="adv-body">
               <!-- ③ 札・ロゴのうしろ背景色（透過する／透過しない・背景色） -->
               <div style="display:flex;flex-direction:column;gap:4px">
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-                  <span style="font-size:11px;font-weight:700;color:#334155">③ ロゴの透過／透過しない・うしろ背景色:</span>
+                  <span style="font-size:11px;font-weight:700;color:#334155">ロゴ背景の透過・抜き色:</span>
                   <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="ロゴのうしろ背景色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
                 </div>
                 <div class="e-chips small" id="eLogoPadColBtns" style="grid-template-columns:repeat(5,1fr)">
-                  <button type="button" data-epc="none">✨ 透過する</button>
-                  <button type="button" data-epc="bg">🛡️ 透過しない(地色)</button>
-                  <button type="button" data-epc="white">🛡️ 透過しない(白)</button>
-                  <button type="button" data-epc="black">🛡️ 透過しない(黒)</button>
-                  <button type="button" data-epc="roundRect">🔲 四角背景</button>
+                  <button type="button" data-epc="none">透過する</button>
+                  <button type="button" data-epc="bg">地色背景</button>
+                  <button type="button" data-epc="white">白背景</button>
+                  <button type="button" data-epc="black">黒背景</button>
+                  <button type="button" data-epc="roundRect">四角背景</button>
                 </div>
               </div>
               <!-- ④ 札の周り枠線の色 -->
               <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #cbd5e1">
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-                  <span style="font-size:11px;font-weight:700;color:#334155">④ 周り枠線の色:</span>
+                  <span style="font-size:11px;font-weight:700;color:#334155">外枠線の色:</span>
                   <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eLogoPadStrokeCol" value="#ffffff" title="札の周り枠線の色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
                 </div>
                 <div class="e-chips small" id="eLogoPadStrokeBtns" style="grid-template-columns:repeat(4,1fr)">
@@ -455,13 +479,13 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
               <!-- ⑤ 札の揺れの表現の色（左右の揺れ線・側面斜線） -->
               <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #cbd5e1">
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-                  <span style="font-size:11px;font-weight:700;color:#334155">⑤ 揺れの表現の色（左右の揺れ線・側面斜線）:</span>
+                  <span style="font-size:11px;font-weight:700;color:#334155">揺れ線・側面斜線の色切替:</span>
                 </div>
                 <div class="e-chips small" id="eFudaShakeColorBtns" style="grid-template-columns:repeat(4,1fr)">
                   <button type="button" data-fshake="normal">標準</button>
-                  <button type="button" data-fshake="invert_wobble">🔄 揺れ線逆色</button>
-                  <button type="button" data-fshake="invert_side">🔄 側面逆色</button>
-                  <button type="button" data-fshake="invert_both">🔄 両方逆色</button>
+                  <button type="button" data-fshake="invert_wobble">揺れ線逆色</button>
+                  <button type="button" data-fshake="invert_side">側面逆色</button>
+                  <button type="button" data-fshake="invert_both">両方逆色</button>
                 </div>
               </div>
             </div>
@@ -469,8 +493,8 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         </div>
         <p class="e-note" id="eColorNote" hidden>札入りタオル図案を入れているときは、図案の色は「札入りタオル図案から選ぶ」を開いて変えます。</p>
       </div>
-      <div class="e-step" id="eTuneStep">
-        <div class="e-h"><b>4</b><span>柄の大きさ・太さ・あられ周り枠</span><button type="button" class="e-more" data-emore="step4">詳しく</button></div>
+      <div class="e-step is-collapsed" id="eTuneStep">
+        <div class="e-h"><b>4</b><span>柄のサイズ・線の太さ調整</span><button type="button" class="e-more" data-emore="step4">詳しく</button></div>
         <div class="e-chips small" id="eStyles" style="grid-template-columns:repeat(4,1fr)">
           <button type="button" data-style="std">標準</button>
           <button type="button" data-style="fine">細め・細かく</button>
@@ -482,8 +506,8 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         <div class="e-range" data-for="count"><span>あられの数</span><input type="range" min="50" max="4000" step="10"><b></b></div>
         <div class="e-range" data-for="scale"><span>あられの大きさ</span><input type="range" min="25" max="300" step="1"><b></b></div>
         <div class="e-subbox" id="eArareFrameBox" hidden>
-          <div class="e-sublbl"><span>🛡️ 大小あられの周り枠（1粒ごとの周り枠 ＆ 外周の額縁枠）</span></div>
-          <div style="font-size:11px;font-weight:700;color:var(--muted)">① あられ1粒ごとの周り枠（うしろ透過なし・フチ枠）:</div>
+          <div class="e-sublbl"><span>大小あられの周り枠（粒フチ・外周枠）</span></div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted)">あられ1粒ごとの周り枠（背景抜き・フチ枠）:</div>
           <div class="e-chips" id="eArarePadMode">
             <button type="button" data-eap="none">枠なし<small>そのまま</small></button>
             <button type="button" data-eap="pad">うしろ抜き<small>柄を透かさない</small></button>
@@ -493,9 +517,9 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           <div id="eArarePadControls" style="display:flex;flex-direction:column;gap:5px" hidden>
             <div class="e-range" data-for="ararePadMarginMm"><span>あられ周り抜き幅</span><input type="range" min="0" max="10" step="0.2"><b></b></div>
             <div class="e-range" data-for="ararePadStrokeMm"><span>あられ周り枠線太さ</span><input type="range" min="0" max="6" step="0.2"><b></b></div>
-            <div style="font-size:11px;color:var(--muted)">💡 あられの粒色・うしろ色・周り枠線の色は上の「<b>3 色</b>」で変えられます。</div>
+            <div style="font-size:11px;color:var(--muted)">粒色・背景抜き色・枠線色は「3 配色」で変更できます。</div>
           </div>
-          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-top:3px">② あられ全体の外周周り枠（生地の周囲を囲む枠）:</div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted);margin-top:3px">あられ全体の外周枠（生地の周囲を囲む枠）:</div>
           <div class="e-chips" id="eArareOuterMode">
             <button type="button" data-eao="none">外周枠なし</button>
             <button type="button" data-eao="single">一重枠</button>
@@ -510,42 +534,42 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           </div>
         </div>
       </div>
-      <div class="e-step">
-        <div class="e-h"><b>5</b><span>札・ロゴを入れる（透過・背景余白・色変更）</span><button type="button" class="e-more" data-emore="step5">詳しく</button></div>
+      <div class="e-step" id="eStep5">
+        <div class="e-h"><b>5</b><span>札・ロゴの配置 ＆ 3D立体化</span><button type="button" class="e-more" data-emore="step5">詳しく</button></div>
         <div class="e-chips" id="eLogo" style="grid-template-columns:repeat(3,1fr)">
           <button type="button" data-el="white">札ロゴ<small>白抜き(標準)</small></button>
           <button type="button" data-el="teal">札ロゴ<small>浅葱(色つき)</small></button>
           <button type="button" data-el="trace">仲羽田トレース<small>高画質ベクター</small></button>
-          <button type="button" data-el="golden">黄金比・大漁旗・波<small>15選から選ぶ</small></button>
-          <button type="button" data-el="img">画像を入れる<small>.ai / SVG / PNG</small></button>
+          <button type="button" data-el="golden">黄金比・大漁旗<small>15選から選ぶ</small></button>
+          <button type="button" data-el="img">画像読込<small>.ai / SVG / PNG</small></button>
           <button type="button" data-el="none">入れない</button>
         </div>
         <div id="eStep5SlotsBar" style="display:flex;flex-wrap:wrap;gap:4px"></div>
-        <!-- 📚 かんたんモード用 マイ・ロゴ保管棚 ＆ カテゴリ絞込バー -->
+        <!-- かんたんモード用 マイ・ロゴ保管棚 ＆ カテゴリ絞込バー -->
         <div class="e-subbox" id="eLogoShelfBox">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
-            <span style="font-size:11.5px;font-weight:800;color:#1e293b">① 📚 ロゴを選ぶ・追加登録 <span id="eLogoShelfCountBadge" class="badge" style="background:var(--ai-soft);color:var(--ai)">0個</span></span>
+            <span style="font-size:11.5px;font-weight:800;color:#0f172a">ロゴの選択・追加登録 <span id="eLogoShelfCountBadge" class="badge" style="background:var(--ai-soft);color:var(--ai)">0個</span></span>
             <div style="display:flex;gap:3px;flex-wrap:wrap">
-              <button type="button" class="mini-btn" id="eUploadToShelfBtn" style="font-size:10.5px;padding:2px 6px" title="パソコン・スマホ内の画像や.ai/PDF/SVGを何個でもまとめて透過登録できます">📁 画像追加</button>
-              <button type="button" class="mini-btn" id="eSaveCurrentToShelfBtn" style="font-size:10.5px;padding:2px 6px">📌 今のロゴを登録</button>
-              <button type="button" class="mini-btn" id="eDlTransparentLogoPngBtn" style="font-size:10.5px;padding:2px 6px" title="現在選択しているロゴを背景なしの透過PNGファイルとして保存します">📥 透過PNG保存</button>
-              <button type="button" class="mini-btn" id="eRestoreLogoShelfBtn" style="font-size:10.5px;padding:2px 6px" title="誤って消したマイロゴや初期ロゴを元に戻します">↩️ 戻す</button>
-              <a href="golden_logos.html" class="mini-btn" style="font-size:10.5px;padding:2px 6px;text-decoration:none" title="横向き大漁旗3選・波揺れ6選・黄金比6選（計15選）の一覧ページを開きます">📐 15選一覧 ↗</a>
+              <button type="button" class="mini-btn" id="eUploadToShelfBtn" style="font-size:10.5px;padding:2px 6px" title="パソコン・スマホ内の画像や.ai/PDF/SVGを何個でもまとめて透過登録できます">画像読込</button>
+              <button type="button" class="mini-btn" id="eSaveCurrentToShelfBtn" style="font-size:10.5px;padding:2px 6px">現在のロゴを登録</button>
+              <button type="button" class="mini-btn" id="eDlTransparentLogoPngBtn" style="font-size:10.5px;padding:2px 6px" title="現在選択しているロゴを背景なしの透過PNGファイルとして保存します">透過PNG保存</button>
+              <button type="button" class="mini-btn" id="eRestoreLogoShelfBtn" style="font-size:10.5px;padding:2px 6px" title="誤って消したマイロゴや初期ロゴを元に戻します">戻す</button>
+              <a href="golden_logos.html" class="mini-btn" style="font-size:10.5px;padding:2px 6px;text-decoration:none" title="横向き大漁旗3選・波揺れ6選・黄金比6選（計15選）の一覧ページを開きます">15選一覧 ↗</a>
             </div>
           </div>
-          <!-- 🔍 ロゴ保管棚のカテゴリ絞り込みタブ -->
+          <!-- ロゴ保管棚のカテゴリ絞り込みタブ -->
           <div class="shelf-cat-tabs" id="eLogoShelfCatTabs" role="group" aria-label="ロゴの種類で絞り込み">
             <button type="button" data-scat="all" aria-pressed="true">すべて</button>
-            <button type="button" data-scat="fuda_trace" aria-pressed="false">🏷️ 札・半纏・仲羽田トレース</button>
-            <button type="button" data-scat="tairyo_wave" aria-pressed="false">🎌 大漁旗・波</button>
-            <button type="button" data-scat="gold" aria-pressed="false">📐 黄金比</button>
-            <button type="button" data-scat="custom" aria-pressed="false">📁 マイ登録</button>
+            <button type="button" data-scat="fuda_trace" aria-pressed="false">札・半纏・トレース</button>
+            <button type="button" data-scat="tairyo_wave" aria-pressed="false">大漁旗・波</button>
+            <button type="button" data-scat="gold" aria-pressed="false">黄金比</button>
+            <button type="button" data-scat="custom" aria-pressed="false">マイ登録</button>
           </div>
           <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:4px;max-height:190px;overflow-y:auto"></div>
-          <!-- 🎨 仲羽田トレース・マイロゴ・札ロゴのワンタッチ色変更バー -->
+          <!-- 仲羽田トレース・マイロゴ・札ロゴのワンタッチ色変更バー -->
           <div style="display:flex;flex-direction:column;gap:4px;padding-top:6px;margin-top:2px;border-top:1px dashed #cbd5e1">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
-              <span style="font-size:11px;font-weight:700;color:#334155">🎨 選んだロゴの色を変える（仲羽田トレース・札・マイロゴ共通）:</span>
+              <span style="font-size:11px;font-weight:700;color:#334155">選択中ロゴの色変更:</span>
               <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eStep5FudaBodyCol" value="#ffffff" style="width:26px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
             <div class="e-chips small" id="eStep5LogoColChips" style="grid-template-columns:repeat(5,1fr)">
@@ -564,18 +588,18 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         </div>
         <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
         <div class="e-subbox" id="eLogoPadBox" hidden>
-          <div class="e-sublbl"><span>② 🛡️ ロゴの透過／透過しない ＆ ロゴの背景の余白</span></div>
+          <div class="e-sublbl"><span>ロゴの背景透過・余白</span></div>
           <div class="e-chips" id="eLogoPadMode" style="grid-template-columns:repeat(2,1fr)">
-            <button type="button" data-epm="none">✨ ロゴを透過する<small>背景なし（柄が透ける）</small></button>
-            <button type="button" data-epm="silhouette">🛡️ ロゴは透過しない<small>シルエット背景（柄を隠す）</small></button>
-            <button type="button" data-epm="roundRect">🔲 透過しない（四角背景）<small>四角・角丸の背景枠</small></button>
-            <button type="button" data-epm="circle">⭕ 透過しない（丸背景）<small>正円の背景枠</small></button>
+            <button type="button" data-epm="none">背景透過<small>柄が透ける</small></button>
+            <button type="button" data-epm="silhouette">シルエット背景<small>柄を隠す</small></button>
+            <button type="button" data-epm="roundRect">四角背景枠<small>角丸・四角枠</small></button>
+            <button type="button" data-epm="circle">丸背景枠<small>正円枠</small></button>
           </div>
           <div id="eLogoPadControls" style="display:flex;flex-direction:column;gap:6px">
-            <div style="display:flex;flex-direction:column;gap:4px;background:#ffffff;padding:6px 8px;border-radius:6px;border:1px solid #cbd5e1">
-              <div class="e-range" data-for="logoPadMarginMm"><span>📏 ロゴの背景の余白</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
+            <div style="display:flex;flex-direction:column;gap:4px;background:#ffffff;padding:6px 8px;border-radius:6px;border:1px solid #dbe2ea">
+              <div class="e-range" data-for="logoPadMarginMm"><span>背景の余白幅</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
               <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-                <span style="font-size:10.5px;font-weight:700;color:#475569">余白プリセット:</span>
+                <span style="font-size:11px;font-weight:700;color:#475569">余白プリセット:</span>
                 <div class="e-chips small" id="eLogoPadMarginPresets" style="flex:1;grid-template-columns:repeat(6,1fr)">
                   <button type="button" data-pmargin="0">0mm</button>
                   <button type="button" data-pmargin="3">3mm</button>
@@ -588,129 +612,129 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
             </div>
             <div style="display:flex;flex-direction:column;gap:4px">
               <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
-                <span style="font-size:11px;font-weight:700;color:#334155">🎨 透過しないときのロゴ背景色:</span>
+                <span style="font-size:11px;font-weight:700;color:#334155">背景枠の色:</span>
                 <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eStep5FudaPadCol" value="#046e7e" style="width:26px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
               </div>
               <div class="e-chips small" id="eStep5PadColBtns" style="grid-template-columns:repeat(4,1fr)">
                 <button type="button" data-epc="bg">地の色</button>
                 <button type="button" data-epc="white">白</button>
                 <button type="button" data-epc="black">黒</button>
-                <button type="button" data-epc="none">✨ 透過に戻す</button>
+                <button type="button" data-epc="none">透過に戻す</button>
               </div>
             </div>
             <details class="adv-details" id="eStep5AdvPadDetails">
-              <summary>⚙️ 背景枠の太さ・角丸・揺れ線の色を設定</summary>
+              <summary>背景枠の太さ・角丸・揺れ線の詳細設定</summary>
               <div class="adv-body">
                 <div class="e-range" data-for="logoPadCornerMm" id="eLogoPadCornerRow"><span>四角背景の角丸</span><input type="range" min="0" max="30" step="1"><b></b></div>
                 <div class="e-range" data-for="logoPadStrokeMm"><span>背景の周り枠線の太さ</span><input type="range" min="0" max="8" step="0.5"><b></b></div>
                 <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px;border-top:1px dashed #cbd5e1">
-                  <span style="font-size:11px;font-weight:700;color:#334155">🔄 札の揺れの表現の色（左右の揺れ線・側面斜線）:</span>
+                  <span style="font-size:11px;font-weight:700;color:#334155">揺れ線・側面斜線の色切替:</span>
                   <div class="e-chips small" id="eStep5ShakeColorBtns" style="grid-template-columns:repeat(4,1fr)">
                     <button type="button" data-fshake="normal">標準</button>
-                    <button type="button" data-fshake="invert_wobble">🔄 揺れ線逆色</button>
-                    <button type="button" data-fshake="invert_side">🔄 側面逆色</button>
-                    <button type="button" data-fshake="invert_both">🔄 両方逆色</button>
+                    <button type="button" data-fshake="invert_wobble">揺れ線逆色</button>
+                    <button type="button" data-fshake="invert_side">側面逆色</button>
+                    <button type="button" data-fshake="invert_both">両方逆色</button>
                   </div>
                 </div>
-                <button type="button" class="mini-btn" id="eJumpToStep3ColorBtn" style="padding:4px 8px;text-align:center">🎨 札の4つの色（本体・文字・うしろ・枠線）は上の「3 色」でも変更 ↑</button>
+                <button type="button" class="mini-btn" id="eJumpToStep3ColorBtn" style="padding:4px 8px;text-align:center">札の配色設定（3 配色）へ移動 ↑</button>
               </div>
             </details>
           </div>
         </div>
-        <!-- 🧊 ③ ロゴ・図案の3D立体厚み加工 ＆ 360°立体3Dプレビュー（上だけ・上下・両方） -->
+        <!-- ロゴ・図案の3D立体厚み加工 ＆ 360°立体3Dプレビュー -->
         <div class="e-subbox" id="eLogo3dBox">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
-            <span style="font-size:11.5px;font-weight:800;color:#1e293b">③ 🧊 デザイン・ロゴを3D立体化する（厚み加工 ＆ 3D着装プレビュー）</span>
-            <span class="badge" style="background:var(--ai-soft);color:var(--ai);font-size:10px">上だけ・上下・両方対応</span>
+            <span style="font-size:11.5px;font-weight:800;color:#0f172a">3D立体厚み加工 ＆ 3D着装プレビュー</span>
+            <span class="badge" style="background:var(--ai-soft);color:var(--ai);font-size:10.5px">360°回転対応</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:5px">
-            <div style="font-size:11px;font-weight:700;color:#334155">🅰️ ロゴ・札の3D立体厚み加工（手ぬぐい・ダボ・3Dすべてに反映）:</div>
+            <div style="font-size:11px;font-weight:700;color:#334155"><span class="e-subtag">A</span>ロゴ・札の3D厚み加工</div>
             <div class="e-chips" id="eLogo3dModeBtns" style="grid-template-columns:repeat(2,1fr)">
-              <button type="button" data-l3d="none" aria-pressed="true">平面<small>標準(2D)</small></button>
-              <button type="button" data-l3d="extrude" aria-pressed="false">🧊 3D押し出し<small>重厚ブロック立体</small></button>
-              <button type="button" data-l3d="gold_block" aria-pressed="false">✨ 3D金塊彫り<small>ゴールド立体札</small></button>
-              <button type="button" data-l3d="emboss" aria-pressed="false">🪨 3D浮き彫り<small>同色レリーフ</small></button>
+              <button type="button" data-l3d="none" aria-pressed="true">平面<small>標準2D</small></button>
+              <button type="button" data-l3d="extrude" aria-pressed="false">3D押し出し<small>重厚ブロック</small></button>
+              <button type="button" data-l3d="gold_block" aria-pressed="false">3D金塊彫り<small>ゴールド立体</small></button>
+              <button type="button" data-l3d="emboss" aria-pressed="false">3D浮き彫り<small>同色レリーフ</small></button>
             </div>
-            <div class="e-range" data-for="logo3dDepthMm" id="eLogo3dDepthRange"><span>🧊 3D厚みの深さ</span><input type="range" min="0" max="16" step="0.5"><b></b></div>
+            <div class="e-range" data-for="logo3dDepthMm" id="eLogo3dDepthRange"><span>3D厚みの深さ</span><input type="range" min="0" max="16" step="0.5"><b></b></div>
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap">
-              <button type="button" class="mini-btn" id="ePattern3dToggleBtn" aria-pressed="false" style="flex:1;padding:5px 8px;font-size:11px">🧊 ベース柄（仲羽田・あられ）も3D浮き彫りにする: OFF</button>
+              <button type="button" class="mini-btn" id="ePattern3dToggleBtn" aria-pressed="false" style="flex:1;padding:5px 8px;font-size:11px">ベース柄（仲羽田・あられ）も3D浮き彫り: OFF</button>
               <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">3D側面色 <input type="color" id="eLogo3dSideCol" value="#0c2d3a" style="width:24px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
-            <div style="border-top:1px dashed #cbd5e1;padding-top:5px;margin-top:1px;display:flex;flex-direction:column;gap:4px">
-              <div style="font-size:11px;font-weight:700;color:#334155">🅱️ できたデザインを360°回せる立体3D着装で見る（ドラッグで自由回転）:</div>
+            <div style="border-top:1px dashed #cbd5e1;padding-top:6px;margin-top:2px;display:flex;flex-direction:column;gap:5px">
+              <div style="font-size:11px;font-weight:700;color:#334155"><span class="e-subtag">B</span>3D着装プレビューを開く（360°回転）</div>
               <div class="e-chips" id="eOpen3dQuickBtns" style="grid-template-columns:repeat(2,1fr)">
-                <button type="button" data-open3d="dabo_top">👕 ダボ【上だけ】3D化<small>シャツ単体の3D着装</small></button>
-                <button type="button" data-open3d="dabo_both">👕👖 ダボ【上下】3D化<small>シャツ＋パンツ3D着装</small></button>
-                <button type="button" data-open3d="dabo_compare">👕＋👕👖 【上だけ＆上下 両方】3D<small>上だけと上下を並べて3D表示</small></button>
-                <button type="button" data-open3d="tenugui">🧣 手ぬぐい・立体看板 3D<small>布ドレープ＆立体レリーフ</small></button>
+                <button type="button" data-open3d="dabo_top">ダボ【上だけ】3D<small>シャツ単体</small></button>
+                <button type="button" data-open3d="dabo_both">ダボ【上下】3D<small>シャツ＋パンツ</small></button>
+                <button type="button" data-open3d="dabo_compare">【上＋上下 両方】3D<small>並べて比較</small></button>
+                <button type="button" data-open3d="tenugui">手ぬぐい・看板 3D<small>布＆立体レリーフ</small></button>
               </div>
             </div>
           </div>
         </div>
-        <p class="e-note" id="eLogoNote">ロゴは手ぬぐいの上でもダボシャツの上でもドラッグして動かせます。</p>
+        <p class="e-note" id="eLogoNote">ロゴは手ぬぐい上でもダボシャツ上でもドラッグして位置調整できます。</p>
       </div>
       <div class="e-step" id="eDaboFromLogoStep">
-        <div class="e-h"><b>6</b><span>👕👖 ダボシャツ・ダボパンツのロゴ位置から手ぬぐいを作る</span><button type="button" class="e-more" data-emore="step6">詳しく</button></div>
+        <div class="e-h"><b>6</b><span>ダボのロゴ位置から手ぬぐいを逆算</span><button type="button" class="e-more" data-emore="step6">詳しく</button></div>
         <div class="e-subbox dabo-box">
-          <div class="e-sublbl"><span>① 表示する衣装（上：ダボシャツ ／ 下：ダボパンツ ／ 🧊3D立体化）</span></div>
+          <div class="e-sublbl"><span>表示する衣装 ＆ 3D切替</span></div>
           <div class="e-chips" id="eDaboGarmentViewBtns" style="grid-template-columns:repeat(3,1fr)">
-            <button type="button" data-egv="both" aria-pressed="true">👕👖 上下セット<small>シャツ＋パンツ</small></button>
-            <button type="button" data-egv="top" aria-pressed="false">👕 上のみ<small>シャツを拡大</small></button>
-            <button type="button" data-egv="pants" aria-pressed="false">👖 下のみ<small>パンツを拡大</small></button>
+            <button type="button" data-egv="both" aria-pressed="true">上下セット<small>シャツ＋パンツ</small></button>
+            <button type="button" data-egv="top" aria-pressed="false">上のみ<small>シャツ拡大</small></button>
+            <button type="button" data-egv="pants" aria-pressed="false">下のみ<small>パンツ拡大</small></button>
           </div>
           <div class="e-chips" id="eStep6Open3dBtns" style="grid-template-columns:repeat(3,1fr);margin-top:3px">
-            <button type="button" data-open3d="dabo_top">🧊 上だけ3D<small>シャツ立体3D</small></button>
-            <button type="button" data-open3d="dabo_both">🧊 上下セット3D<small>上下とも立体3D</small></button>
-            <button type="button" data-open3d="dabo_compare">🧊 両方同時3D<small>並べて立体3D</small></button>
+            <button type="button" data-open3d="dabo_top">上だけ3D<small>シャツ立体</small></button>
+            <button type="button" data-open3d="dabo_both">上下セット3D<small>上下とも立体</small></button>
+            <button type="button" data-open3d="dabo_compare">両方同時3D<small>並べて比較</small></button>
           </div>
-          <div class="e-sublbl" style="margin-top:2px"><span>② 札・ロゴのうしろ背景（今の札色を保ったまま切り替え）</span></div>
+          <div class="e-sublbl" style="margin-top:2px"><span>札・ロゴの背景切替</span></div>
           <div class="e-chips" id="eDaboQuickLogo">
-            <button type="button" data-dql="cur_opaque">🛡️ うしろ透過なし<small>今の札色で枠をつける</small></button>
-            <button type="button" data-dql="cur_trans">✨ 透過のまま<small>今の札色で柄を透かす</small></button>
-            <button type="button" data-dql="white_opaque">🏷️ 白抜き札・透過なし<small>仲羽田と同色(#FFF)</small></button>
-            <button type="button" data-dql="teal_opaque">🏷️ 浅葱札・透過なし<small>色つき(#00A3AF)</small></button>
+            <button type="button" data-dql="cur_opaque">背景透過なし<small>今の札色で枠あり</small></button>
+            <button type="button" data-dql="cur_trans">透過のまま<small>今の札色で柄を透かす</small></button>
+            <button type="button" data-dql="white_opaque">白抜き札<small>背景枠あり(#FFF)</small></button>
+            <button type="button" data-dql="teal_opaque">浅葱札<small>背景枠あり(#00A3AF)</small></button>
           </div>
-          <div class="e-sublbl" style="margin-top:2px"><span>③ ダボのどこにロゴを出すか選ぶ（全枚同じ構図の手ぬぐいに自動逆算）</span></div>
+          <div class="e-sublbl" style="margin-top:2px"><span>ロゴを出す部位を選ぶ（全枚共通の手ぬぐいに自動逆算）</span></div>
           <div class="e-chips compact-spots" id="eDaboSpotBtns">
-            <button type="button" data-dspot="backAndPocket" style="grid-column:span 2">⭐ 王道おすすめ：背紋＋胸位置（袖は下半分から裁断）<small>全枚すべて同じ構図の手ぬぐいで、背中・胸・ポケットにロゴを出し袖は下側から取る配置</small></button>
-            <button type="button" data-dspot="backCrest">① 背中・首下の高さ<small>背紋位置（全枚共通）</small></button>
-            <button type="button" data-dspot="frontChestL">③ 左胸の高さ<small>向かって右の胸（全枚共通）</small></button>
-            <button type="button" data-dspot="chestPocket">⑤ 左胸ポケット位置<small>胸ポケ中央（全枚共通）</small></button>
-            <button type="button" data-dspot="pantsHipPocket">👖 パンツ右尻ポケット<small>ダボパンツ背面ポケット</small></button>
-            <button type="button" class="spot-extra" data-dspot="backMid">② 背中・ど真ん中<small>身頃中央（全枚共通）</small></button>
-            <button type="button" class="spot-extra" data-dspot="frontChestR">④ 右胸の高さ<small>向かって左の胸（全枚共通）</small></button>
-            <button type="button" class="spot-extra" data-dspot="frontHem">⑥ 前後の裾まわり<small>腰元の高さ（全枚共通）</small></button>
-            <button type="button" class="spot-extra" data-dspot="sleeves">⑦ 両袖の中央<small>肩〜二の腕（全枚共通）</small></button>
-            <button type="button" class="spot-extra" data-dspot="allParts">⑧ 標準位置（上部）<small>全パーツ共通</small></button>
-            <button type="button" class="spot-extra" data-dspot="pantsThighL">👖 パンツ前太もも<small>ダボパンツ前脚中央</small></button>
+            <button type="button" data-dspot="backAndPocket" style="grid-column:span 2">王道おすすめ：背紋＋左胸＋ポケット<small>袖は下半分から裁断・全枚共通構図</small></button>
+            <button type="button" data-dspot="backCrest">背中・首下の高さ<small>背紋位置（全枚共通）</small></button>
+            <button type="button" data-dspot="frontChestL">左胸の高さ<small>向かって右の胸</small></button>
+            <button type="button" data-dspot="chestPocket">左胸ポケット位置<small>胸ポケ中央</small></button>
+            <button type="button" data-dspot="pantsHipPocket">パンツ右尻ポケット<small>ダボパンツ背面</small></button>
+            <button type="button" class="spot-extra" data-dspot="backMid">背中・中央<small>身頃中央（全枚共通）</small></button>
+            <button type="button" class="spot-extra" data-dspot="frontChestR">右胸の高さ<small>向かって左の胸</small></button>
+            <button type="button" class="spot-extra" data-dspot="frontHem">前後の裾まわり<small>腰元の高さ</small></button>
+            <button type="button" class="spot-extra" data-dspot="sleeves">両袖の中央<small>肩〜二の腕</small></button>
+            <button type="button" class="spot-extra" data-dspot="allParts">標準位置（上部）<small>全パーツ共通</small></button>
+            <button type="button" class="spot-extra" data-dspot="pantsThighL">パンツ前太もも<small>ダボパンツ前脚</small></button>
           </div>
-          <button type="button" class="e-expand-btn" id="toggleMoreDaboSpotsBtn" aria-expanded="false">📍 その他の部位（背中中央・右胸・裾・両袖・前太もも）を表示 ▾</button>
+          <button type="button" class="e-expand-btn" id="toggleMoreDaboSpotsBtn" aria-expanded="false">その他の部位（背中中央・右胸・裾・両袖・前太もも） ▾</button>
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px">
-            <button type="button" class="mini-btn" id="eDaboPinAddBtn" style="flex:1;padding:6px 8px;font-size:11.5px">📌 今のロゴ位置を固定して、手ぬぐいの別の場所にもう1つ追加</button>
+            <button type="button" class="mini-btn" id="eDaboPinAddBtn" style="flex:1;padding:6px 8px;font-size:11.5px">＋ 今のロゴ位置を固定して別の場所にもう1つ追加</button>
           </div>
           <div id="eDaboSlotsBar" style="display:flex;flex-wrap:wrap;gap:4px"></div>
           <div class="e-dabo-card" id="eDaboReverseCard">
-            <div id="eDaboReverseText">💡 上の<b>部位ボタン</b>を押すか、右の<b>ダボシャツ・ダボパンツの上で札ロゴを直接ドラッグ</b>すると、手ぬぐい上の位置が逆算され、<b>裁断図の全手ぬぐい（5〜8枚すべて同じ構図）とダボ上下全体</b>に即座に反映されます！</div>
+            <div id="eDaboReverseText">部位ボタンを押すか右のダボ上でロゴを直接ドラッグすると、全枚共通の手ぬぐい座標へ自動逆算されます。</div>
             <div class="e-dabo-switch">
-              <button type="button" id="eDaboShowShirtBtn" aria-pressed="false">👕👖 ダボ上下＋裁断図を見る</button>
-              <button type="button" id="eDaboShowOnlyDaboBtn" aria-pressed="false">👕👖 完成図のみ大きく見る</button>
-              <button type="button" id="eDaboShowTenuguiBtn" aria-pressed="true">📜 できた手ぬぐい(1枚)を見る</button>
+              <button type="button" id="eDaboShowShirtBtn" aria-pressed="false">裁断図＋ダボ</button>
+              <button type="button" id="eDaboShowOnlyDaboBtn" aria-pressed="false">ダボ完成図のみ</button>
+              <button type="button" id="eDaboShowTenuguiBtn" aria-pressed="true">手ぬぐい(1枚)</button>
             </div>
           </div>
         </div>
       </div>
-      <div class="e-step">
-        <div class="e-h"><b>7</b><span>プリント方法</span><button type="button" class="e-more" data-emore="step7">詳しく</button></div>
+      <div class="e-step is-collapsed" id="eStep7">
+        <div class="e-h"><b>7</b><span>プリント方式と線幅チェック</span><button type="button" class="e-more" data-emore="step7">詳しく</button></div>
         <select id="ePm" aria-label="プリント方法"></select>
         <div id="ePmSum" class="e-pmsum"></div>
         <div id="ePmList" class="pm-list"></div>
       </div>
-      <div class="e-step">
-        <div class="e-h"><b>8</b><span>保存する（アプリ内保存・手ぬぐい・ダボ完成図・イラレ）</span><button type="button" class="e-more" data-emore="step8">詳しく</button></div>
+      <div class="e-step" id="eStep8">
+        <div class="e-h"><b>8</b><span>データの保存・入稿ファイル出力</span><button type="button" class="e-more" data-emore="step8">詳しく</button></div>
         <div class="e-subbox">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
-            <span style="font-size:12px;font-weight:800;color:#1e293b">💾 名前をつけてアプリ内に設定を保存・呼び出し <span class="badge" id="eStep8SavedCountBadge" style="background:var(--ai-soft);color:var(--ai)">0件</span></span>
-            <button type="button" class="mini-btn" id="eRestorePresetBtn" hidden>↩️ 消した設定を戻す</button>
+            <span style="font-size:12px;font-weight:800;color:#0f172a">設定データの保存・呼び出し <span class="badge" id="eStep8SavedCountBadge" style="background:var(--ai-soft);color:var(--ai)">0件</span></span>
+            <button type="button" class="mini-btn" id="eRestorePresetBtn" hidden>削除を戻す</button>
           </div>
           <div class="e-keep">
             <input type="text" id="eName" placeholder="設定名を入力（例：紺・細め案1）" maxlength="40">
@@ -719,78 +743,78 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           <div class="preset-list" id="eList" style="max-height:185px"></div>
         </div>
         <div class="e-save" style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-          <button type="button" class="btn" id="eSavePng" style="grid-column:span 2">📜 手ぬぐい画像で保存（300dpi PNG）</button>
-          <button type="button" class="btn" id="eSave3dPng" style="grid-column:span 2" title="現在の3D立体プレビュー（ダボ上だけ・ダボ上下・両方・手ぬぐい3D）を高解像度PNG画像で保存します">🧊 3D立体プレビュー画像を保存（PNG）</button>
-          <button type="button" class="btn ghost" id="eSaveDaboOnlyPng" title="ダボシャツ（上）＋ダボパンツ（下）の完成図をPNG画像でダウンロードします">👕👖 完成図を保存（上下・PNG）</button>
-          <button type="button" class="btn ghost" id="eSaveDaboPng" title="生地の取り方（裁断図）＋ダボ上下完成図をセットでPNG保存します">✂️👕 裁断図＋完成図（PNG）</button>
-          <button type="button" class="btn ghost" id="eSaveDaboPantsPng">👖 ダボパンツ完成図（PNG）</button>
-          <button type="button" class="btn ghost" id="eSaveDaboSvg">📐 完成図（イラレSVG）</button>
-          <button type="button" class="btn ghost" id="eSaveAi">✒️ Illustrator（.ai）</button>
-          <button type="button" class="btn ghost" id="eSaveSvg">📐 手ぬぐい（SVG）</button>
-          <button type="button" class="btn ghost" id="eCopySvg">📋 SVG をコピー</button>
-          <button type="button" class="btn ghost" id="eSaveJson">📥 設定ファイル保存(.json)</button>
-          <button type="button" class="btn ghost" id="eLoadJson" style="grid-column:span 2">📂 設定ファイル読込(.json)</button>
+          <button type="button" class="btn" id="eSavePng" style="grid-column:span 2">手ぬぐい画像を保存 (300dpi PNG)</button>
+          <button type="button" class="btn" id="eSave3dPng" style="grid-column:span 2" title="現在の3D立体プレビュー（ダボ上だけ・ダボ上下・両方・手ぬぐい3D）を高解像度PNG画像で保存します">3D立体プレビューを保存 (PNG)</button>
+          <button type="button" class="btn ghost" id="eSaveDaboOnlyPng" title="ダボシャツ（上）＋ダボパンツ（下）の完成図をPNG画像でダウンロードします">ダボ完成図 (上下・PNG)</button>
+          <button type="button" class="btn ghost" id="eSaveDaboPng" title="生地の取り方（裁断図）＋ダボ上下完成図をセットでPNG保存します">裁断図＋完成図 (PNG)</button>
+          <button type="button" class="btn ghost" id="eSaveDaboPantsPng">パンツ完成図 (PNG)</button>
+          <button type="button" class="btn ghost" id="eSaveDaboSvg">完成図 (イラレSVG)</button>
+          <button type="button" class="btn ghost" id="eSaveAi">Illustrator (.ai)</button>
+          <button type="button" class="btn ghost" id="eSaveSvg">手ぬぐい (SVG)</button>
+          <button type="button" class="btn ghost" id="eCopySvg">SVGをコピー</button>
+          <button type="button" class="btn ghost" id="eSaveJson">設定保存 (.json)</button>
+          <button type="button" class="btn ghost" id="eLoadJson" style="grid-column:span 2">設定読込 (.json)</button>
         </div>
         <p class="e-msg" id="eMsg" role="status"></p>
       </div>
       <button type="button" class="e-tofull" data-emore="all">すべての機能を使う（詳細モードへ）</button>
     </div>
 
-    <!-- 🔍「詳しく」で特定項目だけ開いたときの案内バー -->
+    <!-- 「詳しく」で特定項目だけ開いたときの案内バー -->
     <div id="focusedDetailBar" class="focused-detail-bar" hidden>
-      <div class="focused-detail-title"><span>🔍</span><span id="focusedDetailTitle">項目の詳細設定</span></div>
+      <div class="focused-detail-title"><span id="focusedDetailTitle">項目の詳細設定</span></div>
       <div class="focused-detail-btns">
         <button type="button" class="mini-btn" id="focusedBackEasyBtn" style="background:var(--ai);color:#fff;border-color:var(--ai);font-weight:700;padding:4px 9px">← かんたんに戻る</button>
         <button type="button" class="mini-btn" id="focusedShowAllBtn" style="background:#fff;color:var(--fg);border-color:var(--line);font-weight:700;padding:4px 8px">全項目を表示</button>
       </div>
     </div>
 
-    <!-- 🧭 シンプル化カテゴリ切替バー（機能は1つも落とさず、見たい項目だけをすっきり表示） -->
+    <!-- シンプル化カテゴリ切替バー（機能は1つも落とさず、見たい項目だけをすっきり表示） -->
     <nav class="nav-cat-tabs" id="panelCatTabs" aria-label="設定カテゴリ切替">
-      <button type="button" class="cat-tab" data-cat-filter="all" data-cat="all" aria-pressed="true">すべて</button>
-      <button type="button" class="cat-tab" data-cat-filter="pattern" data-cat="pattern" aria-pressed="false">① 🎨 柄・色</button>
-      <button type="button" class="cat-tab" data-cat-filter="towel" data-cat="towel" aria-pressed="false">② 🧣 タオル</button>
-      <button type="button" class="cat-tab" data-cat-filter="overlay" data-cat="overlay" aria-pressed="false">③ 🏮 札・ロゴ</button>
-      <button type="button" class="cat-tab" data-cat-filter="dabo" data-cat="dabo" aria-pressed="false">④ 👕 ダボ</button>
-      <button type="button" class="cat-tab" data-cat-filter="export" data-cat="export" aria-pressed="false">⑤ 💾 保存・出力</button>
+      <button type="button" class="cat-tab" data-cat-filter="pattern" data-cat="pattern" aria-pressed="false">1.柄・色</button>
+      <button type="button" class="cat-tab" data-cat-filter="overlay" data-cat="overlay" aria-pressed="false">2.ロゴ・文字</button>
+      <button type="button" class="cat-tab" data-cat-filter="dabo" data-cat="dabo" aria-pressed="false">3.ダボ・裁断</button>
+      <button type="button" class="cat-tab" data-cat-filter="towel" data-cat="towel" aria-pressed="false">4.札タオル</button>
+      <button type="button" class="cat-tab" data-cat-filter="export" data-cat="export" aria-pressed="false">5.保存・入稿</button>
+      <button type="button" class="cat-tab" data-cat-filter="all" data-cat="all" aria-pressed="true">全表示</button>
     </nav>
 
     <!-- 1. 柄モード切替 ＆ レイヤー前後順 ＆ 手ぬぐい工房合体パネル -->
     <section id="sec-mode" aria-labelledby="h-mode" data-cat="pattern">
-      <h2 id="h-mode"><span>文様モード・手ぬぐい工房合体</span><div style="display:flex;gap:6px;align-items:center"><a href="seinen_mock.html" target="_blank" style="font-size:11px;background:#0284c7;color:#fff;padding:2px 8px;border-radius:999px;text-decoration:none;font-weight:700">🆕「仲羽田青年会」モック ↗</a><a href="index.html" style="font-size:11px;color:var(--ai);text-decoration:none;font-weight:600">🖌️ 手ぬぐい工房 ↗</a></div></h2>
+      <h2 id="h-mode"><span>文様モード・手ぬぐい工房連携</span><div style="display:flex;gap:6px;align-items:center"><a href="seinen_mock.html" target="_blank" style="font-size:11px;background:var(--ai-soft);color:var(--ai);padding:2px 8px;border-radius:999px;text-decoration:none;font-weight:700">青年会モック ↗</a><a href="index.html" style="font-size:11px;color:var(--ai);text-decoration:none;font-weight:700">手ぬぐい工房 ↗</a></div></h2>
       <div class="mode-tabs" id="modeTabs" style="grid-template-columns:1fr 1fr">
-        <button class="chip" data-mode="haneda" aria-pressed="true">① 江戸角字（仲羽田 / 青年会）</button>
-        <button class="chip" data-mode="arare" aria-pressed="false">② 大小あられ</button>
-        <button class="chip" data-mode="both" aria-pressed="false">③ 角字＋あられ重ね</button>
-        <button class="chip" data-mode="scatter" aria-pressed="false" title="背景の角字やあられを消し、1個のロゴや1文字を多数ちりばめた総柄手ぬぐいや、手ぬぐい工房の生地をベースにします">④ 1文字/ロゴ散らし・工房生地</button>
+        <button class="chip" data-mode="haneda" aria-pressed="true">1. 江戸角字（仲羽田 / 青年会）</button>
+        <button class="chip" data-mode="arare" aria-pressed="false">2. 大小あられ</button>
+        <button class="chip" data-mode="both" aria-pressed="false">3. 角字＋あられ重ね</button>
+        <button class="chip" data-mode="scatter" aria-pressed="false" title="背景の角字やあられを消し、1個のロゴや1文字を多数ちりばめた総柄手ぬぐいや、手ぬぐい工房の生地をベースにします">4. 1文字/ロゴ散らし・工房生地</button>
       </div>
-      <!-- 🆕 角字モチーフ切替：「仲羽田（元柄3文字）」⇄「仲羽田の羅列に1個だけ青年会」⇄「仲羽田青年会（新6文字全面）」 -->
-      <div class="cgroup" id="kakuMotifBox" style="background:#eff6ff;border:1.5px solid #60a5fa;padding:6px 8px">
+      <!-- 角字モチーフ切替 -->
+      <div class="cgroup" id="kakuMotifBox" style="background:#f8fafc;border:1px solid #cbd5e1;padding:8px 10px">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
-          <span class="clabel" style="font-size:11.5px;color:#1e40af">🎌 江戸角字の柄を選ぶ（元柄と同じシームレス斜め格子）</span>
-          <a href="seinen_mock.html" target="_blank" style="font-size:10.5px;color:#0284c7;font-weight:700;text-decoration:none">🔍 比較モックを見る ↗</a>
+          <span class="clabel" style="font-size:11.5px;color:#0f172a">江戸角字の柄を選ぶ（シームレス斜め格子）</span>
+          <a href="seinen_mock.html" target="_blank" style="font-size:11px;color:var(--ai);font-weight:700;text-decoration:none">比較モック ↗</a>
         </div>
         <div class="chips" id="kakuMotifTabs" style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
-          <button type="button" class="chip" data-motif="haneda" aria-pressed="true" style="padding:6px 6px;border-radius:7px;font-size:11.5px;font-weight:700;text-align:center">① 仲羽田（元柄 3文字）<br><span style="font-size:10px;opacity:.85">伝統の3文字エンドレス角字</span></button>
-          <button type="button" class="chip" data-motif="seinenkai" aria-pressed="false" style="padding:6px 6px;border-radius:7px;font-size:11.5px;font-weight:700;text-align:center">② 仲羽田青年会（全面）<br><span style="font-size:10px;opacity:.85">6文字連結の全面総柄</span></button>
-          <button type="button" class="chip" data-motif="haneda_one_seinen" aria-pressed="false" style="grid-column:1 / -1;padding:7px 8px;border-radius:7px;font-size:12px;font-weight:800;text-align:center;border-color:#d97706;background:#fffbeb;color:#92400e">🌟 ③ 「仲羽田」の羅列に1個だけ「青年会」を入れる<br><span style="font-size:10px;font-weight:600;opacity:.9">全面は元柄「仲羽田」のまま、選んだ1箇所だけがシームレスに「仲羽田青年会」になります</span></button>
+          <button type="button" class="chip" data-motif="haneda" aria-pressed="true" style="padding:6px 6px;border-radius:7px;font-size:11.5px;font-weight:700;text-align:center">仲羽田（元柄 3文字）<br><span style="font-size:10.5px;opacity:.85">伝統の3文字エンドレス角字</span></button>
+          <button type="button" class="chip" data-motif="seinenkai" aria-pressed="false" style="padding:6px 6px;border-radius:7px;font-size:11.5px;font-weight:700;text-align:center">仲羽田青年会（全面）<br><span style="font-size:10.5px;opacity:.85">6文字連結の全面総柄</span></button>
+          <button type="button" class="chip" data-motif="haneda_one_seinen" aria-pressed="false" style="grid-column:1 / -1;padding:7px 8px;border-radius:7px;font-size:11.5px;font-weight:700;text-align:center">「仲羽田」の羅列に1個だけ「青年会」を入れる<br><span style="font-size:10.5px;font-weight:500;opacity:.88">全面は元柄「仲羽田」のまま、選んだ1箇所だけがシームレスに「仲羽田青年会」になります</span></button>
         </div>
 
-        <!-- 🌟 1個だけ青年会（ワンポイント青年会）の詳細設定ボックス -->
-        <div id="onePointSeinenBox" hidden style="margin-top:5px;padding:7px 8px;background:#fffbeb;border:1.5px solid #f59e0b;border-radius:7px;display:flex;flex-direction:column;gap:5px">
+        <!-- 1個だけ青年会（ワンポイント青年会）の詳細設定ボックス -->
+        <div id="onePointSeinenBox" hidden style="margin-top:5px;padding:7px 8px;background:#ffffff;border:1px solid #cbd5e1;border-radius:7px;display:flex;flex-direction:column;gap:5px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
-            <span style="font-size:11.5px;font-weight:800;color:#b45309">🌟 1個だけ「青年会」の色・位置設定</span>
-            <button type="button" class="mini-btn" id="randomSeinenSpotBtn" style="background:#f59e0b;color:#fff;border-color:#d97706;font-weight:700">🎲 別の仲羽田枠へ移動</button>
+            <span style="font-size:11.5px;font-weight:800;color:#0f172a">1個だけ「青年会」の色・位置設定</span>
+            <button type="button" class="mini-btn" id="randomSeinenSpotBtn">別の仲羽田枠へ移動</button>
           </div>
           <div class="chips" id="seinenSpotModeTabs" style="gap:4px">
-            <button type="button" class="chip" data-spmode="same" aria-pressed="true" style="font-size:11px;padding:4px 7px">① 同じ色（白抜き・隠し青年会）</button>
-            <button type="button" class="chip" data-spmode="3char" aria-pressed="false" style="font-size:11px;padding:4px 7px">②「青年会」3文字だけ別色</button>
-            <button type="button" class="chip" data-spmode="6char" aria-pressed="false" style="font-size:11px;padding:4px 7px">③「仲羽田青年会」6文字を別色</button>
+            <button type="button" class="chip" data-spmode="same" aria-pressed="true" style="font-size:11px;padding:4px 7px">同じ色（隠し青年会）</button>
+            <button type="button" class="chip" data-spmode="3char" aria-pressed="false" style="font-size:11px;padding:4px 7px">「青年会」3文字だけ別色</button>
+            <button type="button" class="chip" data-spmode="6char" aria-pressed="false" style="font-size:11px;padding:4px 7px">「仲羽田青年会」6文字を別色</button>
           </div>
-          <div id="seinenSpotColorRow" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;background:#ffffff;padding:4px 6px;border-radius:5px;border:1px solid #fde68a">
-            <span style="font-size:11px;font-weight:700;color:#92400e">🎨 ワンポイント色:</span>
+          <div id="seinenSpotColorRow" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;background:#f8fafc;padding:4px 6px;border-radius:5px;border:1px solid #dbe2ea">
+            <span style="font-size:11px;font-weight:700;color:#334155">ワンポイント色:</span>
             <input type="color" id="seinenSpotColor" value="#fbbf24" style="width:26px;height:24px">
-            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="seinenSpotColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+            <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="seinenSpotColor">色マップ</button>
             <button type="button" class="mini-btn seinen-col-Preset" data-col="#fbbf24" style="background:#fbbf24;color:#0f172a;font-weight:700">山吹金</button>
             <button type="button" class="mini-btn seinen-col-Preset" data-col="#877028" style="background:#877028;color:#fff;font-weight:700">羽田金</button>
             <button type="button" class="mini-btn seinen-col-Preset" data-col="#ef4444" style="background:#ef4444;color:#fff;font-weight:700">朱赤</button>
@@ -808,23 +832,23 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
             <output for="seinenSpotY" id="seinenSpotY-o" style="font-size:11px">50%</output>
           </div>
           <div class="chips" id="seinenSpotPosChips" style="gap:4px">
-            <button type="button" class="chip" data-spx="50" data-spy="50" style="font-size:10.5px;padding:3px 6px">🎯 ど真ん中</button>
-            <button type="button" class="chip" data-spx="50" data-spy="24" style="font-size:10.5px;padding:3px 6px">👕 上部(背紋位置)</button>
-            <button type="button" class="chip" data-spx="50" data-spy="76" style="font-size:10.5px;padding:3px 6px">📜 下部(裾位置)</button>
-            <button type="button" class="chip" data-spx="26" data-spy="26" style="font-size:10.5px;padding:3px 6px">↖ 左上</button>
-            <button type="button" class="chip" data-spx="74" data-spy="74" style="font-size:10.5px;padding:3px 6px">↘ 右下</button>
+            <button type="button" class="chip" data-spx="50" data-spy="50" style="font-size:10.5px;padding:3px 6px">中央</button>
+            <button type="button" class="chip" data-spx="50" data-spy="24" style="font-size:10.5px;padding:3px 6px">上部(背紋位置)</button>
+            <button type="button" class="chip" data-spx="50" data-spy="76" style="font-size:10.5px;padding:3px 6px">下部(裾位置)</button>
+            <button type="button" class="chip" data-spx="26" data-spy="26" style="font-size:10.5px;padding:3px 6px">左上</button>
+            <button type="button" class="chip" data-spx="74" data-spy="74" style="font-size:10.5px;padding:3px 6px">右下</button>
           </div>
         </div>
       </div>
 
-      <!-- 🏯 手ぬぐい工房で作った手ぬぐいを入れる・合体連携ボックス（折りたたみでスッキリ） -->
+      <!-- 手ぬぐい工房で作った手ぬぐいを入れる・合体連携ボックス -->
       <details class="adv-details" id="koboBridgeDetails">
-        <summary><span>🏯 手ぬぐい工房で作った生地を入れる・連携</span><span id="koboActiveStatusBadge" class="badge" style="background:#e0f2fe;color:#0284c7;margin-left:auto;margin-right:6px">未取込</span></summary>
+        <summary><span>手ぬぐい工房で作った生地を入れる・連携</span><span id="koboActiveStatusBadge" class="badge" style="background:var(--ai-soft);color:var(--ai);margin-left:auto;margin-right:6px">未取込</span></summary>
         <div class="adv-body" id="koboBridgeBox">
           <div style="display:flex;gap:4px;flex-wrap:wrap">
-            <button type="button" class="mini-btn" id="importLiveKoboBtn" style="background:#0284c7;color:#fff;border-color:#0369a1;font-weight:700;flex:1">⚡ 手ぬぐい工房の最新デザインをそのまま入れる</button>
-            <button type="button" class="mini-btn" id="uploadKoboFileBtn" style="background:#ffffff;color:#0369a1;border-color:#7dd3fc;font-weight:600">📂 画像 / .json を生地として読込</button>
-            <button type="button" class="mini-btn del" id="clearKoboFabricBtn" hidden title="取り込んだ手ぬぐい工房のベース生地を解除します">🗑️ 工房生地を解除</button>
+            <button type="button" class="mini-btn" id="importLiveKoboBtn" style="background:var(--ai);color:#fff;border-color:var(--ai);font-weight:700;flex:1">手ぬぐい工房の最新デザインを取り込む</button>
+            <button type="button" class="mini-btn" id="uploadKoboFileBtn">画像 / .json を読込</button>
+            <button type="button" class="mini-btn del" id="clearKoboFabricBtn" hidden title="取り込んだ手ぬぐい工房のベース生地を解除します">工房生地を解除</button>
             <input type="file" id="uploadKoboFileInput" accept=".json,image/png,image/jpeg,image/webp,image/svg+xml,.ai,.pdf" hidden>
           </div>
           <div id="koboSavedPresetsList" style="display:flex;flex-direction:column;gap:4px;max-height:130px;overflow-y:auto"></div>
@@ -837,8 +861,8 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           <button type="button" class="mini-btn" id="flipLayerOrderBtn" title="仲羽田と大小あられの前後を入れ替えます">前後入替 ⇅</button>
         </div>
         <div class="pair" id="layerOrderTabs">
-          <button type="button" class="chip" data-order="kakuFront" aria-pressed="true" style="padding:6px 6px;border-radius:7px;font-size:11.5px;text-align:center">▲ <b>仲羽田</b>が前<br><span style="font-size:10px;opacity:.85">（大小あられが後ろ）</span></button>
-          <button type="button" class="chip" data-order="arareFront" aria-pressed="false" style="padding:6px 6px;border-radius:7px;font-size:11.5px;text-align:center">▲ <b>大小あられ</b>が前<br><span style="font-size:10px;opacity:.85">（仲羽田が後ろ）</span></button>
+          <button type="button" class="chip" data-order="kakuFront" aria-pressed="true" style="padding:6px 6px;border-radius:7px;font-size:11.5px;text-align:center">▲ <b>仲羽田</b>が前<br><span style="font-size:10.5px;opacity:.85">（大小あられが後ろ）</span></button>
+          <button type="button" class="chip" data-order="arareFront" aria-pressed="false" style="padding:6px 6px;border-radius:7px;font-size:11.5px;text-align:center">▲ <b>大小あられ</b>が前<br><span style="font-size:10.5px;opacity:.85">（仲羽田が後ろ）</span></button>
         </div>
         <div class="row" style="grid-template-columns:108px minmax(0,1fr) 56px" title="前のレイヤーの周りに地色のフチ（型抜き余白）を付けて、同色同士でも前後関係をくっきり見せます">
           <label for="knockoutMm" style="font-size:11.5px">前面のフチ抜き幅</label>
@@ -847,35 +871,35 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         </div>
       </div>
       <div class="chips" id="quickStyles" style="margin-top:2px">
-        <button class="chip" data-style="std">① 元柄標準</button>
-        <button class="chip" data-style="fine">② 細線・高密度</button>
-        <button class="chip" data-style="bold">③ 太線・大柄</button>
-        <button class="chip" data-style="horiz">④ 水平並び</button>
-        <button class="chip" data-style="crest">⑤ 丸紋＋下部帯</button>
+        <button class="chip" data-style="std">1. 元柄標準</button>
+        <button class="chip" data-style="fine">2. 細線・高密度</button>
+        <button class="chip" data-style="bold">3. 太線・大柄</button>
+        <button class="chip" data-style="horiz">4. 水平並び</button>
+        <button class="chip" data-style="crest">5. 丸紋＋下部帯</button>
       </div>
     </section>
 
     <!-- 1-B. 名前を付けて保存・マイデザイン一覧 -->
     <section id="sec-save" aria-labelledby="h-save" data-cat="export">
-      <h2 id="h-save"><span>💾 名前を付けてアプリ内に保存・呼び出し</span><div style="display:flex;gap:5px;align-items:center"><button type="button" class="mini-btn" id="restorePresetTrashBtn" hidden style="background:#fef3c7;color:#92400e;border-color:#f59e0b;font-weight:700;padding:2px 6px">↩️ 消した設定を戻す</button><span class="badge" id="savedCountBadge">0件</span></div></h2>
+      <h2 id="h-save"><span>名前を付けてアプリ内に保存・呼び出し</span><div style="display:flex;gap:5px;align-items:center"><button type="button" class="mini-btn" id="restorePresetTrashBtn" hidden style="padding:2px 6px">削除を戻す</button><span class="badge" id="savedCountBadge">0件</span></div></h2>
       <div class="save-bar">
         <input type="text" id="presetName" class="save-input" placeholder="保存名（例：羽田納戸・細線案1）" maxlength="40">
         <button type="button" class="btn" id="savePresetBtn" style="padding:6px 11px;white-space:nowrap">＋ アプリ内に保存</button>
       </div>
       <div id="savedList" class="preset-list"></div>
       <div class="crow2" style="justify-content:space-between;padding-top:2px">
-        <button type="button" class="chip" id="exportJsonBtn" title="現在の設定値と保存リストをファイル(.json)としてパソコンに保存">📥 設定をファイル保存(.json)</button>
-        <button type="button" class="chip" id="importJsonBtn" title="パソコン内の設定ファイル(.json)を読み込んでアプリ内にも登録します">📂 設定ファイル(.json)読込＆登録</button>
-        <button type="button" class="chip" id="copyUrlBtn" title="現在の設定値を埋め込んだ共有URLをコピー">🔗 設定URLコピー</button>
+        <button type="button" class="chip" id="exportJsonBtn" title="現在の設定値と保存リストをファイル(.json)としてパソコンに保存">設定保存 (.json)</button>
+        <button type="button" class="chip" id="importJsonBtn" title="パソコン内の設定ファイル(.json)を読み込んでアプリ内にも登録します">設定読込 (.json)</button>
+        <button type="button" class="chip" id="copyUrlBtn" title="現在の設定値を埋め込んだ共有URLをコピー">設定URLコピー</button>
         <input type="file" id="importJsonInput" accept=".json,application/json" hidden>
       </div>
       <p class="msg" id="saveMsg" role="status" style="min-height:0"></p>
     </section>
 
-    <!-- 2. 布・タオルの大きさ ＆ 🧣 タオル制作設定 -->
+    <!-- 2. 布・タオルの大きさ -->
     <section id="sec-size" aria-labelledby="h-size" data-cat="pattern">
-      <h2 id="h-size"><span>布・タオルの大きさ</span><button class="chip" id="flipOrient" style="padding:2px 8px;font-size:11px">縦横入替 ⇄</button></h2>
-      <div style="font-size:11px;font-weight:700;color:var(--muted)">📜 手ぬぐい規格サイズ:</div>
+      <h2 id="h-size"><span>布・タオルの寸法</span><button class="chip" id="flipOrient" style="padding:2px 8px;font-size:11px">縦横入替 ⇄</button></h2>
+      <div style="font-size:11px;font-weight:700;color:var(--muted)">手ぬぐい・タオル規格サイズ:</div>
       <div class="chips" id="presets">
         <button class="chip" data-w="350" data-h="900" aria-pressed="true">手ぬぐい縦 35×90</button>
         <button class="chip" data-w="900" data-h="350" aria-pressed="false">手ぬぐい横 90×35</button>
@@ -883,12 +907,12 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         <button class="chip" data-w="350" data-h="1000" aria-pressed="false">面手ぬぐい 35×100</button>
         <button class="chip" data-w="350" data-h="450" aria-pressed="false">ハーフ 35×45</button>
         <button class="chip" data-w="450" data-h="450" aria-pressed="false">ハンカチ 45×45</button>
-        <button class="chip" data-w="840" data-h="340" data-towel="face_h" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 フェイスタオル横 84×34</button>
-        <button class="chip" data-w="340" data-h="840" data-towel="face_v" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 フェイスタオル縦 34×84</button>
-        <button class="chip" data-w="1100" data-h="200" data-towel="muffler" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 マフラースリム 110×20</button>
-        <button class="chip" data-w="1100" data-h="400" data-towel="sports" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 スポーツタオル 110×40</button>
-        <button class="chip" data-w="1200" data-h="600" data-towel="bath" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 バスタオル 120×60</button>
-        <button class="chip" data-w="250" data-h="250" data-towel="hand" aria-pressed="false" style="border-color:#0284c7;color:#0369a1;font-weight:700">🧣 ハンドタオル 25×25</button>
+        <button class="chip" data-w="840" data-h="340" data-towel="face_h" aria-pressed="false">フェイスタオル横 84×34</button>
+        <button class="chip" data-w="340" data-h="840" data-towel="face_v" aria-pressed="false">フェイスタオル縦 34×84</button>
+        <button class="chip" data-w="1100" data-h="200" data-towel="muffler" aria-pressed="false">マフラースリム 110×20</button>
+        <button class="chip" data-w="1100" data-h="400" data-towel="sports" aria-pressed="false">スポーツタオル 110×40</button>
+        <button class="chip" data-w="1200" data-h="600" data-towel="bath" aria-pressed="false">バスタオル 120×60</button>
+        <button class="chip" data-w="250" data-h="250" data-towel="hand" aria-pressed="false">ハンドタオル 25×25</button>
       </div>
       <div class="pair">
         <label class="field"><span>幅 mm</span><input type="number" id="W" min="50" max="2000" step="1" value="350"></label>
@@ -896,10 +920,10 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
       </div>
     </section>
 
-    <!-- 🖨️ プリント方法ごとの下限（印刷できる太さ） -->
+    <!-- プリント方法ごとの下限 -->
     <section id="sec-pm" aria-labelledby="h-pm" data-cat="pattern">
-      <h2 id="h-pm"><span>🖨️ プリント方法（印刷できる太さ）</span><span class="badge" id="pmBadgeA">シルク</span></h2>
-      <div class="cgroup" style="background:#fffbeb;border:1.5px solid #f59e0b">
+      <h2 id="h-pm"><span>プリント方式と最小線幅チェック</span><span class="badge" id="pmBadgeA">シルク</span></h2>
+      <div class="cgroup" style="background:#f8fafc;border:1px solid #cbd5e1">
         <select id="pmMethodA" aria-label="プリント方法" style="font-size:12px;font-weight:700"></select>
         <p class="note" id="pmRuleA"></p>
         <div id="pmStatusA" class="pm-list"></div>
@@ -2165,44 +2189,44 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
   <main class="stage" id="mainStage">
     <div>
       <div class="view-bar" id="viewTabs" style="margin-bottom:6px">
-        <button type="button" class="chip" data-view="fabric" aria-pressed="true"><span class="full-only desk-only">📜 手ぬぐい生地（反物）</span><span class="easy-only desk-only">📜 生地</span><span class="mob-only">📜 生地</span></button>
-        <button type="button" class="chip" data-view="cut_dabo" aria-pressed="false"><span class="full-only desk-only">✂️ 生地の取り方（裁断図）＋ 👕👖 ダボ上下完成図</span><span class="easy-only desk-only">✂️👕👖 裁断図・ダボ上下</span><span class="mob-only">✂️👕 裁断・ダボ</span></button>
-        <button type="button" class="chip" data-view="dabo" aria-pressed="false"><span class="full-only desk-only">👕👖 ダボ完成プレビュー（シャツ＋ダボパンツ）</span><span class="easy-only desk-only">👕👖 ダボ完成図（上下）</span><span class="mob-only">👕👖 完成図</span></button>
-        <button type="button" class="chip" data-view="view3d" aria-pressed="false"><span class="full-only desk-only">🧊 3D立体プレビュー（上だけ・上下・両方）</span><span class="easy-only desk-only">🧊 3D立体化（上・上下・両方）</span><span class="mob-only">🧊 3D立体</span></button>
+        <button type="button" class="chip" data-view="fabric" aria-pressed="true"><span class="full-only desk-only">手ぬぐい生地（反物）</span><span class="easy-only desk-only">反物生地</span><span class="mob-only">生地</span></button>
+        <button type="button" class="chip" data-view="cut_dabo" aria-pressed="false"><span class="full-only desk-only">裁断割付図 ＋ ダボ完成図</span><span class="easy-only desk-only">裁断図・ダボ上下</span><span class="mob-only">裁断・ダボ</span></button>
+        <button type="button" class="chip" data-view="dabo" aria-pressed="false"><span class="full-only desk-only">ダボ完成プレビュー（上下）</span><span class="easy-only desk-only">ダボ完成図（上下）</span><span class="mob-only">完成図</span></button>
+        <button type="button" class="chip" data-view="view3d" aria-pressed="false"><span class="full-only desk-only">3D立体着装（上・上下・両方）</span><span class="easy-only desk-only">3D立体着装（上・上下・両方）</span><span class="mob-only">3D立体</span></button>
       </div>
       <div id="stageGarmentViewChips" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:6px;background:var(--panel);padding:6px 10px;border-radius:8px;border:1px solid var(--line)">
         <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
           <span class="desk-only" style="font-size:11px;font-weight:700;color:#475569;margin-right:2px">表示切替:</span>
-          <button type="button" class="mini-btn" data-sgv="both" aria-pressed="true"><span class="desk-only">👕👖 上下セット</span><span class="mob-only">👕👖 上下</span></button>
-          <button type="button" class="mini-btn" data-sgv="top" aria-pressed="false"><span class="desk-only">👕 上（シャツ）のみ</span><span class="mob-only">👕 上のみ</span></button>
-          <button type="button" class="mini-btn" data-sgv="pants" aria-pressed="false"><span class="desk-only">👖 下（パンツ）のみ</span><span class="mob-only">👖 下のみ</span></button>
+          <button type="button" class="mini-btn" data-sgv="both" aria-pressed="true"><span class="desk-only">上下セット</span><span class="mob-only">上下</span></button>
+          <button type="button" class="mini-btn" data-sgv="top" aria-pressed="false"><span class="desk-only">上（シャツ）のみ</span><span class="mob-only">上のみ</span></button>
+          <button type="button" class="mini-btn" data-sgv="pants" aria-pressed="false"><span class="desk-only">下（パンツ）のみ</span><span class="mob-only">下のみ</span></button>
           <span class="desk-only" style="color:#cbd5e1;margin:0 2px">|</span>
-          <button type="button" class="mini-btn" data-open3d="dabo_top">🧊 上だけ3D</button>
-          <button type="button" class="mini-btn" data-open3d="dabo_both">🧊 上下3D</button>
-          <button type="button" class="mini-btn" data-open3d="dabo_compare">🧊 両方3D</button>
+          <button type="button" class="mini-btn" data-open3d="dabo_top">上だけ3D</button>
+          <button type="button" class="mini-btn" data-open3d="dabo_both">上下3D</button>
+          <button type="button" class="mini-btn" data-open3d="dabo_compare">両方3D</button>
         </div>
         <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-          <button type="button" class="mini-btn" id="stageQuickSaveDaboPngBtn" title="現在の完成図を高解像度PNGで保存します"><span class="desk-only">📥 完成図PNG保存</span><span class="mob-only">📥 完成図</span></button>
-          <button type="button" class="mini-btn" id="stageQuickSaveCutDaboPngBtn" title="生地の取り方（裁断図）＋完成図をセットでPNG保存します"><span class="desk-only">📥 裁断＋完成図PNG</span><span class="mob-only">📥 裁断+完成</span></button>
-          <button type="button" class="mini-btn mob-only" id="mobStageSizeBtn" title="スマホのプレビュー画面の高さを切り替えます（標準 / 拡大 / 小）">🔍 拡大</button>
-          <button type="button" class="mini-btn mob-only" id="mobStagePinBtn" aria-pressed="true" title="スクロール時にプレビューを上部に固定するかを切り替えます">📌 固定</button>
+          <button type="button" class="mini-btn" id="stageQuickSaveDaboPngBtn" title="現在の完成図を高解像度PNGで保存します"><span class="desk-only">完成図PNG保存</span><span class="mob-only">完成図PNG</span></button>
+          <button type="button" class="mini-btn" id="stageQuickSaveCutDaboPngBtn" title="生地の取り方（裁断図）＋完成図をセットでPNG保存します"><span class="desk-only">裁断＋完成図PNG</span><span class="mob-only">裁断+完成</span></button>
+          <button type="button" class="mini-btn mob-only" id="mobStageSizeBtn" title="スマホのプレビュー画面の高さを切り替えます（標準 / 拡大 / 小）">拡大</button>
+          <button type="button" class="mini-btn mob-only" id="mobStagePinBtn" aria-pressed="true" title="スクロール時にプレビューを上部に固定するかを切り替えます">固定</button>
         </div>
       </div>
-      <!-- 🧊 3D立体プレビュー専用コントロールバー（2トーン整理済み：選択項目のみアクセント表示） -->
-      <div id="stage3dControlBar" hidden style="display:none;flex-direction:column;gap:6px;margin-bottom:6px;background:var(--panel);padding:8px 11px;border-radius:9px;border:1px solid #cbd5e1;box-shadow:0 1px 2px rgba(15,23,42,.04);color:var(--fg)">
+      <!-- 3D立体プレビュー専用コントロールバー -->
+      <div id="stage3dControlBar" hidden style="display:none;flex-direction:column;gap:6px;margin-bottom:6px;background:var(--panel);padding:7px 10px;border-radius:9px;border:1px solid #cbd5e1;box-shadow:0 1px 2px rgba(15,23,42,.04);color:var(--fg)">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px">
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap" id="stage3dModelBtns">
             <span style="font-size:11px;font-weight:800;color:#0f172a;background:#f1f5f9;border:1px solid #cbd5e1;padding:2px 7px;border-radius:5px;margin-right:1px">3D表示</span>
-            <button type="button" class="mini-btn" data-m3d="dabo_top" aria-pressed="false">👕 上だけ</button>
-            <button type="button" class="mini-btn" data-m3d="dabo_both" aria-pressed="true">👕👖 上下セット</button>
-            <button type="button" class="mini-btn" data-m3d="dabo_compare" aria-pressed="false">👕＋👕👖 上だけ＆上下 両方</button>
-            <button type="button" class="mini-btn" data-m3d="dabo_pants" aria-pressed="false">👖 下だけ</button>
-            <button type="button" class="mini-btn" data-m3d="tenugui" aria-pressed="false">🧣 手ぬぐい3D</button>
-            <button type="button" class="mini-btn" data-m3d="relief" aria-pressed="false">🪨 ロゴ立体レリーフ</button>
+            <button type="button" class="mini-btn" data-m3d="dabo_top" aria-pressed="false">上だけ</button>
+            <button type="button" class="mini-btn" data-m3d="dabo_both" aria-pressed="true">上下セット</button>
+            <button type="button" class="mini-btn" data-m3d="dabo_compare" aria-pressed="false">上だけ＆上下 両方</button>
+            <button type="button" class="mini-btn" data-m3d="dabo_pants" aria-pressed="false">下だけ</button>
+            <button type="button" class="mini-btn" data-m3d="tenugui" aria-pressed="false">手ぬぐい3D</button>
+            <button type="button" class="mini-btn" data-m3d="relief" aria-pressed="false">ロゴ立体レリーフ</button>
           </div>
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
-            <button type="button" class="mini-btn" id="stage3dBackTwinBtn" aria-pressed="true" title="3Dの前面アングルと背面（背紋）アングルを並べて同時表示します">🪞 前面＋背面 同時表示: ON</button>
-            <button type="button" class="mini-btn" id="stage3dSavePngBtn">📥 3D画面をPNG保存</button>
+            <button type="button" class="mini-btn" id="stage3dBackTwinBtn" aria-pressed="true" title="3Dの前面アングルと背面（背紋）アングルを並べて同時表示します">前面＋背面 同時表示: ON</button>
+            <button type="button" class="mini-btn" id="stage3dSavePngBtn">3D画面をPNG保存</button>
           </div>
         </div>
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid #e2e8f0;padding-top:6px">
@@ -2244,25 +2268,25 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           <button type="button" class="chip" data-zoom="4" aria-pressed="false">4倍</button>
           <button type="button" class="chip" data-zoom="8" aria-pressed="false">8倍</button>
           <button type="button" class="chip" data-zoom="12" aria-pressed="false">12倍</button>
-          <button type="button" class="mini-btn" id="resetPanZoomTopBtn" title="位置と倍率を中央リセット">🎯 中央</button>
+          <button type="button" class="mini-btn" id="resetPanZoomTopBtn" title="位置と倍率を中央リセット">中央</button>
         </div>
       </div>
     </div>
     <div class="canvasbox" id="box">
-      <!-- ✍️ プレビューのダボシャツ（および手ぬぐい）に直接文字を打てる＆手ぬぐいに自動逆算反映するフローティングバー -->
+      <!-- プレビューのダボシャツ（および手ぬぐい）に直接文字を打てる＆手ぬぐいに自動逆算反映するフローティングバー -->
       <div class="stage-direct-text-bar" id="stageDirectTextBar">
         <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
           <button type="button" id="toggleStageDirectTextBtn" style="background:var(--ai);color:#fff;border:1px solid var(--ai);border-radius:999px;padding:6px 14px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.22);display:inline-flex;align-items:center;gap:6px">
-            <span>✍️ ダボシャツ・手ぬぐいに直接文字を打つ（手ぬぐいへ自動反映）</span>
+            <span>ダボ・手ぬぐいに直接文字を入力</span>
           </button>
-          <button type="button" id="stageTopUploadLogoBtn" style="background:#ffffff;color:#1e293b;border:1px solid #cbd5e1;border-radius:999px;padding:6px 13px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);display:inline-flex;align-items:center;gap:5px" title="パソコン内のロゴ画像（.ai / PDF / PNG / JPG / SVG）を読み込んで登録・配置します">
-            <span>📁 ロゴ画像を登録・読込 (.ai/画像)</span>
+          <button type="button" id="stageTopUploadLogoBtn" style="background:#ffffff;color:#0f172a;border:1px solid #cbd5e1;border-radius:999px;padding:6px 13px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);display:inline-flex;align-items:center;gap:5px" title="パソコン内のロゴ画像（.ai / PDF / PNG / JPG / SVG）を読み込んで登録・配置します">
+            <span>ロゴ画像読込 (.ai/画像)</span>
           </button>
-          <button type="button" id="stageTopFudaTealBtn" style="background:#ffffff;color:#1e293b;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);display:inline-flex;align-items:center;gap:4px" title="fuda_logo_teal.svg（仲羽田青年会 札ロゴ ティール #00A3AF）を配置します">
-            <span>🏷️ 札ロゴ(ティール)</span>
+          <button type="button" id="stageTopFudaTealBtn" style="background:#ffffff;color:#0f172a;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);display:inline-flex;align-items:center;gap:4px" title="fuda_logo_teal.svg（仲羽田青年会 札ロゴ ティール #00A3AF）を配置します">
+            <span>札ロゴ(浅葱)</span>
           </button>
-          <button type="button" id="stageTopFudaWhiteBtn" style="background:#ffffff;color:#1e293b;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);display:inline-flex;align-items:center;gap:4px" title="fuda_logo_white.svg（仲羽田青年会 札ロゴ 白抜き #FFFFFF）を配置します">
-            <span>🏷️ 札ロゴ(白抜き)</span>
+          <button type="button" id="stageTopFudaWhiteBtn" style="background:#ffffff;color:#0f172a;border:1px solid #cbd5e1;border-radius:999px;padding:6px 12px;font:inherit;font-size:11.5px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15);display:inline-flex;align-items:center;gap:4px" title="fuda_logo_white.svg（仲羽田青年会 札ロゴ 白抜き #FFFFFF）を配置します">
+            <span>札ロゴ(白抜き)</span>
           </button>
           <span id="stageDirectReflectionBadge" hidden style="background:rgba(15,23,42,.88);color:#f8fafc;border:1px solid #64748b;border-radius:999px;padding:4px 11px;font-size:11px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.3)"></span>
         </div>
@@ -2369,7 +2393,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         <input type="range" id="hudZoomRange" min="40" max="1200" step="10" value="100" aria-label="表示倍率スライダー">
         <button type="button" id="hudZoomInBtn" title="拡大">＋</button>
         <span id="hudZoomPct" style="min-width:44px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums">100%</span>
-        <button type="button" id="hudResetBtn" title="位置と倍率を初期位置に戻す">🎯 全体表示</button>
+        <button type="button" id="hudResetBtn" title="位置と倍率を初期位置に戻す">全体表示</button>
       </div>
     </div>
   </main>
@@ -4491,7 +4515,7 @@ function renderLogoShelf(){
   const easyBadgeEl = $('eLogoShelfCountBadge');
   if(!LOGO_SHELF || LOGO_SHELF.length === 0) loadLogoShelfFromStorage();
   if(badgeEl) badgeEl.textContent = LOGO_SHELF.length + '個保持中';
-  if(easyBadgeEl) easyBadgeEl.textContent = LOGO_SHELF.length + '個保持中';
+  if(easyBadgeEl) easyBadgeEl.textContent = LOGO_SHELF.length + '個';
   if(listEl) listEl.innerHTML = '';
   if(easyListEl) easyListEl.innerHTML = '';
 
@@ -11313,7 +11337,7 @@ function render3dTenuguiOrRelief(x, cx, cy, scale, yawDeg, pitchDeg, modeType, t
   const floorY = cy + 150 * scale;
   draw3dTurntablePedestal(
     x, cx, floorY, 128, scale, yaw, Math.max(0.22, pitch),
-    modeType === 'relief' ? '🪨 ロゴ・札 3D立体レリーフ看板' : '🧣 手ぬぐい 3D立体クロス（布ドレープ）',
+    modeType === 'relief' ? 'ロゴ・札 3D立体レリーフ看板' : '手ぬぐい 3D立体クロス（布ドレープ）',
     'マウスドラッグで360°立体回転 ／ ホイールで拡大縮小',
     '#2dd4bf'
   );
@@ -11437,7 +11461,7 @@ function draw3dScene(targetCv, exportMode){
     applyStageTransform();
     syncZoomUI();
     if($('stageHelpPill')){
-      $('stageHelpPill').textContent = '🧊 画面を左右・上下にドラッグすると3Dモデルが360°回転します ／ ホイールで拡大縮小 ／ 上部ボタンで「上だけ」「上下」「両方」切替';
+      $('stageHelpPill').textContent = '画面をドラッグすると3Dモデルが360°回転 ／ ホイールで拡大縮小 ／ 上部バーで「上だけ」「上下」「両方」切替';
     }
   }
   targetCv.width = Math.floor(vW * dpr);
@@ -11520,67 +11544,67 @@ function draw3dScene(targetCv, exportMode){
   const pitch = S.rot3dPitch ?? 10;
   const twinBack = (S.show3dBackTwin !== false);
 
-  // 上部ヘッダー案内バー
+  // 上部スリムHUD案内バー
   x.save();
-  x.fillStyle = 'rgba(15, 23, 42, 0.78)';
-  x.strokeStyle = 'rgba(56, 189, 248, 0.35)';
+  x.fillStyle = 'rgba(15, 23, 42, 0.72)';
+  x.strokeStyle = 'rgba(148, 163, 184, 0.28)';
   x.lineWidth = 1;
-  x.beginPath(); x.roundRect(14, 12, cw - 28, 36, 8); x.fill(); x.stroke();
+  x.beginPath(); x.roundRect(14, 10, cw - 28, 26, 6); x.fill(); x.stroke();
   const mTitleMap = {
-    dabo_top: '👕 ダボシャツ【上だけ】3D立体プレビュー',
-    dabo_both: '👕👖 ダボ【上下セット（シャツ＋ダボパンツ）】3D立体プレビュー',
-    dabo_compare: '👕＋👕👖 ダボ【上だけ ＆ 上下セット 両方同時】3D立体プレビュー',
-    dabo_pants: '👖 ダボパンツ【下だけ】3D立体プレビュー',
-    tenugui: '🧣 手ぬぐい 3D立体クロス（布ドレープ）プレビュー',
-    relief: '🪨 ロゴ・札 3D立体レリーフ看板プレビュー'
+    dabo_top: 'ダボシャツ【上だけ】3D立体プレビュー',
+    dabo_both: 'ダボ【上下セット（シャツ＋パンツ）】3D立体プレビュー',
+    dabo_compare: 'ダボ【上だけ ＆ 上下セット 両方同時】3D立体プレビュー',
+    dabo_pants: 'ダボパンツ【下だけ】3D立体プレビュー',
+    tenugui: '手ぬぐい 3D立体クロス（布ドレープ）プレビュー',
+    relief: 'ロゴ・札 3D立体レリーフ看板プレビュー'
   };
   const l3dBadge = (S.logo3dMode && S.logo3dMode !== 'none')
-    ? ` ／ ✨ロゴ3D厚み:${S.logo3dMode === 'gold_block' ? '金塊彫り' : (S.logo3dMode === 'emboss' ? '浮き彫り' : '立体押し出し')}(${S.logo3dDepthMm || 4.5}mm)`
+    ? ` ／ ロゴ3D厚み:${S.logo3dMode === 'gold_block' ? '金塊彫り' : (S.logo3dMode === 'emboss' ? '浮き彫り' : '立体押し出し')}(${S.logo3dDepthMm || 4.5}mm)`
     : '';
-  const p3dBadge = (S.pattern3dMode && S.pattern3dMode !== 'none') ? ' ／ 🧱ベース柄3D浮き彫りON' : '';
-  x.fillStyle = '#38bdf8';
-  x.font = '700 13px sans-serif';
-  x.fillText('🧊 ' + (mTitleMap[m3d] || mTitleMap.dabo_both) + l3dBadge + p3dBadge, 26, 34, cw - 240);
-  x.fillStyle = '#fde047';
-  x.font = '700 11px sans-serif';
+  const p3dBadge = (S.pattern3dMode && S.pattern3dMode !== 'none') ? ' ／ ベース柄3D浮き彫りON' : '';
+  x.fillStyle = '#e2e8f0';
+  x.font = '700 12px sans-serif';
+  x.fillText((mTitleMap[m3d] || mTitleMap.dabo_both) + l3dBadge + p3dBadge, 24, 27.5, cw - 260);
+  x.fillStyle = '#94a3b8';
+  x.font = '600 11px sans-serif';
   x.textAlign = 'right';
-  x.fillText(`回転角: 横 ${Math.round(yaw)}° / 縦 ${Math.round(pitch)}°（ドラッグで360°回転）`, cw - 26, 34);
+  x.fillText(`回転角: 横 ${Math.round(yaw)}° / 縦 ${Math.round(pitch)}°（ドラッグで360°回転）`, cw - 24, 27.5);
   x.restore();
 
-  const centerY = ch * 0.53;
+  const centerY = ch * 0.525;
   if(m3d === 'tenugui' || m3d === 'relief'){
-    const sc = Math.min(cw / 520, (ch - 70) / 390);
+    const sc = Math.min(cw / 520, (ch - 62) / 390);
     render3dTenuguiOrRelief(x, cw * 0.5, centerY, sc, yaw, pitch, m3d, tex, bodyCfg);
   }else if(m3d === 'dabo_compare'){
-    // 👕 上だけ 3D と 👕👖 上下セット 3D の【両方】を左右に並べて同時表示（左の上だけモデルと右の上下セットのシャツサイズが自然に揃うスケール）
-    const scBoth = Math.min((cw * 0.48) / 330, (ch - 80) / 435);
+    // 上だけ 3D と 上下セット 3D の【両方】を左右に並べて同時表示
+    const scBoth = Math.min((cw * 0.48) / 330, (ch - 72) / 435);
     const scTop  = scBoth * 0.88;
     render3dMannequinFigure(
-      x, cw * 0.26, centerY + 6, scTop, yaw, pitch, true, false, tex, bodyCfg,
-      '① 👕 ダボシャツ【上だけ】3D立体', '#0284c7'
+      x, cw * 0.26, centerY + 4, scTop, yaw, pitch, true, false, tex, bodyCfg,
+      '1. ダボシャツ【上だけ】3D立体', '#0284c7'
     );
     render3dMannequinFigure(
-      x, cw * 0.74, centerY + 6, scBoth, yaw, pitch, true, true, tex, bodyCfg,
-      '② 👕👖 ダボ【上下セット】3D立体', '#0f766e'
+      x, cw * 0.74, centerY + 4, scBoth, yaw, pitch, true, true, tex, bodyCfg,
+      '2. ダボ【上下セット】3D立体', '#0f766e'
     );
   }else{
     const incShirt = (m3d !== 'dabo_pants');
     const incPants = (m3d === 'dabo_both' || m3d === 'dabo_pants');
     const baseHeightUnit = (incShirt && incPants) ? 435 : 345;
     if(twinBack){
-      // 🪞 前面3Dアングル と 背面(背紋)3Dアングル を左右に並べて同時3D表示
-      const sc = Math.min((cw * 0.48) / 330, (ch - 80) / baseHeightUnit);
-      const frontLbl = (incShirt && incPants) ? '【3D 前面アングル】ダボ上下セット（胸・前立て・パンツ）'
-        : (incShirt ? '【3D 前面アングル】ダボシャツ 上だけ（胸・前立て・袖）' : '【3D 前面アングル】ダボパンツ 下だけ');
-      const backLbl  = (incShirt && incPants) ? '【3D 背面アングル】ダボ上下セット（背紋・右尻ポケット）'
-        : (incShirt ? '【3D 背面アングル】ダボシャツ 上だけ（背紋・背中全体）' : '【3D 背面アングル】ダボパンツ 下だけ（右尻ポケット）');
-      render3dMannequinFigure(x, cw * 0.27, centerY + 6, sc, yaw, pitch, incShirt, incPants, tex, bodyCfg, frontLbl, '#0284c7');
-      render3dMannequinFigure(x, cw * 0.73, centerY + 6, sc, yaw + 180, pitch, incShirt, incPants, tex, bodyCfg, backLbl, '#d97706');
+      // 前面3Dアングル と 背面(背紋)3Dアングル を左右に並べて同時3D表示
+      const sc = Math.min((cw * 0.48) / 330, (ch - 72) / baseHeightUnit);
+      const frontLbl = (incShirt && incPants) ? '【前面アングル】ダボ上下セット（胸・前立て・パンツ）'
+        : (incShirt ? '【前面アングル】ダボシャツ 上だけ（胸・前立て・袖）' : '【前面アングル】ダボパンツ 下だけ');
+      const backLbl  = (incShirt && incPants) ? '【背面アングル】ダボ上下セット（背紋・右尻ポケット）'
+        : (incShirt ? '【背面アングル】ダボシャツ 上だけ（背紋・背中全体）' : '【背面アングル】ダボパンツ 下だけ（右尻ポケット）');
+      render3dMannequinFigure(x, cw * 0.27, centerY + 4, sc, yaw, pitch, incShirt, incPants, tex, bodyCfg, frontLbl, '#0284c7');
+      render3dMannequinFigure(x, cw * 0.73, centerY + 4, sc, yaw + 180, pitch, incShirt, incPants, tex, bodyCfg, backLbl, '#046e7e');
     }else{
-      const sc = Math.min((cw * 0.85) / 340, (ch - 80) / baseHeightUnit);
-      const singleLbl = (incShirt && incPants) ? '👕👖 ダボ上下セット 3D（ドラッグで360°回転）'
-        : (incShirt ? '👕 ダボシャツ【上だけ】3D（ドラッグで360°回転）' : '👖 ダボパンツ【下だけ】3D（ドラッグで360°回転）');
-      render3dMannequinFigure(x, cw * 0.50, centerY + 6, sc, yaw, pitch, incShirt, incPants, tex, bodyCfg, singleLbl, '#0284c7');
+      const sc = Math.min((cw * 0.85) / 340, (ch - 72) / baseHeightUnit);
+      const singleLbl = (incShirt && incPants) ? 'ダボ上下セット 3D（ドラッグで360°回転）'
+        : (incShirt ? 'ダボシャツ【上だけ】3D（ドラッグで360°回転）' : 'ダボパンツ【下だけ】3D（ドラッグで360°回転）');
+      render3dMannequinFigure(x, cw * 0.50, centerY + 4, sc, yaw, pitch, incShirt, incPants, tex, bodyCfg, singleLbl, '#0284c7');
     }
   }
 }
@@ -13735,6 +13759,7 @@ function syncUI(){
   renderKoboBridgeUI();
 
   // ダボ・表示モードUI同期
+  document.body.dataset.viewMode = S.viewMode || 'fabric';
   for(const b of document.querySelectorAll('#viewTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.view===(S.viewMode||'fabric'))+'');
   for(const b of document.querySelectorAll('#daboStyleTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.dstyle===(S.daboStyle||'dabo'))+'');
   for(const b of document.querySelectorAll('#daboGarmentViewTabs .chip')) b.setAttribute('aria-pressed',(b.dataset.dgview===(S.daboGarmentView||'both'))+'');
@@ -13751,7 +13776,7 @@ function syncUI(){
   if($('stage3dBackTwinBtn')){
     const twinOn = (S.show3dBackTwin !== false);
     $('stage3dBackTwinBtn').setAttribute('aria-pressed', twinOn + '');
-    $('stage3dBackTwinBtn').textContent = twinOn ? '🪞 前面＋背面(背中)を同時3D表示: ON' : '🪞 1体ずつ大きく3D表示 (前面/背面切替)';
+    $('stage3dBackTwinBtn').textContent = twinOn ? '前面＋背面 同時表示: ON' : '1体ずつ大きく表示 (前面/背面切替)';
   }
   const curL3d = S.logo3dMode || 'none';
   if($('logo3dMode')) $('logo3dMode').value = curL3d;
@@ -13762,11 +13787,11 @@ function syncUI(){
   const pat3dOn = !!(S.pattern3dMode && S.pattern3dMode !== 'none');
   if($('stage3dPatReliefBtn')){
     $('stage3dPatReliefBtn').setAttribute('aria-pressed', pat3dOn + '');
-    $('stage3dPatReliefBtn').textContent = pat3dOn ? '🧱 仲羽田・柄も3D化: ON' : '🧱 仲羽田・柄も3D化';
+    $('stage3dPatReliefBtn').textContent = pat3dOn ? '仲羽田・柄も3D化: ON' : '仲羽田・柄も3D化';
   }
   if($('dPattern3dToggleBtn')){
     $('dPattern3dToggleBtn').setAttribute('aria-pressed', pat3dOn + '');
-    $('dPattern3dToggleBtn').textContent = pat3dOn ? '🧊 ベース柄も3D浮き彫り: ON' : '🧊 ベース柄も3D浮き彫り: OFF';
+    $('dPattern3dToggleBtn').textContent = pat3dOn ? 'ベース柄も3D浮き彫り: ON' : 'ベース柄も3D浮き彫り: OFF';
   }
   if($('daboCutMode')) $('daboCutMode').value=S.daboCutMode||'adult7';
   if($('daboLogoTarget')) $('daboLogoTarget').value=S.daboLogoTarget||'all';
@@ -16945,6 +16970,8 @@ function easyRenderImpl(){
   var hasArarePad = !!(arare && S.ararePadMode && S.ararePadMode !== 'none');
   var hasArareOuter = !!(arare && S.arareOuterMode && S.arareOuterMode !== 'none');
   $('eTuneStep').hidden = mode === 'scatter';
+  var tuneNavBtn = document.querySelector('#eStepNav button[data-jump="eTuneStep"]');
+  if(tuneNavBtn){ tuneNavBtn.disabled = (mode === 'scatter'); tuneNavBtn.style.opacity = (mode === 'scatter') ? '0.45' : ''; }
   $('eColorNote').hidden = mode !== 'scatter';
   $('eStyles').hidden = !kaku;
   if($('eArareColorBox')) $('eArareColorBox').hidden = !arare;
@@ -17078,8 +17105,8 @@ function easyRenderImpl(){
     var patOn = !!(S.pattern3dMode && S.pattern3dMode !== 'none');
     $('ePattern3dToggleBtn').setAttribute('aria-pressed', String(patOn));
     $('ePattern3dToggleBtn').textContent = patOn
-      ? '🧊 ベース柄（仲羽田・あられ）も3D浮き彫りにする: ON ✓'
-      : '🧊 ベース柄（仲羽田・あられ）も3D浮き彫りにする: OFF';
+      ? 'ベース柄（仲羽田・あられ）も3D浮き彫り: ON ✓'
+      : 'ベース柄（仲羽田・あられ）も3D浮き彫り: OFF';
   }
   if($('eLogo3dSideCol') && document.activeElement !== $('eLogo3dSideCol')){
     $('eLogo3dSideCol').value = S.logo3dColor || '#0c2d3a';
@@ -17087,9 +17114,9 @@ function easyRenderImpl(){
   if($('eStep3FudaToggleBtn')){
     $('eStep3FudaToggleBtn').setAttribute('aria-pressed', String(!!S.showLogo));
     if(S.showLogo){
-      $('eStep3FudaToggleBtn').textContent = '✅ 札・ロゴ表示中（消す）';
+      $('eStep3FudaToggleBtn').textContent = '札・ロゴ表示中（消す）';
     }else{
-      $('eStep3FudaToggleBtn').textContent = '➕ 札ロゴを配置する';
+      $('eStep3FudaToggleBtn').textContent = '＋ 札ロゴを配置';
     }
   }
   if($('eDaboQuickLogo')){
@@ -17471,16 +17498,18 @@ function easyRenderImpl(){
   if($('toggleMoreCombosBtn') && $('eColors')){
     $('toggleMoreCombosBtn').addEventListener('click', function(){
       var isCompact = $('eColors').classList.toggle('compact-combos');
+      $('toggleMoreCombosBtn').setAttribute('aria-expanded', String(!isCompact));
       $('toggleMoreCombosBtn').textContent = isCompact
-        ? '🎨 おすすめ配色をもっと見る（＋20種・全30種を表示）▾'
-        : '▲ おすすめ配色を折りたたむ（定番10種のみ表示）';
+        ? 'その他の配色を表示（全30種） ▾'
+        : '▲ おすすめ配色を折りたたむ（定番10種のみ）';
     });
   }
   if($('toggleMoreDaboSpotsBtn') && $('eDaboSpotBtns')){
     $('toggleMoreDaboSpotsBtn').addEventListener('click', function(){
       var isCompact = $('eDaboSpotBtns').classList.toggle('compact-spots');
+      $('toggleMoreDaboSpotsBtn').setAttribute('aria-expanded', String(!isCompact));
       $('toggleMoreDaboSpotsBtn').textContent = isCompact
-        ? '📍 その他の部位（背中中央・右胸・裾・両袖・前太もも）を表示 ▾'
+        ? 'その他の部位（背中中央・右胸・裾・両袖・前太もも） ▾'
         : '▲ その他の部位を折りたたむ';
     });
   }
@@ -17661,6 +17690,67 @@ function easyRenderImpl(){
   if($('eName')) $('eName').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); keepFromStep8(); } });
   if($('eTopSavePresetBtn')) $('eTopSavePresetBtn').addEventListener('click', keepFromTop);
   if($('eTopPresetName')) $('eTopPresetName').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); keepFromTop(); } });
+  // ステップカードのアコーディオン開閉 ＆ Sticky Step Nav スクロール同期
+  var stepNavEl = $('eStepNav');
+  var sidePanelEl = document.querySelector('aside.panel');
+  var jumpLockUntil = 0;
+  function setStepNavActive(activeId){
+    if(!stepNavEl || !activeId) return;
+    stepNavEl.querySelectorAll('button[data-jump]').forEach(function(nb){
+      nb.classList.toggle('is-active', nb.dataset.jump === activeId);
+    });
+  }
+  document.querySelectorAll('#easyPanel .e-step > .e-h').forEach(function(hd){
+    hd.addEventListener('click', function(e){
+      if(e.target.closest('.e-more')) return;
+      var stepCard = hd.parentElement;
+      if(!stepCard) return;
+      var collapsed = stepCard.classList.toggle('is-collapsed');
+      if(!collapsed && stepCard.id) setStepNavActive(stepCard.id);
+    });
+  });
+  if(stepNavEl){
+    stepNavEl.querySelectorAll('button[data-jump]').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var targetId = btn.dataset.jump;
+        var targetEl = targetId ? $(targetId) : null;
+        if(!targetEl || targetEl.hidden) return;
+        targetEl.classList.remove('is-collapsed');
+        setStepNavActive(targetId);
+        jumpLockUntil = Date.now() + 650;
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  }
+  if(sidePanelEl && stepNavEl){
+    var stepButtons = Array.prototype.slice.call(stepNavEl.querySelectorAll('button[data-jump]'));
+    sidePanelEl.addEventListener('scroll', function(){
+      if(Date.now() < jumpLockUntil) return;
+      if(!easyIsOn()) return;
+      var panelRect = sidePanelEl.getBoundingClientRect();
+      var threshold = panelRect.top + 115;
+      var curId = stepButtons[0] ? stepButtons[0].dataset.jump : '';
+      stepButtons.forEach(function(btn){
+        var el = $(btn.dataset.jump);
+        if(!el || el.hidden) return;
+        var r = el.getBoundingClientRect();
+        if(r.top <= threshold) curId = btn.dataset.jump;
+      });
+      if(sidePanelEl.scrollTop + sidePanelEl.clientHeight >= sidePanelEl.scrollHeight - 12){
+        for(var i = stepButtons.length - 1; i >= 0; i--){
+          var lastEl = $(stepButtons[i].dataset.jump);
+          if(lastEl && !lastEl.hidden){ curId = stepButtons[i].dataset.jump; break; }
+        }
+      }
+      if(curId) setStepNavActive(curId);
+    }, { passive: true });
+  }
+  if($('eJumpToStep3ColorBtn')){
+    $('eJumpToStep3ColorBtn').addEventListener('click', function(){
+      if($('eStep3')) $('eStep3').classList.remove('is-collapsed');
+      setStepNavActive('eStep3');
+    });
+  }
   // 詳細モード側のお知らせ（保存しました 等）をかんたん側にも出す
   var em = $('eMsg');
   ['msg', 'saveMsg', 'pmMsgA'].forEach(function(id){
