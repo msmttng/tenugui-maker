@@ -9484,30 +9484,30 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
   //    ・鯉口シャツ：ウエストがシェイプされ、袖口が「鯉の口」のようにキュッと細くすぼまった七分袖（脇下に立体マチ）。
   //    ・ダボシャツ：寸胴のボックス型で、袖口が広いストレートな筒袖（八分〜七分袖）＋両脇裾スリット。
 
-  const neckW = isKoi ? 22 : 25;         // 首ぐり半幅（鯉口は首元がキュッと詰まった関東襟）
-  const neckFrontDip = isKoi ? 14 : 18;  // 前首ぐりの深さ（丸首・クルーネック状）
+  const neckW = isKoi ? 22 : 24;         // 首ぐり半幅（鯉口は詰まった関東襟、ダボはすっきりVネック）
+  const neckFrontDip = isKoi ? 14 : 30;  // 前首ぐりの深さ（鯉口＝丸首クルーネック、ダボ＝実物同様のすっきりV字前開き）
   const neckBackDip = 5;                 // 後ろ首ぐりの深さ
   const collarTrimW = 5.5;               // 首回りを包む共布パイピング（玉縁・盤カラー）の太さ
 
-  const shldrW = isKoi ? 56 : 66;        // 肩幅（身頃幅）片側
+  const shldrW = worn3d ? (isKoi ? 54 : 60) : (isKoi ? 56 : 66); // 肩幅（身頃幅）片側
   const bodyTop = -92;                   // 首付け根（肩山）Y座標
   // worn3d（3D着装時）は人間の僧帽筋・なで肩ラインに合わせて自然な肩下がりを付与
-  const shldrDrop = worn3d ? (isKoi ? 14 : 13) : (isKoi ? 6 : 4);
+  const shldrDrop = worn3d ? 14 : (isKoi ? 6 : 4);
   const shldrY = bodyTop + shldrDrop;    // 肩先Y座標
   const bodyBot = 114;                   // 裾Y座標
   const bodyH = bodyBot - bodyTop;       // 着丈 (206)
 
-  const armDrop = worn3d ? (isKoi ? 48 : 58) : (isKoi ? 52 : 66); // 袖付け（アームホール）深さ
+  const armDrop = worn3d ? (isKoi ? 44 : 50) : (isKoi ? 52 : 66); // 袖付け（アームホール）深さ
   const armPitY = shldrY + armDrop;      // 脇下Y座標
-  const waistW = worn3d ? (isKoi ? 49 : 59) : (isKoi ? 50 : 65);  // 胴幅（着装時は人体に沿う自然なシェイプ）
-  const hemW = worn3d ? (isKoi ? 53 : 63) : (isKoi ? 53 : 66);    // 裾幅
-  const slitH = isKoi ? 10 : 16;         // 両脇の裾スリット
+  const waistW = worn3d ? (isKoi ? 48 : 58) : (isKoi ? 50 : 65);  // 胴幅（ダボは寸胴に近い自然なボックスシルエット）
+  const hemW = worn3d ? (isKoi ? 52 : 60) : (isKoi ? 53 : 66);    // 裾幅
+  const slitH = isKoi ? 8 : 11;          // 両脇の裾スリット
 
-  // 袖のジオメトリ（worn3d時は人間が腕を自然に下ろしたリラックスAポーズ角度）
-  const slvSpanX = worn3d ? (isKoi ? 52 : 56) : (isKoi ? 88 : 94);
-  const slvDropTop = worn3d ? (isKoi ? 64 : 68) : (isKoi ? 28 : 20);
-  // ★鯉口シャツの最大の特徴：袖口（cuffH）が「鯉の口」のようにキュッと細く絞られている
-  const cuffH = worn3d ? (isKoi ? 26 : 42) : (isKoi ? 30 : 60);
+  // 袖のジオメトリ（worn3d時は実物写真のように腕に沿って斜め下約23°へ自然に落ちる七分広袖）
+  const slvSpanX = worn3d ? (isKoi ? 38 : 44) : (isKoi ? 88 : 94);
+  const slvDropTop = worn3d ? (isKoi ? 88 : 100) : (isKoi ? 28 : 20);
+  // ★鯉口シャツは袖口が細く絞られ、ダボシャツはゆったり広い七分筒袖
+  const cuffH = worn3d ? (isKoi ? 24 : 38) : (isKoi ? 30 : 60);
 
   // --- 0. 前面から見える後ろ首ぐりの内側（裏地）※3D中空WebGL時は実ポリゴン裏地を見せるため透過にする ---
   if(side === 'front' && !(opts && opts.hollowNeck3d)){
@@ -9515,8 +9515,13 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
     x.beginPath();
     x.moveTo(-neckW, bodyTop);
     x.quadraticCurveTo(0, bodyTop + neckBackDip, neckW, bodyTop);
-    x.quadraticCurveTo(neckW * 0.7, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
-    x.quadraticCurveTo(-neckW * 0.7, bodyTop + neckFrontDip, -neckW, bodyTop);
+    if(isKoi){
+      x.quadraticCurveTo(neckW * 0.7, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
+      x.quadraticCurveTo(-neckW * 0.7, bodyTop + neckFrontDip, -neckW, bodyTop);
+    }else{
+      x.quadraticCurveTo(neckW * 0.42, bodyTop + neckFrontDip * 0.58, 0, bodyTop + neckFrontDip);
+      x.quadraticCurveTo(-neckW * 0.42, bodyTop + neckFrontDip * 0.58, -neckW, bodyTop);
+    }
     x.closePath();
     x.fillStyle = bodyCfg.bgColor || '#046e7e';
     x.fill();
@@ -9541,33 +9546,33 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
     const sx0 = dir * (shldrW - 1), sy0 = shldrY;
     const sx1 = dir * (shldrW - 1), sy1 = armPitY;
     const ex0 = dir * (shldrW + slvSpanX), ey0 = shldrY + slvDropTop;
-    // 袖口の角度（worn3d時は斜め下に降りた人間の前腕に直交する自然な袖口角度）
+    // 袖口の角度（worn3d時は斜め下に降りた七分広袖の自然な袖口角度）
     const ex1 = worn3d
-      ? dir * (shldrW + slvSpanX - (isKoi ? 18 : 22))
+      ? dir * (shldrW + slvSpanX - (isKoi ? 22 : 34))
       : dir * (shldrW + slvSpanX - (isKoi ? 9 : 5));
     const ey1 = worn3d
-      ? (ey0 + (isKoi ? 16 : 24))
+      ? (ey0 + (isKoi ? 10 : 15))
       : (ey0 + cuffH);
 
     const traceSleeve = () => {
       x.beginPath();
       x.moveTo(sx0, sy0);
       if(worn3d){
-        // 人間の肩先（三角筋）の丸みから二の腕〜七分袖口へ自然に落ちるアウトライン
+        // 肩先の自然な丸みから肘下（七分丈）へすっきり落ちるアウトライン
         x.bezierCurveTo(
-          sx0 + dir * 18, sy0 + 7,
-          ex0 - dir * 12, ey0 - 15,
+          sx0 + dir * 13, sy0 + 16,
+          ex0 - dir * 8, ey0 - 22,
           ex0, ey0
         );
         // 腕の円筒に沿う立体的な袖口カーブ
         x.quadraticCurveTo(
-          (ex0 + ex1) * 0.5 + dir * 2.5, (ey0 + ey1) * 0.5 + 2.5,
+          (ex0 + ex1) * 0.5 + dir * 1.5, (ey0 + ey1) * 0.5 + 2.5,
           ex1, ey1
         );
-        // 袖口下端から脇下への自然なドレープライン
+        // 袖口内端から脇下への自然なストレート広袖ライン
         x.bezierCurveTo(
-          dir * (shldrW + slvSpanX * 0.48), ey1 - (isKoi ? 6 : 2),
-          dir * (shldrW + slvSpanX * 0.18), sy1 + 3,
+          dir * (shldrW + (ex1 * dir - shldrW) * 0.62), ey1 - 18,
+          dir * (shldrW + (ex1 * dir - shldrW) * 0.25), sy1 + 14,
           sx1, sy1
         );
       }else{
@@ -9666,10 +9671,15 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
   const traceTorsoOutline = () => {
     x.beginPath();
     if(side === 'front'){
-      // 左肩首付け根 -> 丸首の前襟ぐりカーブ -> 右肩首付け根
+      // 左肩首付け根 -> 前襟ぐり（鯉口は丸首、ダボは実物写真のすっきりしたVネック前開き） -> 右肩首付け根
       x.moveTo(-neckW, bodyTop);
-      x.quadraticCurveTo(-neckW * 0.65, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
-      x.quadraticCurveTo(neckW * 0.65, bodyTop + neckFrontDip, neckW, bodyTop);
+      if(isKoi){
+        x.quadraticCurveTo(-neckW * 0.65, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
+        x.quadraticCurveTo(neckW * 0.65, bodyTop + neckFrontDip, neckW, bodyTop);
+      }else{
+        x.quadraticCurveTo(-neckW * 0.42, bodyTop + neckFrontDip * 0.58, 0, bodyTop + neckFrontDip);
+        x.quadraticCurveTo(neckW * 0.42, bodyTop + neckFrontDip * 0.58, neckW, bodyTop);
+      }
     }else{
       // 後ろ襟ぐり（浅いカーブ）
       x.moveTo(-neckW, bodyTop);
@@ -9791,11 +9801,19 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
       x.save();
       x.beginPath();
       x.moveTo(-neckW - collarTrimW, bodyTop);
-      x.quadraticCurveTo(-neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, 0, bodyTop + neckFrontDip + collarTrimW);
-      x.quadraticCurveTo(neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, neckW + collarTrimW, bodyTop);
-      x.lineTo(neckW, bodyTop);
-      x.quadraticCurveTo(neckW * 0.65, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
-      x.quadraticCurveTo(-neckW * 0.65, bodyTop + neckFrontDip, -neckW, bodyTop);
+      if(isKoi){
+        x.quadraticCurveTo(-neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, 0, bodyTop + neckFrontDip + collarTrimW);
+        x.quadraticCurveTo(neckW * 0.7, bodyTop + neckFrontDip + collarTrimW, neckW + collarTrimW, bodyTop);
+        x.lineTo(neckW, bodyTop);
+        x.quadraticCurveTo(neckW * 0.65, bodyTop + neckFrontDip, 0, bodyTop + neckFrontDip);
+        x.quadraticCurveTo(-neckW * 0.65, bodyTop + neckFrontDip, -neckW, bodyTop);
+      }else{
+        x.quadraticCurveTo(-neckW * 0.46, bodyTop + neckFrontDip * 0.58 + collarTrimW, 0, bodyTop + neckFrontDip + collarTrimW);
+        x.quadraticCurveTo(neckW * 0.46, bodyTop + neckFrontDip * 0.58 + collarTrimW, neckW + collarTrimW, bodyTop);
+        x.lineTo(neckW, bodyTop);
+        x.quadraticCurveTo(neckW * 0.42, bodyTop + neckFrontDip * 0.58, 0, bodyTop + neckFrontDip);
+        x.quadraticCurveTo(-neckW * 0.42, bodyTop + neckFrontDip * 0.58, -neckW, bodyTop);
+      }
       x.closePath();
       x.fillStyle = collarCol;
       x.fill();
@@ -10153,11 +10171,12 @@ function drawSingleDaboShirt(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, expo
 
 // 👖 ダボパンツ（ダボズボン・股引風ゆったり祭礼パンツ）の前面・背面をリアルに描画
 function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shirtSUnit, exportMode, opts){
+  const isKoi = (S.daboStyle === 'koikuchi');
   const for3d = !!(opts && opts.for3d);
   // バウンディングボックス: 横幅 230 (-115..+115), 縦幅 225 (-112..+113)
-  // 2D上下セット表示時(shirtSUnit指定時)は、シャツの身幅・着丈と実寸比率が自然に揃うスケール(shirtSUnit * 1.15)を採用
+  // 2D上下セット表示時(shirtSUnit指定時)はシャツと完全同一の1:1実寸スケール(shirtSUnit)を採用し、パンツ横幅が上のダボ身幅より必ず内側に収まる実物バランスにする
   const fitUnit = Math.min(maxW / 230, maxH / 225);
-  const S_unit = for3d ? (opts.scaleUnit || 2.5) : (shirtSUnit ? Math.min(fitUnit, shirtSUnit * 1.16) : fitUnit);
+  const S_unit = for3d ? (opts.scaleUnit || 2.5) : (shirtSUnit ? Math.min(fitUnit, shirtSUnit) : fitUnit);
   const centerStageY = for3d ? cy : (cy + 4 * S_unit);
   x.save();
   x.translate(cx, centerStageY);
@@ -10176,25 +10195,29 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
     x.restore();
   }
 
-  const topY = -80, botY = 96, crotchY = -12;
-  const pantsH = botY - topY; // 176
-  const waistW = 52, hipW = 66, ankleOutX = 53, ankleInX = 11;
+  const topY = -80, botY = 86, crotchY = -14;
+  const pantsH = botY - topY; // 166 (実物の七分〜八分丈ダボズボン比率)
+  // 実物のダボズボンは、上から被さるダボシャツ裾幅（60〜66）の内側に収まりつつ、裾口までゆとりのあるストレート筒シルエット
+  const waistW = isKoi ? 42 : 49;
+  const hipW = isKoi ? 46 : 55;
+  const ankleOutX = isKoi ? 38 : 54;
+  const ankleInX = isKoi ? 10 : 13.5;
 
-  // 本物のダボパンツ（ワタリ広め・股マチ付き・裾にかけて緩やかにテーパード）のシルエット
+  // 本物のダボパンツ（上のダボ身幅より横へ張り出さず、ゆったり真っ直ぐ落ちる七分〜八分丈ストレート筒）のシルエット
   const tracePants = () => {
     x.beginPath();
     x.moveTo(-waistW, topY);
     x.lineTo(waistW, topY);
-    // 右脇（ウエスト -> ヒップ膨らみ -> 右足外裾）
-    x.quadraticCurveTo(hipW + 3, topY + 46, ankleOutX, botY);
+    // 右脇（ウエスト -> ヒップ〜ワタリ -> 右足外裾）
+    x.quadraticCurveTo(hipW, topY + 46, ankleOutX, botY);
     // 右裾 -> 右内股 -> 股下マチ -> 左内股 -> 左裾
     x.lineTo(ankleInX, botY);
-    x.quadraticCurveTo(8, crotchY + 28, 3, crotchY);
-    x.quadraticCurveTo(0, crotchY - 3, -3, crotchY);
-    x.quadraticCurveTo(-8, crotchY + 28, -ankleInX, botY);
+    x.quadraticCurveTo(8.5, crotchY + 28, 3.2, crotchY);
+    x.quadraticCurveTo(0, crotchY - 3, -3.2, crotchY);
+    x.quadraticCurveTo(-8.5, crotchY + 28, -ankleInX, botY);
     x.lineTo(-ankleOutX, botY);
-    // 左脇（左足外裾 -> ヒップ膨らみ -> ウエスト）
-    x.quadraticCurveTo(-(hipW + 3), topY + 46, -waistW, topY);
+    // 左脇（左足外裾 -> ヒップ〜ワタリ -> ウエスト）
+    x.quadraticCurveTo(-hipW, topY + 46, -waistW, topY);
     x.closePath();
   };
 
@@ -10221,8 +10244,8 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
   const refEntry = leftLegEntry || rightLegEntry;
   const refCv = refEntry && refEntry.cv ? refEntry.cv : null;
   const longPx = refCv ? Math.max(1, Math.max(refCv.width, refCv.height)) : 1035;
-  // 3D着装時はシャツ(sScale=0.80x0.72)とパンツ(pScale=0.98x1.22)の画面上柄ピッチ・ロゴサイズが1:1に揃うよう実寸スケールを統一
-  const pantsFixedScale = (for3d ? 150 : pantsH) / (0.86 * longPx);
+  // 3D着装時はシャツ(sScaleX=0.88)とパンツ(pScaleX=0.88)の画面上柄ピッチ・ロゴサイズが1:1に揃うよう実寸スケールを統一
+  const pantsFixedScale = (for3d ? 190 : pantsH) / (0.86 * longPx);
 
   // パンツ本体の脚生地は、ユーザーが「前太もも」またはパンツ脚を直接指定した時のみ脚にロゴを出し、
   // 標準時（背紋・胸・右尻ポケット配置時）はシャツ裾のすぐ下に胸ロゴが重複しないようベース柄(plainCv)でスッキリ仕立てる
@@ -10247,8 +10270,8 @@ function drawSingleDaboPants(x, cx, cy, maxW, maxH, side, partMap, bodyCfg, shir
   drawCroppedPiece(x, rightLegDrawEntry, 0, topY, hipW, pantsH, 0, undefined, pantsFixedScale);
   x.restore();
 
-  // 背面・右尻パッチポケット（向かって右のヒップ）
-  const pkX = 11, pkY = topY + 26, pkW = 36, pkH = 40;
+  // 背面・右尻パッチポケット（向かって右のヒップ・すっきりした外脇内に収まる寸法）
+  const pkX = isKoi ? 7.5 : 8.5, pkY = topY + 24, pkW = isKoi ? 28 : 32, pkH = isKoi ? 34 : 37;
   if(side === 'back' && S.daboPocketMode !== 'none'){
     const traceHipPocket = () => {
       x.beginPath();
@@ -10663,28 +10686,28 @@ function build3dGarmentTextures(partMap, bodyCfg, bodyVec){
   dilateCanvasEdgeRgb(shirtFrontCv);
   dilateCanvasEdgeRgb(shirtBackCv);
 
-  // シャツの開口部判定（襟ぐり・両袖口・両脇スリット・裾は3D中空に開き、肩・袖山・袖下・脇縫い目は閉合）
-  const neckW = isKoi ? 22 : 25;
-  const shldrW = isKoi ? 56 : 66;
-  const shldrY = -92 + (isKoi ? 14 : 13);
-  const slvSpanX = isKoi ? 52 : 56;
-  const slvDropTop = isKoi ? 64 : 68;
-  const cuffInward = isKoi ? 18 : 22;
-  const cuffSpanY = isKoi ? 16 : 24;
-  const hemW = isKoi ? 53 : 63;
-  const slitH = isKoi ? 10 : 16;
+  // シャツの開口部判定（Vネック/関東襟・七分広袖口・両脇スリット・裾は3D中空に開き、肩・袖山・袖下・脇縫い目は閉合）
+  const neckW = isKoi ? 22 : 24;
+  const shldrW = isKoi ? 54 : 60;
+  const shldrY = -92 + 14;
+  const slvSpanX = isKoi ? 38 : 44;
+  const slvDropTop = isKoi ? 88 : 100;
+  const cuffInward = isKoi ? 22 : 34;
+  const cuffSpanY = isKoi ? 10 : 15;
+  const hemW = isKoi ? 52 : 60;
+  const slitH = isKoi ? 8 : 11;
   const ex0 = shldrW + slvSpanX, ey0 = shldrY + slvDropTop;
   const ex1 = ex0 - cuffInward, ey1 = ey0 + cuffSpanY;
   const cdx = ex1 - ex0, cdy = ey1 - ey0, cLenSq = cdx * cdx + cdy * cdy;
 
   const shirtSeamField = buildClosedSeamDistanceField(shirtBackCv, 166, 109, -166, 332, -98, 218, (gx, gy) => {
     const ax = Math.abs(gx);
-    if(ax <= neckW - 1.5 && gy <= -70) return true; // 丸首・関東襟の中空開口
+    if(ax <= neckW - 1.5 && gy <= -70) return true; // 首ぐり（Vネック・関東襟）の中空開口
     if(gy >= 114 - slitH + 1.5 && ax <= hemW + 6) return true; // 裾および両脇スリット開口
     const tC = ((ax - ex0) * cdx + (gy - ey0) * cdy) / cLenSq;
-    if(tC > 0.06 && tC < 0.94){
+    if(tC > 0.05 && tC < 0.95){
       const px = ex0 + tC * cdx, py = ey0 + tC * cdy;
-      if(Math.hypot(ax - px, gy - py) < 20 && ax >= px - 2) return true; // 七分袖口の中空開口
+      if(Math.hypot(ax - px, gy - py) < 20 && gy >= py - 8) return true; // 七分広袖口の中空開口
     }
     return false;
   });
@@ -10715,11 +10738,14 @@ function build3dGarmentTextures(partMap, bodyCfg, bodyVec){
   dilateCanvasEdgeRgb(pantsFrontUnderShirtCv);
   dilateCanvasEdgeRgb(pantsBackCv);
 
-  // パンツの開口部判定（ウエスト上端開口・左右足首の裾開口のみ開き、外脇・内股・股ぐりは完全閉合）
+  // パンツの開口部判定（ウエスト上端開口・左右の七分〜八分丈ストレート裾開口のみ開き、外脇・内股・股ぐりは完全閉合）
+  const pWaistW = isKoi ? 42 : 49;
+  const pAnkleOutX = isKoi ? 38 : 54;
+  const pAnkleInX = isKoi ? 10 : 13.5;
   const pantsSeamField = buildClosedSeamDistanceField(pantsBackCv, 144, 184, -72, 144, -84, 184, (gx, gy) => {
     const ax = Math.abs(gx);
-    if(gy <= -78 && ax <= 50.5) return true; // ウエストゴム開口
-    if(gy >= 94 && ax >= 12.5 && ax <= 51.5) return true; // 左右の足首裾開口
+    if(gy <= -78 && ax <= pWaistW - 1.5) return true; // ウエストゴム開口
+    if(gy >= 84 && ax >= pAnkleInX + 1.2 && ax <= pAnkleOutX - 1.2) return true; // 左右の裾開口
     return false;
   });
 
@@ -11157,9 +11183,9 @@ function drawClo3dBiShellPair(st, frontMesh, frontTex, fW, fH, backMesh, backTex
 // 👕👖 CLO 3D ゴーストマネキン（人物なし・完全360°閉合中空クロス）レンダリング
 function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShirt, includePants, tex, bodyCfg, badgeTitle, badgeAccent){
   const isKoi = (S.daboStyle === 'koikuchi');
-  const yCenterShift = (includeShirt && includePants) ? -78 : -6;
-  const floorY = cy + ((includeShirt && includePants) ? 176 : 124) * scale;
-  const shadowRx = ((includeShirt && includePants) ? 84 : 94) * scale;
+  const yCenterShift = (includeShirt && includePants) ? -58 : -6;
+  const floorY = cy + ((includeShirt && includePants) ? 162 : 124) * scale;
+  const shadowRx = ((includeShirt && includePants) ? 74 : 90) * scale;
   const shadowRy = shadowRx * 0.27;
 
   // 1. 接地アンビエントオクルージョン影と下部ラベルピル
@@ -11204,22 +11230,23 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
   //    上下セット時はシャツ裾の内側にウエストが自然に収まり、オーバーハング落ち影を受ける
   // =========================================================================
   if(includePants){
-    const pScaleX = includeShirt ? 0.98 : 1.06;
-    const pScaleY = includeShirt ? 1.22 : 1.15;
-    const pOffsetY = includeShirt ? 126 : -4;
+    // 上のダボシャツ（sScaleX=0.88, 裾半幅 ~52.8）の内側にすっきり収まりつつ、七分〜八分丈ストレート筒で落ちる実物比率
+    const pScaleX = includeShirt ? 0.86 : 1.00;
+    const pScaleY = includeShirt ? 1.10 : 1.12;
+    const pOffsetY = includeShirt ? 118 : -2;
     const NX_P = 64, NY_P = 66;
 
     const evalPantsPt = (u, v, isFront) => {
       const gx = (u - 0.5) * 144; // -72 .. +72
       const gy = -84 + v * 184;   // -84 .. +100
       const ax = Math.abs(gx);
-      // 不透明領域の内側(3.4mm)で完全にZ厚みを0へ閉じることで、シルエット端での裏地露出・隙間をゼロ化
-      const dSeam = Math.max(0, sampleDistanceField(tex.pantsSeamField, u, v) - 3.4);
+      // 不透明領域の内側(3.1mm)で完全にZ厚みを0へ閉じることで、シルエット端での裏地露出・隙間をゼロ化
+      const dSeam = Math.max(0, sampleDistanceField(tex.pantsSeamField, u, v) - 3.1);
 
-      // 骨盤円筒 (幅~52) -> 左右独立の脚円筒 (半径~21) への連続断面プロファイル
+      // 骨盤円筒 (半幅~48) -> 左右独立のゆったりストレート脚円筒 (半幅~20) への連続断面プロファイル
       const tLeg = Math.max(0, Math.min(1, (gy - (-22)) / 24));
       const wLeg = tLeg * tLeg * (3 - 2 * tLeg);
-      const spanRef = 31 * (1 - wLeg) + 17.0 * wLeg;
+      const spanRef = (isKoi ? 23 : 27) * (1 - wLeg) + (isKoi ? 13.5 : 18.5) * wLeg;
       const sNorm = Math.min(1, dSeam / spanRef);
       const roundProfile = Math.sin(sNorm * Math.PI * 0.5);
 
@@ -11227,8 +11254,8 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
       const tEmerge = Math.max(0, Math.min(1, (gy - (-76)) / 36));
       const sEmerge = tEmerge * tEmerge * (3 - 2 * tEmerge);
       const tuckUnderShirt = includeShirt ? (0.56 + 0.44 * sEmerge) : 1.0;
-      const xTuckUnderShirt = includeShirt ? (0.74 + 0.26 * sEmerge) : 1.0;
-      const baseDepth = ((isFront ? 21.0 : 22.5) * (1 - wLeg) + 19.5 * wLeg) * tuckUnderShirt;
+      const xTuckUnderShirt = includeShirt ? (0.85 + 0.15 * sEmerge) : 1.0;
+      const baseDepth = ((isFront ? 19.5 : 21.0) * (1 - wLeg) + (isKoi ? 15.5 : 18.5) * wLeg) * tuckUnderShirt;
 
       // CLO 3D クロス物理ディテール:
       // 1) ウエスト総ゴムの細かな縦ギャザー凹凸 (gy: -80..-50)
@@ -11283,13 +11310,13 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
   //    丸首関東襟・七分袖口・両脇スリット・裾がリアルな3D中空構造で開く
   // =========================================================================
   if(includeShirt){
-    const sScaleX = includePants ? 0.80 : 1.0;
-    const sScaleY = includePants ? 0.72 : 1.0;
-    const sOffsetY = includePants ? -22 : 0;
-    const shldrW = isKoi ? 56 : 66;
-    const shldrY = -92 + (isKoi ? 14 : 13);
-    const armPitY = shldrY + (isKoi ? 48 : 58);
-    const slvSpanX = isKoi ? 52 : 56;
+    const sScaleX = includePants ? 0.88 : 1.0;
+    const sScaleY = includePants ? 0.80 : 1.0;
+    const sOffsetY = includePants ? -24 : 0;
+    const shldrW = isKoi ? 54 : 60;
+    const shldrY = -92 + 14;
+    const armPitY = shldrY + (isKoi ? 44 : 50);
+    const slvSpanX = isKoi ? 38 : 44;
     const NX_S = 84, NY_S = 72;
 
     const evalShirtPt = (u, v, isFront) => {
@@ -11348,8 +11375,8 @@ function render3dMannequinFigure(x, cx, cy, scale, yawDeg, pitchDeg, includeShir
       const pitAo = 1.0 - 0.26 * Math.exp(-(dxPit * dxPit) / 230 - ((gy - armPitY) * (gy - armPitY)) / 270);
       const vAo = (0.86 + 0.14 * roundProfile) * pitAo;
 
-      const worldX = (gx - signX * slvExtend * 4.5) * sScaleX;
-      const worldY = -(sOffsetY + (gy + slvExtend * 6.5) * sScaleY + yCenterShift);
+      const worldX = gx * sScaleX;
+      const worldY = -(sOffsetY + gy * sScaleY + yCenterShift);
       return {
         x: worldX, y: worldY, z: pz,
         uTex: isFront ? u : (1 - u),
