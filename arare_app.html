@@ -573,11 +573,11 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
             <button type="button" data-scat="gold" aria-pressed="false">黄金比</button>
             <button type="button" data-scat="custom" aria-pressed="false">マイ登録</button>
           </div>
-          <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:4px;max-height:190px;overflow-y:auto"></div>
+          <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;max-height:265px;overflow-y:auto;padding:2px 1px"></div>
         </div>
         <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
         <div class="e-subbox" id="eLogoPadBox" hidden>
-          <div class="e-sublbl"><span>札・ロゴの色と透過（①本体・②文字・③背景）</span></div>
+          <div class="e-sublbl"><span>札・ロゴの色と透過</span><b id="eActiveLogoNameBadge" style="font-size:10.5px;color:#046e7e;background:#e0f2fe;padding:2px 7px;border-radius:999px;font-weight:700">選択中</b></div>
           <!-- ① 本体の色 -->
           <div style="display:flex;flex-direction:column;gap:4px">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
@@ -585,16 +585,16 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
               <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eStep5FudaBodyCol" value="#ffffff" style="width:26px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
             <div class="e-chips small" id="eStep5LogoColChips" style="grid-template-columns:repeat(5,1fr)">
-              <button type="button" data-efcol="same">仲羽田と同じ</button>
-              <button type="button" data-efcol="white">白抜き</button>
-              <button type="button" data-efcol="teal">浅葱</button>
-              <button type="button" data-efcol="#046e7e">羽田納戸</button>
-              <button type="button" data-efcol="#877028">羽田金</button>
-              <button type="button" data-efcol="#f8b500">山吹</button>
-              <button type="button" data-efcol="#b7282e">茜</button>
-              <button type="button" data-efcol="#183574">藍</button>
-              <button type="button" data-efcol="#111827">黒</button>
-              <button type="button" data-efcol="orig">元の色</button>
+              <button type="button" data-efcol="same" style="padding:5px 2px">柄と同色</button>
+              <button type="button" data-efcol="white" style="padding:5px 2px">白抜き</button>
+              <button type="button" data-efcol="teal" style="padding:5px 2px">浅葱</button>
+              <button type="button" data-efcol="#046e7e" style="padding:5px 2px">羽田納戸</button>
+              <button type="button" data-efcol="#877028" style="padding:5px 2px">羽田金</button>
+              <button type="button" data-efcol="#f8b500" style="padding:5px 2px">山吹</button>
+              <button type="button" data-efcol="#b7282e" style="padding:5px 2px">茜</button>
+              <button type="button" data-efcol="#183574" style="padding:5px 2px">藍</button>
+              <button type="button" data-efcol="#111827" style="padding:5px 2px">黒</button>
+              <button type="button" data-efcol="orig" style="padding:5px 2px">元の色</button>
             </div>
           </div>
           <!-- ② 札の中の文字色（内蔵札ロゴ選択時のみ自動表示） -->
@@ -636,13 +636,13 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
               <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px;border-top:1px dashed #e2e8f0">
                 <div class="e-range" data-for="logoPadMarginMm"><span>外側の余白幅</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
                 <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-                  <div class="e-chips small" id="eLogoPadMarginPresets" style="flex:1;grid-template-columns:repeat(6,1fr)">
-                    <button type="button" data-pmargin="0" title="外余白なしでロゴの中だけ不透過にします">0mm(中だけ)</button>
-                    <button type="button" data-pmargin="3">3mm</button>
-                    <button type="button" data-pmargin="6">6mm</button>
-                    <button type="button" data-pmargin="10">10mm</button>
-                    <button type="button" data-pmargin="15">15mm</button>
-                    <button type="button" data-pmargin="25">25mm</button>
+                  <div class="e-chips small" id="eLogoPadMarginPresets" style="flex:1;grid-template-columns:1.5fr repeat(5,1fr)">
+                    <button type="button" data-pmargin="0" style="padding:5px 2px" title="外余白なしでロゴの中だけ不透過にします">0mm(中のみ)</button>
+                    <button type="button" data-pmargin="3" style="padding:5px 2px">3mm</button>
+                    <button type="button" data-pmargin="6" style="padding:5px 2px">6mm</button>
+                    <button type="button" data-pmargin="10" style="padding:5px 2px">10mm</button>
+                    <button type="button" data-pmargin="15" style="padding:5px 2px">15mm</button>
+                    <button type="button" data-pmargin="25" style="padding:5px 2px">25mm</button>
                   </div>
                 </div>
               </div>
@@ -1387,7 +1387,7 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
             <button type="button" data-scat="gold" aria-pressed="false">📐 黄金比</button>
             <button type="button" data-scat="custom" aria-pressed="false">📁 マイ登録</button>
           </div>
-          <div id="logoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:5px;max-height:220px;overflow-y:auto;padding:2px"></div>
+          <div id="logoShelfList" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:270px;overflow-y:auto;padding:2px"></div>
         </div>
 
         <!-- 🔢 1. キャンバス上に配置中のロゴ一覧 -->
@@ -3842,7 +3842,7 @@ function getDefaultLogoShelfItems(){
   return [
     {
       id: 'shelf_fuda_teal',
-      name: '🏷️ 札ロゴ (ティール/納戸)',
+      name: '札ロゴ（浅葱色）',
       savedAt: Date.now() + 2000,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: 'fuda_logo_teal',
@@ -3854,7 +3854,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_fuda_white',
-      name: '🏷️ 札ロゴ (白抜き)',
+      name: '札ロゴ（白抜き）',
       savedAt: Date.now() + 1000,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: 'fuda_logo_white',
@@ -3866,7 +3866,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_trace_maru',
-      name: '🖌️ 仲はねだ (トレス済・丸紋ベクター)',
+      name: '仲はねだ（丸紋トレス）',
       savedAt: Date.now() + 600,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '仲はねだ(トレス済)',
@@ -3878,7 +3878,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_trace_vert',
-      name: '🖌️ 仲羽田トレース (縦・色変更可)',
+      name: '仲羽田（縦トレス）',
       savedAt: Date.now() + 500,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '仲羽田トレース(縦)',
@@ -3890,7 +3890,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_trace_horiz',
-      name: '🖌️ 仲羽田トレース (横・色変更可)',
+      name: '仲羽田（横トレス）',
       savedAt: Date.now() + 400,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '仲羽田トレース(横)',
@@ -3902,7 +3902,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_hanten_std',
-      name: '🏮 仲羽半纏ロゴ (標準)',
+      name: '仲羽半纏（標準）',
       savedAt: Date.now(),
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '仲羽半纏ロゴ',
@@ -3914,7 +3914,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_hanten_white',
-      name: '🏮 仲羽半纏 (白染め)',
+      name: '仲羽半纏（白抜き）',
       savedAt: Date.now() - 1000,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '仲羽半纏(白)',
@@ -3926,7 +3926,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_hanten_gold',
-      name: '🏮 仲羽半纏 (金＋白フチ)',
+      name: '仲羽半纏（金＋白フチ）',
       savedAt: Date.now() - 2000,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '仲羽半纏(金)',
@@ -3938,7 +3938,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_gold_1_circle',
-      name: '📐 ①黄金円・モダン丸紋',
+      name: '① 円・モダン丸紋',
       savedAt: Date.now() - 3000,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金円・仲羽田丸紋',
@@ -3950,7 +3950,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_gold_2_monolith',
-      name: '📐 ②黄金長方形・角字モノリス',
+      name: '② 長方形・角字縦組',
       savedAt: Date.now() - 3100,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金長方形・仲羽田モノリス',
@@ -3962,7 +3962,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_gold_3_wings',
-      name: '📐 ③黄金螺旋・飛翔ウイング紋',
+      name: '③ 螺旋・ウイング紋',
       savedAt: Date.now() - 3200,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金螺旋・仲羽田ウイング紋',
@@ -3974,7 +3974,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_gold_4_fuda',
-      name: '📐 ④黄金六角・モダン千社札',
+      name: '④ 六角・モダン千社札',
       savedAt: Date.now() - 3300,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金六角・モダン千社札',
@@ -3986,7 +3986,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_gold_5_diamond',
-      name: '📐 ⑤黄金菱・ダイヤモンド紋',
+      name: '⑤ 菱形・ダイヤ紋',
       savedAt: Date.now() - 3400,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金菱・仲羽田ダイヤモンド紋',
@@ -3998,7 +3998,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_gold_6_lockup',
-      name: '📐 ⑥黄金分割・横組みロックアップ',
+      name: '⑥ 横組ロックアップ',
       savedAt: Date.now() - 3500,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金分割・仲羽田ロックアップ',
@@ -4010,7 +4010,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_wave_1_seigaiha',
-      name: '🌊 ⑦黄金青海波・波頭丸紋',
+      name: '⑦ 青海波・波丸紋',
       savedAt: Date.now() - 3600,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金青海波・仲羽田波丸紋',
@@ -4022,7 +4022,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_wave_2_ripple_fuda',
-      name: '🌊 ⑧黄金揺らぎ・横揺れ波千社札',
+      name: '⑧ 横揺れ・波千社札',
       savedAt: Date.now() - 3700,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金揺らぎ・横揺れ波千社札',
@@ -4034,7 +4034,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_wave_3_kanzemizu',
-      name: '🌊 ⑨黄金観世水・流線うねり紋',
+      name: '⑨ 観世水・流線紋',
       savedAt: Date.now() - 3800,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金観世水・流線うねり紋',
@@ -4046,7 +4046,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_wave_4_vortex',
-      name: '🌊 ⑩黄金怒涛・大波うねり丸紋',
+      name: '⑩ 怒涛・大波丸紋',
       savedAt: Date.now() - 3900,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金怒涛・大波うねり丸紋',
@@ -4058,7 +4058,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_wave_5_undulating',
-      name: '🌊 ⑪黄金揺れ文字・波紋モノリス',
+      name: '⑪ 揺れ文字・三連紋',
       savedAt: Date.now() - 4000,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金揺れ文字・波紋三連モノリス',
@@ -4070,7 +4070,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_wave_6_lockup',
-      name: '🌊 ⑫黄金潮波・横組みウェーブ紋',
+      name: '⑫ 潮波・横ウェーブ',
       savedAt: Date.now() - 4100,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金潮波・横組みウェーブ紋（仲羽田）',
@@ -4082,7 +4082,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_tairyo_1_flag',
-      name: '🎌 ⑬黄金大漁旗・荒波飛沫（横向き）',
+      name: '⑬ 大漁旗・荒波枠付',
       savedAt: Date.now() - 4200,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金大漁旗・荒波飛沫（横向きフラッグ）',
@@ -4094,7 +4094,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_tairyo_2_wind',
-      name: '🎌 ⑭黄金大漁旗・潮風なびき大波（横・3D筆文字）',
+      name: '⑭ 大漁旗・3D筆文字',
       savedAt: Date.now() - 4300,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金大漁旗・潮風なびき大波（横・3D筆文字）',
@@ -4106,7 +4106,7 @@ function getDefaultLogoShelfItems(){
     },
     {
       id: 'shelf_tairyo_3_emblem',
-      name: '🎌 ⑮黄金大漁旗・双波エンブレム（横・枠なし）',
+      name: '⑮ 大漁旗・双波枠無',
       savedAt: Date.now() - 4400,
       slot: Object.assign(extractLogoSlotFromS(DEF), {
         logoName: '黄金大漁旗・双波エンブレム（横・枠なし）',
@@ -4662,13 +4662,24 @@ function renderLogoShelf(){
       const titleEl = document.createElement('div');
       titleEl.style.flex = '1';
       titleEl.style.fontWeight = '700';
-      titleEl.style.color = '#1e293b';
-      titleEl.style.overflow = 'hidden';
-      titleEl.style.textOverflow = 'ellipsis';
-      titleEl.style.whiteSpace = 'nowrap';
+      titleEl.style.color = '#0f172a';
+      titleEl.style.fontSize = '11px';
+      titleEl.style.lineHeight = '1.28';
+      titleEl.style.whiteSpace = 'normal';
+      titleEl.style.overflowWrap = 'anywhere';
       titleEl.style.cursor = 'pointer';
-      titleEl.textContent = item.name || sl.logoName || 'ロゴ';
-      titleEl.title = item.name || '';
+      const dCleanLbl = (item.name || sl.logoName || 'ロゴ').replace(/^(?:🏷️|🏮|🖌️|📐|🌊|🎌)\s*/u, '');
+      const dParenM = dCleanLbl.match(/^(.+?)[（(](.+)[）)]$/);
+      const dDotM = !dParenM ? dCleanLbl.match(/^(.+?)・(.+)$/) : null;
+      if(dParenM || dDotM){
+        const m1 = (dParenM || dDotM)[1], m2 = (dParenM || dDotM)[2];
+        const s1 = document.createElement('div'); s1.textContent = m1;
+        const s2 = document.createElement('div'); s2.textContent = m2; s2.style.fontSize = '10px'; s2.style.fontWeight = '600'; s2.style.color = '#475569';
+        titleEl.appendChild(s1); titleEl.appendChild(s2);
+      }else{
+        titleEl.textContent = dCleanLbl;
+      }
+      titleEl.title = dCleanLbl;
       titleEl.addEventListener('click', applyToCurrentFn);
 
       const delShelfBtn = document.createElement('button');
@@ -4729,39 +4740,42 @@ function renderLogoShelf(){
       const eCard = document.createElement('div');
       eCard.style.display = 'flex';
       eCard.style.alignItems = 'center';
-      eCard.style.gap = '3px';
-      eCard.style.padding = '3px 4px';
-      eCard.style.background = isSelected ? '#eff6ff' : '#ffffff';
-      eCard.style.border = isSelected ? '2px solid #0284c7' : '1px solid #93c5fd';
-      eCard.style.borderRadius = '6px';
+      eCard.style.gap = '4px';
+      eCard.style.padding = '5px 6px';
+      eCard.style.background = isSelected ? '#f0f9ff' : '#ffffff';
+      eCard.style.border = isSelected ? '2px solid #046e7e' : '1px solid #cbd5e1';
+      eCard.style.borderRadius = '7px';
+      if(isSelected) eCard.style.boxShadow = '0 0 0 2px rgba(4,110,126,0.14)';
 
       const eBtn = document.createElement('button');
       eBtn.type = 'button';
       eBtn.style.display = 'flex';
       eBtn.style.alignItems = 'center';
-      eBtn.style.gap = '5px';
+      eBtn.style.gap = '7px';
       eBtn.style.flex = '1';
       eBtn.style.minWidth = '0';
-      eBtn.style.padding = '2px';
+      eBtn.style.padding = '0';
       eBtn.style.background = 'transparent';
       eBtn.style.border = 'none';
       eBtn.style.cursor = 'pointer';
-      eBtn.style.fontSize = '10.5px';
+      eBtn.style.fontSize = '11px';
       eBtn.style.fontWeight = '700';
-      eBtn.style.color = '#1e293b';
+      eBtn.style.color = isSelected ? '#046e7e' : '#0f172a';
       eBtn.style.textAlign = 'left';
-      eBtn.title = (item.name || 'マイロゴ') + ' を今の枠に配置します';
+      const cleanLabel = (item.name || sl.logoName || 'ロゴ').replace(/^(?:🏷️|🏮|🖌️|📐|🌊|🎌)\s*/u, '');
+      eBtn.title = cleanLabel + ' を今の枠に配置します';
       const eThumb = document.createElement('span');
-      eThumb.style.width = '24px';
-      eThumb.style.height = '24px';
+      eThumb.style.width = '36px';
+      eThumb.style.height = '36px';
       eThumb.style.flexShrink = '0';
-      eThumb.style.borderRadius = '4px';
+      eThumb.style.borderRadius = '5px';
       eThumb.style.border = '1px solid #cbd5e1';
       eThumb.style.background = isWhiteFuda ? '#0f172a' : 'repeating-conic-gradient(#e2e8f0 0% 25%, #f8fafc 0% 50%) 50% / 6px 6px';
       eThumb.style.display = 'inline-flex';
       eThumb.style.alignItems = 'center';
       eThumb.style.justifyContent = 'center';
       eThumb.style.overflow = 'hidden';
+      eThumb.style.padding = '2px';
       const eIm = document.createElement('img');
       eIm.src = imgSrc;
       eIm.style.maxWidth = '100%';
@@ -4770,10 +4784,21 @@ function renderLogoShelf(){
       if(sl.logoDataUrl === '__BUILTIN_HANTEN__' && isWhiteFuda) eIm.style.filter = 'brightness(0) invert(1)';
       eThumb.appendChild(eIm);
       const eTxt = document.createElement('span');
-      eTxt.style.overflow = 'hidden';
-      eTxt.style.textOverflow = 'ellipsis';
-      eTxt.style.whiteSpace = 'nowrap';
-      eTxt.textContent = (item.name || sl.logoName || 'ロゴ').replace(/^(?:🏷️|🏮)\s*/u, '');
+      eTxt.style.display = 'flex';
+      eTxt.style.flexDirection = 'column';
+      eTxt.style.lineHeight = '1.25';
+      eTxt.style.whiteSpace = 'normal';
+      eTxt.style.overflowWrap = 'anywhere';
+      const eParenM = cleanLabel.match(/^(.+?)[（(](.+)[）)]$/);
+      const eDotM = !eParenM ? cleanLabel.match(/^(.+?)・(.+)$/) : null;
+      if(eParenM || eDotM){
+        const m1 = (eParenM || eDotM)[1], m2 = (eParenM || eDotM)[2];
+        const l1 = document.createElement('span'); l1.textContent = m1; l1.style.fontSize = '11px'; l1.style.fontWeight = '800';
+        const l2 = document.createElement('span'); l2.textContent = m2; l2.style.fontSize = '10px'; l2.style.fontWeight = '600'; l2.style.color = isSelected ? '#046e7e' : '#475569';
+        eTxt.appendChild(l1); eTxt.appendChild(l2);
+      }else{
+        eTxt.textContent = cleanLabel;
+      }
       eBtn.appendChild(eThumb);
       eBtn.appendChild(eTxt);
       eBtn.addEventListener('click', ev => { ev.stopPropagation(); applyToCurrentFn(); });
@@ -4782,13 +4807,13 @@ function renderLogoShelf(){
 
       const eAddBtn = document.createElement('button');
       eAddBtn.type = 'button';
-      eAddBtn.style.padding = '2px 5px';
-      eAddBtn.style.fontSize = '10px';
-      eAddBtn.style.fontWeight = '700';
+      eAddBtn.style.padding = '3px 6px';
+      eAddBtn.style.fontSize = '11px';
+      eAddBtn.style.fontWeight = '800';
       eAddBtn.style.background = '#f0fdf4';
       eAddBtn.style.color = '#15803d';
       eAddBtn.style.border = '1px solid #86efac';
-      eAddBtn.style.borderRadius = '4px';
+      eAddBtn.style.borderRadius = '5px';
       eAddBtn.style.cursor = 'pointer';
       eAddBtn.style.flexShrink = '0';
       eAddBtn.textContent = '＋';
@@ -17149,6 +17174,12 @@ function easyRenderImpl(){
   $('eLogo').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.el === lg)); });
   $('eLogoNote').hidden = !S.showLogo;
   if($('eLogoPadBox')) $('eLogoPadBox').hidden = !S.showLogo;
+  if($('eActiveLogoNameBadge') && S.showLogo){
+    var rawCurNm = S.logoName || '';
+    var matchedShelf = Array.isArray(LOGO_SHELF) ? LOGO_SHELF.find(function(x){ return x && x.slot && x.slot.logoDataUrl && x.slot.logoDataUrl === S.logoDataUrl && (x.name === rawCurNm || x.slot.logoName === rawCurNm || x.slot.logoDataUrl.startsWith('__BUILTIN_')); }) : null;
+    var dispNm = matchedShelf ? matchedShelf.name : (rawCurNm === 'fuda_logo_teal' ? '札ロゴ（浅葱色）' : (rawCurNm === 'fuda_logo_white' ? '札ロゴ（白抜き）' : (rawCurNm || 'ロゴ')));
+    $('eActiveLogoNameBadge').textContent = '選択中: ' + dispNm.replace(/^(?:🏷️|🏮|🖌️|📐|🌊|🎌)\s*/u, '');
+  }
   if($('eLogoPadControls')) $('eLogoPadControls').hidden = !hasPad;
   var isCurBuiltinFuda = !!(S.showLogo && isBuiltinFudaSlot(S));
   if($('eStep5FudaTextRow')) $('eStep5FudaTextRow').hidden = !isCurBuiltinFuda;
