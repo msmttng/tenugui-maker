@@ -1,5 +1,18 @@
 # Changelog (手ぬぐい工房 - Tenugui Studio)
 
+## [1.16.5] - 2026-11-12
+
+### Fixed & Improved
+- **⭕ 「仲 はねだ」丸紋ロゴで「枠なし」にしても外周に細いトレース線が残ってしまう不具合を完全解消 (`daishou_arare_kit/app_template.html` / `arare_app.html`)**:
+  1. **`0mm(中のみ) ＋ 枠なし` 時のシルエット外周はみ出し（1〜2px細線）をゼロ化 (`getLogoAlphaSilhouetteCanvas`)**:
+     - 従来は `alpha > 20` 閾値・`closeR` 過大膨張・`expandThresh + 3` のアンチエイリアス拡張が重なり、`0mm(中のみ)` かつ `枠なし` を選んでも丸紋の外周全周および筆かすれ凹部に細い背景線が1〜2pxはみ出して「外枠のトレース跡」のように見えていた原因を修正。
+     - 前景輪郭基準を `alpha >= 136` に引き上げ、`gPad === 0`（`0mm(中のみ)`）時は外周輪郭より約1.5グリッドpx内側（`dtExt > closeThresh + 4`）へ収めることで、内部の文字穴・筆かすれ隙間だけを100%不透明に埋めつつ、ロゴ外周の外側には背景ピクセルが0.0pxも出ないよう改善。
+  2. **「仲はねだ（丸紋トレス）」の既定余白を `0mm` 化 ＆ 外枠・外側余白指定時の純粋ベクター正円化 (`drawSingleLogoSlotMm` / `renderVectorExportSvg`)**:
+     - `shelf_trace_maru` の初期余白を `logoPadMarginMm: 0, logoPadStrokeMm: 0` に変更し、「シルエット背景」をONにした瞬間に外側へ帯や線が一切出ず「ロゴの中だけ不透過（枠なし）」になるよう最適化。
+     - 「白枠・金枠・黒枠」や外側余白（`3mm` / `6mm` 等）を指定した際は、トレース凹凸の段差が出ない純粋ベクター円（`ellipse` ＆ 64分割ベクターポリゴン）で滑らかな丸紋枠を描画。
+  3. **過去のカスタム登録「仲 はねだ」データの外枠白楕円・薄縁ノイズ自動クリーンアップ (`normalizeBuiltInShelfItemsInPlace` / `autoMakeTransparentLogoDataUrl` / `getProcessedLogoCanvas`)**:
+     - スペース入り名称（`仲 はねだ` / `仲　はねだ` 等）や Illustrator の白背景楕円（`_楕円形_2`）を含む旧保存データを純粋ベクター内蔵版へ自動アップグレードし、カスタム透過画像でも `alpha < 24` の外周トレース薄縁ノイズが単色染めで細い線として浮き出ないよう改善。
+
 ## [1.16.4] - 2026-11-12
 
 ### Fixed & Improved
