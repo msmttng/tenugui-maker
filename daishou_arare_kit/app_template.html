@@ -3865,7 +3865,7 @@ function getDefaultLogoShelfItems(){
         logoDataUrl: '__BUILTIN_TRACE_MARU__',
         logoRemoveBg: false, logoBgMode: 'none', logoInvert: false,
         logoMono: true, logoColor: '#ffffff', logoOutlineMm: 0,
-        logoPadMode: 'none', logoPadColorMode: 'bg', logoPadMarginMm: 6
+        logoPadMode: 'none', logoPadColorMode: 'bg', logoPadMarginMm: 0, logoPadStrokeMm: 0
       })
     },
     {
@@ -4114,9 +4114,19 @@ function getDefaultLogoShelfItems(){
 function normalizeBuiltInShelfItemsInPlace(){
   const hUrl = (typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64) ? HANTEN_LOGO_B64 : '';
   const needMigrateTransparent = !localStorage.getItem('haneda-transparent-logos-v1139');
+  const needMigrateMaruClean = !localStorage.getItem('haneda-maru-clean-v1165');
   LOGO_SHELF = LOGO_SHELF.filter(x => x && !/^shelf_manga_/.test(x.id || '') && !(x.slot && /^__BUILTIN_MANGA_/.test(x.slot.logoDataUrl || '')));
   const defMap = new Map(getDefaultLogoShelfItems().map(d => [d.id, d]));
-  const isMaruTraceName = (nm) => /仲はねだ\s*[\(（]?トレス済[\)）]?/i.test(nm || '');
+  const isMaruTraceName = (nm) => {
+    const s = String(nm || '').trim();
+    if(!s) return false;
+    if(/縦|横|半纏|千社札|大漁旗|波|モノリス|ウイング|ダイヤ|ロックアップ|改訂|案[1-5１-５]/.test(s)) return false;
+    return /仲[\s　]*はねだ/i.test(s);
+  };
+  const isDirtyMaruDataUrl = (u) => {
+    if(!u || typeof u !== 'string' || u.startsWith('__BUILTIN_')) return false;
+    return u.includes('_楕円形_2') || u.includes('%E6%A5%95%E5%86%86%E5%BD%A2_2') || u.includes('M1796,856v74c') || u.includes('M1796%2C856v74c');
+  };
   LOGO_SHELF.forEach(item => {
     if(!item || !item.slot) return;
     if(defMap.has(item.id)){
@@ -4127,13 +4137,15 @@ function normalizeBuiltInShelfItemsInPlace(){
       if(keepColor) item.slot.logoColor = keepColor;
       return;
     }
-    // 過去にアップロードされて低画質PNG化していた「仲はねだ(トレス済)」を2048px純粋ベクター内蔵版へ自動アップグレード
-    if(isMaruTraceName(item.name) || isMaruTraceName(item.slot.logoName)){
+    // 過去にアップロードされて外枠トレース跡が残っていた「仲 はねだ」系データを2048px純粋ベクター内蔵版へ自動アップグレード
+    if(isMaruTraceName(item.name) || isMaruTraceName(item.slot.logoName) || isDirtyMaruDataUrl(item.slot.logoDataUrl)){
       item.slot.logoDataUrl = '__BUILTIN_TRACE_MARU__';
       item.slot.logoRemoveBg = false;
       item.slot.logoBgMode = 'none';
       item.slot.logoInvert = false;
       item.slot.logoMono = true;
+      item.slot.logoOutlineMm = 0;
+      if(!(item.slot.logoPadStrokeMm > 0)) item.slot.logoPadMarginMm = 0;
       if(!item.slot.logoColor) item.slot.logoColor = S.kakuColor || '#ffffff';
     }
     if(!item.slot.logoDataUrl || (hUrl && item.slot.logoDataUrl === hUrl)){
@@ -4156,26 +4168,36 @@ function normalizeBuiltInShelfItemsInPlace(){
   if(LOGO_SHELF.some(x => x && x.id === 'shelf_trace_maru')){
     LOGO_SHELF = LOGO_SHELF.filter(x => !x || x.id === 'shelf_trace_maru' || !(x.slot && x.slot.logoDataUrl === '__BUILTIN_TRACE_MARU__' && !String(x.id || '').startsWith('shelf_')));
   }
-  if(S && (isMaruTraceName(S.logoName) || (S.logoDataUrl && S.logoDataUrl === '__BUILTIN_TRACE_MARU__'))){
+  if(S && (isMaruTraceName(S.logoName) || isDirtyMaruDataUrl(S.logoDataUrl) || (S.logoDataUrl && S.logoDataUrl === '__BUILTIN_TRACE_MARU__'))){
     S.logoDataUrl = '__BUILTIN_TRACE_MARU__';
     S.logoRemoveBg = false;
     S.logoBgMode = 'none';
     S.logoInvert = false;
     S.logoMono = true;
+    S.logoOutlineMm = 0;
+    if(needMigrateMaruClean && !(S.logoPadStrokeMm > 0)) S.logoPadMarginMm = 0;
     if(!S.logoColor) S.logoColor = S.kakuColor || '#ffffff';
   }
   if(S && Array.isArray(S.logoSlots)){
     S.logoSlots.forEach(sl => {
       if(!sl) return;
-      if(isMaruTraceName(sl.logoName) || sl.logoDataUrl === '__BUILTIN_TRACE_MARU__'){
+      if(isMaruTraceName(sl.logoName) || isDirtyMaruDataUrl(sl.logoDataUrl) || sl.logoDataUrl === '__BUILTIN_TRACE_MARU__'){
         sl.logoDataUrl = '__BUILTIN_TRACE_MARU__';
         sl.logoRemoveBg = false;
         sl.logoBgMode = 'none';
         sl.logoInvert = false;
         sl.logoMono = true;
+        sl.logoOutlineMm = 0;
+        if(needMigrateMaruClean && !(sl.logoPadStrokeMm > 0)) sl.logoPadMarginMm = 0;
         if(!sl.logoColor) sl.logoColor = S.kakuColor || '#ffffff';
       }
     });
+  }
+  if(needMigrateMaruClean){
+    try{
+      localStorage.setItem('haneda-maru-clean-v1165', '1');
+      if(S) localStorage.setItem('haneda-arare-settings', JSON.stringify(S));
+    }catch(e){}
   }
   if(needMigrateTransparent){
     S.logoPadMode = 'none';
@@ -4345,6 +4367,7 @@ function loadLogoShelfFromStorage(){
     }
     if(added > 0){
       normalizeBuiltInShelfItemsInPlace();
+      saveLogoShelfToStorage();
       renderLogoShelf();
     }
   });
@@ -4392,7 +4415,8 @@ function autoMakeTransparentLogoDataUrl(dataUrl, isSvg){
           }
           // Illustrator等の白背景楕円・白背景矩形を除去してベクターのまま2048px高解像度指定を付与
           svgText = svgText
-            .replace(/<g[^>]*id="_楕円形_2"[^>]*>[\s\S]*?<\/g>/gi, '')
+            .replace(/<g[^>]*(?:id="_楕円形_2"|data-name="楕円形[^"]*")[^>]*>[\s\S]*?<\/g>/gi, '')
+            .replace(/<ellipse[^>]*fill=["'](?:#fff|#ffffff|white)["'][^>]*\/?>/gi, '')
             .replace(/<rect[^>]*width=["']100%["'][^>]*fill=["'](?:#fff|#ffffff|white)["'][^>]*\/?>/gi, '');
           const vbMatch = svgText.match(/viewBox=["']\s*([-\d.]+)\s+([-\d.]+)\s+([\d.]+)\s+([\d.]+)\s*["']/i);
           const vbW = vbMatch ? Math.max(1, parseFloat(vbMatch[3])) : 2048;
@@ -5239,7 +5263,7 @@ function getProcessedLogoCanvas(cfg){
     d[(h - 1) * w * 4 + 3] < 10 &&
     d[((h - 1) * w + (w - 1)) * 4 + 3] < 10;
   let hasTracedDarkAndWhite = false;
-  if(!cornersTransparent && !isBuiltinFuda && !isHantenStd && !(st.logoDataUrl && /^__BUILTIN_(MANGA|GOLD|WAVE|TAIRYO|TRACE)_/.test(st.logoDataUrl))){
+  if(!isBuiltinFuda && !isHantenStd && !(st.logoDataUrl && /^__BUILTIN_(MANGA|GOLD|WAVE|TAIRYO|TRACE)_/.test(st.logoDataUrl))){
     let darkCnt = 0, whiteCnt = 0;
     const step = Math.max(4, Math.floor((w * h) / 9000) * 4);
     for(let i = 0; i < d.length; i += step){
@@ -5251,7 +5275,12 @@ function getProcessedLogoCanvas(cfg){
       else if(r > 220 && g > 220 && b > 220 && Math.max(r, g, b) - Math.min(r, g, b) < 25) whiteCnt++;
     }
     const sampledTotal = d.length / step;
-    if(darkCnt > sampledTotal * 0.002 && whiteCnt > sampledTotal * 0.003){
+    if(cornersTransparent){
+      // 四隅が透明でも内側にIllustratorの白背景楕円＋黒トレース線が残っている画像を自動検出
+      if(darkCnt > sampledTotal * 0.015 && whiteCnt > sampledTotal * 0.025){
+        hasTracedDarkAndWhite = true;
+      }
+    }else if(darkCnt > sampledTotal * 0.002 && whiteCnt > sampledTotal * 0.003){
       hasTracedDarkAndWhite = true;
     }
   }
@@ -5308,6 +5337,11 @@ function getProcessedLogoCanvas(cfg){
       }else if(dist < tol + softSpan){
         a = Math.round(a * ((dist - tol) / Math.max(1, softSpan)));
       }
+    }
+    // 背景除去後に残る極薄い外周トレース境界ノイズ（alpha < 24）が単色染めで細い線として浮き出るのを防止
+    if(bgMode !== 'none' && a < 24){
+      d[i+3] = 0;
+      continue;
     }
     if(a === 0){
       d[i+3] = 0;
@@ -5646,14 +5680,17 @@ function getLogoAlphaSilhouetteCanvas(lcv, ratioExpand, fillCol){
   if(!lcv._silCacheMap) lcv._silCacheMap = new Map();
   if(lcv._silCacheMap.has(key)) return lcv._silCacheMap.get(key);
 
-  // モルフォロジー閉処理＋外周フラッドフィルでロゴ内部の隙間・文字穴を100%不透明に埋めつつ、外周は指定した余白(padPx=0〜)分だけ正確に広げる
+  // モルフォロジー閉処理＋外周フラッドフィルでロゴ内部の隙間・文字穴を100%不透明に埋めつつ、
+  // padPx=0（0mm中のみ）時はロゴ外周より必ず内側へ収めて外枠に細い線が一切はみ出さないようにする
   const workMax = 640;
   const sc = maxDim > workMax ? (workMax / maxDim) : 1;
   const gw = Math.max(8, Math.round(w * sc));
   const gh = Math.max(8, Math.round(h * sc));
   const gPad = Math.max(0, Math.round(padPx * sc));
-  const closeR = Math.max(3, Math.min(16, Math.round(Math.min(gw, gh) * 0.065)));
-  const marginG = closeR + gPad + 3;
+  const closeR = (gPad === 0)
+    ? Math.max(3, Math.min(9, Math.round(Math.min(gw, gh) * 0.028)))
+    : Math.max(3, Math.min(14, Math.round(Math.min(gw, gh) * 0.055)));
+  const marginG = closeR + gPad + 4;
   const bw = gw + marginG * 2;
   const bh = gh + marginG * 2;
 
@@ -5663,13 +5700,13 @@ function getLogoAlphaSilhouetteCanvas(lcv, ratioExpand, fillCol){
   tx.drawImage(lcv, 0, 0, gw, gh);
   const srcData = tx.getImageData(0, 0, gw, gh).data;
 
-  // 1. 元の前景マスク作成
+  // 1. 元の前景マスク作成（アンチエイリアス薄縁で外周が膨張しないよう alpha >= 136 を輪郭基準にする）
   const fg = new Uint8Array(bw * bh);
   for(let y = 0; y < gh; y++){
     const rowOff = (y + marginG) * bw + marginG;
     const sOff = y * gw * 4;
     for(let x = 0; x < gw; x++){
-      if(srcData[sOff + x * 4 + 3] > 20) fg[rowOff + x] = 1;
+      if(srcData[sOff + x * 4 + 3] >= 136) fg[rowOff + x] = 1;
     }
   }
 
@@ -5713,7 +5750,7 @@ function getLogoAlphaSilhouetteCanvas(lcv, ratioExpand, fillCol){
     return dt;
   };
 
-  // 3. closeR 膨張 ➔ 外周(0,0)からフラッドフィルして内部の穴をすべて埋める ➔ closeR 収縮で外輪郭を元の0mm位置へ戻す
+  // 3. closeR 膨張 ➔ 外周(0,0)からフラッドフィルして内部の穴をすべて埋める
   const dtFg = computeDist(fg, bw, bh);
   const closed = new Uint8Array(bw * bh);
   const closeThresh = closeR * 3;
@@ -5733,16 +5770,7 @@ function getLogoAlphaSilhouetteCanvas(lcv, ratioExpand, fillCol){
     if(cy > 0){ const n = cur - bw; if(!ext[n] && !closed[n]){ ext[n] = 1; q[qTail++] = n; } }
     if(cy + 1 < bh){ const n = cur + bw; if(!ext[n] && !closed[n]){ ext[n] = 1; q[qTail++] = n; } }
   }
-  // 内部が埋まった膨張領域 = !ext。外周(ext)からの距離が closeThresh より大きい点（または元のfg）が 0mm ベースシルエット
   const dtExt = computeDist(ext, bw, bh);
-  const baseSil = new Uint8Array(bw * bh);
-  for(let i = 0; i < baseSil.length; i++){
-    if(fg[i] || dtExt[i] > closeThresh) baseSil[i] = 1;
-  }
-
-  // 4. ベースシルエットから余白 gPad 分だけ外側に広げる
-  const dtBase = computeDist(baseSil, bw, bh);
-  const expandThresh = gPad * 3;
 
   const [fr, fgCol, fb] = hexToRgbArr(fillCol || '#046e7e');
   const gOutW = gw + gPad * 2, gOutH = gh + gPad * 2;
@@ -5753,19 +5781,46 @@ function getLogoAlphaSilhouetteCanvas(lcv, ratioExpand, fillCol){
   const od = outImg.data;
   const offStart = marginG - gPad;
 
-  for(let y = 0; y < gOutH; y++){
-    const by = y + offStart;
-    const bRow = by * bw;
-    const oRow = y * gOutW * 4;
-    for(let x = 0; x < gOutW; x++){
-      const bx = x + offStart;
-      const dist = dtBase[bRow + bx];
-      if(dist <= expandThresh + 3){
-        const oi = oRow + x * 4;
-        od[oi] = fr;
-        od[oi + 1] = fgCol;
-        od[oi + 2] = fb;
-        od[oi + 3] = dist <= expandThresh ? 255 : Math.round(255 * ((expandThresh + 3 - dist) / 3));
+  if(gPad === 0){
+    // 0mm（中のみ）: 外周輪郭より約1.5グリッドpx内側へ収縮させ、ロゴ本体の外側に細い背景線が一切出ないようにする
+    const innerStart = closeThresh + 4;
+    const innerFull = closeThresh + 7;
+    for(let y = 0; y < gOutH; y++){
+      const by = y + offStart;
+      const bRow = by * bw;
+      const oRow = y * gOutW * 4;
+      for(let x = 0; x < gOutW; x++){
+        const dExt = dtExt[bRow + x + offStart];
+        if(dExt > innerStart){
+          const oi = oRow + x * 4;
+          od[oi] = fr;
+          od[oi + 1] = fgCol;
+          od[oi + 2] = fb;
+          od[oi + 3] = dExt >= innerFull ? 255 : Math.round(255 * ((dExt - innerStart) / (innerFull - innerStart)));
+        }
+      }
+    }
+  }else{
+    // 外側余白 gPad > 0: ベースシルエットから指定余白分だけ滑らかに広げる
+    const baseSil = new Uint8Array(bw * bh);
+    for(let i = 0; i < baseSil.length; i++){
+      if(fg[i] || dtExt[i] > closeThresh + 2) baseSil[i] = 1;
+    }
+    const dtBase = computeDist(baseSil, bw, bh);
+    const expandThresh = gPad * 3;
+    for(let y = 0; y < gOutH; y++){
+      const by = y + offStart;
+      const bRow = by * bw;
+      const oRow = y * gOutW * 4;
+      for(let x = 0; x < gOutW; x++){
+        const dist = dtBase[bRow + x + offStart];
+        if(dist <= expandThresh + 1){
+          const oi = oRow + x * 4;
+          od[oi] = fr;
+          od[oi + 1] = fgCol;
+          od[oi + 2] = fb;
+          od[oi + 3] = dist <= expandThresh - 2 ? 255 : Math.round(255 * ((expandThresh + 1 - dist) / 3));
+        }
       }
     }
   }
@@ -5938,6 +5993,35 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
           x.stroke(FUDA_SOLID_SIL_PATH2D);
         }
         x.restore();
+      }else if(slot.logoDataUrl === '__BUILTIN_TRACE_MARU__' && (marginMm > 0 || strokeMm > 0)){
+        // 丸紋「仲はねだ」で外側余白または外枠線が指定された場合は、トレース段差のない純粋ベクター正円（楕円）で滑らかに描画
+        const rxBase = lw * 0.497, ryBase = lh * 0.497;
+        const rxPad = (marginMm > 0 ? rxBase : lw * 0.492) + marginMm;
+        const ryPad = (marginMm > 0 ? ryBase : lh * 0.492) + marginMm;
+        const rxStrk = rxBase + marginMm + strokeMm;
+        const ryStrk = ryBase + marginMm + strokeMm;
+        if(l3dDepth > 0){
+          const padSideCol = shadeHexColor(effPadColor, 0.42);
+          const rx3d = strokeMm > 0 ? rxStrk : rxPad;
+          const ry3d = strokeMm > 0 ? ryStrk : ryPad;
+          for(let s = 4; s >= 1; s--){
+            const t = (s / 4) * 0.85;
+            x.beginPath();
+            x.ellipse(dx3d * t, dy3d * t, rx3d, ry3d, 0, 0, Math.PI * 2);
+            x.fillStyle = s === 4 ? 'rgba(0,0,0,0.32)' : padSideCol;
+            x.fill();
+          }
+        }
+        if(strokeMm > 0){
+          x.beginPath();
+          x.ellipse(0, 0, rxStrk, ryStrk, 0, 0, Math.PI * 2);
+          x.fillStyle = effStrokeColor;
+          x.fill();
+        }
+        x.beginPath();
+        x.ellipse(0, 0, rxPad, ryPad, 0, 0, Math.PI * 2);
+        x.fillStyle = effPadColor;
+        x.fill();
       }else{
         const maxDimMm = Math.max(10, lw, lh);
         if(l3dDepth > 0){
@@ -7317,6 +7401,21 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
               const inCol = effTextCol || (hexColorDist(bgFb, effPadColor) >= 60 ? bgFb : (relLuminanceHex(effPadColor) > 0.46 ? '#046e7e' : '#ffffff'));
               pushFudaSilhouettePolys(-1.2, inCol);
             }
+          }else if(effSlot.logoDataUrl === '__BUILTIN_TRACE_MARU__' && (marginMm > 0 || strokeMm > 0)){
+            const makeEllPts = (rxE, ryE) => {
+              const pts = [];
+              const segs = 64;
+              for(let s = 0; s < segs; s++){
+                const a = (s / segs) * Math.PI * 2;
+                pts.push(tr(Math.cos(a) * rxE, Math.sin(a) * ryE));
+              }
+              return pts;
+            };
+            if(strokeMm > 0){
+              logoVectorItems.push({ type: 'poly', fill: effStrokeColor, stroke: null, strokeWidth: 0, pts: makeEllPts(lw * 0.497 + marginMm + strokeMm, lh * 0.497 + marginMm + strokeMm) });
+            }
+            const padFrac = marginMm > 0 ? 0.497 : 0.492;
+            logoVectorItems.push({ type: 'poly', fill: effPadColor, stroke: null, strokeWidth: 0, pts: makeEllPts(lw * padFrac + marginMm, lh * padFrac + marginMm) });
           }else{
             const maxDimMm = Math.max(10, lw, lh);
             if(strokeMm > 0){
