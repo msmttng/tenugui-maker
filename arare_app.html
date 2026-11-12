@@ -418,14 +418,14 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         </div>
         <div class="e-subbox" id="eFudaColorBox">
           <div class="e-sublbl" style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
-            <span>札・ロゴの配色</span>
+            <span>札・ロゴの色と透過（①本体・②文字・③背景）</span>
             <button type="button" class="mini-btn" id="eStep3FudaToggleBtn" style="font-size:10.5px;padding:2px 8px">＋ 札ロゴを配置</button>
           </div>
           <div id="eStep3SlotsBar" style="display:flex;flex-wrap:wrap;gap:4px"></div>
           <!-- ① 札本体の色 -->
           <div style="display:flex;flex-direction:column;gap:4px">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-              <span style="font-size:11px;font-weight:700;color:#334155">札・ロゴ本体の色:</span>
+              <span style="font-size:11px;font-weight:700;color:#334155"><span class="e-subtag">①</span>札・ロゴ本体の色</span>
               <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eFudaBodyPicker" value="#ffffff" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
             <div class="e-chips small" id="eFudaColChips">
@@ -439,42 +439,42 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
             </div>
           </div>
           <!-- ② 札の文字色（仲羽田・青年会） -->
-          <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #cbd5e1">
+          <div id="eStep3FudaTextRow" style="display:flex;flex-direction:column;gap:4px;padding-top:6px;border-top:1px dashed #cbd5e1">
             <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-              <span style="font-size:11px;font-weight:700;color:#334155">札の文字色（仲羽田・青年会）:</span>
+              <span style="font-size:11px;font-weight:700;color:#334155"><span class="e-subtag">②</span>札の中の文字色（仲羽田・青年会）</span>
               <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eFudaTextCol" value="#ffffff" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
-            <div class="e-chips small" id="eFudaTextColChips">
+            <div class="e-chips small" id="eFudaTextColChips" style="grid-template-columns:repeat(4,1fr)">
+              <button type="button" data-eftxt="auto">自動（推奨）</button>
               <button type="button" data-eftxt="#ffffff">白</button>
+              <button type="button" data-eftxt="#046e7e">羽田納戸</button>
               <button type="button" data-eftxt="#877028">羽田金</button>
               <button type="button" data-eftxt="#f8b500">山吹</button>
-              <button type="button" data-eftxt="#046e7e">羽田納戸</button>
               <button type="button" data-eftxt="#b7282e">茜</button>
               <button type="button" data-eftxt="#111827">黒</button>
-              <button type="button" data-eftxt="transparent">透かし</button>
+              <button type="button" data-eftxt="transparent">透かし(柄)</button>
+            </div>
+          </div>
+          <!-- ③ うしろの背景（透過 / シルエット背景色） -->
+          <div style="display:flex;flex-direction:column;gap:4px;padding-top:6px;border-top:1px dashed #cbd5e1">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
+              <span style="font-size:11px;font-weight:700;color:#334155"><span class="e-subtag">③</span>うしろの背景（柄の透過・背景色）</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="シルエット背景色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eLogoPadColBtns" style="grid-template-columns:repeat(4,1fr)">
+              <button type="button" data-epc="none">背景透過</button>
+              <button type="button" data-epc="bg">地の色背景</button>
+              <button type="button" data-epc="white">白背景</button>
+              <button type="button" data-epc="black">黒背景</button>
             </div>
           </div>
           <details class="adv-details" id="eFudaAdvColorDetails">
-            <summary>背景抜き色・外枠線・揺れ線の詳細設定</summary>
+            <summary>外枠線・揺れ線の色切替（詳細）</summary>
             <div class="adv-body">
-              <!-- ③ 札・ロゴのうしろ背景色（透過する／透過しない・背景色） -->
+              <!-- ④ 札の周り枠線の色 -->
               <div style="display:flex;flex-direction:column;gap:4px">
                 <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-                  <span style="font-size:11px;font-weight:700;color:#334155">ロゴ背景の透過・抜き色:</span>
-                  <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eLogoPadCustomCol" value="#046e7e" title="ロゴのうしろ背景色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
-                </div>
-                <div class="e-chips small" id="eLogoPadColBtns" style="grid-template-columns:repeat(5,1fr)">
-                  <button type="button" data-epc="none">透過する</button>
-                  <button type="button" data-epc="bg">地色背景</button>
-                  <button type="button" data-epc="white">白背景</button>
-                  <button type="button" data-epc="black">黒背景</button>
-                  <button type="button" data-epc="roundRect">四角背景</button>
-                </div>
-              </div>
-              <!-- ④ 札の周り枠線の色 -->
-              <div style="display:flex;flex-direction:column;gap:4px;padding-top:5px;border-top:1px dashed #cbd5e1">
-                <div style="display:flex;align-items:center;justify-content:space-between;gap:6px">
-                  <span style="font-size:11px;font-weight:700;color:#334155">外枠線の色:</span>
+                  <span style="font-size:11px;font-weight:700;color:#334155">外枠線の色（シルエット背景時）:</span>
                   <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eLogoPadStrokeCol" value="#ffffff" title="札の周り枠線の色を自由に選ぶ" style="width:28px;height:22px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
                 </div>
                 <div class="e-chips small" id="eLogoPadStrokeBtns" style="grid-template-columns:repeat(4,1fr)">
@@ -574,15 +574,19 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
             <button type="button" data-scat="custom" aria-pressed="false">マイ登録</button>
           </div>
           <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:4px;max-height:190px;overflow-y:auto"></div>
-          <!-- 仲羽田トレース・マイロゴ・札ロゴのワンタッチ色変更バー -->
-          <div style="display:flex;flex-direction:column;gap:4px;padding-top:6px;margin-top:2px;border-top:1px dashed #cbd5e1">
+        </div>
+        <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
+        <div class="e-subbox" id="eLogoPadBox" hidden>
+          <div class="e-sublbl"><span>札・ロゴの色と透過（①本体・②文字・③背景）</span></div>
+          <!-- ① 本体の色 -->
+          <div style="display:flex;flex-direction:column;gap:4px">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
-              <span style="font-size:11px;font-weight:700;color:#334155">選択中ロゴの色変更:</span>
+              <span style="font-size:11px;font-weight:700;color:#334155"><span class="e-subtag">①</span>札・ロゴ本体の色</span>
               <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eStep5FudaBodyCol" value="#ffffff" style="width:26px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
             <div class="e-chips small" id="eStep5LogoColChips" style="grid-template-columns:repeat(5,1fr)">
               <button type="button" data-efcol="same">仲羽田と同じ</button>
-              <button type="button" data-efcol="white">白</button>
+              <button type="button" data-efcol="white">白抜き</button>
               <button type="button" data-efcol="teal">浅葱</button>
               <button type="button" data-efcol="#046e7e">羽田納戸</button>
               <button type="button" data-efcol="#877028">羽田金</button>
@@ -593,49 +597,66 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
               <button type="button" data-efcol="orig">元の色</button>
             </div>
           </div>
-        </div>
-        <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
-        <div class="e-subbox" id="eLogoPadBox" hidden>
-          <div class="e-sublbl"><span>ロゴの背景透過・余白</span></div>
-          <div class="e-chips" id="eLogoPadMode" style="grid-template-columns:repeat(2,1fr)">
-            <button type="button" data-epm="none">背景透過<small>柄が透ける</small></button>
-            <button type="button" data-epm="silhouette">シルエット背景<small>柄を隠す</small></button>
-            <button type="button" data-epm="roundRect">四角背景枠<small>角丸・四角枠</small></button>
-            <button type="button" data-epm="circle">丸背景枠<small>正円枠</small></button>
+          <!-- ② 札の中の文字色（内蔵札ロゴ選択時のみ自動表示） -->
+          <div id="eStep5FudaTextRow" style="display:flex;flex-direction:column;gap:4px;padding-top:6px;border-top:1px dashed #cbd5e1">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+              <span style="font-size:11px;font-weight:700;color:#334155"><span class="e-subtag">②</span>札の中の文字色（仲羽田・青年会）</span>
+              <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eStep5FudaTextCol" value="#ffffff" style="width:26px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+            </div>
+            <div class="e-chips small" id="eStep5FudaTextColChips" style="grid-template-columns:repeat(4,1fr)">
+              <button type="button" data-eftxt="auto">自動（推奨）</button>
+              <button type="button" data-eftxt="#ffffff">白</button>
+              <button type="button" data-eftxt="#046e7e">羽田納戸</button>
+              <button type="button" data-eftxt="#877028">羽田金</button>
+              <button type="button" data-eftxt="#f8b500">山吹</button>
+              <button type="button" data-eftxt="#b7282e">茜</button>
+              <button type="button" data-eftxt="#111827">黒</button>
+              <button type="button" data-eftxt="transparent">透かし(柄)</button>
+            </div>
           </div>
-          <div id="eLogoPadControls" style="display:flex;flex-direction:column;gap:6px">
-            <div style="display:flex;flex-direction:column;gap:4px;background:#ffffff;padding:6px 8px;border-radius:6px;border:1px solid #dbe2ea">
-              <div class="e-range" data-for="logoPadMarginMm"><span>背景の余白幅</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
-              <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-                <span style="font-size:11px;font-weight:700;color:#475569">余白プリセット:</span>
-                <div class="e-chips small" id="eLogoPadMarginPresets" style="flex:1;grid-template-columns:repeat(6,1fr)">
-                  <button type="button" data-pmargin="0">0mm</button>
-                  <button type="button" data-pmargin="3">3mm</button>
-                  <button type="button" data-pmargin="6">6mm</button>
-                  <button type="button" data-pmargin="10">10mm</button>
-                  <button type="button" data-pmargin="15">15mm</button>
-                  <button type="button" data-pmargin="25">25mm</button>
+          <!-- ③ うしろの背景（透過・余白） -->
+          <div style="display:flex;flex-direction:column;gap:5px;padding-top:6px;border-top:1px dashed #cbd5e1">
+            <span style="font-size:11px;font-weight:700;color:#334155"><span class="e-subtag">③</span>うしろの背景（透過・シルエット余白）</span>
+            <div class="e-chips" id="eLogoPadMode" style="grid-template-columns:repeat(2,1fr)">
+              <button type="button" data-epm="none">背景透過<small>うしろの柄が透ける</small></button>
+              <button type="button" data-epm="silhouette">シルエット背景<small>ロゴに沿って柄を隠す</small></button>
+            </div>
+            <div id="eLogoPadControls" style="display:flex;flex-direction:column;gap:6px;background:#ffffff;padding:7px 8px;border-radius:6px;border:1px solid #dbe2ea" hidden>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
+                  <span style="font-size:11px;font-weight:700;color:#334155">シルエット余白の色:</span>
+                  <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eStep5FudaPadCol" value="#046e7e" style="width:26px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+                </div>
+                <div class="e-chips small" id="eStep5PadColBtns" style="grid-template-columns:repeat(3,1fr)">
+                  <button type="button" data-epc="bg">地の色（連動）</button>
+                  <button type="button" data-epc="white">白</button>
+                  <button type="button" data-epc="black">黒</button>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px;border-top:1px dashed #e2e8f0">
+                <div class="e-range" data-for="logoPadMarginMm"><span>背景の余白幅</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
+                <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+                  <span style="font-size:11px;font-weight:700;color:#475569">余白幅:</span>
+                  <div class="e-chips small" id="eLogoPadMarginPresets" style="flex:1;grid-template-columns:repeat(6,1fr)">
+                    <button type="button" data-pmargin="0">0mm</button>
+                    <button type="button" data-pmargin="3">3mm</button>
+                    <button type="button" data-pmargin="6">6mm</button>
+                    <button type="button" data-pmargin="10">10mm</button>
+                    <button type="button" data-pmargin="15">15mm</button>
+                    <button type="button" data-pmargin="25">25mm</button>
+                  </div>
                 </div>
               </div>
             </div>
-            <div style="display:flex;flex-direction:column;gap:4px">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
-                <span style="font-size:11px;font-weight:700;color:#334155">背景枠の色:</span>
-                <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eStep5FudaPadCol" value="#046e7e" style="width:26px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
-              </div>
-              <div class="e-chips small" id="eStep5PadColBtns" style="grid-template-columns:repeat(4,1fr)">
-                <button type="button" data-epc="bg">地の色</button>
-                <button type="button" data-epc="white">白</button>
-                <button type="button" data-epc="black">黒</button>
-                <button type="button" data-epc="none">透過に戻す</button>
-              </div>
-            </div>
             <details class="adv-details" id="eStep5AdvPadDetails">
-              <summary>背景枠の太さ・角丸・揺れ線の詳細設定</summary>
+              <summary>外枠線・揺れ線の色切替（詳細）</summary>
               <div class="adv-body">
-                <div class="e-range" data-for="logoPadCornerMm" id="eLogoPadCornerRow"><span>四角背景の角丸</span><input type="range" min="0" max="30" step="1"><b></b></div>
-                <div class="e-range" data-for="logoPadStrokeMm"><span>背景の周り枠線の太さ</span><input type="range" min="0" max="8" step="0.5"><b></b></div>
-                <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px;border-top:1px dashed #cbd5e1">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
+                  <span style="font-size:11px;font-weight:700;color:#334155">外枠線の色（シルエット背景時）:</span>
+                  <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">枠線色 <input type="color" id="eStep5FudaStrokeCol" value="#ffffff" style="width:26px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
+                </div>
+                <div class="e-range" data-for="logoPadStrokeMm"><span>余白まわりの枠線太さ</span><input type="range" min="0" max="8" step="0.5"><b></b></div>
+                <div id="eStep5ShakeRow" style="display:flex;flex-direction:column;gap:4px;padding-top:4px;border-top:1px dashed #cbd5e1">
                   <span style="font-size:11px;font-weight:700;color:#334155">揺れ線・側面斜線の色切替:</span>
                   <div class="e-chips small" id="eStep5ShakeColorBtns" style="grid-template-columns:repeat(4,1fr)">
                     <button type="button" data-fshake="normal">標準</button>
@@ -644,7 +665,6 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
                     <button type="button" data-fshake="invert_both">両方逆色</button>
                   </div>
                 </div>
-                <button type="button" class="mini-btn" id="eJumpToStep3ColorBtn" style="padding:4px 8px;text-align:center">札の配色設定（3 配色）へ移動 ↑</button>
               </div>
             </details>
           </div>
@@ -695,12 +715,12 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
             <button type="button" data-open3d="dabo_both">上下セット3D<small>上下とも立体</small></button>
             <button type="button" data-open3d="dabo_compare">両方同時3D<small>並べて比較</small></button>
           </div>
-          <div class="e-sublbl" style="margin-top:2px"><span>札・ロゴの背景切替</span></div>
+          <div class="e-sublbl" style="margin-top:2px"><span>札・ロゴの透過／シルエット背景ワンタッチ切替</span></div>
           <div class="e-chips" id="eDaboQuickLogo">
-            <button type="button" data-dql="cur_opaque">背景透過なし<small>今の札色で枠あり</small></button>
-            <button type="button" data-dql="cur_trans">透過のまま<small>今の札色で柄を透かす</small></button>
-            <button type="button" data-dql="white_opaque">白抜き札<small>背景枠あり(#FFF)</small></button>
-            <button type="button" data-dql="teal_opaque">浅葱札<small>背景枠あり(#00A3AF)</small></button>
+            <button type="button" data-dql="cur_trans">背景透過<small>うしろの柄を透かす</small></button>
+            <button type="button" data-dql="cur_opaque">シルエット背景<small>ロゴに沿って柄を隠す</small></button>
+            <button type="button" data-dql="white_opaque">白抜き札＋背景あり<small>白札＋シルエット余白</small></button>
+            <button type="button" data-dql="teal_opaque">浅葱札＋背景あり<small>浅葱札＋シルエット余白</small></button>
           </div>
           <div class="e-sublbl" style="margin-top:2px"><span>ロゴを出す部位を選ぶ（全枚共通の手ぬぐいに自動逆算）</span></div>
           <div class="e-chips compact-spots" id="eDaboSpotBtns">
@@ -1174,12 +1194,13 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap">
             <span style="font-weight:700;color:#0c4a6e">② 札の文字色(仲羽田・青年会):</span>
             <input type="color" id="sec3FudaTextColor" value="#ffffff" aria-label="札の文字色">
+            <button type="button" class="mini-btn" id="sec3FudaTextAutoBtn" style="font-weight:700">自動(おすすめ)</button>
             <button type="button" class="mini-btn" id="sec3FudaTextWhiteBtn">白</button>
             <button type="button" class="mini-btn" id="sec3FudaTextGoldBtn">羽田金</button>
             <button type="button" class="mini-btn" id="sec3FudaTextYellowBtn">山吹</button>
             <button type="button" class="mini-btn" id="sec3FudaTextNandoBtn">羽田納戸</button>
             <button type="button" class="mini-btn" id="sec3FudaTextBlackBtn">黒</button>
-            <button type="button" class="mini-btn" id="sec3FudaTextTransBtn" title="文字を透かし（うしろ色・生地色）にします">透かし</button>
+            <button type="button" class="mini-btn" id="sec3FudaTextTransBtn" title="文字を透かし（うしろの柄が見える）にします">透かし</button>
             <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoTextColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
           </div>
           <details class="adv-details" style="border-color:#7dd3fc">
@@ -1395,10 +1416,11 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           <span style="font-size:11.5px;font-weight:700;color:#0c4a6e">札の文字色(仲羽田・青年会):</span>
           <input type="color" id="logoTextColor" value="#ffffff" title="札ロゴ内部の彫刻文字（仲羽田・青年会）の色">
           <button type="button" class="mini-btn open-ai-picker-btn" data-ckey="logoTextColor" style="background:#e0f2fe;border-color:#0284c7;color:#0369a1;font-weight:700">🎨 色マップ</button>
+          <button type="button" class="mini-btn" id="logoTextColAutoBtn" style="font-weight:700">自動(おすすめ)</button>
           <button type="button" class="mini-btn" id="logoTextColWhiteBtn">白</button>
           <button type="button" class="mini-btn" id="logoTextColGoldBtn" style="background:#877028;color:#fff;border-color:#877028">羽田金</button>
           <button type="button" class="mini-btn" id="logoTextColBlackBtn">黒</button>
-          <button type="button" class="mini-btn" id="logoTextColTransBtn" title="文字を透かし（うしろ色・生地色）にします">透かし</button>
+          <button type="button" class="mini-btn" id="logoTextColTransBtn" title="文字を透かし（うしろの柄が見える）にします">透かし</button>
         </div>
         <div class="crow2" id="sec5FudaShakeColorBtns" style="background:#f0f9ff;padding:4px 7px;border:1px solid #bae6fd;border-radius:6px">
           <span style="font-size:11.5px;font-weight:700;color:#0c4a6e">🔄 札の揺れの表現の色:</span>
@@ -1415,22 +1437,18 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         <!-- 🛡️ 札ロゴ・画像のうしろを透過させない＆ロゴの背景の余白調整（常時表示でワンタッチ設定可能） -->
         <div style="background:#fffbeb;border:1.5px solid #f59e0b;border-radius:6px;padding:7px 8px;display:flex;flex-direction:column;gap:5px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
-            <span style="font-size:11.5px;font-weight:800;color:#92400e">🛡️ ロゴは透過しない／透過する ＆ ロゴの背景の余白調整</span>
+            <span style="font-size:11.5px;font-weight:800;color:#92400e">ロゴの背景透過・シルエット余白調整</span>
             <select id="logoPadMode" style="font-size:11.5px;font-weight:700;padding:2px 6px">
-              <option value="none">✨ ロゴを透過する（うしろの柄が透ける）</option>
-              <option value="silhouette">🛡️ ロゴは透過しない（シルエット背景＋余白）</option>
-              <option value="roundRect">🔲 ロゴは透過しない（四角・角丸背景＋余白）</option>
-              <option value="circle">⭕ ロゴは透過しない（丸背景＋余白）</option>
+              <option value="none">ロゴを透過する（うしろの柄が透ける）</option>
+              <option value="silhouette">シルエット背景＋余白（ロゴに沿って柄を隠す）</option>
             </select>
           </div>
           <div class="chips" id="logoPadQuickChips" style="gap:4px">
-            <button type="button" class="mini-btn" data-pm="none" data-pquick="none">✨ ロゴを透過する</button>
-            <button type="button" class="mini-btn" data-pm="silhouette" data-pquick="silhouette" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">🛡️ ロゴは透過しない（シルエット）</button>
-            <button type="button" class="mini-btn" data-pm="roundRect" data-pquick="roundRect" style="background:#e0f2fe;border-color:#0284c7;color:#0c4a6e;font-weight:700">🔲 透過しない（四角背景）</button>
-            <button type="button" class="mini-btn" data-pm="circle" data-pquick="circle" style="background:#dcfce7;border-color:#16a34a;color:#14532d;font-weight:700">⭕ 透過しない（丸背景）</button>
+            <button type="button" class="mini-btn" data-pm="none" data-pquick="none">背景透過（柄が透ける）</button>
+            <button type="button" class="mini-btn" data-pm="silhouette" data-pquick="silhouette" style="background:#fef3c7;border-color:#f59e0b;color:#78350f;font-weight:700">シルエット背景（余白つき）</button>
           </div>
           <div id="logoPadDetailControls" style="display:flex;flex-direction:column;gap:4px">
-            <div class="row"><label for="logoPadMarginMm">📏 ロゴの背景の余白</label><input type="range" id="logoPadMarginMm" min="0" max="45" step="0.5" value="6"><output for="logoPadMarginMm" id="logoPadMarginMm-o">6 mm</output></div>
+            <div class="row"><label for="logoPadMarginMm">背景の余白幅</label><input type="range" id="logoPadMarginMm" min="0" max="45" step="0.5" value="6"><output for="logoPadMarginMm" id="logoPadMarginMm-o">6 mm</output></div>
             <div class="chips" id="dLogoPadMarginPresets" style="gap:4px">
               <span style="font-size:10.5px;color:#78350f;font-weight:700">余白プリセット:</span>
               <button type="button" class="mini-btn" data-pmargin="0">0mm(余白なし)</button>
@@ -1440,7 +1458,6 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
               <button type="button" class="mini-btn" data-pmargin="15">15mm</button>
               <button type="button" class="mini-btn" data-pmargin="25">25mm</button>
             </div>
-            <div class="row" id="logoPadCornerDetailRow"><label for="logoPadCornerMm">四角背景の角丸</label><input type="range" id="logoPadCornerMm" min="0" max="30" step="1" value="6"><output for="logoPadCornerMm" id="logoPadCornerMm-o">6 mm</output></div>
             <div class="row"><label for="logoPadStrokeMm">周りの枠線の太さ</label><input type="range" id="logoPadStrokeMm" min="0" max="8" step="0.5" value="0"><output for="logoPadStrokeMm" id="logoPadStrokeMm-o">0 mm</output></div>
             <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;font-size:11px">
               <span style="color:#78350f;font-weight:700">うしろ背景色:</span>
@@ -3195,24 +3212,18 @@ function computeClockwiseConvexHull(points){
       sideStripePolys.push(rev);
     }
   }
-  // 3本の横揺れ線の間の隙間や札本体との付け根を包むブリッジ包絡ポリゴン
+  // 横揺れ線は凸包三角形（耳状突起）を足さず、posSubs 内の実線ストローク拡張のみで自然に包む
   if(leftWobblePts.length >= 3){
     const hullL = computeClockwiseConvexHull(leftWobblePts.concat([[72, 480], [78, 538]]));
     if(hullL.length >= 3){
-      const dL = ptsToSvgSubpathD(hullL);
-      posSubs.push(dL);
-      posPolys.push(hullL);
-      wobbleHullSubs.push(dL);
+      wobbleHullSubs.push(ptsToSvgSubpathD(hullL));
       wobbleHullPolys.push(hullL);
     }
   }
   if(rightWobblePts.length >= 3){
     const hullR = computeClockwiseConvexHull(rightWobblePts.concat([[495, 402], [502, 462]]));
     if(hullR.length >= 3){
-      const dR = ptsToSvgSubpathD(hullR);
-      posSubs.push(dR);
-      posPolys.push(hullR);
-      wobbleHullSubs.push(dR);
+      wobbleHullSubs.push(ptsToSvgSubpathD(hullR));
       wobbleHullPolys.push(hullR);
     }
   }
@@ -5528,35 +5539,61 @@ function resolveFudaBodyHex(slot){
   return ((slot && slot.logoColor) || S.kakuColor || '#ffffff').toLowerCase();
 }
 
+function relLuminanceHex(hex){
+  const [r, g, b] = hexToRgbArr(hex || '#000000');
+  const lin = v => {
+    const s = v / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+}
+function hexContrastRatio(h1, h2){
+  const l1 = relLuminanceHex(h1), l2 = relLuminanceHex(h2);
+  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+}
+function hexColorDist(h1, h2){
+  const [r1, g1, b1] = hexToRgbArr(h1 || '#000000');
+  const [r2, g2, b2] = hexToRgbArr(h2 || '#000000');
+  return Math.hypot(r1 - r2, g1 - g2, b1 - b2);
+}
+
 function resolveLogoTextColor(slot, bgColor, effPadColor){
   const tm = (slot && slot.logoTextColorMode) || 'auto';
   if(tm === 'transparent') return null;
-  const effFudaBodyHex = resolveFudaBodyHex(slot);
+  const l3dMode = (slot && slot.logo3dMode) || S.logo3dMode || 'none';
+  const l3dDepth = (l3dMode !== 'none') ? Math.max(0, (slot && slot.logo3dDepthMm) ?? S.logo3dDepthMm ?? 4.5) : 0;
+  const isGold3d = (l3dMode === 'gold_block' && l3dDepth > 0);
+  const effFudaBodyHex = isGold3d ? '#eab308' : resolveFudaBodyHex(slot);
   const pm = (slot && slot.logoPadMode) || 'none';
   const padHex = (effPadColor || '').toLowerCase();
   const bgHex = (bgColor || S.bgColor || '#046e7e').toLowerCase();
   if(tm === 'custom'){
     const cHex = ((slot && slot.logoTextColor) || '#ffffff').toLowerCase();
-    // 札本体と同じ色で文字穴を塗ると札全体がベタ塗り塊になってしまうため、同色の場合は自動で背景抜きにする
-    if(cHex === effFudaBodyHex){
-      if(pm === 'none') return null;
-      if(padHex && padHex !== effFudaBodyHex) return effPadColor;
-      if(bgHex !== effFudaBodyHex) return bgColor || S.bgColor || '#046e7e';
-      return effFudaBodyHex === '#ffffff' ? '#046e7e' : '#ffffff';
+    // 札本体とほぼ同じ色で文字穴を塗るとベタ塗り塊になるため、同色の場合は自動でコントラスト色にする
+    if(hexColorDist(cHex, effFudaBodyHex) < 24){
+      if(pm !== 'none' && padHex && hexColorDist(padHex, effFudaBodyHex) >= 60) return effPadColor;
+      if(hexColorDist(bgHex, effFudaBodyHex) >= 60) return bgColor || S.bgColor || '#046e7e';
+      return relLuminanceHex(effFudaBodyHex) > 0.46 ? '#046e7e' : '#ffffff';
     }
     return cHex;
   }
-  // auto モード: 本体色が白の場合は背景または地の色とコントラストがつく色、本体が色つきの場合は白文字
-  if(effFudaBodyHex === '#ffffff'){
-    if(pm === 'none') return null; // 白抜き札＋背景透過時は地の色をそのまま見せる
-    if(padHex === '#ffffff') return bgColor || S.bgColor || '#046e7e';
-    return null; // 背景色が白以外なら背景色をそのまま文字穴に見せる
+  // auto（おすすめ自動コントラスト）:
+  // 1) 金塊彫り時は彫り文字を濃色（地の色が濃ければ地の色、明るければ濃茶）で引き締める
+  if(isGold3d){
+    return (hexContrastRatio('#eab308', bgHex) >= 2.6 && relLuminanceHex(bgHex) < 0.25) ? bgHex : '#3b2304';
   }
-  const cand = ((slot && slot.logoTextColor) || '#ffffff').toLowerCase();
-  if(cand === effFudaBodyHex){
-    return (bgHex !== effFudaBodyHex) ? (bgColor || S.bgColor || '#ffffff') : '#ffffff';
+  // 2) 背景色（シルエット背景ON時はその色、透過時は生地の地色）と十分な明度差があればその色で文字穴を塗り、背後の柄線の干渉も防ぐ
+  const visBg = (pm !== 'none' && padHex) ? padHex : bgHex;
+  if(hexContrastRatio(effFudaBodyHex, visBg) >= 2.8 && hexColorDist(effFudaBodyHex, visBg) >= 75){
+    return visBg;
   }
-  return cand;
+  // 3) 浅葱(#00a3af)×納戸(#046e7e) や 白札×白背景 などコントラスト不足時は自動で鮮明な白または濃色にする
+  if(relLuminanceHex(effFudaBodyHex) > 0.46){
+    return (hexContrastRatio(effFudaBodyHex, bgHex) >= 2.8 && hexColorDist(effFudaBodyHex, bgHex) >= 75)
+      ? (bgColor || S.bgColor || '#046e7e')
+      : '#046e7e';
+  }
+  return '#ffffff';
 }
 
 function resolveFudaShakeColors(slot, bgColor, effPadColor, effTextCol){
@@ -5756,6 +5793,26 @@ function getLogoTintedCanvas(lcv, fillCol){
   return c;
 }
 
+function getLogoGoldMetallicCanvas(lcv){
+  if(!lcv) return null;
+  if(lcv._goldMetalCv) return lcv._goldMetalCv;
+  const c = document.createElement('canvas');
+  c.width = lcv.width; c.height = lcv.height;
+  const cx = c.getContext('2d');
+  cx.drawImage(lcv, 0, 0);
+  cx.globalCompositeOperation = 'source-in';
+  const g = cx.createLinearGradient(0, 0, c.width, c.height);
+  g.addColorStop(0.00, '#fef08a');
+  g.addColorStop(0.26, '#facc15');
+  g.addColorStop(0.52, '#ca8a04');
+  g.addColorStop(0.76, '#fde047');
+  g.addColorStop(1.00, '#a16207');
+  cx.fillStyle = g;
+  cx.fillRect(0, 0, c.width, c.height);
+  lcv._goldMetalCv = c;
+  return c;
+}
+
 function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
   const lcv = getProcessedLogoCanvas(slot);
   if(!lcv) return;
@@ -5764,10 +5821,9 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
   const baseSz = slot.logoSize || 85;
   const baseAng = slot.logoAngle || 0;
   const ar = lcv.width / Math.max(1, lcv.height);
-  const pm = slot.logoPadMode || 'none';
+  const pm = (slot.logoPadMode && slot.logoPadMode !== 'none') ? 'silhouette' : 'none';
   const effPadColor = resolveLogoPadColor(slot, bgColor);
   const marginMm = Math.max(0, slot.logoPadMarginMm ?? 6);
-  const cornerMm = Math.max(0, slot.logoPadCornerMm ?? 6);
   const strokeMm = Math.max(0, slot.logoPadStrokeMm ?? 0);
   const effStrokeColor = slot.logoPadStrokeColor || '#ffffff';
   const alpha = Math.max(0.05, Math.min(1, (slot.logoOpacity ?? 100) / 100));
@@ -5846,6 +5902,17 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
         x.lineWidth = baseCloseSvg + expandSvg;
         x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero');
         x.stroke(FUDA_SOLID_SIL_PATH2D);
+        // 札本体とシルエット余白が同色（例：白札＋白シルエット背景）のときベタ塗りの塊にならないよう、内側にコントラスト下地を敷く
+        const effBodyForSil = (l3dDepth > 0 && l3dMode === 'gold_block') ? '#eab308' : resolveFudaBodyHex(slot);
+        if(hexColorDist(effBodyForSil, effPadColor) < 36){
+          const bgFallback = bgColor || S.bgColor || '#046e7e';
+          const innerCol = effTextCol || (hexColorDist(bgFallback, effPadColor) >= 60 ? bgFallback : (relLuminanceHex(effPadColor) > 0.46 ? '#046e7e' : '#ffffff'));
+          x.fillStyle = innerCol;
+          x.strokeStyle = innerCol;
+          x.lineWidth = 8;
+          x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero');
+          x.stroke(FUDA_SOLID_SIL_PATH2D);
+        }
         x.restore();
       }else{
         const maxDimMm = Math.max(10, lw, lh);
@@ -5871,51 +5938,6 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
           const pw = lw + marginMm * 2, ph = lh + marginMm * 2;
           x.drawImage(padCv, -pw / 2, -ph / 2, pw, ph);
         }
-      }
-    }else if(pm === 'circle'){
-      const rad = Math.max(lw, lh) * 0.5 + marginMm;
-      if(l3dDepth > 0){
-        const padSideCol = shadeHexColor(effPadColor, 0.42);
-        for(let s = 4; s >= 1; s--){
-          const t = (s / 4) * 0.85;
-          x.beginPath();
-          x.arc(dx3d * t, dy3d * t, rad + strokeMm * 0.5, 0, Math.PI * 2);
-          x.fillStyle = s === 4 ? 'rgba(0,0,0,0.32)' : padSideCol;
-          x.fill();
-        }
-      }
-      x.beginPath();
-      x.arc(0, 0, rad, 0, Math.PI * 2);
-      x.fillStyle = effPadColor;
-      x.fill();
-      if(strokeMm > 0){
-        x.strokeStyle = effStrokeColor;
-        x.lineWidth = strokeMm;
-        x.stroke();
-      }
-    }else if(pm === 'roundRect'){
-      const pw = lw + marginMm * 2, ph = lh + marginMm * 2;
-      const r = Math.min(cornerMm, pw * 0.48, ph * 0.48);
-      if(l3dDepth > 0){
-        const padSideCol = shadeHexColor(effPadColor, 0.42);
-        for(let s = 4; s >= 1; s--){
-          const t = (s / 4) * 0.85;
-          x.beginPath();
-          if(x.roundRect && r > 0) x.roundRect(-pw/2 + dx3d * t, -ph/2 + dy3d * t, pw, ph, r);
-          else x.rect(-pw/2 + dx3d * t, -ph/2 + dy3d * t, pw, ph);
-          x.fillStyle = s === 4 ? 'rgba(0,0,0,0.32)' : padSideCol;
-          x.fill();
-        }
-      }
-      x.beginPath();
-      if(x.roundRect && r > 0) x.roundRect(-pw/2, -ph/2, pw, ph, r);
-      else x.rect(-pw/2, -ph/2, pw, ph);
-      x.fillStyle = effPadColor;
-      x.fill();
-      if(strokeMm > 0){
-        x.strokeStyle = effStrokeColor;
-        x.lineWidth = strokeMm;
-        x.stroke();
       }
     }
 
@@ -5977,17 +5999,13 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
       x.restore();
     }
     x.globalAlpha = alpha;
-    x.drawImage(lcv, -lw/2, -lh/2, lw, lh);
     if(l3dDepth > 0 && l3dMode === 'gold_block'){
-      const goldTintCv = getLogoTintedCanvas(lcv, '#eab308');
-      if(goldTintCv){
-        x.save();
-        x.globalAlpha = alpha * 0.42;
-        x.drawImage(goldTintCv, -lw/2, -lh/2, lw, lh);
-        x.restore();
-      }
+      const goldMetalCv = getLogoGoldMetallicCanvas(lcv);
+      x.drawImage(goldMetalCv || lcv, -lw/2, -lh/2, lw, lh);
+    }else{
+      x.drawImage(lcv, -lw/2, -lh/2, lw, lh);
     }
-    // 🔄 札の揺れの表現（左右の揺れ線・3D側面の斜線）の色反転描画
+    // 🔄 札の揺れの表現（左右の揺れ線・3D側面の斜線）の色反転描画（不要な凸包三角形は描かず実線のみ鮮明に色替え）
     if(isBuiltinFuda && shakeMode !== 'normal'){
       const { primaryCol, secondaryCol } = resolveFudaShakeColors(slot, bgColor, effPadColor, effTextCol);
       const sx = lw / FUDA_VB_W, sy = lh / FUDA_VB_H;
@@ -5998,14 +6016,12 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
       x.translate(-FUDA_VB_X, -FUDA_VB_Y);
       x.lineJoin = 'round';
       x.lineCap = 'round';
-      if((shakeMode === 'invert_wobble' || shakeMode === 'invert_both') && FUDA_WOBBLE_HULL_PATH2D && FUDA_WOBBLE_LINES_PATH2D){
-        x.fillStyle = primaryCol;
-        x.strokeStyle = primaryCol;
-        x.lineWidth = 8;
-        x.fill(FUDA_WOBBLE_HULL_PATH2D, 'nonzero');
-        x.stroke(FUDA_WOBBLE_HULL_PATH2D);
+      if((shakeMode === 'invert_wobble' || shakeMode === 'invert_both') && FUDA_WOBBLE_LINES_PATH2D){
         x.fillStyle = secondaryCol;
+        x.strokeStyle = secondaryCol;
+        x.lineWidth = 1.4;
         x.fill(FUDA_WOBBLE_LINES_PATH2D, 'nonzero');
+        x.stroke(FUDA_WOBBLE_LINES_PATH2D);
       }
       if((shakeMode === 'invert_side' || shakeMode === 'invert_both') && FUDA_SIDE_FRAME_PATH2D && FUDA_SIDE_STRIPES_PATH2D){
         x.fillStyle = secondaryCol;
@@ -7154,7 +7170,7 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
       const baseSz = effSlot.logoSize || 85;
       const baseAng = effSlot.logoAngle || 0;
       const ar = lcv.width / Math.max(1, lcv.height);
-      const pm = effSlot.logoPadMode || 'none';
+      const pm = (effSlot.logoPadMode && effSlot.logoPadMode !== 'none') ? 'silhouette' : 'none';
       const sig = [
         effSlot.logoName || 'lg', (effSlot.logoDataUrl || '').slice(0, 64), lcv.width + 'x' + lcv.height,
         effSlot.logoMono ? effSlot.logoColor : 'multi',
@@ -7245,16 +7261,11 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
         const pushFudaShakeInvertPolys = (shakeMode, primaryCol, secondaryCol) => {
           const vbDenom = (typeof FUDA_VB_W === 'number' && FUDA_VB_W > 0) ? FUDA_VB_W : 616;
           if(shakeMode === 'invert_wobble' || shakeMode === 'invert_both'){
-            const wHulls = getFudaWobbleHullPolys();
             const wLines = getFudaWobbleLinesPolys();
-            const swHull = (8 / vbDenom) * Math.max(lw, lh);
-            for(const hp of (wHulls || [])){
-              const pts = hp.map(([nx, ny]) => tr((nx - 0.5) * lw, (ny - 0.5) * lh));
-              logoVectorItems.push({ type: 'poly', fill: primaryCol, stroke: primaryCol, strokeWidth: swHull, pts });
-            }
+            const swLine = (1.4 / vbDenom) * Math.max(lw, lh);
             for(const lp of (wLines || [])){
               const pts = lp.map(([nx, ny]) => tr((nx - 0.5) * lw, (ny - 0.5) * lh));
-              logoVectorItems.push({ type: 'poly', fill: secondaryCol, stroke: null, strokeWidth: 0, pts });
+              logoVectorItems.push({ type: 'poly', fill: secondaryCol, stroke: secondaryCol, strokeWidth: swLine, pts });
             }
           }
           if(shakeMode === 'invert_side' || shakeMode === 'invert_both'){
@@ -7276,19 +7287,33 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
           if(isBuiltinFuda){
             if(strokeMm > 0) pushFudaSilhouettePolys(marginMm + strokeMm, effStrokeColor);
             pushFudaSilhouettePolys(marginMm, effPadColor);
+            const effBodyHexVec = resolveFudaBodyHex(effSlot);
+            if(hexColorDist(effBodyHexVec, effPadColor) < 36){
+              const bgFb = st.bgColor || '#046e7e';
+              const inCol = effTextCol || (hexColorDist(bgFb, effPadColor) >= 60 ? bgFb : (relLuminanceHex(effPadColor) > 0.46 ? '#046e7e' : '#ffffff'));
+              pushFudaSilhouettePolys(-1.2, inCol);
+            }
           }else{
-            pushRoundedRectPoly(lw + marginMm * 2, lh + marginMm * 2, cornerMm, effPadColor, effStrokeColor, strokeMm);
+            const maxDimMm = Math.max(10, lw, lh);
+            if(strokeMm > 0){
+              const strkCv = getLogoAlphaSilhouetteCanvas(lcv, (marginMm + strokeMm) / maxDimMm, effStrokeColor);
+              if(strkCv){
+                const sw = lw + (marginMm + strokeMm) * 2, sh = lh + (marginMm + strokeMm) * 2;
+                const sLayers = traceLogoCanvasToVectorColorLayers(strkCv, sig + ':silStrk:' + marginMm + ':' + strokeMm + ':' + effStrokeColor, effStrokeColor);
+                for(const sl of sLayers){
+                  logoVectorItems.push({ type: 'compound', fill: effStrokeColor, loops: sl.loops.map(lp => lp.map(([nx, ny]) => tr(nx * sw, ny * sh))) });
+                }
+              }
+            }
+            const padCv = getLogoAlphaSilhouetteCanvas(lcv, marginMm / maxDimMm, effPadColor);
+            if(padCv){
+              const pw = lw + marginMm * 2, ph = lh + marginMm * 2;
+              const pLayers = traceLogoCanvasToVectorColorLayers(padCv, sig + ':silPad:' + marginMm + ':' + effPadColor, effPadColor);
+              for(const pl of pLayers){
+                logoVectorItems.push({ type: 'compound', fill: effPadColor, loops: pl.loops.map(lp => lp.map(([nx, ny]) => tr(nx * pw, ny * ph))) });
+              }
+            }
           }
-        }else if(pm === 'circle'){
-          const r = Math.max(lw, lh) * 0.5 + marginMm;
-          const cpts = [];
-          for(let i = 0; i < 32; i++){
-            const a = (i / 32) * Math.PI * 2;
-            cpts.push(tr(Math.cos(a) * r, Math.sin(a) * r));
-          }
-          logoVectorItems.push({ type: 'poly', fill: effPadColor, stroke: strokeMm > 0 ? effStrokeColor : null, strokeWidth: strokeMm, pts: cpts });
-        }else if(pm === 'roundRect'){
-          pushRoundedRectPoly(lw + marginMm * 2, lh + marginMm * 2, cornerMm, effPadColor, effStrokeColor, strokeMm);
         }
 
         if(isBuiltinFuda && effTextCol){
@@ -10832,11 +10857,11 @@ function getClo3dGlState(reqW, reqH){
         float hC = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
         float hR = dot(texture2D(uTex, vUv + vec2(uTexStep.x, 0.0)).rgb, vec3(0.299, 0.587, 0.114));
         float hU = dot(texture2D(uTex, vUv + vec2(0.0, uTexStep.y)).rgb, vec3(0.299, 0.587, 0.114));
-        float dHx = (hR - hC) * uReliefAmt + weave;
-        float dHy = (hU - hC) * uReliefAmt + weave;
+        float dHx = clamp((hR - hC) * uReliefAmt, -0.32, 0.32) + weave;
+        float dHy = clamp((hU - hC) * uReliefAmt, -0.32, 0.32) + weave;
         N = normalize(N + vec3(-dHx, dHy, 0.0));
 
-        // CLO 3D スタジオ 3点ソフトボックス照明（立体的な陰影グラデーションを際立たせるキー＆コアシャドウ設計）
+        // CLO 3D スタジオ 3点ソフトボックス照明（立体陰影と札ロゴ・手ぬぐい発色の忠実再現）
         vec3 Lkey  = normalize(vec3(-0.52, 0.45, 0.72));
         vec3 Lfill = normalize(vec3( 0.60, 0.08, 0.79));
         vec3 Lrim  = normalize(vec3( 0.18, 0.62, -0.76));
@@ -10861,10 +10886,10 @@ function getClo3dGlState(reqW, reqH){
         }
 
         vec3 irradiance =
-            vec3(1.00, 0.99, 0.97) * (diffKey * 0.78) +
-            vec3(0.88, 0.93, 1.00) * (diffFill * 0.17) +
-            vec3(0.95, 0.97, 1.00) * (diffRim * 0.15) +
-            mix(vec3(0.68, 0.73, 0.81), vec3(0.96, 0.98, 1.00), hemi) * 0.21;
+            vec3(1.00, 0.99, 0.97) * (diffKey * 0.75) +
+            vec3(0.90, 0.94, 1.00) * (diffFill * 0.26) +
+            vec3(0.95, 0.97, 1.00) * (diffRim * 0.14) +
+            mix(vec3(0.70, 0.75, 0.83), vec3(0.97, 0.98, 1.00), hemi) * 0.24;
 
         vec3 col = albedo * irradiance * ao + vec3(0.94, 0.96, 1.0) * sheen * ao;
 
@@ -13651,7 +13676,7 @@ const ranges={
   crestSize:v=>v+' mm', crestAngle:v=>(v>0?'+':'')+v+'°', crestWeight:v=>(v>0?'+':'')+v+'%', crestX:v=>v+'%', crestY:v=>v+'%',
   logoThreshold:v=>v+'', logoSoftness:v=>v+'', logoDilate:v=>(v>0?'+':'')+v+' px', logoContrast:v=>(v>0?'+':'')+v, logoOpacity:v=>v+'%', logoOutlineMm:v=>v+' mm',
   logoSize:v=>v+' mm', logoAngle:v=>(v>0?'+':'')+v+'°', logoX:v=>v+'%', logoY:v=>v+'%',
-  logoPadMarginMm:v=>v+' mm', logoPadCornerMm:v=>v+' mm', logoPadStrokeMm:v=>v+' mm',
+  logoPadMarginMm:v=>v+' mm', logoPadStrokeMm:v=>v+' mm',
   logo3dDepthMm:v=>v+' mm',
   logoRepeatGapX:v=>v+' mm', logoRepeatGapY:v=>v+' mm', logoRepeatGridAngle:v=>(v>0?'+':'')+v+'°', logoRepeatAngleVar:v=>v+'°', logoRepeatSizeVar:v=>v+'%',
   textSize:v=>v+' mm', fudaWidthPct:v=>v+'%', fudaHeightPct:v=>v+'%', fudaDepth3d:v=>v+' mm', fudaNonTextOpacity:v=>v+'%', fudaOpacity:v=>v+'%',
@@ -13691,15 +13716,22 @@ function syncUI(){
   if($('logoColor')) $('logoColor').value=S.logoColor||'#ffffff';
   const curFudaTextColSync = (typeof getCurrentFudaTextColor === 'function') ? getCurrentFudaTextColor() : (S.logoTextColor || '#ffffff');
   if($('logoTextColor')) $('logoTextColor').value=curFudaTextColSync;
+  const curTxtMode = S.logoTextColorMode || 'auto';
+  if($('logoTextColAutoBtn')) $('logoTextColAutoBtn').setAttribute('aria-pressed', (curTxtMode === 'auto') + '');
+  if($('logoTextColTransBtn')) $('logoTextColTransBtn').setAttribute('aria-pressed', (curTxtMode === 'transparent') + '');
+  if($('sec3FudaTextAutoBtn')) $('sec3FudaTextAutoBtn').setAttribute('aria-pressed', (curTxtMode === 'auto') + '');
+  if($('sec3FudaTextTransBtn')) $('sec3FudaTextTransBtn').setAttribute('aria-pressed', (curTxtMode === 'transparent') + '');
   if($('logoOutlineColor')) $('logoOutlineColor').value=S.logoOutlineColor||'#ffffff';
   if($('logoMaskShape')) $('logoMaskShape').value=S.logoMaskShape||'none';
-  if($('logoPadMode')) $('logoPadMode').value=S.logoPadMode||'none';
+  const normPadMode = (S.logoPadMode && S.logoPadMode !== 'none') ? 'silhouette' : 'none';
+  if(S.logoPadMode !== normPadMode) S.logoPadMode = normPadMode;
+  if($('logoPadMode')) $('logoPadMode').value=normPadMode;
   if($('logoPadColor')) $('logoPadColor').value=resolveLogoPadColor(S);
   if($('logoPadStrokeColor')) $('logoPadStrokeColor').value=S.logoPadStrokeColor||'#ffffff';
   if($('logoPadParamsBox')) $('logoPadParamsBox').hidden=false;
-  if($('logoPadCornerRow')) $('logoPadCornerRow').hidden=(S.logoPadMode !== 'roundRect');
+  if($('logoPadDetailControls')) $('logoPadDetailControls').hidden=(normPadMode === 'none');
   for(const b of document.querySelectorAll('#logoPadQuickChips button[data-pquick]')){
-    b.setAttribute('aria-pressed', (b.dataset.pquick === (S.logoPadMode || 'none')) + '');
+    b.setAttribute('aria-pressed', (b.dataset.pquick === normPadMode) + '');
   }
   for(const b of document.querySelectorAll('#dLogoPadMarginPresets button[data-pmargin]')){
     const pm = parseFloat(b.dataset.pmargin);
@@ -14315,7 +14347,10 @@ function applyBuiltinFudaLogoPreset(variant){
   S.logoInvert = false;
   S.logoMono = !!customHex;
   S.logoColor = hex;
-  S.logoPadMode = S.logoPadMode || 'none';
+  if(S.logoTextColorMode === 'transparent') S.logoTextColorMode = 'auto';
+  S.logoPadMode = (S.logoPadMode && S.logoPadMode !== 'none') ? 'silhouette' : 'none';
+  PROC_LOGO_KEY = '';
+  PROC_LOGO_MAP.clear();
   ensureLogoLoaded(S.logoDataUrl);
   syncActiveSlotFromS();
   if($('logoFileStatus')) $('logoFileStatus').textContent = label + ' (SVG内蔵)';
@@ -14357,14 +14392,12 @@ function downloadActiveLogoAsTransparentPng(){
     ox.translate(-FUDA_VB_X, -FUDA_VB_Y);
     ox.lineJoin = 'round';
     ox.lineCap = 'round';
-    if((shakeMode === 'invert_wobble' || shakeMode === 'invert_both') && FUDA_WOBBLE_HULL_PATH2D && FUDA_WOBBLE_LINES_PATH2D){
-      ox.fillStyle = primaryCol;
-      ox.strokeStyle = primaryCol;
-      ox.lineWidth = 8;
-      ox.fill(FUDA_WOBBLE_HULL_PATH2D, 'nonzero');
-      ox.stroke(FUDA_WOBBLE_HULL_PATH2D);
+    if((shakeMode === 'invert_wobble' || shakeMode === 'invert_both') && FUDA_WOBBLE_LINES_PATH2D){
       ox.fillStyle = secondaryCol;
+      ox.strokeStyle = secondaryCol;
+      ox.lineWidth = 1.4;
       ox.fill(FUDA_WOBBLE_LINES_PATH2D, 'nonzero');
+      ox.stroke(FUDA_WOBBLE_LINES_PATH2D);
     }
     if((shakeMode === 'invert_side' || shakeMode === 'invert_both') && FUDA_SIDE_FRAME_PATH2D && FUDA_SIDE_STRIPES_PATH2D){
       ox.fillStyle = secondaryCol;
@@ -14567,12 +14600,13 @@ if($('logoResetEditBtn')) $('logoResetEditBtn').addEventListener('click',()=>{
 });
 $('logoRemoveBg').addEventListener('change',e=>{S.logoRemoveBg=e.target.checked; PROC_LOGO_KEY=''; update(false);});
 $('logoInvert').addEventListener('change',e=>{S.logoInvert=e.target.checked; PROC_LOGO_KEY=''; update(false);});
-$('logoMono').addEventListener('change',e=>{S.logoMono=e.target.checked; PROC_LOGO_KEY=''; update(false);});
-$('logoColor').addEventListener('input',e=>{S.logoColor=e.target.value; S.logoMono=true; PROC_LOGO_KEY=''; update(false);});
-$('logoColorToBgBtn').addEventListener('click',()=>{S.logoColor=S.bgColor; S.logoMono=true; PROC_LOGO_KEY=''; update(false);});
-$('logoColorToFgBtn').addEventListener('click',()=>{S.logoColor=(S.mode==='arare'?S.dotColor:S.kakuColor); S.logoMono=true; PROC_LOGO_KEY=''; update(false);});
-if($('logoColorGoldBtn')) $('logoColorGoldBtn').addEventListener('click',()=>{S.logoColor='#877028'; S.logoMono=true; PROC_LOGO_KEY=''; update(false);});
+$('logoMono').addEventListener('change',e=>{S.logoMono=e.target.checked; PROC_LOGO_KEY=''; PROC_LOGO_MAP.clear(); syncActiveSlotFromS(); update(false);});
+$('logoColor').addEventListener('input',e=>applyFudaMainColor(e.target.value));
+$('logoColorToBgBtn').addEventListener('click',()=>applyFudaMainColor(S.bgColor));
+$('logoColorToFgBtn').addEventListener('click',()=>applyFudaMainColor(S.mode==='arare'?S.dotColor:S.kakuColor));
+if($('logoColorGoldBtn')) $('logoColorGoldBtn').addEventListener('click',()=>applyFudaMainColor('#877028'));
 if($('logoTextColor')) $('logoTextColor').addEventListener('input',e=>applyFudaTextColor(e.target.value));
+if($('logoTextColAutoBtn')) $('logoTextColAutoBtn').addEventListener('click',()=>applyFudaTextColor('auto'));
 if($('logoTextColWhiteBtn')) $('logoTextColWhiteBtn').addEventListener('click',()=>applyFudaTextColor('#ffffff'));
 if($('logoTextColGoldBtn')) $('logoTextColGoldBtn').addEventListener('click',()=>applyFudaTextColor('#877028'));
 if($('logoTextColBlackBtn')) $('logoTextColBlackBtn').addEventListener('click',()=>applyFudaTextColor('#111827'));
@@ -15968,7 +16002,9 @@ function applyFudaTextColor(val){
     S.logoBgMode = 'none';
     ensureLogoLoaded(S.logoDataUrl);
   }
-  if(v === 'transparent' || v === 'none'){
+  if(v === 'auto'){
+    S.logoTextColorMode = 'auto';
+  }else if(v === 'transparent' || v === 'none'){
     S.logoTextColorMode = 'transparent';
   }else{
     const h = normHex(v) || '#ffffff';
@@ -16035,6 +16071,7 @@ if($('sec3FudaTextHex')){
   $('sec3FudaTextHex').addEventListener('input',e=>{ const h=normHex(e.target.value); e.target.setAttribute('aria-invalid',h?'false':'true'); if(h) applyFudaTextColor(h); });
   $('sec3FudaTextHex').addEventListener('change',()=>syncUI());
 }
+if($('sec3FudaTextAutoBtn')) $('sec3FudaTextAutoBtn').addEventListener('click',()=>applyFudaTextColor('auto'));
 if($('sec3FudaTextWhiteBtn')) $('sec3FudaTextWhiteBtn').addEventListener('click',()=>applyFudaTextColor('#ffffff'));
 if($('sec3FudaTextGoldBtn')) $('sec3FudaTextGoldBtn').addEventListener('click',()=>applyFudaTextColor('#877028'));
 if($('sec3FudaTextYellowBtn')) $('sec3FudaTextYellowBtn').addEventListener('click',()=>applyFudaTextColor('#f8b500'));
@@ -16869,8 +16906,8 @@ function applyTwoColorCombo(bgHex, fgHex){
       sl.logoMono = true;
       sl.logoColor = fg;
     }
-    sl.logoTextColor = bg;
-    sl.logoTextColorMode = 'transparent';
+    sl.logoTextColor = (fg === '#ffffff') ? bg : '#ffffff';
+    sl.logoTextColorMode = 'auto';
     sl.logoPadColorMode = 'bg';
     sl.logoPadColor = bg;
     sl.logoPadStrokeColor = fg;
@@ -16973,14 +17010,18 @@ function easyRenderImpl(){
       b.setAttribute('aria-pressed', String(isPressed));
     });
   });
-  if($('eFudaTextColChips')){
-    var isTxtTrans = (S.logoTextColorMode === 'transparent');
-    $('eFudaTextColChips').querySelectorAll('button').forEach(function(b){
+  var curTxtModeEasy = S.logoTextColorMode || 'auto';
+  [$('eFudaTextColChips'), $('eStep5FudaTextColChips')].forEach(function(box){
+    if(!box) return;
+    box.querySelectorAll('button').forEach(function(b){
       var v = eLow(b.dataset.eftxt || b.dataset.eftcol);
-      var isPressed = (v === 'transparent') ? isTxtTrans : (!isTxtTrans && v === eLow(fudaTxtHex));
+      var isPressed = false;
+      if(v === 'auto') isPressed = (curTxtModeEasy === 'auto');
+      else if(v === 'transparent') isPressed = (curTxtModeEasy === 'transparent');
+      else isPressed = (curTxtModeEasy === 'custom' && v === eLow(fudaTxtHex));
       b.setAttribute('aria-pressed', String(isPressed));
     });
-  }
+  });
   if($('eLogoPadStrokeCol') && document.activeElement !== $('eLogoPadStrokeCol')){
     $('eLogoPadStrokeCol').value = eLow(S.logoPadStrokeColor || '#ffffff');
   }
@@ -17065,7 +17106,6 @@ function easyRenderImpl(){
     arareOuterPadMm: function(v){ return v + 'mm'; },
     logoSize: function(v){ return v + 'mm'; },
     logoPadMarginMm: function(v){ return v + 'mm'; },
-    logoPadCornerMm: function(v){ return v + 'mm'; },
     logoPadStrokeMm: function(v){ return v + 'mm'; },
     logo3dDepthMm: function(v){ return v + 'mm'; }
   };
@@ -17077,9 +17117,8 @@ function easyRenderImpl(){
     arareOuterWidthMm: hasArareOuter,
     arareOuterPadMm: hasArareOuter,
     logoSize: !!S.showLogo,
-    logoPadMarginMm: !!S.showLogo,
-    logoPadCornerMm: hasPad && S.logoPadMode === 'roundRect',
-    logoPadStrokeMm: !!S.showLogo,
+    logoPadMarginMm: hasPad,
+    logoPadStrokeMm: hasPad,
     logo3dDepthMm: !!(S.showLogo && S.logo3dMode && S.logo3dMode !== 'none')
   };
   document.querySelectorAll('#easyPanel .e-range').forEach(function(r){
@@ -17102,8 +17141,12 @@ function easyRenderImpl(){
   $('eLogo').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.el === lg)); });
   $('eLogoNote').hidden = !S.showLogo;
   if($('eLogoPadBox')) $('eLogoPadBox').hidden = !S.showLogo;
+  if($('eLogoPadControls')) $('eLogoPadControls').hidden = !hasPad;
+  var isCurBuiltinFuda = !!(S.showLogo && isBuiltinFudaSlot(S));
+  if($('eStep5FudaTextRow')) $('eStep5FudaTextRow').hidden = !isCurBuiltinFuda;
+  if($('eStep5ShakeRow')) $('eStep5ShakeRow').hidden = !isCurBuiltinFuda;
   if($('eLogoPadMode')){
-    var pm = S.logoPadMode || 'none';
+    var pm = (S.logoPadMode && S.logoPadMode !== 'none') ? 'silhouette' : 'none';
     $('eLogoPadMode').querySelectorAll('button').forEach(function(b){
       b.setAttribute('aria-pressed', String(b.dataset.epm === pm));
     });
@@ -17118,12 +17161,11 @@ function easyRenderImpl(){
   }
   [$('eLogoPadColBtns'), $('eStep5PadColBtns')].forEach(function(box){
     if(!box) return;
-    var pmCur = S.logoPadMode || 'none';
+    var pmCur = (S.logoPadMode && S.logoPadMode !== 'none') ? 'silhouette' : 'none';
     var cm = (pmCur === 'none') ? 'none' : (S.logoPadColorMode || 'bg');
     box.querySelectorAll('button').forEach(function(b){
       var v = b.dataset.epc;
-      var isActC = (v === 'roundRect') ? (pmCur === 'roundRect') : (v === cm && pmCur !== 'roundRect');
-      b.setAttribute('aria-pressed', String(isActC));
+      b.setAttribute('aria-pressed', String(v === cm));
     });
   });
   if($('eLogoPadCustomCol') && document.activeElement !== $('eLogoPadCustomCol')){
@@ -17316,11 +17358,12 @@ function easyRenderImpl(){
       applyFudaTextColor(e.target.value);
     });
   }
-  if($('eFudaTextColChips')){
-    $('eFudaTextColChips').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
-      applyFudaTextColor(b.dataset.eftxt || b.dataset.eftcol || '#ffffff');
+  [$('eFudaTextColChips'), $('eStep5FudaTextColChips')].forEach(function(box){
+    if(!box) return;
+    box.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      applyFudaTextColor(b.dataset.eftxt || b.dataset.eftcol || 'auto');
     }); });
-  }
+  });
   if($('eStep5FudaPadCol')){
     $('eStep5FudaPadCol').addEventListener('input', function(e){
       S.logoPadColor = e.target.value;
@@ -17577,14 +17620,6 @@ function easyRenderImpl(){
       var c = b.dataset.epc || 'bg';
       if(c === 'none'){
         S.logoPadMode = 'none';
-        S.showLogo = true;
-        syncActiveSlotFromS();
-        update(false);
-        return;
-      }
-      if(c === 'roundRect'){
-        S.logoPadMode = 'roundRect';
-        if(S.logoPadColorMode === 'none') S.logoPadColorMode = 'bg';
         S.showLogo = true;
         syncActiveSlotFromS();
         update(false);
