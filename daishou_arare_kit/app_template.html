@@ -606,17 +606,17 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
               <button type="button" data-eftxt="transparent">透かし(柄)</button>
             </div>
           </div>
-          <!-- ③ うしろの背景（透過・余白） -->
+          <!-- ③ うしろの背景（透過・余白・周りの枠線） -->
           <div style="display:flex;flex-direction:column;gap:5px;padding-top:6px;border-top:1px dashed #cbd5e1">
-            <span style="font-size:11px;font-weight:700;color:#334155"><span class="e-subtag">③</span>うしろの背景（透過・シルエット余白）</span>
+            <span style="font-size:11px;font-weight:700;color:#334155"><span class="e-subtag">③</span>うしろの背景（ロゴ内の不透過・余白・枠線）</span>
             <div class="e-chips" id="eLogoPadMode" style="grid-template-columns:repeat(2,1fr)">
-              <button type="button" data-epm="none">背景透過<small>うしろの柄が透ける</small></button>
-              <button type="button" data-epm="silhouette">シルエット背景<small>ロゴに沿って柄を隠す</small></button>
+              <button type="button" data-epm="none">背景透過<small>ロゴの中も柄が透ける</small></button>
+              <button type="button" data-epm="silhouette">シルエット背景<small>ロゴ内も不透過（柄を隠す）</small></button>
             </div>
             <div id="eLogoPadControls" style="display:flex;flex-direction:column;gap:6px;background:#ffffff;padding:7px 8px;border-radius:6px;border:1px solid #dbe2ea" hidden>
               <div style="display:flex;flex-direction:column;gap:4px">
                 <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
-                  <span style="font-size:11px;font-weight:700;color:#334155">シルエット余白の色:</span>
+                  <span style="font-size:11px;font-weight:700;color:#334155">ロゴ内・余白の背景色:</span>
                   <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eStep5FudaPadCol" value="#046e7e" style="width:26px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
                 </div>
                 <div class="e-chips small" id="eStep5PadColBtns" style="grid-template-columns:repeat(3,1fr)">
@@ -626,11 +626,10 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
                 </div>
               </div>
               <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px;border-top:1px dashed #e2e8f0">
-                <div class="e-range" data-for="logoPadMarginMm"><span>背景の余白幅</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
+                <div class="e-range" data-for="logoPadMarginMm"><span>外側の余白幅</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
                 <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-                  <span style="font-size:11px;font-weight:700;color:#475569">余白幅:</span>
                   <div class="e-chips small" id="eLogoPadMarginPresets" style="flex:1;grid-template-columns:repeat(6,1fr)">
-                    <button type="button" data-pmargin="0">0mm</button>
+                    <button type="button" data-pmargin="0" title="外余白なしでロゴの中だけ不透過にします">0mm(中だけ)</button>
                     <button type="button" data-pmargin="3">3mm</button>
                     <button type="button" data-pmargin="6">6mm</button>
                     <button type="button" data-pmargin="10">10mm</button>
@@ -639,16 +638,24 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
                   </div>
                 </div>
               </div>
-            </div>
-            <details class="adv-details" id="eStep5AdvPadDetails">
-              <summary>外枠線・揺れ線の色切替（詳細）</summary>
-              <div class="adv-body">
+              <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px;border-top:1px dashed #e2e8f0">
                 <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
-                  <span style="font-size:11px;font-weight:700;color:#334155">外枠線の色（シルエット背景時）:</span>
+                  <span style="font-size:11px;font-weight:700;color:#334155">周りの枠線（外枠）:</span>
                   <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">枠線色 <input type="color" id="eStep5FudaStrokeCol" value="#ffffff" style="width:26px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
                 </div>
-                <div class="e-range" data-for="logoPadStrokeMm"><span>余白まわりの枠線太さ</span><input type="range" min="0" max="8" step="0.5"><b></b></div>
-                <div id="eStep5ShakeRow" style="display:flex;flex-direction:column;gap:4px;padding-top:4px;border-top:1px dashed #cbd5e1">
+                <div class="e-chips small" id="eStep5StrokeBtns" style="grid-template-columns:repeat(4,1fr)">
+                  <button type="button" data-epsc="none">枠なし</button>
+                  <button type="button" data-epsc="#ffffff">白枠</button>
+                  <button type="button" data-epsc="#877028">金枠</button>
+                  <button type="button" data-epsc="#111827">黒枠</button>
+                </div>
+                <div class="e-range" data-for="logoPadStrokeMm"><span>枠線の太さ</span><input type="range" min="0" max="8" step="0.5"><b></b></div>
+              </div>
+            </div>
+            <details class="adv-details" id="eStep5AdvPadDetails">
+              <summary>揺れ線・側面斜線の色切替（詳細）</summary>
+              <div class="adv-body">
+                <div id="eStep5ShakeRow" style="display:flex;flex-direction:column;gap:4px">
                   <span style="font-size:11px;font-weight:700;color:#334155">揺れ線・側面斜線の色切替:</span>
                   <div class="e-chips small" id="eStep5ShakeColorBtns" style="grid-template-columns:repeat(4,1fr)">
                     <button type="button" data-fshake="normal">標準</button>
@@ -17020,15 +17027,16 @@ function easyRenderImpl(){
   if($('eStep5FudaStrokeCol') && document.activeElement !== $('eStep5FudaStrokeCol')){
     $('eStep5FudaStrokeCol').value = eLow(S.logoPadStrokeColor || '#ffffff');
   }
-  if($('eLogoPadStrokeBtns')){
-    var hasStrk = !!(S.logoPadMode && S.logoPadMode !== 'none' && (S.logoPadStrokeMm > 0));
-    var strkHex = eLow(S.logoPadStrokeColor || '#ffffff');
-    $('eLogoPadStrokeBtns').querySelectorAll('button').forEach(function(b){
+  var hasStrk = !!(S.logoPadMode && S.logoPadMode !== 'none' && (S.logoPadStrokeMm > 0));
+  var strkHex = eLow(S.logoPadStrokeColor || '#ffffff');
+  [$('eLogoPadStrokeBtns'), $('eStep5StrokeBtns')].forEach(function(box){
+    if(!box) return;
+    box.querySelectorAll('button').forEach(function(b){
       var v = eLow(b.dataset.epsc || b.dataset.eps);
       var isPressed = (v === 'none') ? !hasStrk : (hasStrk && v === strkHex);
       b.setAttribute('aria-pressed', String(isPressed));
     });
-  }
+  });
   var shakeModeCur = S.logoShakeColorMode || 'normal';
   [$('eFudaShakeColorBtns'), $('eStep5ShakeColorBtns')].forEach(function(bx){
     if(!bx) return;
@@ -17137,6 +17145,7 @@ function easyRenderImpl(){
   var isCurBuiltinFuda = !!(S.showLogo && isBuiltinFudaSlot(S));
   if($('eStep5FudaTextRow')) $('eStep5FudaTextRow').hidden = !isCurBuiltinFuda;
   if($('eStep5ShakeRow')) $('eStep5ShakeRow').hidden = !isCurBuiltinFuda;
+  if($('eStep5AdvPadDetails')) $('eStep5AdvPadDetails').hidden = !isCurBuiltinFuda;
   if($('eLogoPadMode')){
     var pm = (S.logoPadMode && S.logoPadMode !== 'none') ? 'silhouette' : 'none';
     $('eLogoPadMode').querySelectorAll('button').forEach(function(b){
@@ -17393,20 +17402,22 @@ function easyRenderImpl(){
       update(false);
     });
   }
-  if($('eLogoPadStrokeBtns')){
-    $('eLogoPadStrokeBtns').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+  [$('eLogoPadStrokeBtns'), $('eStep5StrokeBtns')].forEach(function(box){
+    if(!box) return;
+    box.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       var v = b.dataset.epsc || b.dataset.eps || 'none';
       if(v === 'none'){
         S.logoPadStrokeMm = 0;
       }else{
         S.logoPadStrokeColor = v;
-        if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.0;
+        if(!(S.logoPadStrokeMm > 0)) S.logoPadStrokeMm = 2.5;
         if(!S.logoPadMode || S.logoPadMode === 'none') S.logoPadMode = 'silhouette';
       }
       S.showLogo = true;
+      syncActiveSlotFromS();
       update(false);
     }); });
-  }
+  });
   $('eStyles').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
     var keep = S.mode; var c = document.querySelector('#quickStyles .chip[data-style="' + b.dataset.style + '"]');
     if(c) c.click();
