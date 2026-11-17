@@ -367,10 +367,10 @@ html.easy #ed .stage .bar{justify-content:flex-start}
         </fieldset>
 
         <fieldset data-st="5">
-          <legend data-n="5" data-e="柄の大きさ">仲羽田（柄）</legend>
+          <legend data-n="5" data-e="仲羽田（柄）の大きさ・回転">仲羽田（柄）</legend>
           <div class="row"><label for="patScale">大きさ</label><input type="range" id="patScale" min="40" max="250" step="1"><input type="number" data-for="patScale" step="1"></div>
-          <div class="row adv"><label for="patRot">回転（度）</label><input type="range" id="patRot" min="0" max="359" step="1"><input type="number" data-for="patRot" step="1"></div>
-          <div class="row2 adv"><span style="color:var(--ink-2)">回転</span>
+          <div class="row"><label for="patRot">回転（度）</label><input type="range" id="patRot" min="0" max="359" step="1"><input type="number" data-for="patRot" step="1"></div>
+          <div class="row2"><span style="color:var(--ink-2)">回転</span>
             <div class="seg rotSeg" data-key="patRot">
               <button data-d="-5">−5°</button><button data-d="5">＋5°</button><button data-v="0">0°</button><button data-v="45">45°</button><button data-v="90">90°</button><button data-v="135">135°</button><button data-v="180">180°</button><button data-v="270">270°</button>
             </div>
@@ -382,13 +382,13 @@ html.easy #ed .stage .bar{justify-content:flex-start}
         </fieldset>
 
         <fieldset data-st="3">
-          <legend data-n="3" data-e="札の大きさと位置">札（ロゴ）</legend>
+          <legend data-n="3" data-e="札の大きさ・位置・傾き">札（ロゴ）</legend>
           <div class="row2" style="margin-top:0"><span id="logoSrc" style="color:var(--ink-2)">使っている札：採用ロゴ</span><button class="btn" id="logoReset" type="button" hidden>採用ロゴに戻す</button></div>
           <div class="row" data-hl="logo"><label for="logoH">高さ mm</label><input type="range" id="logoH" min="40" max="330" step="1"><input type="number" data-for="logoH" step="1"></div>
           <div class="row adv" data-hl="logo"><label for="logoX">中心 左右</label><input type="range" id="logoX" min="0" max="850" step="0.5"><input type="number" data-for="logoX" step="0.5"></div>
           <div class="row adv" data-hl="logo"><label for="logoY">中心 上下</label><input type="range" id="logoY" min="0" max="850" step="0.5"><input type="number" data-for="logoY" step="0.5"></div>
-          <div class="row adv" data-hl="logo"><label for="logoRot">傾き（度）</label><input type="range" id="logoRot" min="-180" max="180" step="1"><input type="number" data-for="logoRot" step="1"></div>
-          <div class="row2 adv" data-hl="logo"><span style="color:var(--ink-2)">傾き</span>
+          <div class="row" data-hl="logo"><label for="logoRot">傾き（度）</label><input type="range" id="logoRot" min="-180" max="180" step="1"><input type="number" data-for="logoRot" step="1"></div>
+          <div class="row2" data-hl="logo"><span style="color:var(--ink-2)">傾き</span>
             <div class="seg rotSeg" data-key="logoRot">
               <button data-d="-5">−5°</button><button data-d="5">＋5°</button><button data-v="-15">−15°</button><button data-v="0">0°</button><button data-v="15">15°</button><button data-v="90">90°</button>
             </div>
