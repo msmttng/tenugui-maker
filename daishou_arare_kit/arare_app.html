@@ -4936,9 +4936,53 @@ function ensureKoboBaseLoaded(url){
   const img = new Image();
   img.onload = ()=>{
     KOBO_BASE_IMG = img;
+    if(S && S.useKoboBase && S.koboBaseDataUrl === url && !(S.koboBaseW > 0 && S.koboBaseH > 0)){
+      const iw = img.naturalWidth || 0, ih = img.naturalHeight || 0;
+      if(iw > 0 && ih > 0){
+        const imgHoriz = iw > ih * 1.02, imgVert = ih > iw * 1.02;
+        const curHoriz = S.W > S.H * 1.02, curVert = S.H > S.W * 1.02;
+        if((imgHoriz && curVert) || (imgVert && curHoriz)){
+          const longMm = Math.max(S.W || 350, S.H || 900);
+          S.W = imgHoriz ? longMm : Math.max(50, Math.round(longMm * (iw / ih)));
+          S.H = imgHoriz ? Math.max(50, Math.round(longMm * (ih / iw))) : longMm;
+        }
+        S.koboBaseW = S.W;
+        S.koboBaseH = S.H;
+        layout();
+        syncUI();
+        if(typeof easyRender === 'function') easyRender();
+      }
+    }
     draw();
   };
   img.src = url;
+}
+
+// 取込ベース生地（札タオル図案・手ぬぐい工房）を縦横切替時にもアスペクト比100%維持で描画する
+function drawKoboBaseImagePreserveAspect(x, img, dstW, dstH){
+  if(!img || !(dstW > 0) || !(dstH > 0)) return;
+  const iw = img.naturalWidth || img.width || dstW;
+  const ih = img.naturalHeight || img.height || dstH;
+  const needRot90 = (iw > ih * 1.05 && dstH > dstW * 1.05) || (ih > iw * 1.05 && dstW > dstH * 1.05);
+  const effW = needRot90 ? ih : iw;
+  const effH = needRot90 ? iw : ih;
+  const sc = Math.min(dstW / Math.max(1, effW), dstH / Math.max(1, effH));
+  x.save();
+  x.translate(dstW * 0.5, dstH * 0.5);
+  if(needRot90) x.rotate(-Math.PI * 0.5);
+  x.drawImage(img, -iw * sc * 0.5, -ih * sc * 0.5, iw * sc, ih * sc);
+  x.restore();
+}
+
+function buildKoboBaseSvgElement(url, dstW, dstH, srcW, srcH){
+  if(!url) return '';
+  const iw = (KOBO_BASE_IMG && KOBO_BASE_IMG.naturalWidth) || srcW || dstW;
+  const ih = (KOBO_BASE_IMG && KOBO_BASE_IMG.naturalHeight) || srcH || dstH;
+  const needRot90 = (iw > ih * 1.05 && dstH > dstW * 1.05) || (ih > iw * 1.05 && dstW > dstH * 1.05);
+  if(needRot90){
+    return '<g id="Kobo_Base_Fabric" transform="translate('+(dstW*0.5)+','+(dstH*0.5)+') rotate(-90)"><image x="'+(-dstH*0.5)+'" y="'+(-dstW*0.5)+'" width="'+dstH+'" height="'+dstW+'" preserveAspectRatio="xMidYMid meet" href="'+url+'"/></g>\n';
+  }
+  return '<g id="Kobo_Base_Fabric"><image x="0" y="0" width="'+dstW+'" height="'+dstH+'" preserveAspectRatio="xMidYMid meet" href="'+url+'"/></g>\n';
 }
 
 // 🏯 手ぬぐい工房 PRO (index.html) との合体・手ぬぐいデータ取込ブリッジ
@@ -4950,8 +4994,12 @@ function renderKoboStateJsonToDataUrl(stateObj){
   if(!stateObj || typeof stateObj !== 'object') return null;
   const cv = document.createElement('canvas');
   const isV = (stateObj.orientation === 'vertical');
-  const wMm = isV ? (stateObj.heightMm || 350) : (stateObj.widthMm || 900);
-  const hMm = isV ? (stateObj.widthMm || 900) : (stateObj.heightMm || 350);
+  const rawW = stateObj.widthMm || 0, rawH = stateObj.heightMm || 0;
+  const longSide = stateObj.longMm || Math.max(rawW, rawH) || 900;
+  const minRaw = (rawW > 0 && rawH > 0) ? Math.min(rawW, rawH) : 0;
+  const shortSide = stateObj.shortMm || minRaw || 350;
+  const wMm = isV ? shortSide : longSide;
+  const hMm = isV ? longSide : shortSide;
   const ppm = 2.0;
   cv.width = Math.round(wMm * ppm);
   cv.height = Math.round(hMm * ppm);
@@ -4998,12 +5046,20 @@ function applyKoboFabricToStudio(dataUrl, name, wMm, hMm, bgColor){
   if(wMm && hMm){
     S.W = Math.round(wMm);
     S.H = Math.round(hMm);
+    S.koboBaseW = S.W;
+    S.koboBaseH = S.H;
+  }else{
+    S.koboBaseW = 0;
+    S.koboBaseH = 0;
   }
   if(bgColor) S.bgColor = bgColor;
   // 手ぬぐい工房の柄がそのまま見えるよう「④ 1文字/ロゴ散らし・工房生地」モードに切替
   S.mode = 'scatter';
+  KOBO_BASE_URL = '';
+  KOBO_BASE_IMG = null;
   ensureKoboBaseLoaded(dataUrl);
-  update(true);
+  layout();
+  update(false);
   saySave(`🏯 手ぬぐい工房から「${S.koboBaseName}」をベース生地として取り込みました！このままダボ仕立てやロゴ追加ができます。`);
 }
 
@@ -8494,7 +8550,7 @@ function renderArbitraryTenuguiCanvas(st, includeOverlays, pxPerMm, patScaleMul)
   if(cfg.useKoboBase && cfg.koboBaseDataUrl){
     if(cfg.koboBaseDataUrl !== KOBO_BASE_URL || !KOBO_BASE_IMG) ensureKoboBaseLoaded(cfg.koboBaseDataUrl);
     if(KOBO_BASE_IMG){
-      x.drawImage(KOBO_BASE_IMG, 0, 0, W, H);
+      drawKoboBaseImagePreserveAspect(x, KOBO_BASE_IMG, W, H);
     }
   }
 
@@ -8755,7 +8811,7 @@ function createVectorStripDescriptor(st, patScaleMul, rotMode, solidOnly){
     x.fillRect(0, 0, W, H);
     if(cfg.useKoboBase && cfg.koboBaseDataUrl){
       if(cfg.koboBaseDataUrl !== KOBO_BASE_URL || !KOBO_BASE_IMG) ensureKoboBaseLoaded(cfg.koboBaseDataUrl);
-      if(KOBO_BASE_IMG) x.drawImage(KOBO_BASE_IMG, 0, 0, W, H);
+      if(KOBO_BASE_IMG) drawKoboBaseImagePreserveAspect(x, KOBO_BASE_IMG, W, H);
     }
 
     const apVec = getArarePadMetrics(cfg);
@@ -10824,6 +10880,9 @@ function build3dGarmentTextures(partMap, bodyCfg, bodyVec){
     S.showText, S.customTextStr, S.customTextSubStr, S.customTextFrame, S.customTextColor, S.customTextBg, S.textSize, S.textX, S.textY,
     S.showCrest, S.crestSize, S.crestX, S.crestY, S.crestFg, S.crestBg,
     S.daboStyle, S.daboCutMode, S.daboLogoTarget, S.daboStripRot, S.daboPatScale, S.daboCollarMode, S.daboPocketMode, S.daboSleevePreset,
+    S.daboShiftX, S.daboShiftY, S.daboSleeveShiftY,
+    bodyCfg.useKoboBase, (bodyCfg.koboBaseDataUrl || '').length,
+    S.towelHem, S.towelBorder, S.towelCenterBox, S.towelCenterBoxW, S.towelCenterBoxH,
     JSON.stringify(S.daboCutOffset || {}), activeSlotsJson, PROC_LOGO_KEY
   ].join('|');
 
@@ -10913,15 +10972,16 @@ function build3dGarmentTextures(partMap, bodyCfg, bodyVec){
     return false;
   });
 
-  // 3. 🧣 手ぬぐい全体超高解像度テクスチャ
+  // 3. 🧣 手ぬぐい全体超高解像度テクスチャ（ダボ裁断用の-90°回転ストリップではなく、手ぬぐい本来の縦横比・正向きで描画）
   const tAr = (bodyCfg.W || 350) / Math.max(1, bodyCfg.H || 900);
   const tBasePx = 1440;
-  const tW = tAr >= 1 ? tBasePx : Math.round(tBasePx * tAr);
-  const tH = tAr >= 1 ? Math.round(tBasePx / tAr) : tBasePx;
+  const tW = Math.max(64, tAr >= 1 ? tBasePx : Math.round(tBasePx * tAr));
+  const tH = Math.max(64, tAr >= 1 ? Math.round(tBasePx / tAr) : tBasePx);
   const tenuguiFullCv = document.createElement('canvas');
-  tenuguiFullCv.width = Math.max(360, tW);
-  tenuguiFullCv.height = Math.max(360, tH);
-  bodyVec.logoStrip.drawVector(tenuguiFullCv.getContext('2d'), 0, 0, tenuguiFullCv.width, tenuguiFullCv.height);
+  tenuguiFullCv.width = tW;
+  tenuguiFullCv.height = tH;
+  const unrotTenuguiVec = createVectorStripDescriptor(bodyCfg, 1, '0', false);
+  unrotTenuguiVec.logoStrip.drawVector(tenuguiFullCv.getContext('2d'), 0, 0, tW, tH);
 
   _3D_TEX_CACHE_KEY = key;
   _GL3D_UPLOADED_KEY = '';
@@ -11601,8 +11661,9 @@ function render3dTenuguiOrRelief(x, cx, cy, scale, yawDeg, pitchDeg, modeType, t
 
   const tCv = tex.tenuguiFullCv;
   const ar = tCv.width / Math.max(1, tCv.height);
-  const meshW = ar >= 1 ? 245 : 245 * ar * 1.15;
-  const meshH = ar >= 1 ? 245 / ar : 245;
+  const maxSpan = ar >= 1 ? 250 : 255;
+  const meshW = ar >= 1 ? maxSpan : maxSpan * ar;
+  const meshH = ar >= 1 ? maxSpan / ar : maxSpan;
 
   if(modeType === 'tenugui'){
     const clothMesh = buildClo3dShellBuffers(52, 64, true, (u, v) => {
@@ -12107,9 +12168,13 @@ function applyDaboSpotPlacement(sp, preferText){
   }
 
   const { px, py } = stripUVToTenuguiPct(targetU, targetV);
+  const rModeDabo = S.daboStripRot || 'auto';
+  const stripDegDabo = (rModeDabo === 'auto') ? (S.W > S.H ? -90 : 0) : (parseInt(rModeDabo, 10) || 0);
+  const uprightAngOnDabo = stripDegDabo === -90 ? 90 : (stripDegDabo === 90 ? -90 : (Math.abs(stripDegDabo) === 180 ? 180 : 0));
   if(S.showLogo && (!preferText || S.daboDragItemType === 'logo')){
     S.logoX = px;
     S.logoY = py;
+    S.logoAngle = uprightAngOnDabo;
     S.daboSpotPart = partTag;
     if(Array.isArray(S.logoSlots)){
       S.logoSlots.forEach(sl => { if(sl) sl.daboSpotPart = 'all'; });
@@ -12121,9 +12186,11 @@ function applyDaboSpotPlacement(sp, preferText){
   }else if(S.showText && (preferText || !S.showLogo)){
     S.textX = px;
     S.textY = py;
+    S.textAngle = uprightAngOnDabo;
   }else if(S.showCrest){
     S.crestX = px;
     S.crestY = py;
+    S.crestAngle = uprightAngOnDabo;
   }
 
   S.daboInteractiveLogo = true;
@@ -12257,17 +12324,26 @@ function updateLogoDaboWhereBadge(){
 // 手ぬぐい画面（viewMode === 'fabric'）上にダボの裁断ゾーン＆部位目安ガイドを重ねて描画（ラベル重なり防止の1行ピル仕様）
 function drawDaboZoneGuideOverlayMm(x){
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  const rotMode = S.daboStripRot || 'auto';
+  const deg = (rotMode === 'auto') ? (S.W > S.H ? -90 : 0) : (parseInt(rotMode, 10) || 0);
+  const effW = (Math.abs(deg) === 90) ? S.H : S.W;
+  const effH = (Math.abs(deg) === 90) ? S.W : S.H;
   const sx = (S.daboShiftX || 0) / 100;
   const sy = (S.daboShiftY || 0) / 100;
   const ssy = (S.daboSleeveShiftY || 0) / 100;
-  const bx = clamp(0.08 + sx * 0.16, 0.01, 0.22) * S.W;
-  const bw = 0.82 * S.W;
-  const by = clamp(0.08 + sy * 0.22, 0.01, 0.24) * S.H;
-  const bh = 0.76 * S.H;
-  const slvY = clamp(0.14 + ssy * 0.28, 0.02, 0.44) * S.H;
-  const slvH = 0.52 * S.H;
+  const bx = clamp(0.08 + sx * 0.16, 0.01, 0.22) * effW;
+  const bw = 0.82 * effW;
+  const by = clamp(0.08 + sy * 0.22, 0.01, 0.24) * effH;
+  const bh = 0.76 * effH;
+  const slvY = clamp(0.14 + ssy * 0.28, 0.02, 0.44) * effH;
+  const slvH = 0.52 * effH;
 
   x.save();
+  if(deg){
+    x.translate(S.W * 0.5, S.H * 0.5);
+    x.rotate((-deg * Math.PI) / 180);
+    x.translate(-effW * 0.5, -effH * 0.5);
+  }
   // 1. 身頃（前身頃・後身頃）の切り出し大枠
   x.strokeStyle = 'rgba(250, 204, 21, 0.88)';
   x.lineWidth = 1.4;
@@ -12289,19 +12365,19 @@ function drawDaboZoneGuideOverlayMm(x){
     x.moveTo(bx + 4, gy); x.lineTo(bx + bw - 4, gy);
     x.stroke();
     x.beginPath();
-    x.arc(S.W * 0.5, gy, 8, 0, Math.PI * 2);
+    x.arc(effW * 0.5, gy, 8, 0, Math.PI * 2);
     x.stroke();
     x.setLineDash([]);
     x.fillStyle = 'rgba(15, 23, 42, 0.86)';
     const pillW = Math.min(bw - 16, 210);
-    x.fillRect(S.W * 0.5 - pillW / 2, gy - 7.5, pillW, 15);
+    x.fillRect(effW * 0.5 - pillW / 2, gy - 7.5, pillW, 15);
     x.strokeStyle = col;
     x.lineWidth = 0.9;
-    x.strokeRect(S.W * 0.5 - pillW / 2, gy - 7.5, pillW, 15);
+    x.strokeRect(effW * 0.5 - pillW / 2, gy - 7.5, pillW, 15);
     x.fillStyle = col;
     x.font = '700 8.5px sans-serif';
     x.textAlign = 'center';
-    x.fillText(label, S.W * 0.5, gy + 3, pillW - 8);
+    x.fillText(label, effW * 0.5, gy + 3, pillW - 8);
     x.restore();
   };
 
@@ -12314,27 +12390,27 @@ function drawDaboZoneGuideOverlayMm(x){
   x.strokeStyle = 'rgba(74, 222, 128, 0.85)';
   x.lineWidth = 1.2;
   x.setLineDash([4, 4]);
-  x.strokeRect(S.W * 0.05, slvY, S.W * 0.90, slvH);
+  x.strokeRect(effW * 0.05, slvY, effW * 0.90, slvH);
   x.setLineDash([]);
   x.fillStyle = 'rgba(20, 83, 45, 0.88)';
-  x.fillRect(S.W * 0.06, slvY + 3, 138, 14);
+  x.fillRect(effW * 0.06, slvY + 3, 138, 14);
   x.fillStyle = '#86efac';
   x.font = '700 8px sans-serif';
   x.textAlign = 'left';
-  x.fillText('✂️ ⑤ 袖の切り出し範囲 (縦' + Math.round(slvY/S.H*100) + '〜' + Math.round((slvY+slvH)/S.H*100) + '%)', S.W * 0.07, slvY + 12.5, 132);
+  x.fillText('✂️ ⑤ 袖の切り出し範囲 (縦' + Math.round(slvY/effH*100) + '〜' + Math.round((slvY+slvH)/effH*100) + '%)', effW * 0.07, slvY + 12.5, 132);
 
   // 3. 胸ポケット・掛け襟用の下部切り出し枠（ピンク点線）
-  const pkY = S.H * 0.85, pkH = S.H * 0.13;
+  const pkY = effH * 0.85, pkH = effH * 0.13;
   x.strokeStyle = 'rgba(244, 114, 182, 0.9)';
   x.lineWidth = 1.2;
   x.setLineDash([3, 3]);
-  x.strokeRect(S.W * 0.26, pkY, S.W * 0.42, pkH);
+  x.strokeRect(effW * 0.26, pkY, effW * 0.42, pkH);
   x.setLineDash([]);
   x.fillStyle = 'rgba(131, 24, 67, 0.88)';
-  x.fillRect(S.W * 0.27, pkY + 3, 136, 14);
+  x.fillRect(effW * 0.27, pkY + 3, 136, 14);
   x.fillStyle = '#fbcfe8';
   x.font = '700 8px sans-serif';
-  x.fillText('✂️ 左胸ポケット単体取り枠 (下部)', S.W * 0.28, pkY + 12.5, 130);
+  x.fillText('✂️ 左胸ポケット単体取り枠 (下部)', effW * 0.28, pkY + 12.5, 130);
 
   x.restore();
 }
@@ -12435,7 +12511,7 @@ function draw(){
   if(S.useKoboBase && S.koboBaseDataUrl){
     if(S.koboBaseDataUrl !== KOBO_BASE_URL || !KOBO_BASE_IMG) ensureKoboBaseLoaded(S.koboBaseDataUrl);
     if(KOBO_BASE_IMG){
-      x.drawImage(KOBO_BASE_IMG, 0, 0, S.W, S.H);
+      drawKoboBaseImagePreserveAspect(x, KOBO_BASE_IMG, S.W, S.H);
     }
   }
 
@@ -12634,7 +12710,7 @@ function svgText(){
     s+='<g id="Background_Navy"><rect width="'+W+'" height="'+H+'" fill="'+S.bgColor+'"/></g>\n';
   }
   if(S.useKoboBase && S.koboBaseDataUrl){
-    s+='<g id="Kobo_Base_Fabric"><image x="0" y="0" width="'+W+'" height="'+H+'" preserveAspectRatio="none" href="'+S.koboBaseDataUrl+'"/></g>\n';
+    s+=buildKoboBaseSvgElement(S.koboBaseDataUrl, W, H, S.koboBaseW, S.koboBaseH);
   }
   const apSvg = getArarePadMetrics(S);
   const buildArareSvg=(isFront)=>{
@@ -13263,7 +13339,7 @@ function saveHighResPng(){
   x.setTransform(s,0,0,s,0,0);
   if(S.showBg){ x.fillStyle=S.bgColor; x.fillRect(0,0,S.W,S.H); }
   if(S.useKoboBase && S.koboBaseDataUrl && KOBO_BASE_IMG){
-    x.drawImage(KOBO_BASE_IMG, 0, 0, S.W, S.H);
+    drawKoboBaseImagePreserveAspect(x, KOBO_BASE_IMG, S.W, S.H);
   }
   const ko = (S.mode === 'both' && S.knockoutMm > 0) ? S.knockoutMm : 0;
   const apPng = getArarePadMetrics(S);
@@ -14151,8 +14227,60 @@ if($('kakuAngleNum')){
     }
   });
 }
-for(const k of ['W','H'])$(k).addEventListener('change',e=>{const v=Math.round(parseFloat(e.target.value));if(v>=50){S[k]=Math.min(v,k==='W'?2000:3000);update(true);}else syncUI();});
-$('flipOrient').addEventListener('click',()=>{const tmp=S.W; S.W=S.H; S.H=tmp; update(true);});
+// 布・タオル寸法変更時の縦横切替（横で作った配置比率や中央枠が別向き軸へそのまま引き継がれて崩れるのを防止）
+function applyFabricDimensions(newW, newH){
+  const oldW = S.W || 350, oldH = S.H || 900;
+  const w = Math.max(50, Math.min(2000, Math.round(newW || oldW)));
+  const h = Math.max(50, Math.min(3000, Math.round(newH || oldH)));
+  const wasHoriz = oldW > oldH * 1.02, wasVert = oldH > oldW * 1.02;
+  const nowHoriz = w > h * 1.02, nowVert = h > w * 1.02;
+  const orientFlipped = (wasHoriz && nowVert) || (wasVert && nowHoriz);
+
+  if(orientFlipped){
+    const tx = S.logoX ?? 50, ty = S.logoY ?? 28;
+    S.logoX = ty; S.logoY = tx;
+    if(Array.isArray(S.logoSlots)){
+      S.logoSlots.forEach(sl => {
+        if(!sl) return;
+        const sx = sl.logoX ?? 50, sy = sl.logoY ?? 28;
+        sl.logoX = sy; sl.logoY = sx;
+      });
+    }
+    const cx = S.crestX ?? 50, cy = S.crestY ?? 50;
+    S.crestX = cy; S.crestY = cx;
+    const fx = S.textX ?? 50, fy = S.textY ?? 75;
+    S.textX = fy; S.textY = fx;
+    const spx = S.seinenSpotX ?? 50, spy = S.seinenSpotY ?? 50;
+    S.seinenSpotX = spy; S.seinenSpotY = spx;
+    if(S.towelCenterBoxW !== undefined && S.towelCenterBoxH !== undefined){
+      const bw = S.towelCenterBoxW, bh = S.towelCenterBoxH;
+      S.towelCenterBoxW = bh; S.towelCenterBoxH = bw;
+    }
+  }
+
+  const newShort = Math.min(w, h);
+  if(S.logoSize > newShort * 0.90) S.logoSize = Math.max(20, Math.round(newShort * 0.86));
+  if(Array.isArray(S.logoSlots)){
+    S.logoSlots.forEach(sl => {
+      if(sl && sl.logoSize > newShort * 0.90) sl.logoSize = Math.max(20, Math.round(newShort * 0.86));
+    });
+  }
+  if(S.crestSize > newShort * 0.90) S.crestSize = Math.max(20, Math.round(newShort * 0.86));
+
+  if(w !== oldW || h !== oldH){
+    S.daboCutOffset = {};
+    DABO_ACTIVE_REVERSE_HIT = null;
+    PAN_X = 0; PAN_Y = 0;
+  }
+  S.W = w;
+  S.H = h;
+  clearTimeout(timer);
+  layout();
+  update(false);
+}
+
+for(const k of ['W','H'])$(k).addEventListener('change',e=>{const v=Math.round(parseFloat(e.target.value));if(v>=50){applyFabricDimensions(k==='W'?Math.min(v,2000):S.W, k==='H'?Math.min(v,3000):S.H);}else syncUI();});
+$('flipOrient').addEventListener('click',()=>{applyFabricDimensions(S.H, S.W);});
 document.querySelectorAll('#modeTabs .chip').forEach(b=>b.addEventListener('click',()=>{S.mode=b.dataset.mode; update(true);}));
 document.querySelectorAll('#kakuMotifTabs .chip').forEach(b=>b.addEventListener('click',()=>{
   S.kakuMotif = b.dataset.motif || 'haneda';
@@ -14199,14 +14327,15 @@ document.querySelectorAll('#aiColorModeTabs .chip').forEach(b=>b.addEventListene
 }));
 // 🧣 タオル種類チップ・テンプレート・設定イベント配線
 function applyTowelTypeSize(twtype){
-  if(twtype==='face_h'){ S.W=840; S.H=340; S.viewMode='fabric'; }
-  else if(twtype==='face_v'){ S.W=340; S.H=840; S.viewMode='fabric'; }
-  else if(twtype==='muffler'){ S.W=1100; S.H=200; S.viewMode='fabric'; }
-  else if(twtype==='sports'){ S.W=1100; S.H=400; S.viewMode='fabric'; }
-  else if(twtype==='bath'){ S.W=1200; S.H=600; S.viewMode='fabric'; }
-  else if(twtype==='hand'){ S.W=250; S.H=250; S.viewMode='fabric'; }
-  else if(twtype==='tenugui'){ S.W=350; S.H=900; S.towelHem=false; S.towelBorder=false; S.towelCenterBox=false; S.towelPile=false; }
-  update(true);
+  let nextW = S.W, nextH = S.H;
+  if(twtype==='face_h'){ nextW=840; nextH=340; S.viewMode='fabric'; }
+  else if(twtype==='face_v'){ nextW=340; nextH=840; S.viewMode='fabric'; }
+  else if(twtype==='muffler'){ nextW=1100; nextH=200; S.viewMode='fabric'; }
+  else if(twtype==='sports'){ nextW=1100; nextH=400; S.viewMode='fabric'; }
+  else if(twtype==='bath'){ nextW=1200; nextH=600; S.viewMode='fabric'; }
+  else if(twtype==='hand'){ nextW=250; nextH=250; S.viewMode='fabric'; }
+  else if(twtype==='tenugui'){ nextW=350; nextH=900; S.towelHem=false; S.towelBorder=false; S.towelCenterBox=false; S.towelPile=false; }
+  applyFabricDimensions(nextW, nextH);
 }
 document.querySelectorAll('#towelTypeChips .chip').forEach(b=>b.addEventListener('click',()=>applyTowelTypeSize(b.dataset.twtype)));
 document.querySelectorAll('#towelQuickTemplates button').forEach(b=>b.addEventListener('click',()=>{
@@ -14275,7 +14404,7 @@ if($('flipLayerOrderBtn')){
     update(switched);
   });
 }
-document.querySelectorAll('#presets .chip').forEach(b=>b.addEventListener('click',()=>{S.W=+b.dataset.w;S.H=+b.dataset.h;update(true);}));
+document.querySelectorAll('#presets .chip').forEach(b=>b.addEventListener('click',()=>{applyFabricDimensions(+b.dataset.w, +b.dataset.h);}));
 document.querySelectorAll('#edge .chip').forEach(b=>b.addEventListener('click',()=>{S.edge=b.dataset.v;update(true);}));
 document.querySelectorAll('#shape .chip').forEach(b=>b.addEventListener('click',()=>{S.shape=b.dataset.v;update(true);}));
 document.querySelectorAll('#anglePresets .chip').forEach(b=>b.addEventListener('click',()=>{
@@ -17410,7 +17539,7 @@ function easyRenderImpl(){
   }
   $('eSize').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
     var c = document.querySelector('#presets .chip[data-w="' + b.dataset.w + '"][data-h="' + b.dataset.h + '"]');
-    if(c) c.click(); else { S.W = +b.dataset.w; S.H = +b.dataset.h; update(true); }
+    if(c) c.click(); else applyFabricDimensions(+b.dataset.w, +b.dataset.h);
   }); });
   [$('eColors'), $('sec3TwoColorCombos')].forEach(function(box){
     if(!box) return;
