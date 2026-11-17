@@ -336,6 +336,16 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
 .ft-card{border:1px solid #e2e8f0 !important;background:#ffffff !important}
 .ft-card .ft-chip.ok{border-color:var(--ai);color:var(--ai)}.ft-card .ft-chip.ng{border-color:#475569;color:#0f172a}
 
+/* 最小すき間2mmアテンション＆部分調整UI */
+.gap-attn-box{display:flex;flex-direction:column;gap:6px}
+.gap-attn-box.is-warn{border-color:#0f172a !important;border-left:3px solid #0f172a !important}
+.gap-attn-head{display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap}
+.gap-attn-title{font-size:11.5px;font-weight:800;color:#0f172a}
+.gap-pill{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:999px;background:var(--ai-soft);color:var(--ai)}
+.gap-pill.warn{background:#0f172a;color:#ffffff}
+.gap-attn-alert{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;padding:6px 8px;border-radius:6px;background:#ffffff;border:1px solid #94a3b8;font-size:11px;line-height:1.45;color:#0f172a}
+.gap-attn-alert b{font-weight:800}
+
 </style>
 
 <div class="wrap">
@@ -344,7 +354,7 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
       <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
           <h1>手ぬぐい工房</h1>
-          <button type="button" id="forceCacheReloadBtn" class="mini-btn" style="font-size:10.5px;padding:2px 8px;border-radius:999px" title="ブラウザの古いキャッシュを破棄して最新版を読み込みます">v1.17.1 更新</button>
+          <button type="button" id="forceCacheReloadBtn" class="mini-btn" style="font-size:10.5px;padding:2px 8px;border-radius:999px" title="ブラウザの古いキャッシュを破棄して最新版を読み込みます">v1.17.2 更新</button>
         </div>
         <button type="button" id="uToggleAllAdvBtn" class="mini-btn" aria-pressed="false" style="font-size:11px;padding:4px 9px" title="各タブ内の詳細調整メニューを一括で開く／閉じる">詳細調整をすべて開く</button>
         <div class="uimode" hidden role="group" aria-label="表示の切り替え">
@@ -591,8 +601,36 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
         </div>
         <div class="e-range" data-for="kakuScale"><span>柄の大きさ</span><input type="range" min="25" max="300" step="1"><b></b></div>
         <div class="e-range" data-for="kakuWeight"><span>線の太さ</span><input type="range" min="20" max="220" step="1"><b></b></div>
+        <!-- 仲羽田の最小すき間2mmアテンション＆すき間調整 -->
+        <div class="e-subbox gap-attn-box" id="eKakuGapTuneBox">
+          <div class="gap-attn-head">
+            <span class="gap-attn-title">仲羽田のすき間・線幅調整</span>
+            <span class="gap-pill" id="eKakuGapBadge">すき間 2.6mm</span>
+          </div>
+          <div class="gap-attn-alert" id="eKakuGapAttnMsg" hidden>
+            <span id="eKakuGapAttnText">最小すき間 2.0mm 未満の箇所があります。</span>
+            <button type="button" class="mini-btn" id="eFixKaku2mmBtn" style="font-size:10.5px;padding:3px 7px;font-weight:800">2mm以上に自動調整</button>
+          </div>
+          <div class="e-range" data-for="kakuInnerGap"><span>文字内のすき間</span><input type="range" min="35" max="180" step="1"><b></b></div>
+          <div class="e-range" data-for="kakuColGap"><span>文字の横すき間</span><input type="range" min="-15" max="100" step="1"><b></b></div>
+          <div class="e-range" data-for="kakuRowGap"><span>段の縦すき間</span><input type="range" min="0" max="80" step="1"><b></b></div>
+        </div>
         <div class="e-range" data-for="count"><span>あられの数</span><input type="range" min="50" max="4000" step="10"><b></b></div>
         <div class="e-range" data-for="scale"><span>あられの大きさ</span><input type="range" min="25" max="300" step="1"><b></b></div>
+        <!-- 大小あられ・柄境界の最小すき間2mmアテンション＆調整 -->
+        <div class="e-subbox gap-attn-box" id="eArareGapTuneBox" hidden>
+          <div class="gap-attn-head">
+            <span class="gap-attn-title">あられ・柄境界のすき間調整</span>
+            <span class="gap-pill" id="eArareGapBadge">すき間 2.5mm</span>
+          </div>
+          <div class="gap-attn-alert" id="eArareGapAttnMsg" hidden>
+            <span id="eArareGapAttnText">最小すき間 2.0mm 未満の箇所があります。</span>
+            <button type="button" class="mini-btn" id="eFixArare2mmBtn" style="font-size:10.5px;padding:3px 7px;font-weight:800">2mm以上に自動調整</button>
+          </div>
+          <div class="e-range" data-for="gap"><span>粒どうしの最小すき間</span><input type="range" min="0.5" max="12" step="0.5"><b></b></div>
+          <div class="e-range" data-for="dmin"><span>小粒の最小サイズ</span><input type="range" min="0.8" max="12" step="0.5"><b></b></div>
+          <div class="e-range" data-for="knockoutMm"><span>仲羽田まわりの抜き幅</span><input type="range" min="0" max="15" step="0.5"><b></b></div>
+        </div>
         <div class="e-subbox" id="eArareFrameBox" hidden>
           <div class="e-sublbl"><span>大小あられの周り枠（粒フチ・外周枠）</span></div>
           <div style="font-size:11px;font-weight:700;color:var(--muted)">あられ1粒ごとの周り枠（背景抜き・フチ枠）:</div>
@@ -632,6 +670,47 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
           <button type="button" data-el="img">画像読込<small>.ai / SVG / PNG</small></button>
           <button type="button" data-el="none">入れない</button>
         </div>
+        <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
+        <!-- ロゴ内部の最小すき間2mmアテンション＆当該部分の調整ボックス -->
+        <div class="e-subbox gap-attn-box" id="eLogoGapTuneBox" hidden>
+          <div class="gap-attn-head">
+            <span class="gap-attn-title">最小すき間 2mm チェック・部分調整</span>
+            <span class="gap-pill" id="eLogoGapBadge">確認中</span>
+          </div>
+          <div class="gap-attn-alert" id="eLogoGapAttnMsg" hidden>
+            <span id="eLogoGapAttnText"></span>
+            <div style="display:flex;gap:4px;flex-wrap:wrap">
+              <button type="button" class="mini-btn" id="eFixLogoParts2mmBtn" style="font-size:10.5px;padding:3px 7px;font-weight:800" title="現在のロゴサイズのまま、内部の文字すき間広げ・側面ベタ影・揺れ線整理を行って2mm基準に近づけます">サイズ維持で2mm調整</button>
+              <button type="button" class="mini-btn" id="eFixLogoSize154Btn" style="font-size:10.5px;padding:3px 7px" title="ロゴ全体の大きさを標準のまま2mm確保できるサイズにします">154mmにする</button>
+            </div>
+          </div>
+          <div class="e-range" data-for="logoGapExpandMm" id="eLogoGapExpandRange"><span>内部すき間を広げる</span><input type="range" min="-1.0" max="2.5" step="0.1"><b></b></div>
+          <div id="eFudaPartSwitches" style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <span style="font-size:10.5px;font-weight:700;color:#475569">札側面の影（縞すき間対策）</span>
+              <div class="e-chips small" id="eFudaSideStripeBtns" style="grid-template-columns:repeat(2,1fr)">
+                <button type="button" data-fstripe="stripe" style="padding:4px 2px;white-space:nowrap">斜線(標準)</button>
+                <button type="button" data-fstripe="solid" style="padding:4px 2px;white-space:nowrap">ベタ影</button>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:3px">
+              <span style="font-size:10.5px;font-weight:700;color:#475569">左右の揺れ線（細線対策）</span>
+              <div class="e-chips small" id="eFudaWobbleVisBtns" style="grid-template-columns:repeat(2,1fr)">
+                <button type="button" data-fwob="show" style="padding:4px 2px;white-space:nowrap">揺れ線あり</button>
+                <button type="button" data-fwob="hide" style="padding:4px 2px;white-space:nowrap">揺れ線なし</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="e-range" data-for="logoAngle" id="eLogoAngle"><span>ロゴの回転角度</span><input type="range" min="-180" max="180" step="1"><b></b></div>
+        <div class="e-chips small" id="eLogoAnglePresets" style="grid-template-columns:repeat(6,1fr)" hidden>
+          <button type="button" data-lang="-90" style="padding:4px 2px">−90°</button>
+          <button type="button" data-lstep="-15" style="padding:4px 2px">−15°</button>
+          <button type="button" data-lang="0" style="padding:4px 2px">0°正面</button>
+          <button type="button" data-lstep="15" style="padding:4px 2px">+15°</button>
+          <button type="button" data-lang="90" style="padding:4px 2px">+90°</button>
+          <button type="button" data-lang="180" style="padding:4px 2px">180°</button>
+        </div>
         <!-- 作ったロゴを生地に入れる・同じロゴを複製・複数配置＆総柄コントロール -->
         <div class="e-subbox" id="eLogoDupAndPlaceBox" style="gap:6px">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap">
@@ -654,6 +733,10 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
             </div>
             <div class="e-range" data-for="logoRepeatGapX"><span>横の間隔(ピッチ)</span><input type="range" min="14" max="260" step="1"><b></b></div>
             <div class="e-range" data-for="logoRepeatGapY"><span>縦の間隔(ピッチ)</span><input type="range" min="14" max="260" step="1"><b></b></div>
+            <div class="gap-attn-alert" id="eLogoRepeatGapAttn" hidden>
+              <span id="eLogoRepeatGapAttnText">! 隣り合うロゴ同士のすき間が 2.0mm 未満です。</span>
+              <button type="button" class="mini-btn" id="eFixLogoRepeat2mmBtn" style="font-size:10.5px;padding:3px 7px;font-weight:800">間隔を2mm確保</button>
+            </div>
           </div>
         </div>
         <!-- かんたんモード用 マイ・ロゴ保管棚 ＆ カテゴリ絞込バー -->
@@ -678,16 +761,6 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
             <button type="button" data-scat="custom" aria-pressed="false">マイ登録</button>
           </div>
           <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;max-height:265px;overflow-y:auto;padding:2px 1px"></div>
-        </div>
-        <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
-        <div class="e-range" data-for="logoAngle" id="eLogoAngle"><span>ロゴの回転角度</span><input type="range" min="-180" max="180" step="1"><b></b></div>
-        <div class="e-chips small" id="eLogoAnglePresets" style="grid-template-columns:repeat(6,1fr)" hidden>
-          <button type="button" data-lang="-90" style="padding:4px 2px">−90°</button>
-          <button type="button" data-lstep="-15" style="padding:4px 2px">−15°</button>
-          <button type="button" data-lang="0" style="padding:4px 2px">0°正面</button>
-          <button type="button" data-lstep="15" style="padding:4px 2px">+15°</button>
-          <button type="button" data-lang="90" style="padding:4px 2px">+90°</button>
-          <button type="button" data-lang="180" style="padding:4px 2px">180°</button>
         </div>
         <div class="e-subbox" id="eLogoPadBox" hidden>
           <div class="e-sublbl"><span>札・ロゴの色と透過</span><b id="eActiveLogoNameBadge" style="font-size:10.5px;color:#046e7e;background:#e0f2fe;padding:2px 7px;border-radius:999px;font-weight:700">選択中</b></div>
@@ -717,7 +790,7 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
               <label style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#475569;cursor:pointer">自由色 <input type="color" id="eStep5FudaTextCol" value="#ffffff" style="width:26px;height:20px;border:1px solid #cbd5e1;border-radius:4px;padding:0;background:none;cursor:pointer"></label>
             </div>
             <div class="e-chips small" id="eStep5FudaTextColChips" style="grid-template-columns:repeat(4,1fr)">
-              <button type="button" data-eftxt="auto">自動（推奨）</button>
+              <button type="button" data-eftxt="auto" style="white-space:nowrap">自動(推奨)</button>
               <button type="button" data-eftxt="#ffffff">白</button>
               <button type="button" data-eftxt="#046e7e">羽田納戸</button>
               <button type="button" data-eftxt="#877028">羽田金</button>
@@ -734,6 +807,13 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
               <button type="button" data-epm="none">背景透過<small>ロゴの中も柄が透ける</small></button>
               <button type="button" data-epm="silhouette">シルエット背景<small>ロゴ内も不透過（柄を隠す）</small></button>
             </div>
+            <div class="gap-attn-alert" id="eLogoPadGapAttn" hidden>
+              <span id="eLogoPadGapAttnText">! うしろの柄とロゴのすき間が 2.0mm 未満です（染め干渉注意）。</span>
+              <div style="display:flex;gap:4px;flex-wrap:wrap">
+                <button type="button" class="mini-btn" id="eFixLogoPad2mmBtn" style="font-size:10.5px;padding:3px 7px;font-weight:800">抜き余白 2.5mm をつける</button>
+                <button type="button" class="mini-btn" id="eFixLogoStroke2mmBtn" style="font-size:10.5px;padding:3px 7px;font-weight:800" hidden>枠線を 2.0mm にする</button>
+              </div>
+            </div>
             <div id="eLogoPadControls" style="display:flex;flex-direction:column;gap:6px;background:#ffffff;padding:7px 8px;border-radius:6px;border:1px solid #dbe2ea" hidden>
               <div style="display:flex;flex-direction:column;gap:4px">
                 <div style="display:flex;justify-content:space-between;align-items:center;gap:6px">
@@ -749,8 +829,8 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
               <div style="display:flex;flex-direction:column;gap:4px;padding-top:4px;border-top:1px dashed #e2e8f0">
                 <div class="e-range" data-for="logoPadMarginMm"><span>外側の余白幅</span><input type="range" min="0" max="45" step="0.5"><b></b></div>
                 <div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap">
-                  <div class="e-chips small" id="eLogoPadMarginPresets" style="flex:1;grid-template-columns:1.5fr repeat(5,1fr)">
-                    <button type="button" data-pmargin="0" style="padding:5px 2px" title="外余白なしでロゴの中だけ不透過にします">0mm(中のみ)</button>
+                  <div class="e-chips small" id="eLogoPadMarginPresets" style="flex:1;grid-template-columns:1.6fr repeat(5,1fr)">
+                    <button type="button" data-pmargin="0" style="padding:5px 2px;font-size:10.5px;white-space:nowrap" title="外余白なしでロゴの中だけ不透過にします">0mm(中のみ)</button>
                     <button type="button" data-pmargin="3" style="padding:5px 2px">3mm</button>
                     <button type="button" data-pmargin="6" style="padding:5px 2px">6mm</button>
                     <button type="button" data-pmargin="10" style="padding:5px 2px">10mm</button>
@@ -1574,6 +1654,7 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
           <button type="button" class="mini-btn" data-fshake="invert_both">両方を逆色</button>
         </div>
         <div class="row"><label for="logoSize">ロゴの大きさ</label><input type="range" id="logoSize" min="6" max="340" step="1" value="85"><output for="logoSize" id="logoSize-o"></output></div>
+        <div class="row"><label for="logoGapExpandMm">内部すき間広げ</label><input type="range" id="logoGapExpandMm" min="-1.0" max="2.5" step="0.1" value="0"><output for="logoGapExpandMm" id="logoGapExpandMm-o"></output></div>
         <div class="row"><label for="logoAngle">ロゴの回転角度</label><input type="range" id="logoAngle" min="-180" max="180" step="1" value="0"><output for="logoAngle" id="logoAngle-o"></output></div>
         <div class="chips" id="dLogoAnglePresets" style="gap:4px;margin-top:-2px">
           <button type="button" class="mini-btn" data-lang="-90">−90°</button>
@@ -3248,6 +3329,9 @@ let FUDA_SOLID_SIL_PATH_D = '';
 let FUDA_SOLID_SIL_PATH2D = null;
 let FUDA_SOLID_SIL_POLYS = [];
 let FUDA_SOLID_SIL_NORM_POLYS = [];
+let FUDA_SOLID_SIL_NOWOBBLE_PATH_D = '';
+let FUDA_SOLID_SIL_NOWOBBLE_PATH2D = null;
+let FUDA_SOLID_SIL_NOWOBBLE_NORM_POLYS = [];
 let FUDA_TEXT_HOLES_PATH_D = '';
 let FUDA_TEXT_HOLES_PATH2D = null;
 let FUDA_TEXT_HOLES_NORM_POLYS = [];
@@ -3302,6 +3386,8 @@ function computeClockwiseConvexHull(points){
   const rawSubs = FUDA_PLACE_PATH_D.split(/(?=M)/).map(s => s.trim()).filter(Boolean);
   const posSubs = [];
   const posPolys = [];
+  const posNoWobbleSubs = [];
+  const posNoWobblePolys = [];
   const textHoleSubs = [];
   const textHolePolys = [];
   const textIslandSubs = [];
@@ -3332,6 +3418,10 @@ function computeClockwiseConvexHull(points){
     if(area2 > 0){
       posSubs.push(sp);
       posPolys.push(pts);
+      if(!(maxX < 70 || minX > 485)){
+        posNoWobbleSubs.push(sp);
+        posNoWobblePolys.push(pts);
+      }
       // 3D厚み側面フレーム（subpaths 99, 114: area2 ≈ 24455, 37630）
       if(area2 > 16000 && area2 < 60000){
         sideFrameSubs.push(sp);
@@ -3342,7 +3432,7 @@ function computeClockwiseConvexHull(points){
         textIslandSubs.push(sp);
         textIslandPolys.push(pts);
       }
-    }else if(minX < 15 || maxX > 535){
+    }else if(minX < 15 || maxX < 70 || maxX > 535 || minX > 485){
       // 左右の横揺れ線（subpaths 115..120）は反時計回り(area2 < 0)で格納されているため、向きを反転して保持
       const rev = pts.slice().reverse();
       const revD = ptsToSvgSubpathD(rev);
@@ -3383,6 +3473,8 @@ function computeClockwiseConvexHull(points){
   FUDA_SOLID_SIL_PATH_D = posSubs.join(' ');
   FUDA_SOLID_SIL_POLYS = posPolys;
   FUDA_SOLID_SIL_NORM_POLYS = toNorm(posPolys);
+  FUDA_SOLID_SIL_NOWOBBLE_PATH_D = posNoWobbleSubs.join(' ');
+  FUDA_SOLID_SIL_NOWOBBLE_NORM_POLYS = toNorm(posNoWobblePolys);
   FUDA_TEXT_HOLES_PATH_D = textHoleSubs.join(' ');
   FUDA_TEXT_HOLES_NORM_POLYS = toNorm(textHolePolys);
   FUDA_TEXT_ISLANDS_PATH_D = textIslandSubs.join(' ');
@@ -3397,6 +3489,7 @@ function computeClockwiseConvexHull(points){
   FUDA_SIDE_STRIPES_NORM_POLYS = toNorm(sideStripePolys);
   if(typeof Path2D !== 'undefined'){
     try{ if(FUDA_SOLID_SIL_PATH_D) FUDA_SOLID_SIL_PATH2D = new Path2D(FUDA_SOLID_SIL_PATH_D); }catch(e){}
+    try{ if(FUDA_SOLID_SIL_NOWOBBLE_PATH_D) FUDA_SOLID_SIL_NOWOBBLE_PATH2D = new Path2D(FUDA_SOLID_SIL_NOWOBBLE_PATH_D); }catch(e){}
     try{ if(FUDA_TEXT_HOLES_PATH_D) FUDA_TEXT_HOLES_PATH2D = new Path2D(FUDA_TEXT_HOLES_PATH_D); }catch(e){}
     try{ if(FUDA_TEXT_ISLANDS_PATH_D) FUDA_TEXT_ISLANDS_PATH2D = new Path2D(FUDA_TEXT_ISLANDS_PATH_D); }catch(e){}
     try{ if(FUDA_WOBBLE_HULL_PATH_D) FUDA_WOBBLE_HULL_PATH2D = new Path2D(FUDA_WOBBLE_HULL_PATH_D); }catch(e){}
@@ -3405,8 +3498,8 @@ function computeClockwiseConvexHull(points){
     try{ if(FUDA_SIDE_STRIPES_PATH_D) FUDA_SIDE_STRIPES_PATH2D = new Path2D(FUDA_SIDE_STRIPES_PATH_D); }catch(e){}
   }
 })();
-function getFudaSolidSilhouettePolys(){
-  return FUDA_SOLID_SIL_NORM_POLYS;
+function getFudaSolidSilhouettePolys(hideWobble){
+  return hideWobble && FUDA_SOLID_SIL_NOWOBBLE_NORM_POLYS.length ? FUDA_SOLID_SIL_NOWOBBLE_NORM_POLYS : FUDA_SOLID_SIL_NORM_POLYS;
 }
 function getFudaTextHolesPolys(){
   return FUDA_TEXT_HOLES_NORM_POLYS;
@@ -3464,6 +3557,7 @@ const DEF={
   logoFlipH:false, logoFlipV:false, logoAutoTrim:false,
   logoMono:false, logoColor:'#ffffff', logoTextColor:'#ffffff', logoTextColorMode:'auto',
   logoShakeColorMode:'normal', // 'normal' (標準) | 'invert_wobble' (左右揺れ線逆色) | 'invert_side' (側面斜線逆色) | 'invert_both' (両方逆色)
+  logoGapExpandMm:0, fudaSideStripeMode:'stripe', fudaHideWobble:false,
   logoOutlineMm:0, logoOutlineColor:'#ffffff', logoMaskShape:'none',
   logoPadMode:'none', logoPadColor:'#046e7e', logoPadColorMode:'bg',
   logoPadMarginMm:6, logoPadCornerMm:6, logoPadStrokeMm:0, logoPadStrokeColor:'#ffffff',
@@ -3627,6 +3721,7 @@ const LOGO_SLOT_KEYS = [
   'logoName','logoDataUrl','logoRemoveBg','logoBgMode','logoKeyColor',
   'logoInvert','logoThreshold','logoSoftness','logoDilate','logoContrast','logoOpacity',
   'logoFlipH','logoFlipV','logoAutoTrim','logoMono','logoColor','logoTextColor','logoTextColorMode','logoShakeColorMode',
+  'logoGapExpandMm','fudaSideStripeMode','fudaHideWobble',
   'logoOutlineMm','logoOutlineColor','logoMaskShape',
   'logoPadMode','logoPadColor','logoPadColorMode','logoPadMarginMm','logoPadCornerMm','logoPadStrokeMm','logoPadStrokeColor',
   'logo3dMode','logo3dDepthMm','logo3dAngle','logo3dColor',
@@ -5515,11 +5610,15 @@ function getProcessedLogoCanvas(cfg){
   const urlSig = (st.logoDataUrl && st.logoDataUrl.startsWith('__BUILTIN_'))
     ? st.logoDataUrl
     : (effectiveUrl.length + ':' + effectiveUrl.slice(0, 160) + ':' + effectiveUrl.slice(-48));
+  const gapExpMm = +(st.logoGapExpandMm || 0);
+  const fStripeMode = st.fudaSideStripeMode || 'stripe';
+  const fHideWob = !!st.fudaHideWobble;
   const key = [
     urlSig, st.logoBgMode||'white', st.logoKeyColor||'#ffffff', st.logoRemoveBg,
     st.logoInvert, st.logoThreshold, st.logoSoftness||18, st.logoDilate||0, st.logoContrast||0,
     st.logoFlipH, st.logoFlipV, st.logoAutoTrim, st.logoMono, st.logoColor,
-    st.logoOutlineMm||0, st.logoOutlineColor||'#ffffff', st.logoMaskShape||'none'
+    st.logoOutlineMm||0, st.logoOutlineColor||'#ffffff', st.logoMaskShape||'none',
+    gapExpMm, gapExpMm ? (st.logoSize||85) : 0, fStripeMode, fHideWob ? 1 : 0
   ].join('|');
   if(PROC_LOGO_MAP.has(key)) return PROC_LOGO_MAP.get(key);
 
@@ -5529,14 +5628,44 @@ function getProcessedLogoCanvas(cfg){
   let off = document.createElement('canvas');
   off.width = w; off.height = h;
   const ox = off.getContext('2d');
+  const isBuiltinFuda = (st.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || st.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || st.logoName === 'fuda_logo_teal' || st.logoName === 'fuda_logo_white');
   ox.save();
   ox.translate(st.logoFlipH ? w : 0, st.logoFlipV ? h : 0);
   ox.scale(st.logoFlipH ? -1 : 1, st.logoFlipV ? -1 : 1);
   ox.drawImage(rawImg, 0, 0, w, h);
+  if(isBuiltinFuda && (fStripeMode === 'solid' || fHideWob)){
+    const sxVb = w / FUDA_VB_W, syVb = h / FUDA_VB_H;
+    ox.save();
+    ox.scale(sxVb, syVb);
+    ox.translate(-FUDA_VB_X, -FUDA_VB_Y);
+    ox.lineJoin = 'round';
+    ox.lineCap = 'round';
+    if(fStripeMode === 'solid' && FUDA_SIDE_STRIPES_PATH2D){
+      const rawFill = (st.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || st.logoName === 'fuda_logo_white') ? '#ffffff' : '#00a3af';
+      ox.fillStyle = rawFill;
+      ox.strokeStyle = rawFill;
+      ox.lineWidth = 1.8;
+      if(FUDA_SIDE_FRAME_PATH2D){
+        ox.fill(FUDA_SIDE_FRAME_PATH2D, 'nonzero');
+        ox.stroke(FUDA_SIDE_FRAME_PATH2D);
+      }
+      ox.fill(FUDA_SIDE_STRIPES_PATH2D, 'nonzero');
+      ox.stroke(FUDA_SIDE_STRIPES_PATH2D);
+    }
+    if(fHideWob && FUDA_WOBBLE_LINES_PATH2D){
+      ox.globalCompositeOperation = 'destination-out';
+      ox.fillStyle = '#000000';
+      ox.strokeStyle = '#000000';
+      ox.lineWidth = 3.6;
+      ox.fill(FUDA_WOBBLE_LINES_PATH2D, 'nonzero');
+      ox.stroke(FUDA_WOBBLE_LINES_PATH2D);
+      ox.globalCompositeOperation = 'source-over';
+    }
+    ox.restore();
+  }
   ox.restore();
 
   const id = ox.getImageData(0,0,w,h), d = id.data;
-  const isBuiltinFuda = (st.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || st.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || st.logoName === 'fuda_logo_teal' || st.logoName === 'fuda_logo_white');
   const hUrl = (typeof HANTEN_LOGO_B64 !== 'undefined' && HANTEN_LOGO_B64) ? HANTEN_LOGO_B64 : '';
   const isHantenStd = (!st.logoMono && (st.logoDataUrl === '__BUILTIN_HANTEN__' || (hUrl && effectiveUrl === hUrl)));
   // 既に四隅が完全透過されている画像（SVGや透過PNG）の場合、白背景除去によるロゴ本体の消失やエッジ劣化を防ぐ
@@ -5667,6 +5796,94 @@ function getProcessedLogoCanvas(cfg){
           d[idx+2] = st.logoMono ? tb : 28;
         }
         d[idx+3] = bestA;
+      }
+    }
+  }
+  // 5-B. 実寸mm指定の内部すき間広げ（gapExpMm > 0: 白抜き文字・内部すき間を広げる）/ 細線太らせ（gapExpMm < 0）
+  if(Math.abs(gapExpMm) >= 0.05){
+    const logoSzMm = Math.max(10, st.logoSize || 85);
+    const pxPerMm = Math.max(w, h) / logoSzMm;
+    let shiftPx = Math.abs(gapExpMm) * 0.5 * pxPerMm;
+    if(isBuiltinFuda && gapExpMm > 0){
+      // 仲・羽・田・青・年・会の中抜き島が完全に消えない上限（SVG空間で片側3.6pt）で保護
+      shiftPx = Math.min(shiftPx, w * (3.6 / 538));
+    }else{
+      shiftPx = Math.min(shiftPx, Math.min(w, h) * 0.06);
+    }
+    if(shiftPx >= 0.35){
+      const INF = 30000;
+      const dt = new Int16Array(w * h);
+      let fgR = tr, fgG = tg, fgB = tb;
+      if(!st.logoMono){
+        let sr = 0, sg = 0, sb = 0, scnt = 0;
+        const stepS = Math.max(4, Math.floor((w * h) / 4000) * 4);
+        for(let i = 0; i < d.length; i += stepS){
+          if(d[i + 3] >= 160){ sr += d[i]; sg += d[i + 1]; sb += d[i + 2]; scnt++; }
+        }
+        if(scnt > 0){ fgR = Math.round(sr / scnt); fgG = Math.round(sg / scnt); fgB = Math.round(sb / scnt); }
+      }
+      if(gapExpMm > 0){
+        // すき間を広げる＝前景(alpha>=128)から背景(alpha<128)までの距離を測り、shiftPx以内を削る
+        for(let p = 0; p < w * h; p++) dt[p] = d[p * 4 + 3] < 128 ? 0 : INF;
+      }else{
+        // 細線を太らせる＝背景(alpha<128)から前景(alpha>=128)までの距離を測り、shiftPx以内を塗る
+        for(let p = 0; p < w * h; p++) dt[p] = d[p * 4 + 3] >= 128 ? 0 : INF;
+      }
+      for(let y = 0; y < h; y++){
+        const r = y * w;
+        for(let x = 0; x < w; x++){
+          const idx = r + x;
+          let v = dt[idx];
+          if(v === 0) continue;
+          if(x > 0 && dt[idx - 1] + 3 < v) v = dt[idx - 1] + 3;
+          if(y > 0){
+            const up = idx - w;
+            if(dt[up] + 3 < v) v = dt[up] + 3;
+            if(x > 0 && dt[up - 1] + 4 < v) v = dt[up - 1] + 4;
+            if(x + 1 < w && dt[up + 1] + 4 < v) v = dt[up + 1] + 4;
+          }
+          dt[idx] = v;
+        }
+      }
+      for(let y = h - 1; y >= 0; y--){
+        const r = y * w;
+        for(let x = w - 1; x >= 0; x--){
+          const idx = r + x;
+          let v = dt[idx];
+          if(v === 0) continue;
+          if(x + 1 < w && dt[idx + 1] + 3 < v) v = dt[idx + 1] + 3;
+          if(y + 1 < h){
+            const dn = idx + w;
+            if(dt[dn] + 3 < v) v = dt[dn] + 3;
+            if(x + 1 < w && dt[dn + 1] + 4 < v) v = dt[dn + 1] + 4;
+            if(x > 0 && dt[dn - 1] + 4 < v) v = dt[dn - 1] + 4;
+          }
+          dt[idx] = v;
+        }
+      }
+      const thresh = shiftPx * 3;
+      if(gapExpMm > 0){
+        for(let p = 0; p < w * h; p++){
+          const idx = p * 4;
+          if(d[idx + 3] === 0) continue;
+          const dist = dt[p];
+          if(dist <= thresh - 1.5){
+            d[idx + 3] = 0;
+          }else if(dist < thresh + 1.5){
+            d[idx + 3] = Math.round(d[idx + 3] * ((dist - (thresh - 1.5)) / 3));
+          }
+        }
+      }else{
+        for(let p = 0; p < w * h; p++){
+          const dist = dt[p];
+          if(dist === 0 || dist > thresh + 1.5) continue;
+          const idx = p * 4;
+          const newA = dist <= thresh - 1.5 ? 255 : Math.round(255 * ((thresh + 1.5 - dist) / 3));
+          if(newA > d[idx + 3]){
+            if(d[idx + 3] < 24){ d[idx] = fgR; d[idx + 1] = fgG; d[idx + 2] = fgB; }
+            d[idx + 3] = newA;
+          }
+        }
       }
     }
   }
@@ -6224,6 +6441,7 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
 
     if(pm === 'silhouette'){
       if(isBuiltinFuda && FUDA_SOLID_SIL_PATH2D){
+        const silP2d = (slot.fudaHideWobble && FUDA_SOLID_SIL_NOWOBBLE_PATH2D) ? FUDA_SOLID_SIL_NOWOBBLE_PATH2D : FUDA_SOLID_SIL_PATH2D;
         const sx = lw / FUDA_VB_W, sy = lh / FUDA_VB_H;
         const scAvg = (sx + sy) * 0.5;
         const baseCloseSvg = 12; // 札本体と3D側面の間の3unit溝＆横揺れ線を埋めて完全不透明シルエット化する基本幅
@@ -6240,8 +6458,8 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
             x.fillStyle = s === 4 ? 'rgba(0,0,0,0.32)' : padSideCol;
             x.strokeStyle = s === 4 ? 'rgba(0,0,0,0.32)' : padSideCol;
             x.lineWidth = baseCloseSvg + expandSvg + (strokeMm > 0 ? (strokeMm / Math.max(0.001, scAvg)) * 2 : 0);
-            x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero');
-            x.stroke(FUDA_SOLID_SIL_PATH2D);
+            x.fill(silP2d, 'nonzero');
+            x.stroke(silP2d);
             x.restore();
           }
         }
@@ -6256,14 +6474,14 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
           x.fillStyle = effStrokeColor;
           x.strokeStyle = effStrokeColor;
           x.lineWidth = baseCloseSvg + expandSvg + strokeSvg;
-          x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero');
-          x.stroke(FUDA_SOLID_SIL_PATH2D);
+          x.fill(silP2d, 'nonzero');
+          x.stroke(silP2d);
         }
         x.fillStyle = effPadColor;
         x.strokeStyle = effPadColor;
         x.lineWidth = baseCloseSvg + expandSvg;
-        x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero');
-        x.stroke(FUDA_SOLID_SIL_PATH2D);
+        x.fill(silP2d, 'nonzero');
+        x.stroke(silP2d);
         // 札本体とシルエット余白が同色（例：白札＋白シルエット背景）のときベタ塗りの塊にならないよう、内側にコントラスト下地を敷く
         const effBodyForSil = (l3dDepth > 0 && l3dMode === 'gold_block') ? '#eab308' : resolveFudaBodyHex(slot);
         if(hexColorDist(effBodyForSil, effPadColor) < 36){
@@ -6272,8 +6490,8 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
           x.fillStyle = innerCol;
           x.strokeStyle = innerCol;
           x.lineWidth = 8;
-          x.fill(FUDA_SOLID_SIL_PATH2D, 'nonzero');
-          x.stroke(FUDA_SOLID_SIL_PATH2D);
+          x.fill(silP2d, 'nonzero');
+          x.stroke(silP2d);
         }
         x.restore();
       }else if(slot.logoDataUrl === '__BUILTIN_TRACE_MARU__' && (marginMm > 0 || strokeMm > 0)){
@@ -6380,6 +6598,7 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
     // 札ロゴ内部の彫り文字「仲羽田・青年会」の7文字外周穴だけを指定した文字色（effTextCol）で塗りつぶす
     if(isBuiltinFuda && effTextCol && FUDA_TEXT_HOLES_PATH2D){
       const sx = lw / FUDA_VB_W, sy = lh / FUDA_VB_H;
+      const gExp = +(slot.logoGapExpandMm || 0);
       x.save();
       x.globalAlpha = alpha;
       x.translate(-lw / 2, -lh / 2);
@@ -6387,6 +6606,12 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
       x.translate(-FUDA_VB_X, -FUDA_VB_Y);
       x.fillStyle = effTextCol;
       x.fill(FUDA_TEXT_HOLES_PATH2D, 'nonzero');
+      if(gExp > 0){
+        x.strokeStyle = effTextCol;
+        x.lineJoin = 'round';
+        x.lineWidth = Math.min(7.2, (gExp / Math.max(10, sz)) * FUDA_VB_H);
+        x.stroke(FUDA_TEXT_HOLES_PATH2D);
+      }
       x.restore();
     }
     x.globalAlpha = alpha;
@@ -6407,7 +6632,7 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
       x.translate(-FUDA_VB_X, -FUDA_VB_Y);
       x.lineJoin = 'round';
       x.lineCap = 'round';
-      if((shakeMode === 'invert_wobble' || shakeMode === 'invert_both') && FUDA_WOBBLE_LINES_PATH2D){
+      if(!slot.fudaHideWobble && (shakeMode === 'invert_wobble' || shakeMode === 'invert_both') && FUDA_WOBBLE_LINES_PATH2D){
         x.fillStyle = secondaryCol;
         x.strokeStyle = secondaryCol;
         x.lineWidth = 1.4;
@@ -6420,8 +6645,10 @@ function drawSingleLogoSlotMm(x, slot, W, H, bgColor){
         x.lineWidth = 1.6;
         x.fill(FUDA_SIDE_FRAME_PATH2D, 'nonzero');
         x.stroke(FUDA_SIDE_FRAME_PATH2D);
-        x.fillStyle = primaryCol;
-        x.fill(FUDA_SIDE_STRIPES_PATH2D, 'nonzero');
+        if((slot.fudaSideStripeMode || 'stripe') !== 'solid'){
+          x.fillStyle = primaryCol;
+          x.fill(FUDA_SIDE_STRIPES_PATH2D, 'nonzero');
+        }
       }
       x.restore();
     }
@@ -7567,7 +7794,9 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
         effSlot.logoMono ? effSlot.logoColor : 'multi',
         effSlot.logoOutlineMm || 0, effSlot.logoOutlineColor || '#fff',
         effSlot.logoInvert ? 1 : 0, effSlot.logoBgMode || 'white',
-        effSlot.logoThreshold || 230, effSlot.logoKeyColor || '#fff'
+        effSlot.logoThreshold || 230, effSlot.logoKeyColor || '#fff',
+        effSlot.logoGapExpandMm || 0, (effSlot.logoGapExpandMm ? (effSlot.logoSize || 85) : 0),
+        effSlot.fudaSideStripeMode || 'stripe', effSlot.fudaHideWobble ? 1 : 0
       ].join(':');
       let monoHex = (effSlot.logoMono && !(effSlot.logoOutlineMm > 0)) ? (effSlot.logoColor || '#ffffff') : null;
       if(!monoHex && !(effSlot.logoOutlineMm > 0) && !effSlot.logoInvert){
@@ -7629,7 +7858,7 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
         };
 
         const pushFudaSilhouettePolys = (expandMm, fillCol) => {
-          const silPolys = getFudaSolidSilhouettePolys();
+          const silPolys = getFudaSolidSilhouettePolys(!!effSlot.fudaHideWobble);
           if(!silPolys || silPolys.length === 0) return;
           const vbDenom = (typeof FUDA_VB_W === 'number' && FUDA_VB_W > 0) ? FUDA_VB_W : 616;
           const baseCloseMm = (12 / vbDenom) * Math.max(lw, lh);
@@ -7643,15 +7872,17 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
         const pushFudaTextHolesPolys = (fillCol) => {
           const holePolys = getFudaTextHolesPolys();
           if(!holePolys || holePolys.length === 0) return;
+          const gExp = +(effSlot.logoGapExpandMm || 0);
+          const swH = gExp > 0 ? Math.min(gExp, (7.2 / 566.93) * Math.max(10, sz)) : 0;
           for(const hp of holePolys){
             const pts = hp.map(([nx, ny]) => tr((nx - 0.5) * lw, (ny - 0.5) * lh));
-            logoVectorItems.push({ type: 'poly', fill: fillCol, stroke: null, strokeWidth: 0, pts });
+            logoVectorItems.push({ type: 'poly', fill: fillCol, stroke: swH > 0 ? fillCol : null, strokeWidth: swH, pts });
           }
         };
 
         const pushFudaShakeInvertPolys = (shakeMode, primaryCol, secondaryCol) => {
           const vbDenom = (typeof FUDA_VB_W === 'number' && FUDA_VB_W > 0) ? FUDA_VB_W : 616;
-          if(shakeMode === 'invert_wobble' || shakeMode === 'invert_both'){
+          if(!effSlot.fudaHideWobble && (shakeMode === 'invert_wobble' || shakeMode === 'invert_both')){
             const wLines = getFudaWobbleLinesPolys();
             const swLine = (1.4 / vbDenom) * Math.max(lw, lh);
             for(const lp of (wLines || [])){
@@ -7667,9 +7898,11 @@ function buildAllOverlayVectorPrimitivesMm(cfg){
               const pts = fp.map(([nx, ny]) => tr((nx - 0.5) * lw, (ny - 0.5) * lh));
               logoVectorItems.push({ type: 'poly', fill: secondaryCol, stroke: secondaryCol, strokeWidth: swSide, pts });
             }
-            for(const sp of (sStripes || [])){
-              const pts = sp.map(([nx, ny]) => tr((nx - 0.5) * lw, (ny - 0.5) * lh));
-              logoVectorItems.push({ type: 'poly', fill: primaryCol, stroke: null, strokeWidth: 0, pts });
+            if((effSlot.fudaSideStripeMode || 'stripe') !== 'solid'){
+              for(const sp of (sStripes || [])){
+                const pts = sp.map(([nx, ny]) => tr((nx - 0.5) * lw, (ny - 0.5) * lh));
+                logoVectorItems.push({ type: 'poly', fill: primaryCol, stroke: null, strokeWidth: 0, pts });
+              }
             }
           }
         };
@@ -14101,7 +14334,7 @@ const ranges={
   seinenSpotX:v=>v+'%', seinenSpotY:v=>v+'%',
   crestSize:v=>v+' mm', crestAngle:v=>(v>0?'+':'')+v+'°', crestWeight:v=>(v>0?'+':'')+v+'%', crestX:v=>v+'%', crestY:v=>v+'%',
   logoThreshold:v=>v+'', logoSoftness:v=>v+'', logoDilate:v=>(v>0?'+':'')+v+' px', logoContrast:v=>(v>0?'+':'')+v, logoOpacity:v=>v+'%', logoOutlineMm:v=>v+' mm',
-  logoSize:v=>v+' mm', logoAngle:v=>(v>0?'+':'')+v+'°', logoX:v=>v+'%', logoY:v=>v+'%',
+  logoSize:v=>v+' mm', logoGapExpandMm:v=>(v>0?'+':'')+Number(v).toFixed(1)+' mm', logoAngle:v=>(v>0?'+':'')+v+'°', logoX:v=>v+'%', logoY:v=>v+'%',
   logoPadMarginMm:v=>v+' mm', logoPadStrokeMm:v=>v+' mm',
   logo3dDepthMm:v=>v+' mm',
   logoRepeatGapX:v=>v+' mm', logoRepeatGapY:v=>v+' mm', logoRepeatGridAngle:v=>(v>0?'+':'')+v+'°', logoRepeatAngleVar:v=>v+'°', logoRepeatSizeVar:v=>v+'%',
@@ -14412,7 +14645,7 @@ function update(relayout){
 const NO_LAYOUT_KEYS = new Set([
   'knockoutMm','crestSize','crestAngle','crestWeight','crestX','crestY',
   'logoThreshold','logoSoftness','logoDilate','logoContrast','logoOpacity','logoOutlineMm',
-  'logoSize','logoAngle','logoX','logoY','logoPadMarginMm','logoPadCornerMm','logoPadStrokeMm','logo3dDepthMm',
+  'logoSize','logoGapExpandMm','logoAngle','logoX','logoY','logoPadMarginMm','logoPadCornerMm','logoPadStrokeMm','logo3dDepthMm',
   'logoRepeatGapX','logoRepeatGapY','logoRepeatGridAngle','logoRepeatAngleVar','logoRepeatSizeVar',
   'textSize','fudaWidthPct','fudaHeightPct','fudaDepth3d','fudaOpacity','fudaNonTextOpacity','fudaSubOffX','fudaSubOffY','fudaSubAngle','textSpacing','textOutlineW','textAngle','textX','textY',
   'textRepeatGapX','textRepeatGapY','textRepeatGridAngle','textRepeatAngleVar','textRepeatSizeVar',
@@ -14869,11 +15102,18 @@ function downloadActiveLogoAsTransparentPng(){
   const shakeMode = isBuiltinFuda ? (S.logoShakeColorMode || 'normal') : 'normal';
   if(isBuiltinFuda && effTextCol && FUDA_TEXT_HOLES_PATH2D){
     const sx = outCv.width / FUDA_VB_W, sy = outCv.height / FUDA_VB_H;
+    const gExp = +(S.logoGapExpandMm || 0);
     ox.save();
     ox.scale(sx, sy);
     ox.translate(-FUDA_VB_X, -FUDA_VB_Y);
     ox.fillStyle = effTextCol;
     ox.fill(FUDA_TEXT_HOLES_PATH2D, 'nonzero');
+    if(gExp > 0){
+      ox.strokeStyle = effTextCol;
+      ox.lineJoin = 'round';
+      ox.lineWidth = Math.min(7.2, (gExp / Math.max(10, S.logoSize || 85)) * FUDA_VB_H);
+      ox.stroke(FUDA_TEXT_HOLES_PATH2D);
+    }
     ox.restore();
   }
   ox.drawImage(lcv, 0, 0);
@@ -14885,7 +15125,7 @@ function downloadActiveLogoAsTransparentPng(){
     ox.translate(-FUDA_VB_X, -FUDA_VB_Y);
     ox.lineJoin = 'round';
     ox.lineCap = 'round';
-    if((shakeMode === 'invert_wobble' || shakeMode === 'invert_both') && FUDA_WOBBLE_LINES_PATH2D){
+    if(!S.fudaHideWobble && (shakeMode === 'invert_wobble' || shakeMode === 'invert_both') && FUDA_WOBBLE_LINES_PATH2D){
       ox.fillStyle = secondaryCol;
       ox.strokeStyle = secondaryCol;
       ox.lineWidth = 1.4;
@@ -14898,8 +15138,10 @@ function downloadActiveLogoAsTransparentPng(){
       ox.lineWidth = 1.6;
       ox.fill(FUDA_SIDE_FRAME_PATH2D, 'nonzero');
       ox.stroke(FUDA_SIDE_FRAME_PATH2D);
-      ox.fillStyle = primaryCol;
-      ox.fill(FUDA_SIDE_STRIPES_PATH2D, 'nonzero');
+      if((S.fudaSideStripeMode || 'stripe') !== 'solid'){
+        ox.fillStyle = primaryCol;
+        ox.fill(FUDA_SIDE_STRIPES_PATH2D, 'nonzero');
+      }
     }
     ox.restore();
   }
@@ -17115,9 +17357,16 @@ var FT_P_LINE = 2.71, FT_P_GAP = 3.1;
 var FT_BASE = (location.pathname.indexOf('/daishou_arare_kit/') >= 0) ? '../fuda_towel/' : 'fuda_towel/';
 var pmLastMsgA = '';
 
+try{
+  if(!localStorage.getItem('haneda-default-pm-2mm-v1172')){
+    var oldPm = localStorage.getItem(PM_KEY_A);
+    if(!oldPm || oldPm === 'silk') localStorage.setItem(PM_KEY_A, 'chusen');
+    localStorage.setItem('haneda-default-pm-2mm-v1172', '1');
+  }
+}catch(e){}
 function pmCurA(){
   try{ var v = localStorage.getItem(PM_KEY_A); if(v && PM_A[v]) return v; }catch(e){}
-  return 'silk';
+  return 'chusen';
 }
 function isBuiltinFudaSlot(sl){
   return !!sl && (sl.logoDataUrl === '__BUILTIN_FUDA_TEAL__' || sl.logoDataUrl === '__BUILTIN_FUDA_WHITE__' || sl.logoName === 'fuda_logo_teal' || sl.logoName === 'fuda_logo_white' || /^fudatowel_/.test(sl.logoName || ''));
@@ -17202,11 +17451,15 @@ function pmRenderA(){
       var cur = (i === S.activeLogoSlot) ? S : sl;
       if(!isBuiltinFudaSlot(cur)) return;
       var h = cur.logoSize || 85;
-      var cls = h < minLogo ? 'ng' : (h >= rec ? 'ok' : 'cau');
-      var body = h < minLogo
-        ? ('文字の最細 ' + (h * FUDA_K_TEXT).toFixed(1) + 'mm（プリント目安は ' + minLogo + 'mm 以上。小サイズ配置・フルカラー出力時はそのまま利用可）')
-        : ('文字の最細 ' + (h * FUDA_K_TEXT).toFixed(1) + 'mm。縁の縞のすき間 ' + (h * FUDA_K_DETAIL).toFixed(1) + 'mm' + (h >= rec ? '' : '（縞は潰れて帯に見えることがあります。縞まで出すには ' + rec + 'mm 以上）'));
-      pmItemA(box, cls, '札ロゴ' + (slots.length > 1 ? (i + 1) : '') + ' ' + Math.round(h) + 'mm（目安下限 ' + minLogo + 'mm）', body);
+      var gExp = +(cur.logoGapExpandMm || 0);
+      var effTextMm = Math.max(0, h * FUDA_K_TEXT + gExp);
+      var isSolidSide = (cur.fudaSideStripeMode === 'solid');
+      var effStripeMm = isSolidSide ? 99 : Math.max(0, h * FUDA_K_DETAIL + gExp);
+      var cls = (effTextMm < p.G - 1e-4) ? 'ng' : ((isSolidSide || effStripeMm >= Math.max(p.L, p.G) - 1e-4) ? 'ok' : 'cau');
+      var body = (effTextMm < p.G - 1e-4)
+        ? ('文字のすき間 ' + effTextMm.toFixed(2) + 'mm（下限 ' + p.G + 'mm 未満。タブ2「内部すき間を広げる」またはサイズ調整で解消できます）')
+        : ('文字のすき間 ' + effTextMm.toFixed(2) + 'mm' + (isSolidSide ? '・側面ベタ影（縞潰れなし）' : ('・側面縞すき間 ' + effStripeMm.toFixed(2) + 'mm' + (effStripeMm >= Math.max(p.L, p.G) ? '' : '（縞潰れ防止はベタ影切替または ' + rec + 'mm 以上）'))));
+      pmItemA(box, cls, '札ロゴ' + (slots.length > 1 ? (i + 1) : '') + ' ' + Math.round(h) + 'mm' + (gExp ? ('（すき間' + (gExp > 0 ? '+' : '') + gExp.toFixed(1) + 'mm補正）') : ''), body);
     });
   }
   if(S.towelBorder) pmItemA(box, 'ok', 'タオル外周枠 ' + S.towelBorderWidth + 'mm（下限 ' + p.L + 'mm）', '');
@@ -17626,15 +17879,22 @@ function easyRenderImpl(){
   var ranges = {
     kakuAngle: function(v){ return (v > 0 ? '+' : '') + v + '°'; },
     kakuScale: function(v){ return v + '%'; },
-    kakuWeight: function(v){ return (v > 0 ? '+' + v : String(v)); },
+    kakuWeight: function(v){ return v + '%'; },
+    kakuInnerGap: function(v){ return v + '%'; },
+    kakuColGap: function(v){ return (v > 0 ? '+' : '') + v + '%'; },
+    kakuRowGap: function(v){ return (v > 0 ? '+' : '') + v + '%'; },
     count: function(v){ return v + '個'; },
     scale: function(v){ return v + '%'; },
+    gap: function(v){ return v + 'mm'; },
+    dmin: function(v){ return v + 'mm'; },
+    knockoutMm: function(v){ return v + 'mm'; },
     ararePadMarginMm: function(v){ return v + 'mm'; },
     ararePadStrokeMm: function(v){ return v + 'mm'; },
     arareOuterMarginMm: function(v){ return v + 'mm'; },
     arareOuterWidthMm: function(v){ return v + 'mm'; },
     arareOuterPadMm: function(v){ return v + 'mm'; },
     logoSize: function(v){ return v + 'mm'; },
+    logoGapExpandMm: function(v){ return (v > 0 ? '+' : '') + Number(v || 0).toFixed(1) + 'mm'; },
     logoAngle: function(v){ return (v > 0 ? '+' : '') + v + '°'; },
     logoRepeatGapX: function(v){ return v + 'mm'; },
     logoRepeatGapY: function(v){ return v + 'mm'; },
@@ -17643,14 +17903,19 @@ function easyRenderImpl(){
     logo3dDepthMm: function(v){ return v + 'mm'; }
   };
   var isLogoScattered = !!(S.showLogo && S.logoRepeatMode && S.logoRepeatMode !== 'none');
+  var usesKakuEasy = (mode !== 'arare' && mode !== 'scatter');
   var vis = {
-    kakuAngle: (mode !== 'arare'), kakuScale: (mode !== 'arare'), kakuWeight: (mode !== 'arare'), count: arare, scale: arare,
+    kakuAngle: (mode !== 'arare'), kakuScale: (mode !== 'arare'), kakuWeight: (mode !== 'arare'),
+    kakuInnerGap: usesKakuEasy, kakuColGap: usesKakuEasy, kakuRowGap: usesKakuEasy,
+    count: arare, scale: arare,
+    gap: arare, dmin: arare, knockoutMm: (mode === 'both'),
     ararePadMarginMm: hasArarePad && (S.ararePadMode === 'pad' || S.ararePadMode === 'padFrame'),
     ararePadStrokeMm: hasArarePad && (S.ararePadMode === 'frame' || S.ararePadMode === 'padFrame'),
     arareOuterMarginMm: hasArareOuter,
     arareOuterWidthMm: hasArareOuter,
     arareOuterPadMm: hasArareOuter,
     logoSize: !!S.showLogo,
+    logoGapExpandMm: !!S.showLogo,
     logoAngle: !!S.showLogo,
     logoRepeatGapX: isLogoScattered,
     logoRepeatGapY: isLogoScattered,
@@ -17666,6 +17931,146 @@ function easyRenderImpl(){
     if(document.activeElement !== inp) inp.value = S[k];
     r.querySelector('b').textContent = (ranges[k] ? ranges[k](S[k]) : String(S[k]));
   });
+  // ---- 最小すき間2mm（およびプリント方式基準）のリアルタイムアテンション表示 ----
+  var pmInfo = PM_A[pmCurA()] || { L: 2, G: 2, short: '注染' };
+  var reqGap = pmInfo.G || 0, reqLine = pmInfo.L || 0;
+  // 1) 仲羽田の最小すき間・線幅アテンション
+  if($('eKakuGapTuneBox')){
+    $('eKakuGapTuneBox').hidden = !usesKakuEasy;
+    if(usesKakuEasy){
+      var kg = kakuGeomA(S);
+      var kakuWarn = (reqGap > 0 && (kg.gapMm < reqGap - 1e-4 || kg.strokeMm < reqLine - 1e-4));
+      $('eKakuGapTuneBox').classList.toggle('is-warn', kakuWarn);
+      if($('eKakuGapBadge')){
+        $('eKakuGapBadge').className = 'gap-pill' + (kakuWarn ? ' warn' : '');
+        $('eKakuGapBadge').textContent = (kakuWarn ? '! 要注意 ' : '✓ ') + 'すき間 ' + kg.gapMm.toFixed(2) + 'mm / 線 ' + kg.strokeMm.toFixed(2) + 'mm';
+      }
+      if($('eKakuGapAttnMsg')){
+        $('eKakuGapAttnMsg').hidden = !kakuWarn;
+        if(kakuWarn && $('eKakuGapAttnText')){
+          var partsK = [];
+          if(kg.gapMm < reqGap - 1e-4) partsK.push('文字内のすき間 ' + kg.gapMm.toFixed(2) + 'mm（最小 ' + reqGap + 'mm 未満）');
+          if(kg.strokeMm < reqLine - 1e-4) partsK.push('線の太さ ' + kg.strokeMm.toFixed(2) + 'mm（最小 ' + reqLine + 'mm 未満）');
+          $('eKakuGapAttnText').textContent = '! ' + partsK.join('・') + '：下のスライダーまたは自動調整で広げられます。';
+        }
+      }
+    }
+  }
+  // 2) 大小あられ・柄境界の最小すき間アテンション
+  if($('eArareGapTuneBox')){
+    $('eArareGapTuneBox').hidden = !arare;
+    if(arare){
+      var arGapNg = reqGap > 0 && (S.gap < reqGap - 1e-4);
+      var arDminNg = reqLine > 0 && (S.dmin < reqLine - 1e-4);
+      var arKnockNg = reqGap > 0 && (mode === 'both') && ((S.knockoutMm || 0) < reqGap - 1e-4);
+      var arPadNg = reqGap > 0 && hasArarePad && (S.ararePadMode === 'pad' || S.ararePadMode === 'padFrame') && ((S.ararePadMarginMm || 0) < reqGap - 1e-4);
+      var arStrkNg = reqLine > 0 && hasArarePad && (S.ararePadMode === 'frame' || S.ararePadMode === 'padFrame') && ((S.ararePadStrokeMm || 0) < reqLine - 1e-4);
+      var arWarn = arGapNg || arDminNg || arKnockNg || arPadNg || arStrkNg;
+      $('eArareGapTuneBox').classList.toggle('is-warn', arWarn);
+      if($('eArareGapBadge')){
+        $('eArareGapBadge').className = 'gap-pill' + (arWarn ? ' warn' : '');
+        $('eArareGapBadge').textContent = (arWarn ? '! 要注意 ' : '✓ ') + '粒すき間 ' + S.gap + 'mm / 小粒 ' + S.dmin + 'mm' + (mode === 'both' ? (' / 抜き ' + (S.knockoutMm || 0) + 'mm') : '');
+      }
+      if($('eArareGapAttnMsg')){
+        $('eArareGapAttnMsg').hidden = !arWarn;
+        if(arWarn && $('eArareGapAttnText')){
+          var partsA = [];
+          if(arGapNg) partsA.push('粒どうしのすき間 ' + S.gap + 'mm');
+          if(arDminNg) partsA.push('小粒サイズ ' + S.dmin + 'mm');
+          if(arKnockNg) partsA.push('仲羽田まわりの抜き幅 ' + (S.knockoutMm || 0) + 'mm');
+          if(arPadNg) partsA.push('粒まわり抜き幅 ' + (S.ararePadMarginMm || 0) + 'mm');
+          if(arStrkNg) partsA.push('粒まわり枠線 ' + (S.ararePadStrokeMm || 0) + 'mm');
+          $('eArareGapAttnText').textContent = '! 最小 ' + reqGap + 'mm 未満（' + partsA.join('・') + '）：スライダーまたは自動調整で広げられます。';
+        }
+      }
+    }
+  }
+  // 3) ロゴ内部（札の文字・側面縞・揺れ線）の最小すき間アテンション＆部分調整
+  if($('eLogoGapTuneBox')){
+    var isFudaSlotCur = !!(S.showLogo && isBuiltinFudaSlot(S));
+    $('eLogoGapTuneBox').hidden = !S.showLogo;
+    if($('eFudaPartSwitches')) $('eFudaPartSwitches').style.display = isFudaSlotCur ? 'grid' : 'none';
+    if($('eFixLogoSize154Btn')) $('eFixLogoSize154Btn').hidden = !isFudaSlotCur;
+    if($('eFudaSideStripeBtns')){
+      var curStMode = S.fudaSideStripeMode || 'stripe';
+      $('eFudaSideStripeBtns').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.fstripe === curStMode)); });
+    }
+    if($('eFudaWobbleVisBtns')){
+      var curWob = S.fudaHideWobble ? 'hide' : 'show';
+      $('eFudaWobbleVisBtns').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.fwob === curWob)); });
+    }
+    if(S.showLogo){
+      var lSz = S.logoSize || 85;
+      var gExpCur = +(S.logoGapExpandMm || 0);
+      if(isFudaSlotCur){
+        var txtGapMm = Math.max(0, lSz * FUDA_K_TEXT + gExpCur);
+        var isSolidS = (S.fudaSideStripeMode === 'solid');
+        var strGapMm = isSolidS ? 99 : Math.max(0, lSz * FUDA_K_DETAIL + gExpCur);
+        var wobMm = S.fudaHideWobble ? 99 : Math.max(0, lSz * (3.2 / 566.93) - gExpCur * 0.5);
+        var txtNg = reqGap > 0 && txtGapMm < reqGap - 1e-3;
+        var strNg = reqGap > 0 && !isSolidS && strGapMm < reqGap - 1e-3;
+        var wobNg = reqLine > 0 && !S.fudaHideWobble && wobMm < reqLine - 1e-3;
+        var anyLogoWarn = txtNg || strNg || wobNg;
+        $('eLogoGapTuneBox').classList.toggle('is-warn', anyLogoWarn);
+        if($('eLogoGapBadge')){
+          $('eLogoGapBadge').className = 'gap-pill' + (anyLogoWarn ? ' warn' : '');
+          $('eLogoGapBadge').textContent = (anyLogoWarn ? '! 要注意 ' : '✓ ') + '文字すき間 ' + txtGapMm.toFixed(2) + 'mm' + (isSolidS ? '・ベタ影' : (' / 縞 ' + strGapMm.toFixed(2) + 'mm'));
+        }
+        if($('eLogoGapAttnMsg')){
+          $('eLogoGapAttnMsg').hidden = !anyLogoWarn;
+          if(anyLogoWarn && $('eLogoGapAttnText')){
+            var pL = [];
+            if(txtNg) pL.push('文字・紐のすき間 ' + txtGapMm.toFixed(2) + 'mm');
+            if(strNg) pL.push('側面縞のすき間 ' + strGapMm.toFixed(2) + 'mm');
+            if(wobNg) pL.push('揺れ線 ' + wobMm.toFixed(2) + 'mm');
+            var minHReq = reqGap > 0 ? fudaLogoMinA(pmInfo) : 154;
+            if($('eFixLogoSize154Btn')) $('eFixLogoSize154Btn').textContent = minHReq + 'mmにする';
+            $('eLogoGapAttnText').textContent = '! 最小 ' + reqGap + 'mm 未満（' + pL.join(' / ') + '）：サイズ維持のまま下の「内部すき間・ベタ影・揺れ線」で調整可能です。';
+          }
+        }
+      }else{
+        $('eLogoGapTuneBox').classList.remove('is-warn');
+        if($('eLogoGapBadge')){
+          $('eLogoGapBadge').className = 'gap-pill';
+          $('eLogoGapBadge').textContent = 'すき間補正 ' + (gExpCur > 0 ? '+' : '') + gExpCur.toFixed(1) + 'mm';
+        }
+        if($('eLogoGapAttnMsg')) $('eLogoGapAttnMsg').hidden = true;
+      }
+    }
+  }
+  // 4) ロゴうしろの柄抜き余白・外枠線の最小すき間アテンション
+  if($('eLogoPadGapAttn')){
+    var hasBgPattern = !(S.mode === 'scatter' && !S.useKoboBase);
+    var curPadM = hasPad ? (S.logoPadMarginMm ?? 6) : -1;
+    var curStrkM = hasPad ? (S.logoPadStrokeMm ?? 0) : 0;
+    var padMarginWarn = !!(S.showLogo && reqGap > 0 && hasBgPattern && (!hasPad || curPadM < reqGap - 1e-4));
+    var padStrokeWarn = !!(S.showLogo && reqLine > 0 && hasPad && curStrkM > 0 && curStrkM < reqLine - 1e-4);
+    $('eLogoPadGapAttn').hidden = !(padMarginWarn || padStrokeWarn);
+    if($('eFixLogoPad2mmBtn')) $('eFixLogoPad2mmBtn').hidden = !padMarginWarn;
+    if($('eFixLogoStroke2mmBtn')) $('eFixLogoStroke2mmBtn').hidden = !padStrokeWarn;
+    if((padMarginWarn || padStrokeWarn) && $('eLogoPadGapAttnText')){
+      var mArr = [];
+      if(padMarginWarn) mArr.push(!hasPad ? '背景透過のため柄とロゴが接触します' : ('外側の抜き余白が ' + curPadM + 'mm（最小 ' + reqGap + 'mm 未満）です'));
+      if(padStrokeWarn) mArr.push('外枠線の太さが ' + curStrkM + 'mm（最小 ' + reqLine + 'mm 未満）です');
+      $('eLogoPadGapAttnText').textContent = '! ' + mArr.join(' ／ ');
+    }
+  }
+  // 5) ロゴ総柄モード時の隣り合うロゴ間すき間アテンション
+  if($('eLogoRepeatGapAttn')){
+    var repWarn = false;
+    if(isLogoScattered && reqGap > 0){
+      var lSzR = S.logoSize || 85;
+      var gxR = S.logoRepeatGapX || 72, gyR = S.logoRepeatGapY || 72;
+      var gapXR = gxR - lSzR * 0.94, gapYR = gyR - lSzR;
+      var needX = (S.logoRepeatMode !== 'col') && (gapXR < reqGap - 1e-4);
+      var needY = (S.logoRepeatMode !== 'row') && (gapYR < reqGap - 1e-4);
+      repWarn = needX || needY;
+      if(repWarn && $('eLogoRepeatGapAttnText')){
+        $('eLogoRepeatGapAttnText').textContent = '! 隣り合うロゴ同士のすき間が最小 ' + reqGap + 'mm 未満です（重なり・潰れ注意）。';
+      }
+    }
+    $('eLogoRepeatGapAttn').hidden = !repWarn;
+  }
   var lg = 'none';
   if(S.showLogo){
     var u = S.logoDataUrl || '';
@@ -18378,6 +18783,143 @@ function easyRenderImpl(){
       var ch = pmApplyA();
       update(true);
       say(ch.length ? ('プリント下限に合わせて補正しました：' + ch.join('、')) : '現在の設定はすでにプリント方式の下限を満たしています。');
+    });
+  }
+  // ---- 各箇所の「最小すき間2mm」ワンタッチ部分調整ボタン群 ----
+  if($('eFixKaku2mmBtn')){
+    $('eFixKaku2mmBtn').addEventListener('click', function(){
+      var p = PM_A[pmCurA()] || { L: 2, G: 2 };
+      var reqL = p.L || 2, reqG = p.G || 2;
+      var g = kakuGeomA(S);
+      if(g.strokeMm < reqL - 1e-4){
+        S.kakuWeight = Math.min(220, Math.ceil(reqL / (0.15 * g.u)));
+        g = kakuGeomA(S);
+      }
+      if(g.gapMm < reqG - 1e-4){
+        var Gu = reqG / g.u;
+        var gr = Math.max(Gu / 18, (Gu + (g.t - 15) * 0.25) / 28.5, Gu / 28);
+        S.kakuInnerGap = Math.min(180, Math.ceil(gr * 100));
+        g = kakuGeomA(S);
+      }
+      // 180%でも足りない極小柄の場合は全体倍率を最小限だけ引き上げて2mmを確保
+      if(g.gapMm < reqG - 1e-4 || g.strokeMm < reqL - 1e-4){
+        var ratioNeed = Math.max(reqG / Math.max(0.05, g.gapMm), reqL / Math.max(0.05, g.strokeMm));
+        S.kakuScale = Math.min(300, Math.ceil(S.kakuScale * ratioNeed));
+      }
+      update(true);
+      say('仲羽田の文字内すき間・線幅を最小 ' + reqG + 'mm 以上に調整しました。');
+    });
+  }
+  if($('eFixArare2mmBtn')){
+    $('eFixArare2mmBtn').addEventListener('click', function(){
+      var p = PM_A[pmCurA()] || { L: 2, G: 2 };
+      var reqL = p.L || 2, reqG = p.G || 2;
+      if(S.gap < reqG) S.gap = reqG;
+      if(S.dmin < reqL) S.dmin = reqL;
+      if(S.mode === 'both' && (S.knockoutMm || 0) < reqG) S.knockoutMm = Math.max(reqG, 2.5);
+      if((S.ararePadMode === 'pad' || S.ararePadMode === 'padFrame') && (S.ararePadMarginMm || 0) < reqG) S.ararePadMarginMm = reqG;
+      if((S.ararePadMode === 'frame' || S.ararePadMode === 'padFrame') && (S.ararePadStrokeMm || 0) < reqL) S.ararePadStrokeMm = reqL;
+      update(true);
+      say('あられのすき間・小粒サイズを最小 ' + reqG + 'mm 以上に調整しました。');
+    });
+  }
+  if($('eFudaSideStripeBtns')){
+    $('eFudaSideStripeBtns').querySelectorAll('button').forEach(function(b){
+      b.addEventListener('click', function(){
+        S.fudaSideStripeMode = b.dataset.fstripe || 'stripe';
+        PROC_LOGO_KEY = '';
+        PROC_LOGO_MAP.clear();
+        syncActiveSlotFromS();
+        update(false);
+      });
+    });
+  }
+  if($('eFudaWobbleVisBtns')){
+    $('eFudaWobbleVisBtns').querySelectorAll('button').forEach(function(b){
+      b.addEventListener('click', function(){
+        S.fudaHideWobble = (b.dataset.fwob === 'hide');
+        PROC_LOGO_KEY = '';
+        PROC_LOGO_MAP.clear();
+        syncActiveSlotFromS();
+        update(false);
+      });
+    });
+  }
+  if($('eFixLogoParts2mmBtn')){
+    $('eFixLogoParts2mmBtn').addEventListener('click', function(){
+      var p = PM_A[pmCurA()] || { L: 2, G: 2 };
+      var reqG = p.G || 2;
+      var lSz = S.logoSize || 85;
+      if(isBuiltinFudaSlot(S)){
+        S.fudaSideStripeMode = 'solid';
+        if(lSz * (3.2 / 566.93) < (p.L || 2)) S.fudaHideWobble = true;
+        var baseTxtMm = lSz * FUDA_K_TEXT;
+        var needAdd = Math.max(0, reqG - baseTxtMm);
+        // 文字の中抜き島を潰さない安全範囲内で内部すき間を広げる
+        var maxSafeAdd = Math.min(2.5, lSz * (7.2 / 566.93));
+        S.logoGapExpandMm = +(Math.min(maxSafeAdd, Math.ceil(needAdd * 10) / 10)).toFixed(1);
+        // 極小サイズ（例: 40mm等）で安全上限でも2mmに届かない場合は届く最小サイズまで補う
+        if(lSz * FUDA_K_TEXT + S.logoGapExpandMm < reqG - 0.02){
+          var minSafeSz = Math.ceil(reqG / (FUDA_K_TEXT + 7.2 / 566.93));
+          S.logoSize = Math.max(lSz, minSafeSz);
+          S.logoGapExpandMm = +(Math.min(2.5, Math.ceil(Math.max(0, reqG - S.logoSize * FUDA_K_TEXT) * 10) / 10)).toFixed(1);
+        }
+      }else{
+        S.logoGapExpandMm = Math.min(2.5, +((S.logoGapExpandMm || 0) + 0.6).toFixed(1));
+      }
+      PROC_LOGO_KEY = '';
+      PROC_LOGO_MAP.clear();
+      syncActiveSlotFromS();
+      update(false);
+      say('札ロゴを小さいまま側面ベタ影・内部すき間 +' + S.logoGapExpandMm.toFixed(1) + 'mm に部分調整しました。');
+    });
+  }
+  if($('eFixLogoSize154Btn')){
+    $('eFixLogoSize154Btn').addEventListener('click', function(){
+      var p = PM_A[pmCurA()] || { L: 2, G: 2 };
+      var minH = p.G ? fudaLogoMinA(p) : 154;
+      S.logoSize = minH;
+      S.logoGapExpandMm = 0;
+      PROC_LOGO_KEY = '';
+      PROC_LOGO_MAP.clear();
+      syncActiveSlotFromS();
+      update(false);
+      say('札ロゴの大きさを ' + minH + 'mm に設定しました。');
+    });
+  }
+  if($('eFixLogoPad2mmBtn')){
+    $('eFixLogoPad2mmBtn').addEventListener('click', function(){
+      var p = PM_A[pmCurA()] || { L: 2, G: 2 };
+      var reqG = Math.max(2.0, p.G || 2.0);
+      S.logoPadMode = 'silhouette';
+      if(!S.logoPadColorMode || S.logoPadColorMode === 'none') S.logoPadColorMode = 'bg';
+      S.logoPadMarginMm = Math.max(reqG + 0.5, S.logoPadMarginMm || 0);
+      syncActiveSlotFromS();
+      update(false);
+      say('うしろの柄との抜き余白を ' + S.logoPadMarginMm + 'mm に設定しました。');
+    });
+  }
+  if($('eFixLogoStroke2mmBtn')){
+    $('eFixLogoStroke2mmBtn').addEventListener('click', function(){
+      var p = PM_A[pmCurA()] || { L: 2, G: 2 };
+      S.logoPadStrokeMm = Math.max(2.0, p.L || 2.0);
+      syncActiveSlotFromS();
+      update(false);
+      say('外枠線の太さを ' + S.logoPadStrokeMm + 'mm に設定しました。');
+    });
+  }
+  if($('eFixLogoRepeat2mmBtn')){
+    $('eFixLogoRepeat2mmBtn').addEventListener('click', function(){
+      var p = PM_A[pmCurA()] || { L: 2, G: 2 };
+      var reqG = Math.max(2.0, p.G || 2.0);
+      var lSz = S.logoSize || 85;
+      var needPitchX = Math.ceil(lSz * 0.94 + reqG + 2);
+      var needPitchY = Math.ceil(lSz + reqG + 2);
+      if((S.logoRepeatGapX || 72) < needPitchX) S.logoRepeatGapX = Math.min(260, needPitchX);
+      if((S.logoRepeatGapY || 72) < needPitchY) S.logoRepeatGapY = Math.min(260, needPitchY);
+      syncActiveSlotFromS();
+      update(false);
+      say('総柄ロゴの間隔を広げて最小 ' + reqG + 'mm 以上のすき間を確保しました。');
     });
   }
   $('eSavePng').addEventListener('click', function(){ $('savePng').click(); });
