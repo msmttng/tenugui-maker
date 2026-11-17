@@ -60,7 +60,7 @@ h2 span{font-weight:400;color:var(--ink-2);font-size:13px}
 .btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .dl-off .dl{display:none}
-.kobo-only{display:none}
+.kobo-only{display:inline-flex}
 .embedded .kobo-only{display:inline-flex}
 .embedded header h1 small{display:none}
 .kobo-link{display:none;font-size:12.5px;color:var(--ink-2);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
@@ -287,7 +287,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
 <div class="wrap" id="app">
   <header class="top">
     <h1>仲羽田青年会 タオル図案<small>フェイスタオル 340×850mm・手ぬぐい柄「仲羽田」×札ロゴ</small></h1>
-    <a class="kobo-link" href="../arare_app.html?v=1168">↗ 手ぬぐい工房（仲羽田＆あられ・ダボ）</a>
+    <a class="kobo-link" href="../arare_app.html?ui=easy&v=1169">↗ 手ぬぐい工房（仲羽田＆あられ・ダボ）</a>
     <div class="tabs" role="tablist">
       <button role="tab" aria-selected="true" data-tab="gal">図案一覧</button>
       <button role="tab" aria-selected="false" data-tab="ed">作成ツール</button>
@@ -401,7 +401,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
             </div>
           </div>
           <div class="row adv" data-hl="alignM"><label for="alignM">寄せ余白</label><input type="range" id="alignM" min="8" max="120" step="1" value="28"><input type="number" data-for="alignM" step="1" value="28"></div>
-          <label class="chk adv" data-hl="logo"><input type="checkbox" id="twin">左右対称に2つ置く</label>
+          <label class="chk" data-hl="logo"><input type="checkbox" id="twin">同じ札ロゴを複製して2つ置く（両端対称）</label>
         </fieldset>
 
         <fieldset id="knockFs" data-st="4">
@@ -675,7 +675,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
             <button class="btn pri dl" id="fsaveSvg" type="button">SVG を保存（Illustrator 用）</button>
             <button class="btn dl" id="fsavePng" type="button">PNG を保存</button>
             <button class="btn pri" id="fuseTowel" type="button">この札でタオルを作る</button>
-            <button class="btn pri kobo-only" id="ftoKobo" type="button">📥 手ぬぐい工房のロゴ保管棚へ</button>
+            <button class="btn pri kobo-only" id="ftoKobo" type="button">📥 作った札ロゴを手ぬぐい生地に入れる</button>
           </div>
           <div class="msg" id="fmsg"></div>
           <p class="hint">SVG は 188×200mm・アウトライン済み（塗りのみ）で、いままでの札ロゴと同じ大きさ・位置です。「この札でタオルを作る」を押すと、作成ツールの札がこの調整版に替わります。</p>
@@ -707,7 +707,14 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   // 手ぬぐい工房（arare_app.html）の中に開かれているとき
   var EMBED = window.parent !== window && QS.get('embedded') === '1';
   window.__ftEmbedded = EMBED;
-  window.__ftPost = function (msg) { if (EMBED) try { window.parent.postMessage(msg, '*'); } catch (e) {} };
+  window.__ftPost = function (msg) {
+    if (EMBED) {
+      try { window.parent.postMessage(msg, '*'); } catch (e) {}
+    } else if (msg && (msg.type === 'fudaTowel:logo' || msg.type === 'fudaTowel:fabric')) {
+      try { localStorage.setItem('haneda-pending-fudatowel-import-v1', JSON.stringify(msg)); } catch (e) {}
+      location.href = '../arare_app.html?ui=easy&v=' + Date.now();
+    }
+  };
   if (EMBED) document.documentElement.classList.add('embedded');
 
   /* ---------------- プリント方法ごとの下限 ----------------
