@@ -1332,8 +1332,16 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     var swap = (oldW > oldH) !== (c.W > c.H);
     cfg.W = c.W; cfg.H = c.H; cfg.patRot = c.patRot; cfg.patDY = c.patDY; cfg.patDX = 0;
     if (swap) {
+      var tmpF = fx; fx = fy; fy = tmpF;
       cfg.logoH = Math.min(cfg.logoH, Math.min(c.W, c.H) - 2 * Math.max(cfg.border, 20));
-      if (cfg.obiSide === 'bottom') cfg.obiSide = 'right'; else if (cfg.obiSide === 'right') cfg.obiSide = 'bottom';
+      if (cfg.obiSide === 'bottom') cfg.obiSide = 'right';
+      else if (cfg.obiSide === 'right') cfg.obiSide = 'bottom';
+      else if (cfg.obiSide === 'top') cfg.obiSide = 'left';
+      else if (cfg.obiSide === 'left') cfg.obiSide = 'top';
+      if (cfg.winDX || cfg.winDY) { var tw = cfg.winDX || 0; cfg.winDX = cfg.winDY || 0; cfg.winDY = tw; }
+      if (cfg.twin && c.W < c.H && cfg.logoH * LOGO_R * 2 > c.W - 2 * Math.max(cfg.border, 16)) {
+        cfg.twin = false;
+      }
     }
     cfg.logoX = +(fx * c.W).toFixed(1); cfg.logoY = +(fy * c.H).toFixed(1);
     if (swap && cfg.style === 'maru') {          // 丸窓が短い辺に収まるように
