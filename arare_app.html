@@ -7,6 +7,9 @@
 </head>
 <body>
 <title>仲羽田（江戸角字）＆ 大小あられ 手ぬぐい配置・ダボ仕立て・入稿データ作成</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Hina+Mincho&family=Kaisei+Decol:wght@700&family=Klee+One:wght@600&family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@700;900&family=Reggae+One&family=Shippori+Mincho+B1:wght@600;800&family=Yuji+Syuku&family=Zen+Antique+Soft&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Zen+Maru+Gothic:wght@700;900&family=Zen+Old+Mincho:wght@700;900&display=swap">
 <script>(function(){var m='easy';try{m=localStorage.getItem('tenugui-ui-mode')||'easy';}catch(e){}var q=/[?&]ui=(easy|full)/.exec(location.search);if(q)m=q[1];if(m!=='full')document.documentElement.classList.add('ui-easy');})();</script>
@@ -285,7 +288,10 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
   <aside class="panel">
     <header>
       <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
-        <h1><span class="full-only">手ぬぐい工房 統合スタジオ</span><span class="easy-only">手ぬぐい工房</span></h1>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <h1><span class="full-only">手ぬぐい工房 統合スタジオ</span><span class="easy-only">手ぬぐい工房</span></h1>
+          <button type="button" id="forceCacheReloadBtn" class="mini-btn" style="font-size:10.5px;padding:2px 7px;border-radius:999px;background:var(--ai-soft);color:var(--ai);border-color:var(--ai);font-weight:800" title="ブラウザの古いキャッシュを破棄して最新版を読み込みます">v1.16.8 最新読込</button>
+        </div>
         <div class="uimode" role="group" aria-label="表示の切り替え">
           <button type="button" data-ui="easy" aria-pressed="true">かんたん</button>
           <button type="button" data-ui="full" aria-pressed="false">詳細</button>
@@ -339,6 +345,18 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           <button type="button" data-ep="both_haneda"><i>仲<em class="dots"></em></i><span>仲羽田＋あられ<small>3文字角字とあられ</small></span></button>
           <button type="button" data-ep="both_seinenkai"><i>青<em class="dots"></em></i><span>青年会＋あられ<small>6文字角字とあられ</small></span></button>
           <button type="button" data-ep="fuda" class="wide"><i class="fuda">札</i><span>札入りタオル図案から選ぶ<small>23案から写真で選択・手ぬぐい寸法にも対応</small></span></button>
+        </div>
+        <!-- ステップ1直下に「仲羽田の回転角度」を常時表示（スクロールなしで一番上ですぐ回せる） -->
+        <div class="e-subbox" id="eStep1KakuRotBox" style="padding:7px 10px;gap:5px">
+          <div class="e-range" data-for="kakuAngle"><span>仲羽田の回転角度</span><input type="range" min="-180" max="180" step="0.5"><b></b></div>
+          <div class="e-chips small" id="eStep1AnglePresets" style="grid-template-columns:repeat(6,1fr)">
+            <button type="button" data-ang="-30.15" style="padding:4px 2px">元柄−30°</button>
+            <button type="button" data-ang="0" style="padding:4px 2px">水平 0°</button>
+            <button type="button" data-ang="-45" style="padding:4px 2px">−45°</button>
+            <button type="button" data-ang="90" style="padding:4px 2px">縦 90°</button>
+            <button type="button" data-step="-5" style="padding:4px 2px">−5°</button>
+            <button type="button" data-step="5" style="padding:4px 2px">+5°</button>
+          </div>
         </div>
       </div>
       <div class="e-step" id="eStep2">
@@ -14234,6 +14252,7 @@ const NO_LAYOUT_KEYS = new Set([
 for(const k in ranges){
   if($(k)) $(k).addEventListener('input',e=>{
     S[k]=parseFloat(e.target.value);
+    if((k==='kakuAngle'||k==='kakuScale'||k==='kakuWeight') && S.mode==='scatter'){ S.useKoboBase=false; S.mode='haneda'; }
     if(k==='knockoutMm' && S.mode!=='both') S.mode='both';
     if((k==='logoPadMarginMm' || k==='logoPadStrokeMm') && (!S.logoPadMode || S.logoPadMode==='none')){
       S.logoPadMode = 'silhouette';
@@ -17351,18 +17370,20 @@ function easyRenderImpl(){
   var hasPad = !!(S.showLogo && S.logoPadMode && S.logoPadMode !== 'none');
   var hasArarePad = !!(arare && S.ararePadMode && S.ararePadMode !== 'none');
   var hasArareOuter = !!(arare && S.arareOuterMode && S.arareOuterMode !== 'none');
-  $('eTuneStep').hidden = mode === 'scatter';
+  $('eTuneStep').hidden = false;
   var tuneNavBtn = document.querySelector('#eStepNav button[data-jump="eTuneStep"]');
-  if(tuneNavBtn){ tuneNavBtn.disabled = (mode === 'scatter'); tuneNavBtn.style.opacity = (mode === 'scatter') ? '0.45' : ''; }
+  if(tuneNavBtn){ tuneNavBtn.disabled = false; tuneNavBtn.style.opacity = ''; }
   $('eColorNote').hidden = mode !== 'scatter';
-  $('eStyles').hidden = !kaku;
-  if($('eKakuAnglePresets')){
-    $('eKakuAnglePresets').hidden = !kaku;
-    $('eKakuAnglePresets').querySelectorAll('button').forEach(function(b){
+  $('eStyles').hidden = !kaku && mode !== 'scatter';
+  if($('eStep1KakuRotBox')) $('eStep1KakuRotBox').hidden = (mode === 'arare');
+  [$('eKakuAnglePresets'), $('eStep1AnglePresets')].forEach(function(box){
+    if(!box) return;
+    if(box.id === 'eKakuAnglePresets') box.hidden = (mode === 'arare');
+    box.querySelectorAll('button').forEach(function(b){
       var hasAng = b.dataset.ang !== undefined;
-      b.setAttribute('aria-pressed', String(hasAng && Math.abs(parseFloat(b.dataset.ang) - (S.kakuAngle || 0)) < 0.06));
+      b.setAttribute('aria-pressed', String((kaku || mode === 'scatter') && hasAng && Math.abs(parseFloat(b.dataset.ang) - (S.kakuAngle || 0)) < 0.06));
     });
-  }
+  });
   if($('eArareColorBox')) $('eArareColorBox').hidden = !arare;
   if($('eDotCol') && $('eDotCol').parentElement) $('eDotCol').parentElement.hidden = !arare;
   if($('eArareFrameBox')) $('eArareFrameBox').hidden = !arare;
@@ -17422,7 +17443,7 @@ function easyRenderImpl(){
     logo3dDepthMm: function(v){ return v + 'mm'; }
   };
   var vis = {
-    kakuAngle: kaku, kakuScale: kaku, kakuWeight: kaku, count: arare, scale: arare,
+    kakuAngle: (mode !== 'arare'), kakuScale: (mode !== 'arare'), kakuWeight: (mode !== 'arare'), count: arare, scale: arare,
     ararePadMarginMm: hasArarePad && (S.ararePadMode === 'pad' || S.ararePadMode === 'padFrame'),
     ararePadStrokeMm: hasArarePad && (S.ararePadMode === 'frame' || S.ararePadMode === 'padFrame'),
     arareOuterMarginMm: hasArareOuter,
@@ -17578,12 +17599,20 @@ function easyRenderImpl(){
 }
 (function(){
   if(!$('easyPanel')) return;
+  if($('forceCacheReloadBtn')){
+    $('forceCacheReloadBtn').addEventListener('click', function(){
+      var u = new URL(location.href);
+      u.searchParams.set('ui', easyIsOn() ? 'easy' : 'full');
+      u.searchParams.set('v', String(Date.now()));
+      location.replace(u.toString());
+    });
+  }
   document.querySelectorAll('.uimode button').forEach(function(b){ b.addEventListener('click', function(){
     if(b.dataset.ui === 'full') openFocusedDetailStep('all');
     easySetMode(b.dataset.ui, true);
   }); });
   document.querySelectorAll('#easyPanel [data-emore]').forEach(function(b){ b.addEventListener('click', function(){
-    easySetMode('full', true);
+    easySetMode('full', false);
     openFocusedDetailStep(b.dataset.emore || 'all');
   }); });
   $('ePat').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
@@ -17749,8 +17778,9 @@ function easyRenderImpl(){
     if(c) c.click();
     if(keep === 'both' && S.mode !== 'both'){ S.mode = 'both'; update(true); }
   }); });
-  if($('eKakuAnglePresets')){
-    $('eKakuAnglePresets').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+  [$('eKakuAnglePresets'), $('eStep1AnglePresets')].forEach(function(box){
+    if(!box) return;
+    box.querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       if(b.dataset.ang !== undefined){
         S.kakuAngle = parseFloat(b.dataset.ang);
       }else if(b.dataset.step !== undefined){
@@ -17759,10 +17789,10 @@ function easyRenderImpl(){
         if(next < -180) next += 360;
         S.kakuAngle = next;
       }
-      if(S.mode === 'arare' || S.mode === 'scatter') S.mode = 'haneda';
+      if(S.mode === 'arare' || S.mode === 'scatter'){ S.useKoboBase = false; S.mode = 'haneda'; }
       update(true);
     }); });
-  }
+  });
   if($('eLogoAnglePresets')){
     $('eLogoAnglePresets').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       if(b.dataset.lang !== undefined){
