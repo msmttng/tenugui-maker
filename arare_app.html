@@ -501,13 +501,24 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         </div>
         <p class="e-note" id="eColorNote" hidden>札入りタオル図案を入れているときは、図案の色は「札入りタオル図案から選ぶ」を開いて変えます。</p>
       </div>
-      <div class="e-step is-collapsed" id="eTuneStep">
-        <div class="e-h"><b>4</b><span>柄のサイズ・線の太さ調整</span><button type="button" class="e-more" data-emore="step4">詳しく</button></div>
+      <div class="e-step" id="eTuneStep">
+        <div class="e-h"><b>4</b><span>柄の角度・サイズ・線の太さ調整</span><button type="button" class="e-more" data-emore="step4">詳しく</button></div>
         <div class="e-chips small" id="eStyles" style="grid-template-columns:repeat(4,1fr)">
           <button type="button" data-style="std">標準</button>
           <button type="button" data-style="fine">細め・細かく</button>
           <button type="button" data-style="bold">太め・大きく</button>
           <button type="button" data-style="horiz">横に並べる</button>
+        </div>
+        <div class="e-range" data-for="kakuAngle"><span>仲羽田の角度</span><input type="range" min="-180" max="180" step="0.5"><b></b></div>
+        <div class="e-chips small" id="eKakuAnglePresets" style="grid-template-columns:repeat(4,1fr)">
+          <button type="button" data-ang="-30.15">元柄 −30°</button>
+          <button type="button" data-ang="0">水平 0°</button>
+          <button type="button" data-ang="-45">斜め −45°</button>
+          <button type="button" data-ang="90">縦 90°</button>
+          <button type="button" data-ang="30.15">逆斜 +30°</button>
+          <button type="button" data-ang="45">逆斜 +45°</button>
+          <button type="button" data-step="-5">−5°回転</button>
+          <button type="button" data-step="5">+5°回転</button>
         </div>
         <div class="e-range" data-for="kakuScale"><span>柄の大きさ</span><input type="range" min="25" max="300" step="1"><b></b></div>
         <div class="e-range" data-for="kakuWeight"><span>線の太さ</span><input type="range" min="20" max="220" step="1"><b></b></div>
@@ -576,6 +587,15 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
           <div id="eLogoShelfList" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;max-height:265px;overflow-y:auto;padding:2px 1px"></div>
         </div>
         <div class="e-range" data-for="logoSize" id="eLogoSize"><span>ロゴの大きさ</span><input type="range" min="6" max="340" step="1"><b></b></div>
+        <div class="e-range" data-for="logoAngle" id="eLogoAngle"><span>ロゴの回転角度</span><input type="range" min="-180" max="180" step="1"><b></b></div>
+        <div class="e-chips small" id="eLogoAnglePresets" style="grid-template-columns:repeat(6,1fr)" hidden>
+          <button type="button" data-lang="-90" style="padding:4px 2px">−90°</button>
+          <button type="button" data-lstep="-15" style="padding:4px 2px">−15°</button>
+          <button type="button" data-lang="0" style="padding:4px 2px">0°正面</button>
+          <button type="button" data-lstep="15" style="padding:4px 2px">+15°</button>
+          <button type="button" data-lang="90" style="padding:4px 2px">+90°</button>
+          <button type="button" data-lang="180" style="padding:4px 2px">180°</button>
+        </div>
         <div class="e-subbox" id="eLogoPadBox" hidden>
           <div class="e-sublbl"><span>札・ロゴの色と透過</span><b id="eActiveLogoNameBadge" style="font-size:10.5px;color:#046e7e;background:#e0f2fe;padding:2px 7px;border-radius:999px;font-weight:700">選択中</b></div>
           <!-- ① 本体の色 -->
@@ -1438,6 +1458,14 @@ html.ui-easy .view-bar{grid-template-columns:repeat(4,minmax(0,1fr))}
         </div>
         <div class="row"><label for="logoSize">ロゴの大きさ</label><input type="range" id="logoSize" min="6" max="340" step="1" value="85"><output for="logoSize" id="logoSize-o"></output></div>
         <div class="row"><label for="logoAngle">ロゴの回転角度</label><input type="range" id="logoAngle" min="-180" max="180" step="1" value="0"><output for="logoAngle" id="logoAngle-o"></output></div>
+        <div class="chips" id="dLogoAnglePresets" style="gap:4px;margin-top:-2px">
+          <button type="button" class="mini-btn" data-lang="-90">−90°</button>
+          <button type="button" class="mini-btn" data-lstep="-15">−15°</button>
+          <button type="button" class="mini-btn" data-lang="0">0°(正面)</button>
+          <button type="button" class="mini-btn" data-lstep="15">+15°</button>
+          <button type="button" class="mini-btn" data-lang="90">+90°</button>
+          <button type="button" class="mini-btn" data-lang="180">180°</button>
+        </div>
         <div class="row"><label for="logoX">ロゴの横位置</label><input type="range" id="logoX" min="5" max="95" step="0.5" value="50"><output for="logoX" id="logoX-o"></output></div>
         <div class="row"><label for="logoY">ロゴの縦位置</label><input type="range" id="logoY" min="5" max="95" step="0.5" value="28"><output for="logoY" id="logoY-o"></output></div>
 
@@ -14140,6 +14168,7 @@ function syncUI(){
   for(const b of document.querySelectorAll('#edge .chip')) b.setAttribute('aria-pressed',(b.dataset.v===S.edge)+'');
   for(const b of document.querySelectorAll('#shape .chip')) b.setAttribute('aria-pressed',(b.dataset.v===S.shape)+'');
   for(const b of document.querySelectorAll('#anglePresets .chip')) b.setAttribute('aria-pressed',(Math.abs(parseFloat(b.dataset.ang)-S.kakuAngle)<0.05)+'');
+  for(const b of document.querySelectorAll('#dLogoAnglePresets button[data-lang]')) b.setAttribute('aria-pressed',(Math.abs(parseFloat(b.dataset.lang)-(S.logoAngle||0))<0.5)+'');
   for(const b of document.querySelectorAll('#ararePadQuickChips button[data-apmode]')){
     b.setAttribute('aria-pressed', (b.dataset.apmode === (S.ararePadMode || 'none')) + '');
   }
@@ -14417,6 +14446,19 @@ document.querySelectorAll('#anglePresets .chip').forEach(b=>b.addEventListener('
     S.kakuAngle=next;
   }
   update(true);
+}));
+document.querySelectorAll('#dLogoAnglePresets button').forEach(b=>b.addEventListener('click',()=>{
+  if(b.dataset.lang!==undefined){
+    S.logoAngle=parseFloat(b.dataset.lang);
+  }else if(b.dataset.lstep!==undefined){
+    let next=Math.round((S.logoAngle||0)+parseFloat(b.dataset.lstep));
+    if(next>180) next-=360;
+    if(next<-180) next+=360;
+    S.logoAngle=next;
+  }
+  S.showLogo=true;
+  syncActiveSlotFromS();
+  update(false);
 }));
 document.querySelectorAll('#zoomChips .chip[data-zoom]').forEach(b=>b.addEventListener('click',()=>{
   const z = parseFloat(b.dataset.zoom)||1;
@@ -17314,6 +17356,13 @@ function easyRenderImpl(){
   if(tuneNavBtn){ tuneNavBtn.disabled = (mode === 'scatter'); tuneNavBtn.style.opacity = (mode === 'scatter') ? '0.45' : ''; }
   $('eColorNote').hidden = mode !== 'scatter';
   $('eStyles').hidden = !kaku;
+  if($('eKakuAnglePresets')){
+    $('eKakuAnglePresets').hidden = !kaku;
+    $('eKakuAnglePresets').querySelectorAll('button').forEach(function(b){
+      var hasAng = b.dataset.ang !== undefined;
+      b.setAttribute('aria-pressed', String(hasAng && Math.abs(parseFloat(b.dataset.ang) - (S.kakuAngle || 0)) < 0.06));
+    });
+  }
   if($('eArareColorBox')) $('eArareColorBox').hidden = !arare;
   if($('eDotCol') && $('eDotCol').parentElement) $('eDotCol').parentElement.hidden = !arare;
   if($('eArareFrameBox')) $('eArareFrameBox').hidden = !arare;
@@ -17356,6 +17405,7 @@ function easyRenderImpl(){
     });
   }
   var ranges = {
+    kakuAngle: function(v){ return (v > 0 ? '+' : '') + v + '°'; },
     kakuScale: function(v){ return v + '%'; },
     kakuWeight: function(v){ return (v > 0 ? '+' + v : String(v)); },
     count: function(v){ return v + '個'; },
@@ -17366,18 +17416,20 @@ function easyRenderImpl(){
     arareOuterWidthMm: function(v){ return v + 'mm'; },
     arareOuterPadMm: function(v){ return v + 'mm'; },
     logoSize: function(v){ return v + 'mm'; },
+    logoAngle: function(v){ return (v > 0 ? '+' : '') + v + '°'; },
     logoPadMarginMm: function(v){ return v + 'mm'; },
     logoPadStrokeMm: function(v){ return v + 'mm'; },
     logo3dDepthMm: function(v){ return v + 'mm'; }
   };
   var vis = {
-    kakuScale: kaku, kakuWeight: kaku, count: arare, scale: arare,
+    kakuAngle: kaku, kakuScale: kaku, kakuWeight: kaku, count: arare, scale: arare,
     ararePadMarginMm: hasArarePad && (S.ararePadMode === 'pad' || S.ararePadMode === 'padFrame'),
     ararePadStrokeMm: hasArarePad && (S.ararePadMode === 'frame' || S.ararePadMode === 'padFrame'),
     arareOuterMarginMm: hasArareOuter,
     arareOuterWidthMm: hasArareOuter,
     arareOuterPadMm: hasArareOuter,
     logoSize: !!S.showLogo,
+    logoAngle: !!S.showLogo,
     logoPadMarginMm: hasPad,
     logoPadStrokeMm: hasPad,
     logo3dDepthMm: !!(S.showLogo && S.logo3dMode && S.logo3dMode !== 'none')
@@ -17401,6 +17453,13 @@ function easyRenderImpl(){
   }
   $('eLogo').querySelectorAll('button').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.el === lg)); });
   $('eLogoNote').hidden = !S.showLogo;
+  if($('eLogoAnglePresets')){
+    $('eLogoAnglePresets').hidden = !S.showLogo;
+    $('eLogoAnglePresets').querySelectorAll('button').forEach(function(b){
+      var hasLAng = b.dataset.lang !== undefined;
+      b.setAttribute('aria-pressed', String(hasLAng && Math.abs(parseFloat(b.dataset.lang) - (S.logoAngle || 0)) < 0.5));
+    });
+  }
   if($('eLogoPadBox')) $('eLogoPadBox').hidden = !S.showLogo;
   if($('eActiveLogoNameBadge') && S.showLogo){
     var rawCurNm = S.logoName || '';
@@ -17690,6 +17749,35 @@ function easyRenderImpl(){
     if(c) c.click();
     if(keep === 'both' && S.mode !== 'both'){ S.mode = 'both'; update(true); }
   }); });
+  if($('eKakuAnglePresets')){
+    $('eKakuAnglePresets').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      if(b.dataset.ang !== undefined){
+        S.kakuAngle = parseFloat(b.dataset.ang);
+      }else if(b.dataset.step !== undefined){
+        var next = Math.round((S.kakuAngle + parseFloat(b.dataset.step)) * 100) / 100;
+        if(next > 180) next -= 360;
+        if(next < -180) next += 360;
+        S.kakuAngle = next;
+      }
+      if(S.mode === 'arare' || S.mode === 'scatter') S.mode = 'haneda';
+      update(true);
+    }); });
+  }
+  if($('eLogoAnglePresets')){
+    $('eLogoAnglePresets').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
+      if(b.dataset.lang !== undefined){
+        S.logoAngle = parseFloat(b.dataset.lang);
+      }else if(b.dataset.lstep !== undefined){
+        var nextL = Math.round((S.logoAngle || 0) + parseFloat(b.dataset.lstep));
+        if(nextL > 180) nextL -= 360;
+        if(nextL < -180) nextL += 360;
+        S.logoAngle = nextL;
+      }
+      S.showLogo = true;
+      syncActiveSlotFromS();
+      update(false);
+    }); });
+  }
   if($('eArarePadMode')){
     $('eArarePadMode').querySelectorAll('button').forEach(function(b){ b.addEventListener('click', function(){
       var m = b.dataset.eap || 'none';
