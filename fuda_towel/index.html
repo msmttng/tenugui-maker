@@ -359,11 +359,14 @@ html.easy #ed .stage .bar{justify-content:flex-start}
 
         <fieldset id="pmFs" data-st="6">
           <legend data-n="6" data-e="プリント方法">プリント方法（印刷できる太さ）</legend>
-          <select id="pmethod" aria-label="プリント方法"></select>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+            <select id="pmethod" aria-label="プリント方法" style="flex:1"></select>
+            <button class="btn" type="button" id="pmApplyBtn" style="font-size:11.5px;padding:4px 8px">下限値に揃える</button>
+          </div>
           <p class="hint" id="pmRule"></p>
           <div id="pmStatus" class="pmst"></div>
           <div class="msg" id="pmMsg" role="status"></div>
-          <p class="hint adv">選んだ方法で印刷できない細さにならないよう、札の高さ・柄の大きさ・柄との間・フチや線の太さに下限をかけます。数値は各社の入稿ルール（線とすき間の最小幅）をもとにした目安です。最終確認は業者のデータチェックで。</p>
+          <p class="hint adv">選んだプリント方法の目安（線とすき間の最小幅）を判定します。必要なときだけ「下限値に揃える」で一括調整できます。</p>
         </fieldset>
 
         <fieldset data-st="5">
@@ -384,7 +387,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
         <fieldset data-st="3">
           <legend data-n="3" data-e="札の大きさ・位置・傾き">札（ロゴ）</legend>
           <div class="row2" style="margin-top:0"><span id="logoSrc" style="color:var(--ink-2)">使っている札：採用ロゴ</span><button class="btn" id="logoReset" type="button" hidden>採用ロゴに戻す</button></div>
-          <div class="row" data-hl="logo"><label for="logoH">高さ mm</label><input type="range" id="logoH" min="40" max="330" step="1"><input type="number" data-for="logoH" step="1"></div>
+          <div class="row" data-hl="logo"><label for="logoH">高さ mm</label><input type="range" id="logoH" min="15" max="330" step="1"><input type="number" data-for="logoH" step="1"></div>
           <div class="row adv" data-hl="logo"><label for="logoX">中心 左右</label><input type="range" id="logoX" min="0" max="850" step="0.5"><input type="number" data-for="logoX" step="0.5"></div>
           <div class="row adv" data-hl="logo"><label for="logoY">中心 上下</label><input type="range" id="logoY" min="0" max="850" step="0.5"><input type="number" data-for="logoY" step="0.5"></div>
           <div class="row" data-hl="logo"><label for="logoRot">傾き（度）</label><input type="range" id="logoRot" min="-180" max="180" step="1"><input type="number" data-for="logoRot" step="1"></div>
@@ -1118,10 +1121,14 @@ html.easy #ed .stage .bar{justify-content:flex-start}
   /* プリント方法：下限をかける */
   var pm = 'silk';
   try { var sv = localStorage.getItem('towel_pm'); if (sv && PM[sv]) pm = sv; } catch (e) {}
-  var MIN0 = { logoH: 40, patScale: 40, gap: 0, fuchiW: 0.5, fuchiIn: 1 };
+  var MIN0 = { logoH: 15, patScale: 40, gap: 0, fuchiW: 0.5, fuchiIn: 1 };
   var LBL = { logoH: '札の高さ', patScale: '柄の大きさ', gap: '柄との間', fuchiW: 'フチの太さ', fuchiIn: 'フチの位置（ロゴとのすき間）' };
   var UNIT = { logoH: 'mm', patScale: '%', gap: 'mm', fuchiW: 'mm', fuchiIn: 'mm' };
   var WHY = { logoH: '文字のいちばん細い所が潰れます', patScale: '柄の線やすき間が細すぎます', gap: 'ロゴと柄のすき間が潰れます', fuchiW: 'フチの線がかすれます', fuchiIn: 'フチとロゴのすき間が潰れます' };
+  function syncPmRule() {
+    var l = pmLimits(pm);
+    cfg.minLine = l ? l.p.L : 0; cfg.minGap = l ? l.p.G : 0;
+  }
   (function () {
     var s = $('#pmethod');
     Object.keys(PM).forEach(function (k) { var o = document.createElement('option'); o.value = k; o.textContent = PM[k].name; s.appendChild(o); });
@@ -1129,8 +1136,12 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     s.addEventListener('change', function () {
       pm = s.value; try { localStorage.setItem('towel_pm', pm); } catch (e) {}
       window.__ftPost({ type: 'fudaTowel:pm', pm: pm });
+      syncPmRule(); pmSay(''); syncUI(); schedule();
+    });
+    var ab = $('#pmApplyBtn');
+    if (ab) ab.addEventListener('click', function () {
       var ch = pmEnforce(); syncUI(); schedule();
-      pmSay(ch.length ? PM[pm].name + 'に合わせて ' + ch.join('、') + ' に上げました。' : '');
+      pmSay(ch.length ? PM[pm].name + 'に合わせて ' + ch.join('、') + ' に上げました。' : 'すでにプリント方法の目安を満たしています。');
     });
   })();
   function pmMin(k) {
@@ -1169,7 +1180,8 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     }
     var h = cfg.logoH, s = 566.93;
     var tx = (K_TEXT * h / s).toFixed(1), st = (K_DETAIL * h / s).toFixed(1);
-    if (h >= l.logoRec) item('ok', '札の高さ ' + Math.round(h) + 'mm', '文字（最細 ' + tx + 'mm）も縁の縞（すき間 ' + st + 'mm）も印刷できます。');
+    if (h < l.logoH) item('ng', '札の高さ ' + Math.round(h) + 'mm（目安下限 ' + l.logoH + 'mm）', '文字の最細が ' + tx + 'mm のため、' + PM[pm].short + 'では潰れる恐れがあります（フルカラー等ならそのまま使用可）。');
+    else if (h >= l.logoRec) item('ok', '札の高さ ' + Math.round(h) + 'mm', '文字（最細 ' + tx + 'mm）も縁の縞（すき間 ' + st + 'mm）も印刷できます。');
     else item('cau', '札の高さ ' + Math.round(h) + 'mm（下限 ' + l.logoH + 'mm）', '文字は大丈夫（最細 ' + tx + 'mm）。縁の縞のすき間は ' + st + 'mm で、潰れて帯に見えることがあります（縞まで出すには ' + l.logoRec + 'mm 以上）。');
     var pw = (P_LINE * cfg.patScale).toFixed(1), pg = (P_GAP * cfg.patScale).toFixed(1);
     item('ok', '柄の大きさ ' + Math.round(cfg.patScale * 100) + '%（下限 ' + l.pat + '%）', '柄の線 ' + pw + 'mm・狭いすき間 ' + pg + 'mm。');
@@ -1197,8 +1209,8 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     curMyId = null;
     curPreset = p; cfg = clone(p.cfg); ensureDefaults(); $('#preset').value = p.id;
     $('#fname').value = p.id + '_edit';
-    var ch = pmEnforce();
-    pmSay(ch.length ? 'この案は' + PM[pm].name + 'には細すぎるので、' + ch.join('、') + ' に上げました。' : '');
+    var ch = []; syncPmRule();
+    pmSay('');
     syncUI(); renderMyUI(); schedule();
     try { localStorage.setItem('towel_preset', p.id); } catch (e) {}
     saveWorkingState();
@@ -1212,8 +1224,8 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     if (it.pm && PM[it.pm]) { pm = it.pm; $('#pmethod').value = pm; try { localStorage.setItem('towel_pm', pm); } catch (e) {} }
     if ($('#preset')) $('#preset').value = it.id;
     if ($('#fname')) $('#fname').value = it.label;
-    var ch = pmEnforce();
-    pmSay(ch.length ? 'この案は' + PM[pm].name + 'には細すぎるので、' + ch.join('、') + ' に上げました。' : '');
+    syncPmRule();
+    pmSay('');
     syncUI(); renderMyUI(); schedule();
     saveWorkingState();
     say('保存したマイ図案「' + it.label + '」を開きました。');
@@ -1232,7 +1244,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
       var n = $('input[data-for="' + k + '"]'); if (n) n.value = +(+v).toFixed(2);
     });
     $('#logoX').max = cfg.W; $('#logoY').max = cfg.H;
-    Object.keys(MIN0).forEach(function (k) { var m = pmMin(k); if ($('#' + k)) $('#' + k).min = m; var n = $('input[data-for="' + k + '"]'); if (n) n.min = m; });
+    Object.keys(MIN0).forEach(function (k) { var m = MIN0[k]; if ($('#' + k)) $('#' + k).min = m; var n = $('input[data-for="' + k + '"]'); if (n) n.min = m; });
     CHK.forEach(function (k) { var el = $('#' + k); if (el) el.checked = !!cfg[k]; });
     $$('#styleSeg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.s === cfg.style)); });
     $$('#obiSeg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.o === cfg.obiSide)); });
@@ -1265,10 +1277,11 @@ html.easy #ed .stage .bar{justify-content:flex-start}
 
   function setVal(k, v) {
     v = parseFloat(v); if (!isFinite(v)) return v;
-    if (MIN0[k] !== undefined && pmLimits(pm)) {
-      var m = pmMin(k);
-      if (v < m) { v = m; pmSay('これ以上小さくすると ' + PM[pm].short + ' では印刷できません（' + LBL[k] + 'の下限 ' + m + UNIT[k] + '：' + WHY[k] + '）。'); }
-      else pmSay('');
+    if (MIN0[k] !== undefined) {
+      if (v < MIN0[k]) v = MIN0[k];
+      if (pmLimits(pm) && v < pmMin(k)) {
+        pmSay('目安メモ：' + PM[pm].short + 'の推奨下限は ' + LBL[k] + ' ' + pmMin(k) + UNIT[k] + ' です（そのまま縮小も可能）。');
+      } else pmSay('');
     }
     if (k === 'patScale') cfg.patScale = Math.max(0.2, v / 100); else cfg[k] = v;
     return v;
@@ -1316,7 +1329,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
       if (k === 'frameDouble' && cfg.frameDouble) cfg.frame = true;
       if (k === 'frame' && !cfg.frame) cfg.frameDouble = false;
       if (k === 'borderFrame' && cfg.borderFrame && (!cfg.border || cfg.border < 4)) cfg.border = 8;
-      var ch = pmEnforce(); if (ch.length) pmSay(ch.join('、') + ' に上げました。');
+      syncPmRule();
       syncUI(); schedule();
     });
   });
@@ -1329,7 +1342,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
     if (s === 'maru' && cfg.winR < cfg.logoH * 0.55) cfg.winR = Math.round(cfg.logoH * 0.66);
     if ((s === 'koban' || s === 'fuda' || s === 'yama' || s === 'kado') && !cfg.padX && !cfg.padY) { cfg.padX = 12; cfg.padY = 24; }
     if (s === 'kado' && (!cfg.corner || cfg.corner < 4)) cfg.corner = 18;
-    pmEnforce(); syncUI(); schedule();
+    syncPmRule(); syncUI(); schedule();
   }); });
   $$('#obiSeg button').forEach(function (b) { b.addEventListener('click', function () { cfg.obiSide = b.dataset.o; syncUI(); schedule(); }); });
   $$('#canvasSeg button').forEach(function (b) { b.addEventListener('click', function () {
@@ -1355,7 +1368,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
       var rMax = Math.min(c.W, c.H) / 2 - Math.max(cfg.border, 0) - 12;
       if (cfg.winR > rMax) { var k = rMax / cfg.winR; cfg.winR = +rMax.toFixed(1); cfg.logoH = +(cfg.logoH * k).toFixed(1); }
     }
-    pmEnforce(); clampLogo();
+    syncPmRule(); clampLogo();
     if (cfg.style === 'maru') {
       var m = Math.max(cfg.border, 0) + 4;
       cfg.logoX = Math.min(Math.max(cfg.logoX, m + cfg.winR), cfg.W - m - cfg.winR);
@@ -1987,7 +2000,7 @@ html.easy #ed .stage .bar{justify-content:flex-start}
           cfg = clone(wk.cfg);
           ensureDefaults();
           if ($('#fname')) $('#fname').value = wk.fname || (curPreset.id + '_edit');
-          pmEnforce();
+          syncPmRule();
           syncUI();
           renderMyUI();
           schedule();

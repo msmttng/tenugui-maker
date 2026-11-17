@@ -352,7 +352,7 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
       <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
           <h1>手ぬぐい工房</h1>
-          <button type="button" id="forceCacheReloadBtn" class="mini-btn" style="font-size:10.5px;padding:2px 8px;border-radius:999px" title="ブラウザの古いキャッシュを破棄して最新版を読み込みます">v1.17.0 更新</button>
+          <button type="button" id="forceCacheReloadBtn" class="mini-btn" style="font-size:10.5px;padding:2px 8px;border-radius:999px" title="ブラウザの古いキャッシュを破棄して最新版を読み込みます">v1.17.1 更新</button>
         </div>
         <button type="button" id="uToggleAllAdvBtn" class="mini-btn" aria-pressed="false" style="font-size:11px;padding:4px 9px" title="各タブ内の詳細調整メニューを一括で開く／閉じる">詳細調整をすべて開く</button>
         <div class="uimode" hidden role="group" aria-label="表示の切り替え">
@@ -883,7 +883,10 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
       <div class="e-step" id="eStep7">
         <div class="e-h"><span>プリント方式と最小線幅チェック</span></div>
         <select id="ePm" aria-label="プリント方法"></select>
-        <div id="ePmSum" class="e-pmsum"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap">
+          <div id="ePmSum" class="e-pmsum"></div>
+          <button type="button" class="mini-btn" id="ePmApplyBtn" style="font-size:11px;padding:3px 8px" title="現在の設定でプリント下限より細い箇所がある場合のみ、目安値まで引き上げます">下限値に自動補正</button>
+        </div>
         <div id="ePmList" class="pm-list"></div>
       </div>
       <div class="e-step" id="eStep8">
@@ -1101,8 +1104,11 @@ details.u-adv-drawer h2{border-left:3px solid var(--ai);font-size:12px;color:#0f
         <select id="pmMethodA" aria-label="プリント方法" style="font-size:12px;font-weight:700"></select>
         <p class="note" id="pmRuleA"></p>
         <div id="pmStatusA" class="pm-list"></div>
-        <p class="note" id="pmMsgA" role="status" style="color:#b45309;font-weight:700;min-height:1em"></p>
-        <p class="note">選んだ方法で印刷できない細さにならないよう、仲羽田の線の太さ・文字内の抜け幅・あられの粒とすき間・札ロゴの大きさ・ロゴのフチ・フチ抜き幅・タオル外周枠に下限をかけます。数値は各社の入稿ルール（線とすき間の最小幅）をもとにした目安です。最終確認は業者のデータチェックで。</p>
+        <div style="display:flex;justify-content:flex-end;margin-top:4px">
+          <button type="button" class="mini-btn" id="pmApplyBtnA" style="font-size:11px;padding:4px 9px">プリント方式の下限値に自動補正</button>
+        </div>
+        <p class="note" id="pmMsgA" role="status" style="color:#334155;font-weight:700;min-height:1em"></p>
+        <p class="note">選んだプリント方式に対して細すぎる線・すき間・ロゴサイズがないか判定します（スライダー操作を勝手に固定せず、必要なときだけ「下限値に自動補正」ボタンで引き上げられます）。</p>
       </div>
     </section>
 
@@ -14401,7 +14407,6 @@ function syncUI(){
 
 let timer=null;
 function update(relayout){
-  if(typeof pmApplyA === 'function' && typeof PM_A !== 'undefined' && PM_A) pmApplyA();
   if(S.showLogo) syncActiveSlotFromS();
   persist(); syncUI();
   if(typeof pmRenderA === 'function' && typeof PM_A !== 'undefined' && PM_A) pmRenderA();
@@ -17205,8 +17210,11 @@ function pmRenderA(){
       var cur = (i === S.activeLogoSlot) ? S : sl;
       if(!isBuiltinFudaSlot(cur)) return;
       var h = cur.logoSize || 85;
-      var body = '文字の最細 ' + (h * FUDA_K_TEXT).toFixed(1) + 'mm。縁の縞のすき間 ' + (h * FUDA_K_DETAIL).toFixed(1) + 'mm' + (h >= rec ? '' : '（縞は潰れて帯に見えることがあります。縞まで出すには ' + rec + 'mm 以上）');
-      pmItemA(box, h >= rec ? 'ok' : 'cau', '札ロゴ' + (slots.length > 1 ? (i + 1) : '') + ' ' + Math.round(h) + 'mm（下限 ' + minLogo + 'mm）', body);
+      var cls = h < minLogo ? 'ng' : (h >= rec ? 'ok' : 'cau');
+      var body = h < minLogo
+        ? ('文字の最細 ' + (h * FUDA_K_TEXT).toFixed(1) + 'mm（プリント目安は ' + minLogo + 'mm 以上。小サイズ配置・フルカラー出力時はそのまま利用可）')
+        : ('文字の最細 ' + (h * FUDA_K_TEXT).toFixed(1) + 'mm。縁の縞のすき間 ' + (h * FUDA_K_DETAIL).toFixed(1) + 'mm' + (h >= rec ? '' : '（縞は潰れて帯に見えることがあります。縞まで出すには ' + rec + 'mm 以上）'));
+      pmItemA(box, cls, '札ロゴ' + (slots.length > 1 ? (i + 1) : '') + ' ' + Math.round(h) + 'mm（目安下限 ' + minLogo + 'mm）', body);
     });
   }
   if(S.towelBorder) pmItemA(box, 'ok', 'タオル外周枠 ' + S.towelBorderWidth + 'mm（下限 ' + p.L + 'mm）', '');
@@ -17229,6 +17237,13 @@ function pmApplyA(){
     update(true);
     ftRenderTpl();
   });
+  if($('pmApplyBtnA')){
+    $('pmApplyBtnA').addEventListener('click', function(){
+      var ch = pmApplyA();
+      update(true);
+      say(ch.length ? ('プリント下限に合わせて補正しました：' + ch.join('、')) : '現在の設定はすでにプリント方式の下限を満たしています。');
+    });
+  }
 })();
 
 /* ---- 札タオル図案（fuda_towel/）の埋め込みとブリッジ ---- */
@@ -17262,7 +17277,7 @@ function ftImportLogoSvg(svg, name){
   var slotObj = Object.assign({}, extractLogoSlotFromS(DEF), {
     logoName: nm, logoDataUrl: svgToDataUrlA(svg),
     logoRemoveBg: false, logoBgMode: 'none', logoMono: false, logoOutlineMm: 0,
-    logoSize: Math.max(85, p && p.L ? fudaLogoMinA(p) : 0)
+    logoSize: 85
   });
   addOrSaveLogoToShelf('' + (name || '札タオル図案の札'), slotObj);
   ACTIVE_LOGO_SHELF_CAT = 'custom';
@@ -18366,6 +18381,13 @@ function easyRenderImpl(){
   var sel = $('ePm');
   Object.keys(PM_A).forEach(function(k){ var o = document.createElement('option'); o.value = k; o.textContent = PM_A[k].name; sel.appendChild(o); });
   sel.addEventListener('change', function(){ var real = $('pmMethodA'); if(!real) return; real.value = sel.value; real.dispatchEvent(new Event('change')); });
+  if($('ePmApplyBtn')){
+    $('ePmApplyBtn').addEventListener('click', function(){
+      var ch = pmApplyA();
+      update(true);
+      say(ch.length ? ('プリント下限に合わせて補正しました：' + ch.join('、')) : '現在の設定はすでにプリント方式の下限を満たしています。');
+    });
+  }
   $('eSavePng').addEventListener('click', function(){ $('savePng').click(); });
   if($('eSaveDaboOnlyPng')) $('eSaveDaboOnlyPng').addEventListener('click', function(){ saveDaboHighResPng('dabo', 'both'); });
   if($('eSaveDaboPng')) $('eSaveDaboPng').addEventListener('click', function(){ saveDaboHighResPng('cut_dabo', 'both'); });

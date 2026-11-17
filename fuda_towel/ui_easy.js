@@ -82,8 +82,8 @@
       var p = T.presets.filter(function (x) { return x.id === b.dataset.id; })[0];
       b.setAttribute('aria-pressed', String(!myId && !!cur && cur.id === b.dataset.id));
       var ng = p ? T.problems(p.cfg) : [];
-      b.lastChild.textContent = ng.length ? '※自動で太くします' : '';
-      b.title = p.label + (ng.length ? '（いまのプリント方法では ' + ng.join('・') + ' を太らせます）' : '');
+      b.lastChild.textContent = ng.length ? '※プリント目安あり' : '';
+      b.title = p.label + (ng.length ? '（いまのプリント方法の目安より細い箇所：' + ng.join('・') + '）' : '');
     });
   }
   window.__easySync = render;
